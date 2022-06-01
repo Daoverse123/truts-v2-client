@@ -492,16 +492,16 @@ $PHONE_N: 425;
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-    column-gap: 12px;
-    row-gap: 16px;
-    margin-top: 60px;
-    margin-bottom: 53px;
     justify-content: center;
     animation: appear 0.35s ease-in-out forwards;
+    column-gap: 12px;
+    row-gap: 16px;
+    margin-top: 40px;
+    margin-bottom: 53px;
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         column-gap: desktop_to_laptop_fluid(12);
         row-gap: desktop_to_laptop_fluid(16);
-        margin-top: desktop_to_laptop_fluid(60);
+        margin-top: desktop_to_laptop_fluid(40);
         margin-bottom: desktop_to_laptop_fluid(53);
     }
     @media (max-width: $LAPTOP) {

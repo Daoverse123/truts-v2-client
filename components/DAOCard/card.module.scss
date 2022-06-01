@@ -48,29 +48,33 @@ $TABLET_N: 768;
     width: 100%;
     background-color: white;
     flex-direction: column;
-    height: 155px;
+    height: 135px;
     padding: 0px 16px;
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
-        height: desktop_to_laptop_fluid(155);
+        height: desktop_to_laptop_fluid(135);
         padding: 0 desktop_to_laptop_fluid(16);
     }
 }
 
 .title {
     display: flex;
-    height: min-content;
+    height: 51px;
     align-items: center;
+    margin-top: 3px;
     h1 {
         font-weight: 500;
-        font-size: 25px;
+        font-size: 20px;
+        height: 25px;
     }
     img {
-        width: 15.5px;
+        width: 16px;
         margin-left: 5px;
     }
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        height: desktop_to_laptop_fluid(51);
+        margin-top: desktop_to_laptop_fluid(3);
         h1 {
-            font-size: desktop_to_laptop_fluid(25);
+            font-size: desktop_to_laptop_fluid(20);
         }
         img {
             width: desktop_to_laptop_fluid(15.5);
@@ -87,13 +91,16 @@ $TABLET_N: 768;
         color: white;
         padding: 4px;
         border-radius: 3.80258px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
         img {
             margin-left: 4.5px;
         }
         @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
             padding: desktop_to_laptop_fluid(4);
             border-radius: desktop_to_laptop_fluid(3.80258);
-            font-size: desktop_to_laptop_fluid(14);
+            font-size: desktop_to_laptop_fluid(12);
             img {
                 margin-left: desktop_to_laptop_fluid(4.5);
             }
@@ -102,16 +109,23 @@ $TABLET_N: 768;
 
     .review_count {
         margin-left: 10px;
-        font-size: 16px;
+        font-size: 12px;
         @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
             margin-left: desktop_to_laptop_fluid(10);
-            font-size: desktop_to_laptop_fluid(16);
+            font-size: desktop_to_laptop_fluid(12);
         }
     }
 }
 
 .social_icons {
     display: flex;
+    height: 39px;
+    align-items: center;
+    margin-top: 3px;
+    @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        height: desktop_to_laptop_fluid(39);
+        margin-top: desktop_to_laptop_fluid(3);
+    }
     img {
         width: 17px;
         @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
@@ -131,10 +145,10 @@ $TABLET_N: 768;
             // Counter
             color: rgba(154, 154, 154, 1);
             font-weight: 500;
-            font-size: 16px;
+            font-size: 12px;
             margin-left: 3px;
             @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
-                font-size: desktop_to_laptop_fluid(16);
+                font-size: desktop_to_laptop_fluid(12);
                 margin-left: desktop_to_laptop_fluid(3);
             }
         }
