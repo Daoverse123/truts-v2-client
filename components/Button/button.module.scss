@@ -1,0 +1,110 @@
+$font: "Inter", sans-serif;
+
+$DESKTOP: 1440px;
+$LAPTOP: 1024px;
+$TABLET: 768px;
+$PHONE: 425px;
+
+$DESKTOP_N: 1440;
+$LAPTOP_N: 1024;
+$TABLET_N: 768;
+$PHONE_N: 425;
+
+//FLUID FUNCTIONS
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    font-weight: 500;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16.5px 32px;
+    font-size: 16px;
+    height: 52px;
+    @media (max-width: $TABLET) {
+        padding: 12px 24px;
+        font-size: 14px;
+        height: 41px;
+    }
+    @media (max-width: $TABLET) and (min-width: $PHONE) {
+        padding: tablet_to_phone_fluid(12) tablet_to_phone_fluid(24);
+        font-size: tablet_to_phone_fluid(14);
+        height: tablet_to_phone_fluid(41);
+    }
+    @media (max-width: $PHONE) {
+        height: 41px;
+        padding: 12px 24px;
+    }
+}
+
+.btn_icon {
+    margin-right: 10px;
+    img {
+        width: 20px;
+        margin-top: 2px;
+        @media (max-width: $TABLET) {
+            width: 14px;
+        }
+        @media (max-width: $TABLET) and (min-width: $PHONE) {
+            width: tablet_to_phone_fluid(14);
+        }
+        @media (max-width: $PHONE) {
+            width: 14px;
+        }
+    }
+}
+
+.btn_text {
+    font-family: $font;
+    font-weight: 500;
+    font-size: 16px;
+    @media (max-width: $TABLET) {
+        font-size: 14px;
+    }
+    @media (max-width: $TABLET) and (min-width: $PHONE) {
+        font-size: tablet_to_phone_fluid(14);
+    }
+    @media (max-width: $PHONE) {
+        font-size: 12px;
+    }
+}
+
+.primary_button {
+    @extend .button;
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+
+    &:hover {
+        background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+    }
+
+    &:focus {
+        outline: thick double #1248d9;
+    }
+}
+
+.secondary_button {
+    @extend .button;
+    border: 1.5px solid rgba(123, 97, 255, 1);
+    color: rgb(83, 55, 226);
+    background-color: transparent;
+
+    &:hover {
+        background: linear-gradient(90deg, #b58cff 0%, #9eb8ff 100%);
+    }
+
+    &:focus {
+        outline: thick double #1248d9;
+    }
+}
