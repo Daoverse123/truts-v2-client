@@ -331,7 +331,7 @@ function Leaderboard_mobile({ data }) {
       <div className={styles.leaderboard_list}>
         {data.map((ele, idx) => {
           return (<Leaderboard_mobile_entry data={ele} key={'ml' + idx} idx={idx + 1} />)
-        })
+        }).slice(0, 5)
         }
       </div>
     </div>
