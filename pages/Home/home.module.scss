@@ -501,14 +501,14 @@ $PHONE_N: 425;
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         column-gap: desktop_to_laptop_fluid(12);
         row-gap: desktop_to_laptop_fluid(16);
-        margin-top: desktop_to_laptop_fluid(40);
+        margin-top: desktop_to_laptop_fluid(30);
         margin-bottom: desktop_to_laptop_fluid(53);
     }
     @media (max-width: $LAPTOP) {
-        margin-top: 30px;
+        margin-top: 10px;
     }
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
-        margin-top: laptop_to_tablet_fluid(40);
+        margin-top: laptop_to_tablet_fluid(10);
     }
 }
 
