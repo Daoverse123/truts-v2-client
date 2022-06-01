@@ -496,7 +496,7 @@ $PHONE_N: 425;
     animation: appear 0.35s ease-in-out forwards;
     column-gap: 12px;
     row-gap: 16px;
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 53px;
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         column-gap: desktop_to_laptop_fluid(12);
@@ -505,7 +505,7 @@ $PHONE_N: 425;
         margin-bottom: desktop_to_laptop_fluid(53);
     }
     @media (max-width: $LAPTOP) {
-        margin-top: 40px;
+        margin-top: 30px;
     }
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
         margin-top: laptop_to_tablet_fluid(40);
