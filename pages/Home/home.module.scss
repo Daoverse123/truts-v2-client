@@ -63,7 +63,7 @@ $PHONE_N: 425;
 }
 
 .sec_title {
-    font-weight: 700;
+    font-weight: 700;       
     font-size: 48px;
     @media (max-width: $TABLET) {
         font-size: 25px;
@@ -82,11 +82,13 @@ $PHONE_N: 425;
     justify-content: space-between;
     width: 100%;
     height: 775px;
+
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         height: desktop_to_laptop_fluid(775);
     }
     @media (max-width: $LAPTOP) {
         height: 580px;
+        margin-top: 25px;
     }
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
         height: laptop_to_tablet_fluid(580);
@@ -99,6 +101,7 @@ $PHONE_N: 425;
     }
     @media (max-width: $PHONE) {
         height: 360px;
+        margin-top: 25px;
     }
 
     .hero_left {

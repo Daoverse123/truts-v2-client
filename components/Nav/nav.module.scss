@@ -1,0 +1,221 @@
+$DESKTOP: 1440px;
+$LAPTOP: 1024px;
+$TABLET: 768px;
+$PHONE: 425px;
+
+$DESKTOP_N: 1440;
+$LAPTOP_N: 1024;
+$TABLET_N: 768;
+$PHONE_N: 425;
+
+//FLUID FUNCTIONS
+
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+
+.navWrapper {
+    display: flex;
+    position: absolute;
+    z-index: 9999;
+    height: 100px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    border-bottom: 1px solid rgba(135, 135, 135, 0.25);
+    background: #f7f7f7;
+    animation: appear 0.5s ease-in-out forwards;
+
+    @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        height: desktop_to_laptop_fluid(100);
+    }
+    @media (max-width: $LAPTOP) {
+        height: 100px;
+        padding: 0 30px;
+    }
+    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
+        padding: 0 laptop_to_tablet_fluid(30);
+        height: laptop_to_tablet_fluid(100);
+    }
+    @media (max-width: $TABLET) {
+        padding: 0 30px;
+    }
+    @media (max-width: $TABLET) and (min-width: $PHONE) {
+        padding: 0 laptop_to_tablet_fluid(30);
+        height: laptop_to_tablet_fluid(100);
+    }
+    @media (max-width: $PHONE) {
+        padding: 0 30px;
+        height: tablet_to_phone_fluid(60);
+    }
+}
+
+.nav {
+    height: 100%;
+    max-width: 1440px;
+    width: 100%;
+    display: flex;
+    padding: 0 70px;
+    align-items: center;
+    @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        padding: 0 desktop_to_laptop_fluid(70);
+    }
+    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
+        padding: 0 laptop_to_tablet_fluid(20);
+    }
+    @media (max-width: $TABLET) {
+        padding: 0 tablet_to_phone_fluid(0);
+    }
+    .logo {
+        width: 99px;
+        margin-right: 50px;
+        @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+            margin-right: desktop_to_laptop_fluid(50);
+        }
+        @media (max-width: $LAPTOP) and (min-width: $TABLET) {
+            margin-right: laptop_to_tablet_fluid(50);
+        }
+    }
+}
+
+.links {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    list-style: none;
+    margin-left: auto;
+    column-gap: 41px;
+    @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        column-gap: desktop_to_laptop_fluid(41);
+    }
+
+    li {
+        font-weight: 400;
+        font-size: 16.5246px;
+        cursor: pointer;
+
+        @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+            font-size: desktop_to_laptop_fluid(16.5);
+        }
+        @media (max-width: 1026px) {
+            display: none;
+        }
+    }
+}
+@media (max-width: $TABLET) {
+    .search_wrappper {
+        display: none;
+    }
+}
+
+.ham_burger_menu {
+    cursor: pointer;
+    img {
+        width: 22px;
+        height: 17px;
+    }
+    @media (min-width: 1028px) {
+        display: none;
+    }
+}
+
+.tablet_nav {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.534);
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 409px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.842);
+    margin-left: auto;
+    padding: 35px 24px;
+    transform: translateX(100%);
+    animation: openSideNav 0.5s ease-in-out forwards;
+    .tablet_nav {
+        width: 83px;
+        height: 33px;
+    }
+
+    .top_bar {
+        display: flex;
+        height: fit-content;
+        width: 100%;
+        justify-content: space-between;
+        .close_icon {
+            width: 18px;
+            cursor: pointer;
+        }
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin-left: auto;
+        margin-top: 65px;
+        li {
+            border-right: 2px solid black;
+            padding: 0px 20px;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #2c3857;
+            font-size: 22.6667px;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+            width: 180px;
+            height: 72px;
+            line-height: 160%;
+            text-align: right;
+            cursor: pointer;
+            &:hover {
+                transition: all 0.3s ease-in-out;
+                color: #3065f3;
+                border-right: 2px solid #3065f3;
+            }
+        }
+    }
+
+    @media (max-width: $PHONE) {
+        width: 100%;
+    }
+}
+
+.btn_wrapper {
+    margin: auto auto 0 auto;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes openSideNav {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

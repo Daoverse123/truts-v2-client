@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from './button.module.scss'
 
-function PrimaryButton({ label, icon }) {
+function PrimaryButton({ label, icon, onClick }) {
     return (
-        <button className={styles.primary_button}>
+        <button className={styles.primary_button} onClick={onClick}>
             {(icon) && < span className={styles.btn_icon}>
                 <img src={icon} alt="" />
             </span>}
@@ -14,9 +14,9 @@ function PrimaryButton({ label, icon }) {
     )
 }
 
-function SecondaryButton({ label, icon }) {
+function SecondaryButton({ label, icon, onClick }) {
     return (
-        <button className={styles.secondary_button}>
+        <button className={styles.secondary_button} onClick={onClick}>
             {(icon) && < span className={styles.btn_icon}>
                 <img src={icon} alt="" />
             </span>}
@@ -28,20 +28,21 @@ function SecondaryButton({ label, icon }) {
 }
 
 
-export default function RenderButton({ type, label, icon }) {
+export default function RenderButton(props) {
+    let { type } = props
     switch (type) {
         case 'primary': {
-            return (<PrimaryButton label={label} icon={icon} />)
+            return (<PrimaryButton {...props} />)
             break;
         }
 
         case 'secondary': {
-            return (<SecondaryButton label={label} icon={icon} />)
+            return (<SecondaryButton {...props} />)
             break;
         }
 
         default: {
-            return (<PrimaryButton label={label} icon={icon} />)
+            return (<PrimaryButton {...props} />)
             break;
         }
     }
@@ -50,5 +51,6 @@ export default function RenderButton({ type, label, icon }) {
 RenderButton.defaultProps = {
     type: 'primary',
     icon: null,
-    label: 'Button'
+    label: 'Button',
+    onClick: () => { }
 }
