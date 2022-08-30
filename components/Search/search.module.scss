@@ -20,6 +20,11 @@ $PHONE_N: 425;
     @return #{calc(($units / $TABLET_N) * 100)}vw;
 }
 
+
+.focus{
+    outline: 1.25px solid blue;
+}
+
 .search {
     display: flex;
     background-color: white;

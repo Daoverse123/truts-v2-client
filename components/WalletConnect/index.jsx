@@ -38,11 +38,6 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
         }
     }, [])
 
-    useEffect(() => {
-        console.log("loc update")
-        localStorage.setItem('wallet_state', JSON.stringify(walletState));
-    }, [walletState])
-
     const closePopUp = () => {
         setwalletConnectVisible(false);
     }
@@ -100,8 +95,28 @@ const Wallet = ({ icon, name, onClick }) => {
 
 const Eth_wallets = ({ setwalletState, closePopUp }) => {
     const { connectAsync, connectors, isLoading, pendingConnector } = useConnect();
-    const { disconnectAsync } = useDisconnect()
     const { address, isConnected, connector, isConnecting } = useAccount();
+
+    const saveWalletState = async (ele) => {
+        localStorage.clear();
+        try {
+            let res = await connectAsync({ connector: ele })
+            if (res.account.length > 5) {
+                let state_obj = {
+                    address: res.account,
+                    chain: "Ethereum",
+                    status: "connected"
+                }
+                setwalletState(state_obj)
+                localStorage.setItem('wallet_state', JSON.stringify(state_obj));
+                window.updateNav()
+                closePopUp()
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div className={styles.list}>
             {
@@ -114,24 +129,7 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
                                 {isConnecting &&
                                     ele.id === pendingConnector?.id &&
                                     ' (connecting)'}</>}
-                            onClick={async () => {
-                                localStorage.clear();
-                                try {
-                                    let res = await connectAsync({ connector: ele })
-                                    if (res.account.length > 5) {
-                                        setwalletState({
-                                            address: res.account,
-                                            chain: "Ethereum",
-                                            status: "connected"
-                                        })
-                                        window.updateNav()
-                                        closePopUp()
-                                    }
-                                } catch (error) {
-                                    console.log(error)
-                                }
-                            }
-                            }
+                            onClick={() => { saveWalletState(ele) }}
                         />
                     )
                 })
@@ -179,6 +177,12 @@ const Solana_wallets = ({ setwalletState, closePopUp }) => {
                                 chain: "Solana",
                                 status: "connected"
                             })
+                            localStorage.setItem('wallet_state', JSON.stringify({
+                                address: res.address,
+                                chain: "Solana",
+                                status: "connected"
+                            }));
+
                             window.updateNav()
                             closePopUp()
                         }

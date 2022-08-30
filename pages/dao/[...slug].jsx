@@ -69,7 +69,7 @@ const NavSec = ({ selected, setSelected }) => {
 }
 
 const InfoSec = ({ dao_data }) => {
-    let { dao_name, review_count, dao_category, dao_cover, average_rating } = dao_data
+    let { dao_name, review_count, dao_category, dao_cover, average_rating, slug } = dao_data
 
     let info = dao_data.description + '\n' + dao_data.dao_mission
 
@@ -99,7 +99,10 @@ const InfoSec = ({ dao_data }) => {
                     </div>
                 </span>
                 <Button label={'Join Community'} onClick={() => { openNewTab(dao_data.discord_link) }} />
-                <Button type={'secondary'} label={'Write a Review'} />
+                <Button onClick={() => {
+                    setCookie('target', slug)
+                    window.location.href = `${API}/auth/discord`
+                }} type={'secondary'} label={'Write a Review'} />
             </div>
             <img alt='' className={styles.cover} src={dao_cover} />
         </div >
@@ -336,7 +339,10 @@ const ReviewsSec = ({ dao_data }) => {
                 <p>{dao_data.description}</p>
             </div> */}
             <span className={styles.reviewFilter}>
-                <Button label={"Write a Review"} type={"secondary"} />
+                <Button onClick={() => {
+                    setCookie('target', slug)
+                    window.location.href = `${API}/auth/discord`
+                }} label={"Write a Review"} type={"secondary"} />
                 <Filter selectedFilter={selectedFilter} setselectedFilter={setselectedFilter} />
             </span>
             <div className={styles.reviewCon}>
@@ -417,6 +423,16 @@ const ReviewComp = ({ review }) => {
     )
 }
 
+function setCookie(name, value) {
+    let days = 1;
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
 
 //SSR DATA DAO PAGE
 export async function getServerSideProps(ctx) {

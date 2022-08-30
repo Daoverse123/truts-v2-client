@@ -16,6 +16,7 @@ export default function Search({ className }) {
     const [searchTerm, setsearchTerm] = useState('');
     const [searchSuggestiondata, setSuggestiondata] = useState([]);
     const [suggestionVisible, setsuggestionVisible] = useState(false);
+    const [focus, setfocus] = useState(false);
 
     const fetchData = async (term) => {
         if (!(term.length > 0)) return
@@ -29,13 +30,15 @@ export default function Search({ className }) {
         [],
     )
 
+    let focus_style = focus ? styles.focus : ''
 
     return (
-        <div className={styles.search + ' ' + className}>
+        <div className={styles.search + ' ' + focus_style + ' ' + className}>
             <div className={styles.icon}>
                 <img src={gradient_search.src} alt="" />
             </div>
             <input
+                id={"search_box"}
                 className={styles.seachBoxInput}
                 type="text"
                 placeholder={'Search communities by name, type or description'}
@@ -46,9 +49,11 @@ export default function Search({ className }) {
                 }}
                 onBlur={() => {
                     setTimeout(() => { setsuggestionVisible(false) }, 500)
+                    setfocus(false)
                 }}
                 onFocus={() => {
                     setsuggestionVisible(true)
+                    setfocus(true)
                 }}
             />
             {(searchSuggestiondata.length > 0 && searchTerm.length > 0 && suggestionVisible) &&

@@ -37,6 +37,18 @@ $PHONE_N: 426;
     background-color: rgba(246, 246, 246, 1);
     align-items: center;
     padding-top: 100px;
+    @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
+        padding-top: desktop_to_laptop_fluid(100);
+    }
+    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
+        padding-top: laptop_to_tablet_fluid(100);
+    }
+    @media (max-width: $TABLET) and (min-width: $PHONE) {
+        padding-top: tablet_to_phone_fluid(100);
+    }
+    @media (max-width: $PHONE) {
+        padding-top: phone_fluid(90);
+    }
 }
 
 .infoSec {

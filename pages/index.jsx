@@ -120,7 +120,10 @@ function Hero() {
         <h1 className={styles.gradientText}>Communities.</h1>
         <p>Discover, Contribute, Review and Earn with cool communities you love, Anonymously!</p>
         <div className={styles.cta_btns}>
-          <Button label={'Search Truts'} icon={searchIcon.src} />
+          <Button onClick={() => {
+            let sc = document.querySelector('#search_box');
+            sc.focus()
+          }} label={'Search Truts'} icon={searchIcon.src} />
           <Button type={'secondary'} label={'Explore DAOs'} />
         </div>
       </div>

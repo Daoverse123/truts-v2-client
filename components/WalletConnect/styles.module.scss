@@ -1,3 +1,24 @@
+$DESKTOP: 1440px;
+$LAPTOP: 1024px;
+$TABLET: 768px;
+$PHONE: 425px;
+
+$DESKTOP_N: 1440;
+$LAPTOP_N: 1024;
+$TABLET_N: 768;
+$PHONE_N: 425;
+
+//FLUID FUNCTIONS
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+
 .walletConnectPopUp {
     display: flex;
     flex-direction: column;
@@ -22,6 +43,12 @@
         transition: all 0.15s ease-in-out;
         opacity: 0.5;
     }
+    @media (max-width: 467px) {
+       width: 12px;
+       height: 12px;
+       right: 10px;
+       top: 10px;
+    }
 }
 
 .menu_con {
@@ -34,6 +61,10 @@
     padding: 0 25px;
     position: relative;
     animation: appear 0.5s ease-in-out forwards;
+    @media (max-width: 467px) {
+        width: 90%;
+        margin: 0 25px;
+    }
 }
 
 .chainBar {
