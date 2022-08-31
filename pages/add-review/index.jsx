@@ -57,7 +57,7 @@ function AddReview({ dao_name, guild_id, user_discord_id, uid, slug }) {
         if (!public_address || public_address?.length < 5) { return (setwalletConnectVisible(true)) }
         try {
             setpageState(status.LOADING)
-            let res = await axios.post(`${API}/review-v2/add-review`, { validation: { uid, slug }, review: { ...reviewForm, chain, public_address, user_discord_id, authorized: true } }, { withCredentials: true });
+            let res = await axios.post(`${API}/review-v2/add-review`, { validation: { uid, slug }, review: { ...reviewForm, chain, public_address, user_discord_id, authorized: true } }, { withCredentials: true, baseURL: API });
             if (res.status == 200) {
                 setpageState(status.SUCCESS)
             }
