@@ -386,7 +386,7 @@ const ReviewComp = ({ review }) => {
                     <StarComp size={'s'} rating={review.rating} />
                 </span>
             </div>
-            <div className={styles.review_desc}>
+            <div className={styles.review_desc} >
                 {
                     (showMore) ?
                         review.review_desc

@@ -2,6 +2,7 @@
 
 let LOCALHOST = 'http://localhost:5000'
 let AWS = 'https://7cjecbsr4a.us-west-2.awsapprunner.com'
+let TEST_SERVER = 'https://rf2rcgt6ax.us-west-2.awsapprunner.com'
 
 const nextConfig = {
   reactStrictMode: true,
@@ -10,7 +11,7 @@ const nextConfig = {
     path: '',
   },
   env: {
-    API: AWS
+    API: TEST_SERVER
   },
 }
 
