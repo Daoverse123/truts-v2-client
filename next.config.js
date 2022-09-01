@@ -11,7 +11,7 @@ const nextConfig = {
     path: '',
   },
   env: {
-    API: LOCALHOST
+    API: AWS
   },
 }
 
