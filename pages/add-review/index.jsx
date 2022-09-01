@@ -16,9 +16,9 @@ import WalletConnect from '../../components/WalletConnect'
 
 const API = process.env.API
 
-const status = { READY: "READY", LOADING: "LOADING", ERROR: "ERROR", SUCCESS: "SUCCESS" }
+const status = { READY: "READY", LOADING: "LOADING", ERROR: "ERROR" }
 
-function AddReview({ dao_name, guild_id, user_discord_id, uid, slug }) {
+function AddReview({ dao_name, guild_id, uid, slug }) {
 
     const [walletConnectVisible, setwalletConnectVisible] = useState(false);
     const [reviewForm, setreviewForm] = useState({ dao_name, guild_id, rating: 0, review_desc: "" });
@@ -53,13 +53,13 @@ function AddReview({ dao_name, guild_id, user_discord_id, uid, slug }) {
         }
 
         let public_address = JSON.parse(localStorage.getItem('wallet_state'))?.address;
-        let chain = JSON.parse(localStorage.getItem('wallet_state'))?.chain
+        let chain = (JSON.parse(localStorage.getItem('wallet_state'))?.chain == 'solana') ? "sol" : "eth"
         if (!public_address || public_address?.length < 5) { return (setwalletConnectVisible(true)) }
         try {
             setpageState(status.LOADING)
-            let res = await axios.post(`${API}/review-v2/add-review`, { validation: { uid, slug }, review: { ...reviewForm, chain, public_address, user_discord_id, authorized: true } }, { withCredentials: true, baseURL: API });
+            let res = await axios.post(`${API}/review-v2/add-review`, { validation: { uid, slug }, review: { ...reviewForm, chain, public_address } }, { withCredentials: true, baseURL: API });
             if (res.status == 200) {
-                setpageState(status.SUCCESS)
+                window.location = `${API}/review-v2/auth-review?r_id=${res.data.r_id}`
             }
         } catch (error) {
             setpageState(status.ERROR)
@@ -90,7 +90,6 @@ function AddReview({ dao_name, guild_id, user_discord_id, uid, slug }) {
                     </div>
 
                     {(pageState == status.LOADING) && <LoadingState />}
-                    {(pageState == status.SUCCESS) && <SuccessState />}
                     {(pageState == status.ERROR) && <ErrorState slug={slug} />}
 
                     {(pageState == status.READY) && <form className={styles.reviewForm}>
@@ -136,7 +135,7 @@ export async function getServerSideProps(ctx) {
     let target = ctx.req.cookies['target']
     let validation = await axios.get(`${API}/review-v2/user-validation?uid=${uid}&slug=${target}`)
 
-    let { isMember, isDuplicate, dao_name, guild_id, user_discord_id } = validation.data;
+    let { isMember, isDuplicate, dao_name, guild_id } = validation.data;
 
     if (!isMember) {
         return {
@@ -157,7 +156,6 @@ export async function getServerSideProps(ctx) {
         props: {
             dao_name,
             guild_id,
-            user_discord_id,
             uid,
             slug: target
         }

@@ -8,6 +8,26 @@
     justify-content: center;
 }
 
+.statusPage {
+    display: flex;
+    min-height: 100vh;
+    height: max-content;
+    width: 100%;
+    background-color: white;
+    background: #f7f7f7;
+    justify-content: center;
+    align-items: center;
+    
+    .breadCrum{
+        width: auto;
+        margin-bottom: 15px;
+    }
+
+    .response {
+        margin: 0 auto;
+    }
+}
+
 .mainCon {
     margin-top: 130px;
     margin-left: 67px;
@@ -222,7 +242,7 @@
         bottom: 100px;
         justify-content: center;
 
-        p{
+        p {
             text-align: center;
             width: 90%;
             font-weight: 400;
