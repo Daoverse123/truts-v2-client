@@ -11,7 +11,7 @@ const nextConfig = {
     path: '',
   },
   env: {
-    API: AWS
+    API: TEST_SERVER
   },
 }
 
