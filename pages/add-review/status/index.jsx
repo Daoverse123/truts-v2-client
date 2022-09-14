@@ -2,6 +2,7 @@ import React from 'react'
 import styles from '../addReview.module.scss'
 import Link from 'next/link'
 import Head from 'next/head'
+import openNewTab from '../../../utils/openNewTab'
 
 import left_arrow from '../../../assets/left-arrow.png'
 
@@ -9,7 +10,7 @@ import Button from '../../../components/Button'
 import Nav from '../../../components/Nav'
 import Footer from '../../../components/Footer'
 
-function index({ type }) {
+function index({ type, slug }) {
   return (
     <>
       <div className={styles.statusPage}>
@@ -31,7 +32,7 @@ function index({ type }) {
           </Link>
         </div> */}
           {(type == 'success') && < SuccessState />}
-          {(type == 'error') && <ErrorState />}
+          {(type == 'error') && <ErrorState slug={slug} />}
         </div>
 
       </div>
@@ -45,7 +46,8 @@ export async function getServerSideProps(ctx) {
   let target = ctx.req.cookies['target']
   return {
     props: {
-      type
+      type,
+      slug: target
     }
   }
 }
@@ -78,5 +80,6 @@ const ErrorState = ({ slug }) => {
     </div>
   )
 }
+
 
 export default index

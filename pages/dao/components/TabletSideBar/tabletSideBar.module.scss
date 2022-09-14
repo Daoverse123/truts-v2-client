@@ -1,0 +1,237 @@
+// QUERY TEMPLATES
+// @media (max-width: 1024px) {
+// #{calc((64 / $DESKTOP_N) * 100)}vw
+
+//BREAKPOINTS
+
+$DESKTOP: 1440px;
+$LAPTOP: 1090px;
+$TABLET: 768px;
+$PHONE: 426px;
+
+$DESKTOP_N: 1440;
+$LAPTOP_N: 1090;
+$TABLET_N: 768;
+$PHONE_N: 426;
+
+//FLUID FUNCTIONS
+
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+@function phone_fluid($units) {
+    @return #{calc(($units / $PHONE_N) * 100)}vw;
+}
+
+.dialSec {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.dialCon {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+    .label {
+        font-weight: 400;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+    .barCon {
+        display: flex;
+        align-items: center;
+        column-gap: 22px;
+        p {
+            margin: 0;
+            font-weight: 400;
+            font-size: 16px;
+            margin-bottom: 2.5px;
+        }
+    }
+    .bar {
+        display: flex;
+        background: rgba(120, 120, 128, 0.2);
+        border-radius: 1.80172px;
+        height: 5px;
+        width: 90%;
+        margin-right: auto;
+        overflow: hidden;
+        border-radius: 1.8px;
+        .range {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            border-radius: 1.8px;
+            transition: all 1s ease-in-out;
+        }
+    }
+}
+
+.tabletSideBar {
+    display: flex;
+    flex-direction: column;
+    width: 704px;
+    margin-top: 32px;
+    margin-bottom: 24px;
+    .tablet_dial_sec {
+        width: 100%;
+        background: #ffffff;
+        height: 257px;
+        border-radius: 16px;
+        margin-top: 24px;
+        padding: 0 24px;
+    }
+    .btn_row {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        font-weight: 400;
+        font-size: 13px;
+    }
+    .soc_btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        border: none;
+        width: 224.67px;
+        height: 33px;
+        border-radius: 16px;
+        img {
+            margin-right: 8px;
+            height: 20px;
+        }
+    }
+    .chain_row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        border-bottom: 1px solid rgba(224, 224, 224, 1);
+        padding-bottom: 10px;
+        p {
+            font-size: 13px;
+        }
+        span {
+            display: flex;
+            column-gap: 8px;
+            img {
+                width: 53px;
+                height: 24px;
+            }
+        }
+    }
+    .dialCon {
+        .bar {
+            width: 274px;
+        }
+        .barCon {
+            p {
+                font-size: 16px;
+                margin-left: 0;
+            }
+        }
+        .label {
+            font-weight: 400;
+            font-size: 13px;
+        }
+    }
+    .dialSectablet {
+        display: flex;
+        justify-content: space-between;
+    }
+    display: none;
+    @media (max-width: $TABLET) {
+        display: flex;
+    }
+    @media (max-width: $TABLET) and (min-width: $PHONE) {
+        width: tablet_to_phone_fluid(704);
+        margin-top: tablet_to_phone_fluid(32);
+        margin-bottom: tablet_to_phone_fluid(24);
+        .tablet_dial_sec {
+            height: tablet_to_phone_fluid(257);
+            border-radius: tablet_to_phone_fluid(16);
+            margin-top: tablet_to_phone_fluid(24);
+            padding: 0 tablet_to_phone_fluid(24);
+        }
+        .btn_row {
+            font-size: tablet_to_phone_fluid(13);
+        }
+        .soc_btn {
+            width: tablet_to_phone_fluid(224.67);
+            height: tablet_to_phone_fluid(33);
+            border-radius: tablet_to_phone_fluid(16);
+            img {
+                margin-right: tablet_to_phone_fluid(8);
+                height: tablet_to_phone_fluid(20);
+            }
+        }
+        .chain_row {
+            margin-top: tablet_to_phone_fluid(20);
+            border-bottom: tablet_to_phone_fluid(1) solid rgba(224, 224, 224, 1);
+            padding-bottom: tablet_to_phone_fluid(10);
+            p {
+                font-size: tablet_to_phone_fluid(13);
+            }
+            span {
+                column-gap: tablet_to_phone_fluid(8);
+                img {
+                    width: tablet_to_phone_fluid(53);
+                    height: tablet_to_phone_fluid(24);
+                }
+            }
+        }
+        .dialCon {
+            .bar {
+                width: tablet_to_phone_fluid(274);
+            }
+            .barCon {
+                column-gap: tablet_to_phone_fluid(22);
+                p {
+                    font-size: tablet_to_phone_fluid(16);
+                    margin-left: 0;
+                }
+            }
+            .label {
+                font-weight: 400;
+                font-size: tablet_to_phone_fluid(13);
+            }
+        }
+        .dialSectablet {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    @media (max-width: $PHONE) {
+        width: phone_fluid(425);
+        .btn_row {
+            width: 100%;
+            padding: 0 6%;
+        }
+        .soc_btn {
+            width: phone_fluid(103.67);
+            font-size: phone_fluid(14);
+            img {
+                margin-right: phone_fluid(8);
+                height: phone_fluid(20);
+            }
+        }
+        .dialSectablet {
+            flex-direction: column;
+        }
+        .tablet_dial_sec {
+            height: auto;
+            width: 90%;
+            margin: 24px auto;
+            padding-bottom: 25px;
+            margin-bottom: 0;
+        }
+    }
+}

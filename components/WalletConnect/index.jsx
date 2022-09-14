@@ -113,7 +113,20 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
                 closePopUp()
             }
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
+            if (error.message == 'Connector already connected') {
+                if (address.length > 5) {
+                    let state_obj = {
+                        address: address,
+                        chain: "Ethereum",
+                        status: "connected"
+                    }
+                    setwalletState(state_obj)
+                    localStorage.setItem('wallet_state', JSON.stringify(state_obj));
+                    window.updateNav()
+                    closePopUp()
+                }
+            }
         }
     }
 

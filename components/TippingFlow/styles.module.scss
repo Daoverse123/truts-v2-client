@@ -1,0 +1,276 @@
+.tippingFlow {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.63);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.window {
+    display: flex;
+    flex-direction: column;
+    width: 533px;
+    height: 369px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    .title {
+        font-weight: 600;
+        font-size: 28px;
+        margin: 0;
+    }
+    .subtitle {
+        font-weight: 400;
+        font-size: 14px;
+        width: 369px;
+        line-height: 150%;
+        color: #5c657d;
+    }
+    .tag {
+        font-weight: 500;
+        font-size: 14px;
+        color: #0f1d40;
+        opacity: 0.8;
+        margin: 0;
+        margin-bottom: 10px;
+        margin-top: auto;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 28px;
+    }
+
+    .errorMessage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 45px;
+        margin-bottom: 10px;
+        width: 100%;
+        height: 25px;
+        text-align: center;
+        color: red;
+        cursor: pointer;
+
+        p {
+            text-decoration: underline;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 19px;
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10.25px;
+        }
+    }
+
+    .tokenInput {
+        display: flex;
+        width: 100%;
+        height: 74px;
+        border: 1px solid #cacdd5;
+        border-radius: 8px;
+        align-items: center;
+        padding: 10px;
+
+        .tokenSymbol {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            position: relative;
+
+            .icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
+                display: flex;
+                img {
+                    display: block;
+                    max-width: 100%;
+                    height: auto;
+                }
+            }
+
+            .down_arrow {
+                width: 17px;
+                height: 24px;
+                opacity: 0.7;
+                margin-left: 17px;
+                object-fit: fill;
+            }
+
+            p {
+                font-weight: 500;
+                font-size: 20px;
+            }
+
+            &:hover {
+                .tokenDropDownWrap {
+                    display: inline;
+                }
+            }
+
+            .tokenDropDownWrap {
+                display: none;
+                padding-top: 45px;
+                top: 0;
+                right: 0px;
+                position: absolute;
+            }
+
+            .tokenDropDown {
+                display: flex;
+                flex-direction: column;
+                width: 157px;
+                height: auto;
+                background: #ffffff;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.164);
+                border-radius: 4px;
+                padding: 4px;
+                animation: appear 0.35s ease-in-out forwards;
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    padding: 6px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    p {
+                        margin: 0;
+                        font-weight: 400;
+                        font-size: 12px;
+                        margin-left: 8px;
+                    }
+                    img {
+                        width: 16px;
+                        height: 16px;
+                    }
+
+                    &:hover {
+                        transition: all 0.35s ease-in-out;
+                        background-color: gainsboro;
+                    }
+                }
+            }
+        }
+    }
+
+    .options {
+        display: flex;
+        position: absolute;
+        right: 24px;
+        column-gap: 18.5px;
+    }
+
+    .amount {
+        flex-direction: column;
+        margin-left: auto;
+        text-align: right;
+        h4,
+        p {
+            margin: 0;
+        }
+        input {
+            font-weight: 500;
+            font-size: 18px;
+
+            border: none;
+            text-align: right;
+            width: max-content;
+
+            &:focus {
+                outline: none;
+            }
+
+            &::placeholder {
+                color: grey;
+            }
+        }
+        p {
+            font-weight: 500;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        width: 90%;
+
+        .title {
+            font-size: 6vw;
+        }
+        .subtitle {
+            font-weight: 400;
+            font-size: 14px;
+            width: auto;
+            line-height: 150%;
+            color: #5c657d;
+        }
+        .tag {
+            font-size: 14px;
+        }
+
+        .amount {
+            input {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.sucessMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    border-radius: 16px;
+    background-color: white;
+
+    .animation {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 70px;
+    }
+
+    p {
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        margin-top: 220px;
+        margin-bottom: 15px;
+    }
+    button {
+        width: 30%;
+        margin: 0;
+        z-index: 200;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -1,48 +1,66 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../dao/dao.module.scss'
 import Footer from '../../components/Footer'
+import Head from 'next/head'
 import axios from 'axios'
 //components
 import Button from '../../components/Button'
 import Nav from '../../components/Nav'
 import WalletConnect from '../../components/WalletConnect'
+import TippingFlow from '../../components/TippingFlow'
+
+//local components
+import Sidebar from './components/Sidebar'
+import TabletSideBar from './components/TabletSideBar'
+
 //assets
 import gradient_star_filled from '../../assets/icons/star_gradient.svg'
 import gradient_star_blank from '../../assets/icons/star_gradient_blank.svg'
-import discord_white from '../../assets/icons/twitter_white.svg'
-import twitter_white from '../../assets/icons/discord_white.svg'
-import copy_icon from '../../assets/icons/copy_icon.svg'
-import eth_chain_icon from '../../assets/icons/eth_chain_icon.svg'
-import sol_chain_icon from '../../assets/icons/sol_chain_icon.svg'
 import down_arrow from '../../assets/icons/down_arrow.svg'
 import thumbs_up from '../../assets/icons/thumbs_up.svg'
 import thumbs_down from '../../assets/icons/thumbs_down.svg'
 import share from '../../assets/icons/share_icon.svg'
 import tip from '../../assets/icons/tip_icon.svg'
-import globe_white from '../../assets/icons/web_white.svg'
+import loader from '../../assets/mini-loader.gif'
 
 const API = process.env.API
 
 function Dao({ dao_data, rid, slug }) {
     const [selected, setSelected] = useState('Reviews');
     //console.log(dao_data);
+    const [walletConnectVisible, setwalletConnectVisible] = useState(false)
+    const [tippingFlowVisible, settippingFlowVisible] = useState(false);
+    const [review_details, setreview_details] = useState({ address: "", chain: "" })
+
+    let tipReviewInfo = { review_details, setreview_details }
 
     return (
-        <div className={styles.dao}>
-            <Nav isFloating />
-            <InfoSec
-                dao_data={dao_data}
-            />
-            <NavSec selected={selected} setSelected={setSelected} />
-            <div className={styles.content}>
-                <div className={styles.main}>
-                    <TabletSideBar dao_data={dao_data} />
-                    <ReviewsSec dao_data={dao_data} />
+        <>
+            <TippingFlow tipReviewInfo={tipReviewInfo} tippingFlowVisible={tippingFlowVisible} settippingFlowVisible={settippingFlowVisible} />
+            <div className={styles.dao}>
+                <Head>
+                    <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                    <link href="https://assets10.lottiefiles.com/packages/lf20_yt7b7vg3.json" rel="preload"></link>
+                    <link href="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" rel="preload"></link>
+                    <link href="https://assets5.lottiefiles.com/packages/lf20_afwjhfb2.json" rel="preload"></link>
+                </Head>
+                <WalletConnect setwalletConnectVisible={setwalletConnectVisible} walletConnectVisible={walletConnectVisible} />
+
+                <Nav isFloating />
+                <InfoSec
+                    dao_data={dao_data}
+                />
+                <NavSec selected={selected} setSelected={setSelected} />
+                <div className={styles.content}>
+                    <div className={styles.main}>
+                        <TabletSideBar dao_data={dao_data} />
+                        <ReviewsSec slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
+                    </div>
+                    <Sidebar dao_data={dao_data} />
                 </div>
-                <Sidebar dao_data={dao_data} />
-            </div>
-            <Footer />
-        </div >
+                <Footer />
+            </div >
+        </>
     )
 }
 
@@ -134,184 +152,6 @@ const StarComp = ({ rating, size }) => {
     )
 }
 
-const TabletSideBar = ({ dao_data }) => {
-
-    let key_label_map = {
-        'Community Vibes': 'resonate_vibes_rate',
-        'Onboarding Experience': 'onboarding_exp',
-        'Having a Voice': 'opinions_matter',
-        'Organizational Structure': 'great_org_structure',
-        'Recommendation to a friend': 'friend_recommend',
-        'Incentives for Members': 'great_incentives',
-    }
-
-    const getAverageRating = (key) => {
-        let avg = 50;
-        let sum = 0;
-        let list = dao_data?.reviews;
-        if (list?.length > 0) {
-            list.forEach((ele) => {
-                sum = sum + ele[key];
-            })
-            avg = Math.ceil(sum / list.length);
-        }
-        return avg;
-    }
-
-    let DialComp = ({ label }) => {
-        const [range, setrange] = useState(0);
-
-        useEffect(() => {
-            setrange((((parseFloat(50) / 10) * 2) * 100));
-        }, [])
-
-        return (
-            <div className={styles.dialCon}>
-                <p className={styles.label}>{label}</p>
-                <span className={styles.barCon}>
-                    <span className={styles.bar}>
-                        <div style={{ width: `${getAverageRating(key_label_map[label])}%` }} className={styles.range}></div>
-                    </span>
-                    <p>{((getAverageRating(key_label_map[label]) / 10))}</p>
-                </span>
-            </div>
-        )
-    }
-
-
-    return (
-        <div className={styles.tabletSideBar}>
-            <div className={styles.btn_row}>
-                <button onClick={() => {
-                    openNewTab(dao_data.twitter_link)
-                }} className={styles.soc_btn} style={{ background: '#1DA1F2' }}>
-                    <img src={twitter_white.src} alt="" />
-                    {numFormatter(dao_data.twitter_followers)}
-                </button>
-                <button onClick={() => {
-                    openNewTab(dao_data.discord_link)
-                }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
-                    <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data.discord_members)}
-                </button>
-                <button onClick={() => {
-                    openNewTab(dao_data.website_link)
-                }} className={styles.soc_btn} style={{ background: '#121212' }}>
-                    <img style={{ marginRight: '0' }} src={globe_white.src} alt="" />
-                </button>
-            </div>
-            <div className={styles.tablet_dial_sec}>
-                <div className={styles.chain_row}>
-                    <p>Chain</p>
-                    <span>
-                        <img src={eth_chain_icon.src} alt="" />
-                        <img src={sol_chain_icon.src} alt="" />
-                    </span>
-                </div>
-                <div className={styles.dialSectablet}>
-                    <span>
-                        <DialComp label={"Community Vibes"} />
-                        <DialComp label={"Onboarding Experience"} />
-                        <DialComp label={"Organizational Structure"} />
-                    </span>
-                    <span>
-                        <DialComp label={"Incentives for Members"} />
-                        <DialComp label={"Having a Voice"} />
-                        <DialComp label={"Recommendation to a friend"} />
-                    </span>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-const Sidebar = ({ dao_data }) => {
-
-    let key_label_map = {
-        'Community Vibes': 'resonate_vibes_rate',
-        'Onboarding Experience': 'onboarding_exp',
-        'Having a Voice': 'opinions_matter',
-        'Organizational Structure': 'great_org_structure',
-        'Recommendation to a friend': 'friend_recommend',
-        'Incentives for Members': 'great_incentives',
-    }
-
-    const getAverageRating = (key) => {
-        let avg = 50;
-        let sum = 0;
-        let list = dao_data?.reviews;
-        if (list?.length > 0) {
-            list.forEach((ele) => {
-                sum = sum + ele[key];
-            })
-            avg = Math.ceil(sum / list.length);
-        }
-        return avg;
-    }
-
-
-    let DialComp = ({ label }) => {
-        const [range, setrange] = useState(0);
-
-        useEffect(() => {
-            setrange((((parseFloat(50) / 10) * 2) * 100));
-        }, [])
-
-        return (
-            <div className={styles.dialCon}>
-                <p className={styles.label}>{label}</p>
-                <span className={styles.barCon}>
-                    <span className={styles.bar}>
-                        <div style={{ width: `${getAverageRating(key_label_map[label])}%` }} className={styles.range}></div>
-                    </span>
-                    <p>{((getAverageRating(key_label_map[label]) / 10))}</p>
-                </span>
-            </div>
-        )
-    }
-
-
-    return (
-        <div className={styles.sidebar}>
-            <div className={styles.socials}>
-                <button className={styles.twitter_soc} onClick={() => {
-                    openNewTab(dao_data.twitter_link)
-                }}>
-                    <img src={twitter_white.src} alt="" />
-                    {numFormatter(dao_data.twitter_followers)}
-                </button>
-                <button className={styles.discord_soc} onClick={() => {
-                    openNewTab(dao_data.discord_link)
-                }}>
-                    <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data.discord_members)}
-                </button>
-                <button onClick={() => {
-                    navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
-                }} className={styles.long_btn} style={{ gridArea: "c" }}>
-                    trust.xyz/dao/{dao_data.slug}
-                    <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
-                </button>
-            </div>
-            <span className={styles.chain_con}>
-                <p>Chain</p>
-                <span className={styles.chain_icons}>
-                    <img src={eth_chain_icon.src} alt="" />
-                    <img src={sol_chain_icon.src} alt="" />
-                </span>
-            </span>
-            <div className={styles.dialSec}>
-                <DialComp label={"Community Vibes"} />
-                <DialComp label={"Onboarding Experience"} />
-                <DialComp label={"Organizational Structure"} />
-                <DialComp label={"Incentives for Members"} />
-                <DialComp label={"Having a Voice"} />
-                <DialComp label={"Recommendation to a friend"} />
-            </div>
-
-        </div>
-    )
-}
 
 const Filter = ({ selectedFilter, setselectedFilter }) => {
 
@@ -329,7 +169,7 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
     </span>)
 }
 
-const ReviewsSec = ({ dao_data }) => {
+const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug }) => {
     const [selectedFilter, setselectedFilter] = useState('Newest');
     return (
         <div className={styles.reviewSec}>
@@ -349,77 +189,153 @@ const ReviewsSec = ({ dao_data }) => {
                 {(selectedFilter == 'Newest') ?
                     dao_data.reviews.map((review, idx) => {
                         return (
-                            <ReviewComp review={review} key={'r' + idx} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
-                    }) :
+                    }).reverse() :
                     dao_data.reviews.map((review, idx) => {
                         return (
-                            <ReviewComp review={review} key={'r' + idx} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
-                    }).reverse()
+                    })
                 }
             </div>
         </div>
     )
 }
 
-const ReviewComp = ({ review }) => {
+const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, setreview_details }) => {
     let min_public_address = review.public_address.slice(0, 5) + '....' + review.public_address.slice(-3)
+    const [isreadMore, setisreadMore] = useState(false);
 
-    const [isLonger, setisLonger] = useState(false)
-    const [showMore, setshowMore] = useState(false)
+    const [thumbs_up_count, setthumbs_up_count] = useState(review.thumbs_up)
+    const [thumbs_down_count, setthumbs_down_count] = useState(review.thumbs_down)
 
+    const [rateReviewLoading, setrateReviewLoading] = useState(false);
 
-    useEffect(() => {
-        if (review.review_desc.length > 450) {
-            setisLonger(true);
+    let isTextLarge = (review.review_desc.length >= 400)
+
+    const getReviewDesc = () => {
+        if (isTextLarge && !isreadMore) {
+            return review.review_desc.slice(0, 400) + '...';
         }
-    }, [])
+        return review.review_desc
+    }
 
+    const rateReviewHandler = async (rating) => {
+        let wallet_state = JSON.parse(localStorage.getItem('wallet_state'));
+        if (!wallet_state.address) { return setwalletConnectVisible(true) }
+        let address = wallet_state.address;
+        setrateReviewLoading(true)
+        let api_res = await axios.post(`${API}/review-v2/rate-review`, { review_id: review._id, address, rating })
+        if (api_res.status != 200) { setrateReviewLoading(false); return null }
+
+        let types = { NEW: "new", SWITCH: "switch", DELETE: "delete" }
+        if (api_res.data.type == types.NEW) {
+            //new rating
+            if (api_res.data.rating) {
+                setthumbs_up_count(c => c + 1)
+            }
+            else {
+                setthumbs_down_count(c => c + 1)
+            }
+        }
+        else if (api_res.data.type == types.DELETE) {
+            //delete rating
+            if (api_res.data.rating) {
+                setthumbs_up_count(c => c - 1)
+            }
+            else {
+                setthumbs_down_count(c => c - 1)
+            }
+        }
+        else if (api_res.data.type == types.SWITCH) {
+            //switch rating
+            if (api_res.data.rating) {
+                setthumbs_up_count(c => c + 1)
+                setthumbs_down_count(c => c - 1)
+            }
+            else {
+                setthumbs_down_count(c => c + 1)
+                setthumbs_up_count(c => c - 1)
+            }
+        }
+        setrateReviewLoading(false);
+    }
+
+    const intiateTip = () => {
+
+        let chainMap = {
+            'Ethereum': 'eth',
+            'Solana': 'sol',
+        }
+
+
+        function inverse(obj) {
+            var retobj = {};
+            for (var key in obj) {
+                retobj[obj[key]] = key;
+            }
+            return retobj;
+        }
+
+
+        setreview_details({ address: review.public_address, chain: review.chain });
+        let wallet_state = JSON.parse(localStorage.getItem('wallet_state'));
+        if (wallet_state) {
+
+            let chain = review.chain || 'eth'
+            if (chainMap[wallet_state.chain] != chain) {
+
+                alert(`Current review can only be tipped via ${inverse(chainMap)[chain]} based Wallets \nPlease connect ${inverse(chainMap)[chain]} wallet to continue`)
+                return setwalletConnectVisible(true);
+            }
+
+            settippingFlowVisible(true);
+        }
+        else {
+            return setwalletConnectVisible(true);
+        }
+    }
 
     return (
-        <div className={styles.reviewComp}>
-            <div className={styles.userInfo}>
-                <span className={styles.profilePic} style={{ background: review.profile_img }} src={"https://pbs.twimg.com/profile_banners/1380589844838055937/1634756837/1500x500"} alt="" />
-                <span>
-                    <p className={styles.address}>{min_public_address}</p>
-                    <StarComp size={'s'} rating={review.rating} />
-                </span>
+        <>
+            <div className={styles.reviewComp}>
+                <div className={styles.userInfo}>
+                    <span className={styles.profilePic} style={{ background: review.profile_img }} src={"https://pbs.twimg.com/profile_banners/1380589844838055937/1634756837/1500x500"} alt="" />
+                    <span>
+                        <p className={styles.address}>{min_public_address}</p>
+                        <StarComp size={'s'} rating={review.rating} />
+                    </span>
+                </div>
+                <div className={styles.review_desc}  >
+                    {getReviewDesc()}
+                </div>
+                {(isTextLarge) && <p
+                    onClick={() => { setisreadMore(!isreadMore) }}
+                    className={styles.showmore}>
+                    {(isreadMore) ? "show less" : "read more"}
+                </p>}
+                <div className={styles.bottom_nav}>
+                    <span className={styles.iconText} onClick={() => { rateReviewHandler(true) }}>
+                        <img src={rateReviewLoading ? loader.src : thumbs_up.src} alt="" />
+                        <p>{thumbs_up_count}</p>
+                    </span>
+                    <span className={styles.iconText} onClick={() => { rateReviewHandler(false) }}>
+                        <img src={rateReviewLoading ? loader.src : thumbs_down.src} alt="" />
+                        <p>{thumbs_down_count}</p>
+                    </span>
+                    <span className={styles.iconText}>
+                        <img src={share.src} alt="" />
+                        <p>share</p>
+                    </span>
+                    <span className={styles.iconText} onClick={intiateTip}>
+                        <img src={tip.src} alt="" />
+                        {/* <p>$400</p> */}
+                    </span>
+                </div>
+                <span className={styles.divider} />
             </div>
-            <div className={styles.review_desc} >
-                {
-                    (showMore) ?
-                        review.review_desc
-                        :
-                        review.review_desc.slice(0, 450) + (review.review_desc.length > 450 ? '...' : '')
-                }
-            </div>
-            {(isLonger) && <p onClick={() => {
-                setshowMore(!showMore)
-            }}
-                className={styles.showmore}>
-                {(showMore) ? "show less" : "read more"}
-            </p>}
-            <div className={styles.bottom_nav}>
-                <span className={styles.iconText}>
-                    <img src={thumbs_up.src} alt="" />
-                    <p>{review.thumbs_up}</p>
-                </span>
-                <span className={styles.iconText}>
-                    <img src={thumbs_down.src} alt="" />
-                    <p>{review.thumbs_down}</p>
-                </span>
-                <span className={styles.iconText}>
-                    <img src={share.src} alt="" />
-                    <p>share</p>
-                </span>
-                <span className={styles.iconText}>
-                    <img src={tip.src} alt="" />
-                    {/* <p>$400</p> */}
-                </span>
-            </div>
-            <span className={styles.divider} />
-        </div>
+        </>
     )
 }
 
@@ -467,15 +383,6 @@ const fetchData = async (slug) => {
     return null
 }
 
-function numFormatter(num) {
-    if (num > 999 && num < 1000000) {
-        return (num / 1000).toFixed(1) + 'K'; // convert to K for number from > 1000 < 1 million 
-    } else if (num > 1000000) {
-        return (num / 1000000).toFixed(1) + 'M'; // convert to M for number from > 1 million 
-    } else if (num <= 999) {
-        return num; // if value < 1000, nothing to do
-    }
-}
 
 function newGradient() {
     var c1 = {
@@ -493,12 +400,5 @@ function newGradient() {
     return 'radial-gradient(at top left, ' + c1.rgb + ', ' + c2.rgb + ')';
 }
 
-const openNewTab = (url) => {
-    if (url.length < 1) return
-    let a = document.createElement('a');
-    a.target = '_blank';
-    a.href = url;
-    a.click();
-}
 
 export default Dao

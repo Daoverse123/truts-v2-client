@@ -25,8 +25,6 @@ export default function Component({ isFloating }) {
     const [navKey, setnav] = useState(0);
     const [walletState, setwalletState] = useState(null);
 
-    console.log("ipdate --> nav")
-
     const updateNav = () => {
         setnav((s) => {
             return s + 1

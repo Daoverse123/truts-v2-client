@@ -1,0 +1,196 @@
+// QUERY TEMPLATES
+// @media (max-width: 1024px) {
+// #{calc((64 / $DESKTOP_N) * 100)}vw
+
+//BREAKPOINTS
+
+$DESKTOP: 1440px;
+$LAPTOP: 1090px;
+$TABLET: 768px;
+$PHONE: 426px;
+
+$DESKTOP_N: 1440;
+$LAPTOP_N: 1090;
+$TABLET_N: 768;
+$PHONE_N: 426;
+
+//FLUID FUNCTIONS
+
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+@function phone_fluid($units) {
+    @return #{calc(($units / $PHONE_N) * 100)}vw;
+}
+
+//sidebar
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    margin-left: auto;
+    height: fit-content;
+    width: 349px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    padding: 16px;
+    position: sticky;
+    top: 125px;
+    .socials {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "a b"
+            "c c";
+        padding-bottom: 16px;
+        grid-column-gap: 24px;
+        grid-row-gap: 16px;
+        border-bottom: 1px solid rgba(224, 224, 224, 1);
+        button {
+            background: #f7f7f7;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            padding: 14px;
+            column-gap: 8px;
+            font-weight: 400;
+            font-size: 13px;
+            width: 144.5px;
+            height: 47px;
+            img {
+                filter: invert(100%);
+                height: 20px;
+            }
+
+            &:hover {
+                transition: all 0.5s ease-in-out;
+                background-color: rgb(202, 202, 202);
+            }
+        }
+
+        .long_btn {
+            width: 313px;
+        }
+
+        .twitter_soc {
+            &:hover {
+                transition: all 0.5s ease-in-out;
+                background-color: rgb(29, 155, 240);
+            }
+        }
+        .discord_soc {
+            &:hover {
+                transition: all 0.5s ease-in-out;
+                background-color: #5865f2;
+            }
+        }
+    }
+
+    @media (max-width: $LAPTOP) {
+        width: 313px;
+
+        .socials {
+            grid-column-gap: 15px;
+            grid-row-gap: 16px;
+            button {
+                width: 129px;
+            }
+            .long_btn {
+                width: 282px;
+            }
+        }
+    }
+
+    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
+        width: laptop_to_tablet_fluid(313);
+
+        .socials {
+            grid-column-gap: laptop_to_tablet_fluid(15);
+            grid-row-gap: laptop_to_tablet_fluid(16);
+            button {
+                width: laptop_to_tablet_fluid(129);
+            }
+            .long_btn {
+                width: laptop_to_tablet_fluid(282);
+            }
+        }
+    }
+
+    @media (max-width: $TABLET) {
+        display: none;
+    }
+
+    .chain_con {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(224, 224, 224, 1);
+        p {
+            font-weight: 400;
+            font-size: 13px;
+        }
+        .chain_icons {
+            display: flex;
+            margin-left: auto;
+            column-gap: 8px;
+            height: 24px;
+            width: auto;
+        }
+    }
+}
+
+.dialSec {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.dialCon {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+    .label {
+        font-weight: 400;
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+    .barCon {
+        display: flex;
+        align-items: center;
+        column-gap: 22px;
+        p {
+            margin: 0;
+            font-weight: 400;
+            font-size: 16px;
+            margin-bottom: 2.5px;
+        }
+    }
+    .bar {
+        display: flex;
+        background: rgba(120, 120, 128, 0.2);
+        border-radius: 1.80172px;
+        height: 5px;
+        width: 90%;
+        margin-right: auto;
+        overflow: hidden;
+        border-radius: 1.8px;
+        .range {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            border-radius: 1.8px;
+            transition: all 1s ease-in-out;
+        }
+    }
+}

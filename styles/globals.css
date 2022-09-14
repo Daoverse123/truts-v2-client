@@ -25,6 +25,10 @@ a {
   box-sizing: border-box;
 }
 
-button{
+button {
   cursor: pointer;
+}
+
+#my-slider {
+  color: rgba(94, 30, 209, 1);
 }

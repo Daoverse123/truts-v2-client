@@ -3,6 +3,10 @@ import styles from './addReview.module.scss'
 import Link from 'next/link'
 import axios from 'axios'
 import Head from 'next/head';
+import openNewTab from '../../utils/openNewTab';
+import { useSignMessage } from 'wagmi'
+
+const Chains = ['Ethereum', 'Solana']
 
 //assets
 import left_arrow from '../../assets/left-arrow.png'
@@ -24,6 +28,10 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
     const [reviewForm, setreviewForm] = useState({ dao_name, guild_id, rating: 0, review_desc: "" });
     const [tc, settc] = useState(false);
     const [pageState, setpageState] = useState(status.READY)
+
+    const { signMessageAsync } = useSignMessage({
+        message: 'sign the review',
+    })
 
     useEffect(() => {
         let wallet_state = localStorage.getItem('wallet_state');
@@ -53,13 +61,26 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
         }
 
         let public_address = JSON.parse(localStorage.getItem('wallet_state'))?.address;
-        let chain = (JSON.parse(localStorage.getItem('wallet_state'))?.chain == 'solana') ? "sol" : "eth"
+        let chain = (JSON.parse(localStorage.getItem('wallet_state'))?.chain == 'Solana') ? "sol" : "eth"
         if (!public_address || public_address?.length < 5) { return (setwalletConnectVisible(true)) }
         try {
             setpageState(status.LOADING)
+            let sign_msg;
+
+            if (chain == 'eth') {
+                sign_msg = await ethSign('sign message', signMessageAsync);
+            }
+            if (chain == 'sol') {
+                sign_msg = await solSign('sign message');
+            }
+            if (!sign_msg) {
+                return setpageState(status.ERROR)
+            }
+
             let res = await axios.post(`${API}/review-v2/add-review`, { validation: { uid, slug }, review: { ...reviewForm, chain, public_address } }, { withCredentials: true, baseURL: API });
             if (res.status == 200) {
                 window.location = `${API}/review-v2/auth-review?r_id=${res.data.r_id}`
+                return true;
             }
         } catch (error) {
             setpageState(status.ERROR)
@@ -252,27 +273,49 @@ function SliderComp({ setter, label }) {
     )
 }
 
+const ethSign = async (msg, signMessageAsync) => {
+    try {
+        let res = await signMessageAsync();
+        return res;
+    } catch (error) {
+        console.log(error);
+        return undefined
+    }
+}
+
+const solSign = async (msg) => {
+
+    const getProvider = () => {
+        if ('phantom' in window) {
+            const provider = window.phantom?.solana;
+
+            if (provider?.isPhantom) {
+                return provider;
+            }
+        }
+        //window.open('https://phantom.app/', '_blank');
+    };
+
+    const provider = getProvider(); // see "Detecting the Provider"
+    const resp = await provider.connect();
+    const message = msg;
+    const encodedMessage = new TextEncoder().encode(message);
+    console.log("sign message")
+    try {
+        const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+        return signedMessage
+    } catch (error) {
+        console.log(error);
+        return undefined
+    }
+}
+
 const LoadingState = () => {
     return (
         <div className={styles.response}>
             <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_yt7b7vg3.json" background="transparent" speed="1" style={{ width: "75%", height: "100%" }} loop autoplay></lottie-player>
             <span className={styles.message}>Hang on a sec! We are submitting your review.</span>
         </div >
-    )
-}
-
-const SuccessState = () => {
-    return (
-        <div className={styles.response}>
-            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" background="transparent" speed="1" style={{ width: "50%", height: "100%", marginBottom: "30px" }} autoplay></lottie-player>
-            <span className={styles.message}>
-                <p>Thank you for reviewing with us. Join Truts discord community to get exclusive rewards and opportunities.</p>
-                <Button onClick={() => {
-                    openNewTab('https://discord.truts.xyz/');
-                }} label={'Join Community'} />
-            </span>
-
-        </div>
     )
 }
 
@@ -298,14 +341,5 @@ const questionMap = {
     "Would you recommed this DAO/community to your friend?": "friend_recommend",
     "Do you think there are great incentives for DAO members?": "great_incentives"
 }
-
-const openNewTab = (url) => {
-    if (url.length < 1) return
-    let a = document.createElement('a');
-    a.target = '_blank';
-    a.href = url;
-    a.click();
-}
-
 
 export default AddReview

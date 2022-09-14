@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from './Home/home.module.scss'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import openNewTab from '../utils/openNewTab'
 
 // COMPONENTS
 import Button from '../components/Button'
@@ -416,10 +417,3 @@ function RecentReviewsSection() {
   )
 }
 
-const openNewTab = (url) => {
-  if (url.length < 1) return
-  let a = document.createElement('a');
-  a.target = '_blank';
-  a.href = url;
-  a.click();
-}
