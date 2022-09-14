@@ -10,8 +10,8 @@ import WalletConnect from '../../components/WalletConnect'
 import TippingFlow from '../../components/TippingFlow'
 
 //local components
-import Sidebar from './components/Sidebar'
-import TabletSideBar from './components/TabletSideBar'
+import Sidebar from '../../components/dao_page/Sidebar'
+import TabletSideBar from '../../components/dao_page/TabletSideBar'
 
 //assets
 import gradient_star_filled from '../../assets/icons/star_gradient.svg'

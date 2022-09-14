@@ -2,18 +2,17 @@ import styles from './tabletSideBar.module.scss'
 
 import React, { useState, useEffect } from 'react'
 
-
 //utils
-import numFormatter from '../../../../utils/numFormatter'
-import openNewTab from '../../../../utils/openNewTab'
+import numFormatter from '../../../utils/numFormatter'
+import openNewTab from '../../../utils/openNewTab'
 
 //assets
 
-import discord_white from '../../../../assets/icons/twitter_white.svg'
-import twitter_white from '../../../../assets/icons/discord_white.svg'
-import eth_chain_icon from '../../../../assets/icons/eth_chain_icon.svg'
-import sol_chain_icon from '../../../../assets/icons/sol_chain_icon.svg'
-import globe_white from '../../../../assets/icons/web_white.svg'
+import discord_white from '../../../assets/icons/twitter_white.svg'
+import twitter_white from '../../../assets/icons/discord_white.svg'
+import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
+import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
+import globe_white from '../../../assets/icons/web_white.svg'
 
 
 

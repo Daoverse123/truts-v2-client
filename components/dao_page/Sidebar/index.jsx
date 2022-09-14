@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react'
 import styles from './sidebar.module.scss'
 
 //utils
-import numFormatter from '../../../../utils/numFormatter'
-import openNewTab from '../../../../utils/openNewTab'
+import numFormatter from '../../../utils/numFormatter'
+import openNewTab from '../../../utils/openNewTab'
 
-//assets
-import discord_white from '../../../../assets/icons/twitter_white.svg'
-import twitter_white from '../../../../assets/icons/discord_white.svg'
-import copy_icon from '../../../../assets/icons/copy_icon.svg'
-import eth_chain_icon from '../../../../assets/icons/eth_chain_icon.svg'
-import sol_chain_icon from '../../../../assets/icons/sol_chain_icon.svg'
+import discord_white from '../../../assets/icons/twitter_white.svg'
+import twitter_white from '../../../assets/icons/twitter_white.svg'
+import copy_icon from '../../../assets/icons/twitter_white.svg'
+import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
+import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
 
 const Sidebar = ({ dao_data }) => {
 
@@ -65,13 +64,13 @@ const Sidebar = ({ dao_data }) => {
                     openNewTab(dao_data.twitter_link)
                 }}>
                     <img src={twitter_white.src} alt="" />
-                    {numFormatter(dao_data.twitter_followers)}
+                    {numFormatter(dao_data?.twitter_followers)}
                 </button>
                 <button className={styles.discord_soc} onClick={() => {
                     openNewTab(dao_data.discord_link)
                 }}>
                     <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data.discord_members)}
+                    {numFormatter(dao_data?.discord_members)}
                 </button>
                 <button onClick={() => {
                     navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
