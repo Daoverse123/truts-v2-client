@@ -124,7 +124,7 @@ const ProfileDropDown = ({ walletState }) => {
                 </div>
                 <ul className={styles.list}>
                     {/* <li>My Profile</li> */}
-                    <li onClick={disconnect_wallet} className={styles.power_btn}> <img src={power_off.src} alt="" /> Sing Out</li>
+                    <li onClick={disconnect_wallet} className={styles.power_btn}> <img src={power_off.src} alt="" /> Sign Out</li>
                 </ul>
             </div>
         </span>

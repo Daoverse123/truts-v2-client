@@ -97,6 +97,8 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                     <link href="https://assets10.lottiefiles.com/packages/lf20_yt7b7vg3.json" rel="preload"></link>
                     <link href="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" rel="preload"></link>
                     <link href="https://assets5.lottiefiles.com/packages/lf20_afwjhfb2.json" rel="preload"></link>
+                    <link href={star_blank_gradient.src} rel="preload"></link>
+                    <link href={star_filled_gradient.src} rel="preload"></link>
                 </Head>
                 <Nav />
                 <div className={styles.mainCon}>

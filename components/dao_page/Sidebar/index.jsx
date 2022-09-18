@@ -6,8 +6,8 @@ import numFormatter from '../../../utils/numFormatter'
 import openNewTab from '../../../utils/openNewTab'
 
 import discord_white from '../../../assets/icons/twitter_white.svg'
-import twitter_white from '../../../assets/icons/twitter_white.svg'
-import copy_icon from '../../../assets/icons/twitter_white.svg'
+import twitter_white from '../../../assets/icons/discord_white.svg'
+import copy_icon from '../../../assets/icons/copy_icon.svg'
 import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
 import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
 
