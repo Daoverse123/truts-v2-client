@@ -99,7 +99,7 @@ const InfoSec = ({ dao_data }) => {
             <p style={{ whiteSpace: "pre-wrap" }} className={styles.desc}>{
                 (info.length < 200) ? info : (showmore) ? info : info.slice(0, 218) + '...'
             }</p>
-            <p className={styles.showmore} onClick={() => { setshowmore(!showmore) }} style={{ marginTop: '-10px', marginBottom: '12.35px' }}>{(showmore) ? "show less" : "read more"}</p>
+            {(info.length > 200) && <p className={styles.showmore} onClick={() => { setshowmore(!showmore) }} style={{ marginTop: '-10px', marginBottom: '12.35px' }}>{(showmore) ? "show less" : "read more"}</p>}
             <div className={styles.cta}>
                 <span className={styles.reviewInfo}>
                     <span className={styles.ratingCon}>

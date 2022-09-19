@@ -41,7 +41,7 @@ export default function Search({ className }) {
                 id={"search_box"}
                 className={styles.seachBoxInput}
                 type="text"
-                placeholder={'Search communities by name, type or description'}
+                placeholder={'Search communities'}
                 value={searchTerm}
                 onChange={(e) => {
                     setsearchTerm(e.target.value);

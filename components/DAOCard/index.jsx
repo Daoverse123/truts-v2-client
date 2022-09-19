@@ -14,7 +14,9 @@ export default function DAOCard({ data }) {
         <Link href={`/dao/${data.slug}`}>
             <div className={styles.card}>
                 <div className={styles.cover} >
-                    <img src={data.dao_cover} alt="" />
+                    <img src={data.dao_cover} alt="" onError={({ currentTarget }) => {
+                        currentTarget.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Pink_tints_and_shades.svg";
+                    }} />
                 </div>
                 <div className={styles.info}>
                     <span className={styles.title}>

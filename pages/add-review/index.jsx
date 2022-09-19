@@ -163,14 +163,14 @@ export async function getServerSideProps(ctx) {
     if (!isMember) {
         return {
             redirect: {
-                destination: '/not-member'
+                destination: '/status/not-member'
             }
         }
     }
     else if (isDuplicate) {
         return {
             redirect: {
-                destination: '/duplicate-review'
+                destination: '/status/duplicate-review'
             }
         }
     }
