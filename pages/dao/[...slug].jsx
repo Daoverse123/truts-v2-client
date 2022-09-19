@@ -3,6 +3,10 @@ import styles from '../dao/dao.module.scss'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
 import axios from 'axios'
+
+//utils
+import openNewTab from '../../utils/openNewTab'
+
 //components
 import Button from '../../components/Button'
 import Nav from '../../components/Nav'
@@ -51,13 +55,22 @@ function Dao({ dao_data, rid, slug }) {
                     dao_data={dao_data}
                 />
                 <NavSec selected={selected} setSelected={setSelected} />
-                <div className={styles.content}>
+                {(selected == "Reviews") && <div className={styles.content}>
                     <div className={styles.main}>
                         <TabletSideBar dao_data={dao_data} />
                         <ReviewsSec slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
                     </div>
                     <Sidebar dao_data={dao_data} />
-                </div>
+
+                </div>}
+                {(selected == "Opportunites") && <div className={styles.content}>
+                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+
+                </div>}
+                {(selected == "Insights") && <div className={styles.content}>
+
+                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                </div>}
                 <Footer />
             </div >
         </>
@@ -324,7 +337,7 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
                         <img src={rateReviewLoading ? loader.src : thumbs_down.src} alt="" />
                         <p>{thumbs_down_count}</p>
                     </span>
-                    <span className={styles.iconText}>
+                    <span className={styles.iconText}  >
                         <img src={share.src} alt="" />
                         <p>share</p>
                     </span>

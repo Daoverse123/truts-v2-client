@@ -223,7 +223,11 @@ $PHONE_N: 426;
 .content {
     display: flex;
     width: 1080px;
+    min-height: 100vh;
     padding-bottom: 62px;
+
+    animation: appear 0.35s ease-in-out forwards;
+
     .main {
         width: 715px;
     }
@@ -437,5 +441,22 @@ $PHONE_N: 426;
     cursor: pointer;
     &:hover {
         color: blue;
+    }
+}
+
+.coming_soon {
+    margin: 15vh auto;
+    font-size: 3vw;
+    font-weight: 500;
+    opacity: 0.4;
+    display: flex;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
