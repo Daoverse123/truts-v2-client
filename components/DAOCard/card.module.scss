@@ -20,6 +20,8 @@ $TABLET_N: 768;
     min-width: 313px;
     width: 313px;
     border-radius: 16px;
+    animation: appear 0.5s ease-in-out forwards;
+
 
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         min-width: desktop_to_laptop_fluid(313);
@@ -152,5 +154,15 @@ $TABLET_N: 768;
                 margin-left: desktop_to_laptop_fluid(3);
             }
         }
+    }
+}
+
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }

@@ -25,6 +25,7 @@ import starBlank from '../assets/icons/star_blank.svg'
 import web_w from '../assets/icons/web_white.svg'
 import twitter_w from '../assets/icons/twitter_white.svg'
 import discord_w from '../assets/icons/discord_white.svg'
+import Link from 'next/link'
 
 
 
@@ -125,7 +126,9 @@ function Hero() {
             let sc = document.querySelector('#search_box');
             sc.focus()
           }} label={'Search Truts'} icon={searchIcon.src} />
-          <Button type={'secondary'} label={'Explore DAOs'} />
+          <Link href={'/discover'}>
+            <Button type={'secondary'} label={'Explore Communities'} />
+          </Link>
         </div>
       </div>
       <div className={styles.hero_right}>
@@ -140,7 +143,7 @@ function StatCards() {
   return (
     <div className={styles.statCardsSection}>
       <div className={styles.statCard1}>
-        <span className={styles.text1}><span className={styles.colorText_card1}>Discover, Join and Contribute</span> to DAOs </span>
+        <span className={styles.text1}><span className={styles.colorText_card1}>Discover and Contribute</span> to Communities </span>
         <img src={statcard_1.src} alt="" />
       </div>
       <div className={styles.statCard2}>
@@ -276,7 +279,7 @@ let Entry = ({ idx, data }) => {
 function Leaderboard({ data }) {
   return (
     <div className={styles.leaderboard}>
-      <h1 className={styles.leaderboard_title}>Our DAO Leaderboard</h1>
+      <h1 className={styles.leaderboard_title}>Our Communities Leaderboard</h1>
       <ul className={styles.tableHead}>
         <li className={styles.th1}>Position</li>
         <li className={styles.th2}>Name of the DAO</li>
@@ -333,7 +336,7 @@ function Leaderboard_mobile_entry({ idx, data }) {
 function Leaderboard_mobile({ data }) {
   return (
     <div className={styles.mobile_leaderboard_con}>
-      <h1 className={styles.sec_title}>Our DAO Leaderboard</h1>
+      <h1 className={styles.sec_title}>Our Communities Leaderboard</h1>
       <div className={styles.leaderboard_list}>
         {data.map((ele, idx) => {
           return (<Leaderboard_mobile_entry data={ele} key={'ml' + idx} idx={idx + 1} />)

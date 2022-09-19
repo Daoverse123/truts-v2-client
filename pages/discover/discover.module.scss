@@ -123,13 +123,17 @@
 .gallery {
     display: flex;
     width: max-content;
-
+    flex-direction: column;
+    align-items: center;
     .daoList {
         justify-content: center;
         display: flex;
         flex-wrap: wrap;
         gap: 16px;
+        margin-bottom: 30px;
+        // animation: appear 0.35s ease-in-out forwards;
     }
+    padding-bottom: 15px;
 }
 
 .sortComp {
@@ -236,5 +240,14 @@
             accent-color: rgb(30, 48, 209);
             cursor: pointer;
         }
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }

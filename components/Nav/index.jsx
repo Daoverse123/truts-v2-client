@@ -51,7 +51,7 @@ export default function Component({ isFloating }) {
                     }
                     <ul className={styles.links}>
                         <li>Add a Dao</li>
-                        <li>Discover Communities</li>
+                        <Link href={'/discover'}><li>Discover Communities</li></Link>
                         {(walletState?.address?.length > 5)
                             ? // wallet connected
                             <li className={styles.profileIcon}>

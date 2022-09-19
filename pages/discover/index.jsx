@@ -8,6 +8,7 @@ import Head from 'next/head'
 //components
 import Nav from '../../components/Nav'
 import DAOCard from '../../components/DAOCard'
+import Button from '../../components/Button'
 
 //assets
 import downArrow from '../../assets/icons/down_arrow.svg'
@@ -18,7 +19,7 @@ import close_btn from '../../assets/icons/close_icon.svg'
 let sideNavTabs = {
     "Types of Communities": "",
     "Network Chains": "",
-    "Discord Followers": "",
+    "Discord Members": "",
     "Twitter Followers": "",
     "Ratings": ""
 }
@@ -43,7 +44,7 @@ let initialState = {
     "sort by": "HL",
     "Types of Communities": ["All"],
     "Network Chains": ["All"],
-    "Discord Followers": { min: 0, max: 0 },
+    "Discord Members": { min: 0, max: 0 },
     "Twitter Followers": { min: 0, max: 0 },
     "Ratings": [1, 2, 3, 4, 5]
 }
@@ -106,8 +107,8 @@ let reducer = (state, action) => {
         case "CHAIN":
             return checkboxManager('Network Chains', action, state)
         case "DISCORD":
-            state['Discord Followers'].min = action.payload.min;
-            state['Discord Followers'].max = action.payload.max;
+            state['Discord Members'].min = action.payload.min;
+            state['Discord Members'].max = action.payload.max;
             return { ...state }
         case "TWITTER":
             state['Twitter Followers'].min = action.payload.min;
@@ -131,6 +132,8 @@ function Discover({ daoList_ssr }) {
     const [collapseState, setcollapseState] = useState({ 0: false, 1: false, 2: false, 3: false, 4: false })
 
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    const [galleryLimit, setgalleryLimit] = useState(33);
 
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
@@ -189,15 +192,30 @@ function Discover({ daoList_ssr }) {
         const tdRangeLimit = (daos) => {
             //discord member count limit (0,0) show all
 
-            let d_daos = (daos) => {
-                if (state['Discord Followers'].min == 0 && state['Discord Followers'].max == 0) {
+            let filterMethod = (daos, state_type, key_name) => {
+                if (state[state_type].min == 0 && state[state_type].max == 0) {
                     return daos;
                 }
+
+                return daos.filter((ele) => {
+                    if (ele.dao_name == 'Solana Hacker House') {
+                        console.log(state_type, key_name, ele.dao_name, ele[key_name], state[state_type].max, state[state_type].min, (ele[key_name] <= state[state_type].max && ele[key_name] >= state[state_type].min))
+                    }
+                    if (ele[key_name] <= state[state_type].max && ele[key_name] >= state[state_type].min) {
+                        return true;
+                    }
+                    return false
+                })
             }
 
+            let d_filtered_daos = filterMethod(daos, "Discord Members", "discord_members");
+
+            return filterMethod(d_filtered_daos, "Twitter Followers", "twitter_followers");
         }
 
-        return sort(filterByCommunities(daos))
+        console.log(tdRangeLimit(filterByCommunities(daos)).length)
+
+        return sort(tdRangeLimit(filterByCommunities(daos)));
     }
 
     return (
@@ -217,7 +235,7 @@ function Discover({ daoList_ssr }) {
                     {
                         Object.keys(sideNavTabs).map((ele, i) => {
                             return (
-                                <>
+                                < >
                                     <span onClick={
                                         () => {
                                             setcollapseState((sc) => {
@@ -226,26 +244,27 @@ function Discover({ daoList_ssr }) {
                                             })
                                         }
                                     } className={styles.option} key={i + 'sd'}>
-                                        <p>{ele}</p>
+                                        <p >{ele}</p>
                                         <img src={downArrow.src} alt="" />
                                     </span>
                                     <GetSection key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
-                                    <span className={styles.divider} />
+                                    <span key={i + 'dv'} className={styles.divider} />
                                 </>
                             )
                         })
                     }
                 </div>}
                 <div className={styles.gallery}>
-                    <div className={styles.daoList}>
+                    <div key={JSON.stringify(state)} className={styles.daoList}>
                         {
-                            filteredList(daoList_ssr['all']).map((ele, idx) => {
+                            filteredList(daoList_ssr).map((ele, idx) => {
                                 return (
-                                    <DAOCard key={'card' + idx} data={ele} />
+                                    <DAOCard key={'cards' + idx} data={ele} />
                                 )
-                            })
+                            }).slice(0, galleryLimit)
                         }
                     </div>
+                    {(galleryLimit < daoList_ssr.length + 1) && < Button onClick={() => { setgalleryLimit(galleryLimit + 15) }} label={"show more"} />}
                 </div>
             </div>
 
@@ -262,11 +281,10 @@ function Discover({ daoList_ssr }) {
 //SSR DATA HOME PAGE
 export async function getServerSideProps(ctx) {
     // Fetch data from external API
-    let res = await Promise.all(
-        [getDaolistAPI(), getLeaderboard()]
-    )
+    let res = await getDaolistAPI()
+
     // Pass data to the page via props
-    return { props: { daoList_ssr: res[0], leaderboard_ssr: res[1] } }
+    return { props: { daoList_ssr: res } }
 }
 
 // API CALLS
@@ -276,21 +294,9 @@ const getDaolistAPI = async () => {
     //gets initial 20 doas
     let url = `${API}/dao/get-dao-list`;
     let res = await axios.get(url);
-    let dao_data_obj = {};
-    CATEGORY_LIST.forEach((ele) => {
-        dao_data_obj[ele] = [];
-    })
-    dao_data_obj['all'] = res.data.results
-    return dao_data_obj;
+    return res.data.results
 }
 
-//get Leaderboard
-const getLeaderboard = async () => {
-    let url = `${API}/dao/leaderboard`;
-    let res = await axios.get(url);
-    //console.log(res.data)
-    return res.data
-}
 
 const SortComp = ({ state, dispatch }) => {
     return (
@@ -382,7 +388,7 @@ const TypesOfCommunities = ({ state, dispatch }) => {
 const TwitterFollowers = ({ state, dispatch }) => {
     return (
         <div className={styles.typesOfCommunities}>
-            <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.TWITTER, payload: { label: 'All', type: true } }) }} >Reset</p>
+            <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.TWITTER, payload: { min: 0, max: 0 } }) }} >Reset</p>
             {
                 Object.keys(twitterFollowers).map((ele, i) => {
                     return (
@@ -407,14 +413,14 @@ const TwitterFollowers = ({ state, dispatch }) => {
 const DiscordMembers = ({ state, dispatch }) => {
     return (
         <div className={styles.typesOfCommunities}>
-            <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.DISCORD, payload: { label: 'All', type: true } }) }} >Reset</p>
+            <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.DISCORD, payload: { min: 0, max: 0 } }) }}  >Reset</p>
             {
                 Object.keys(discordFollowers).map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
                             <p>{ele}</p>
                             <input
-                                checked={(state['Discord Followers'].min == discordFollowers[ele].min && state['Discord Followers'].max == discordFollowers[ele].max)}
+                                checked={(state['Discord Members'].min == discordFollowers[ele].min && state['Discord Members'].max == discordFollowers[ele].max)}
                                 onChange={(e) => {
                                     console.log(e.target.checked, ele)
                                     dispatch({ type: actionTypes.DISCORD, payload: discordFollowers[ele] })
@@ -462,44 +468,6 @@ const NetworkChains = ({ state, dispatch }) => {
     )
 }
 
-const SliderComp = ({ label, min, max, state, dispatch }) => {
-
-    const [sliderValue, setsliderValue] = useState({ min, max })
-
-    useEffect(() => {
-        if (!document.getElementById('my-slider' + label)) { return '' }
-        const mySlider = new DoubleSlider(document.getElementById('my-slider' + label));
-        mySlider.addEventListener('slider:input', () => {
-            const { min, max } = mySlider.value;
-            setsliderValue({ min, max })
-        });
-        mySlider.addEventListener('slider:change', () => {
-            const { min, max } = mySlider.value;
-            if (label == 'Discord Followers') {
-                dispatch({ type: actionTypes.DISCORD, payload: { min, max } });
-            }
-            if (label == 'Twitter Followers') {
-                dispatch({ type: actionTypes.TWITTER, payload: { min, max } });
-            }
-        });
-    }, [])
-
-    return (
-        <span className={styles.sliderComp}>
-            <div id={"my-slider" + label}
-                className={styles.sliderBar}
-                data-min={min}
-                data-max={max}
-                data-range={max}
-            ></div>
-            <span className={styles.values}>
-                <p>0</p>
-                <h1>{sliderValue.min}{`-`}{sliderValue.max}</h1>
-                <p>50000</p>
-            </span>
-        </span>
-    )
-}
 
 const RatingComp = ({ state, dispatch }) => {
 
@@ -535,6 +503,45 @@ const RatingComp = ({ state, dispatch }) => {
         }
 
     </div>)
+}
+
+const SliderComp = ({ label, min, max, state, dispatch }) => {
+
+    const [sliderValue, setsliderValue] = useState({ min, max })
+
+    useEffect(() => {
+        if (!document.getElementById('my-slider' + label)) { return '' }
+        const mySlider = new DoubleSlider(document.getElementById('my-slider' + label));
+        mySlider.addEventListener('slider:input', () => {
+            const { min, max } = mySlider.value;
+            setsliderValue({ min, max })
+        });
+        mySlider.addEventListener('slider:change', () => {
+            const { min, max } = mySlider.value;
+            if (label == 'Discord Members') {
+                dispatch({ type: actionTypes.DISCORD, payload: { min, max } });
+            }
+            if (label == 'Twitter Followers') {
+                dispatch({ type: actionTypes.TWITTER, payload: { min, max } });
+            }
+        });
+    }, [])
+
+    return (
+        <span className={styles.sliderComp}>
+            <div id={"my-slider" + label}
+                className={styles.sliderBar}
+                data-min={min}
+                data-max={max}
+                data-range={max}
+            ></div>
+            <span className={styles.values}>
+                <p>0</p>
+                <h1>{sliderValue.min}{`-`}{sliderValue.max}</h1>
+                <p>50000</p>
+            </span>
+        </span>
+    )
 }
 
 export default Discover

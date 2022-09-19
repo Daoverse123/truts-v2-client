@@ -51,7 +51,7 @@ export default function DAOCard({ data }) {
                                 (data.discord_link) && openNewTab(data.discord_link)
                             }} />
                             <p>
-                                {(data.twitter_followers) ? numFormatter(data.twitter_followers) : 'n/a'}
+                                {(data.discord_members) ? numFormatter(data.discord_members) : 'n/a'}
                             </p>
                         </span>
                     </div>

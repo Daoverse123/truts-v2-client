@@ -16,9 +16,9 @@ export default function Component() {
             <Button label={'Join Community'} />
             <ul className={styles.links}>
                 <li>Home</li>
-                <li>Add a DAO</li>
-                <li>Explore DAOs</li>
-                <li>Review DAO</li>
+                <li>Add a Community</li>
+                <li>Explore Communities</li>
+                <li>Review Communities</li>
                 <li>Contact Us</li>
             </ul>
             <span className={styles.socialIcons}>
