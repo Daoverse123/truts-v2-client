@@ -279,7 +279,7 @@ let Entry = ({ idx, data }) => {
 function Leaderboard({ data }) {
   return (
     <div className={styles.leaderboard}>
-      <h1 className={styles.leaderboard_title}>Our Communities Leaderboard</h1>
+      <h1 className={styles.leaderboard_title}>Our Community Leaderboard</h1>
       <ul className={styles.tableHead}>
         <li className={styles.th1}>Position</li>
         <li className={styles.th2}>Name of the DAO</li>
