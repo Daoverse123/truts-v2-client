@@ -58,7 +58,7 @@ export default function Component({ isFloating }) {
                         <span className={styles.search_wrappper}>  <Search /></span>
                     }
                     <ul className={styles.links}>
-                        <li>Add a Community</li>
+                        <Link href={'https://www.truts.xyz/add-your-community'}><li>Add a Community</li></Link>
                         <Link href={'/discover'}><li>Discover Communities</li></Link>
                         {(walletState?.address?.length > 5)
                             ? // wallet connected
@@ -159,15 +159,21 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, walletConnectVisible, setw
                     }} className={styles.close_icon} src={close_icon.src} alt="" />
                 </div>
                 <ul className={styles.list}>
-                    <li>
-                        Home
-                    </li>
-                    <li>
-                        Add a Community
-                    </li>
-                    <li>
-                        Discover a Communities
-                    </li>
+                    <Link href={'/'}>
+                        <li>
+                            Home
+                        </li>
+                    </Link>
+                    <Link href={'https://www.truts.xyz/add-your-community'}>
+                        <li>
+                            Add a Community
+                        </li>
+                    </Link>
+                    <Link href={'/discover'}>
+                        <li>
+                            Discover a Communities
+                        </li>
+                    </Link>
                 </ul>
                 <div className={styles.btn_wrapper}>
                     <Button onClick={() => { setwalletConnectVisible(true) }} label={"Connect wallet"} />

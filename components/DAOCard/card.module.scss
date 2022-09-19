@@ -71,7 +71,7 @@ $TABLET_N: 768;
     img {
         width: 16px;
         margin-left: 5px;
-        margin-bottom: 6px;
+        margin-bottom: 2.5px;
     }
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         height: desktop_to_laptop_fluid(51);
