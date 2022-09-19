@@ -70,7 +70,6 @@ let checkboxManager = (inputLabel, action, state) => {
     }
     if (action.payload.type == false) {
         let index = state[inputLabel].indexOf(action.payload.label);
-        console.log(index)
         state[inputLabel] = state[inputLabel].filter(ele => !(ele == action.payload.label))
         if (state[inputLabel].length == 0) {
             state[inputLabel] = ['All'];
@@ -88,7 +87,6 @@ let checkboxManagerRating = (inputLabel, action, state) => {
     }
     if (action.payload.type == false) {
         let index = state[inputLabel].indexOf(action.payload.label);
-        console.log(index)
         state[inputLabel] = state[inputLabel].filter(ele => !(ele == action.payload.label))
         if (state[inputLabel].length == 0) {
             state[inputLabel] = [1, 2, 3, 4, 5];
@@ -125,9 +123,11 @@ let reducer = (state, action) => {
 }
 
 
-function Discover({ daoList_ssr }) {
+function Discover({ daoList_ssr_init, paginationConfig }) {
 
-    console.log(daoList_ssr);
+    console.log(paginationConfig)
+
+    const [daoList_ssr, setdaoList_ssr] = useState(daoList_ssr_init);
 
     const [collapseState, setcollapseState] = useState({ 0: false, 1: false, 2: false, 3: false, 4: false })
 
@@ -142,6 +142,10 @@ function Discover({ daoList_ssr }) {
     useEffect(() => {
         setfiltersVisible(!isMobile);
     }, [isMobile])
+
+    useEffect(() => {
+        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig)
+    }, [])
 
     console.log(state);
 
@@ -198,9 +202,6 @@ function Discover({ daoList_ssr }) {
                 }
 
                 return daos.filter((ele) => {
-                    if (ele.dao_name == 'Solana Hacker House') {
-                        console.log(state_type, key_name, ele.dao_name, ele[key_name], state[state_type].max, state[state_type].min, (ele[key_name] <= state[state_type].max && ele[key_name] >= state[state_type].min))
-                    }
                     if (ele[key_name] <= state[state_type].max && ele[key_name] >= state[state_type].min) {
                         return true;
                     }
@@ -212,8 +213,6 @@ function Discover({ daoList_ssr }) {
 
             return filterMethod(d_filtered_daos, "Twitter Followers", "twitter_followers");
         }
-
-        console.log(tdRangeLimit(filterByCommunities(daos)).length)
 
         return sort(tdRangeLimit(filterByCommunities(daos)));
     }
@@ -278,13 +277,13 @@ function Discover({ daoList_ssr }) {
     )
 }
 
-//SSR DATA HOME PAGE
+//SSR DATA Discover PAGE
 export async function getServerSideProps(ctx) {
     // Fetch data from external API
-    let res = await getDaolistAPI()
+    let { res, paginationConfig } = await getDaolistAPI()
 
     // Pass data to the page via props
-    return { props: { daoList_ssr: res } }
+    return { props: { daoList_ssr_init: res, paginationConfig: paginationConfig } }
 }
 
 // API CALLS
@@ -292,10 +291,38 @@ export async function getServerSideProps(ctx) {
 //get list of daos
 const getDaolistAPI = async () => {
     //gets initial 20 doas
-    let url = `${API}/dao/get-dao-list`;
+    let url = `${API}/dao/get-dao-list?limit=100&page=1`;
     let res = await axios.get(url);
-    return res.data.results
+    console.log(res);
+    return { res: res.data.results, paginationConfig: { lastPage: res.data.lastPage, limit: res.data.limit } }
 }
+
+//dynamic load all the daos
+const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => {
+    //gets initial 20 doas
+    let daoList_ssr_current = daoList_ssr;
+    let { lastPage, limit } = paginationConfig;
+
+    let requestArray = [];
+
+    for (let i = 1 + 1; i <= lastPage; i++) {
+        let url = `${API}/dao/get-dao-list?limit=${limit}&page=${i}`
+        let apiRequest = axios.get(url);
+        requestArray.push(apiRequest);
+    }
+
+    let allPagesRes = await Promise.all(requestArray);
+    let daoList_ssr_final
+    if (allPagesRes[lastPage - 2].status == 200) {
+        daoList_ssr_final = [...daoList_ssr_current];
+        allPagesRes.forEach((ele) => {
+            daoList_ssr_final = [...daoList_ssr_final, ...ele.data.results]
+        })
+    }
+    setdaoList_ssr(daoList_ssr_final);
+    console.log(daoList_ssr_final)
+}
+
 
 
 const SortComp = ({ state, dispatch }) => {
@@ -373,7 +400,6 @@ const TypesOfCommunities = ({ state, dispatch }) => {
                             <p>{ele}</p>
                             <input checked={(state["Types of Communities"].includes(ele))}
                                 onChange={(e) => {
-                                    console.log(e.target.checked, ele)
                                     dispatch({ type: actionTypes.COMMUNITY, payload: { label: ele, type: e.target.checked } })
                                 }}
                                 type={'checkbox'} />
@@ -397,7 +423,6 @@ const TwitterFollowers = ({ state, dispatch }) => {
                             <input
                                 checked={(state['Twitter Followers'].min == twitterFollowers[ele].min && state['Twitter Followers'].max == twitterFollowers[ele].max)}
                                 onChange={(e) => {
-                                    console.log(e.target.checked, ele)
                                     dispatch({ type: actionTypes.TWITTER, payload: twitterFollowers[ele] })
                                 }}
                                 type={'checkbox'} />
@@ -422,7 +447,7 @@ const DiscordMembers = ({ state, dispatch }) => {
                             <input
                                 checked={(state['Discord Members'].min == discordFollowers[ele].min && state['Discord Members'].max == discordFollowers[ele].max)}
                                 onChange={(e) => {
-                                    console.log(e.target.checked, ele)
+
                                     dispatch({ type: actionTypes.DISCORD, payload: discordFollowers[ele] })
                                 }}
                                 type={'checkbox'} />
@@ -456,7 +481,7 @@ const NetworkChains = ({ state, dispatch }) => {
                             <p>{ele}</p>
                             <input checked={(state["Network Chains"].includes(ele))}
                                 onChange={(e) => {
-                                    console.log(e.target.checked, ele)
+
                                     dispatch({ type: actionTypes.CHAIN, payload: { label: ele, type: e.target.checked } })
                                 }}
                                 type={'checkbox'} />
