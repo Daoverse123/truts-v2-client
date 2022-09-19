@@ -50,7 +50,7 @@ export default function Component({ isFloating }) {
                         <span className={styles.search_wrappper}>  <Search /></span>
                     }
                     <ul className={styles.links}>
-                        <li>Add a Dao</li>
+                        <li>Add a Community</li>
                         <Link href={'/discover'}><li>Discover Communities</li></Link>
                         {(walletState?.address?.length > 5)
                             ? // wallet connected
