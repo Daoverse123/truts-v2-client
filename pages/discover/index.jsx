@@ -171,27 +171,6 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
             })
         }
 
-        //sorting
-        let sort = (daos) => {
-            if (state['sort by'] == 'HL') {
-                let sorted_daos = daos.sort(
-                    (a, b) => b.average_rating - a.average_rating
-                )
-                if (sorted_daos.length > 0) {
-                    return sorted_daos
-                }
-            }
-            if (state['sort by'] == 'LH') {
-                let sorted_daos = daos.sort(
-                    (a, b) => a.average_rating - b.average_rating
-                )
-                if (sorted_daos.length > 0) {
-                    return sorted_daos
-                }
-            }
-            return daos;
-        }
-
         //twitter/discord limiting
         const tdRangeLimit = (daos) => {
             //discord member count limit (0,0) show all
@@ -214,8 +193,42 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
             return filterMethod(d_filtered_daos, "Twitter Followers", "twitter_followers");
         }
 
-        return sort(tdRangeLimit(filterByCommunities(daos)));
+
+        // star rating filter 
+        let starFilter = (daos) => {
+            return daos.filter((ele) => {
+                if (state['Ratings'].includes(Math.ceil(ele.average_rating))) {
+                    return true
+                }
+                return false;
+            })
+        }
+
+        //sorting
+        let sort = (daos) => {
+            if (state['sort by'] == 'HL') {
+                let sorted_daos = daos.sort(
+                    (a, b) => b.average_rating - a.average_rating
+                )
+                if (sorted_daos.length > 0) {
+                    return sorted_daos
+                }
+            }
+            if (state['sort by'] == 'LH') {
+                let sorted_daos = daos.sort(
+                    (a, b) => a.average_rating - b.average_rating
+                )
+                if (sorted_daos.length > 0) {
+                    return sorted_daos
+                }
+            }
+            return daos;
+        }
+
+        return sort(starFilter(tdRangeLimit(filterByCommunities(daos))));
     }
+
+    let filteredDaoList = filteredList(daoList_ssr);
 
     return (
         <div className={styles.discoverPage}>
@@ -256,14 +269,14 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                 <div className={styles.gallery}>
                     <div key={JSON.stringify(state)} className={styles.daoList}>
                         {
-                            filteredList(daoList_ssr).map((ele, idx) => {
+                            filteredDaoList.map((ele, idx) => {
                                 return (
                                     <DAOCard key={'cards' + idx} data={ele} />
                                 )
                             }).slice(0, galleryLimit)
                         }
                     </div>
-                    {(galleryLimit < daoList_ssr.length + 1) && < Button onClick={() => { setgalleryLimit(galleryLimit + 15) }} label={"show more"} />}
+                    {(galleryLimit < filteredDaoList.length + 1) && < Button onClick={() => { setgalleryLimit(galleryLimit + 15) }} label={"show more"} />}
                 </div>
             </div>
 
@@ -383,7 +396,7 @@ const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
     }
     if (label == Object.keys(sideNavTabs)[4] && collapseState[4]) {
         return (
-            <RatingComp visible={collapseState[4]} label={"Twitter Followers"} min={0} max={50000} state={state} dispatch={dispatch} />
+            <RatingComp visible={collapseState[4]} state={state} dispatch={dispatch} />
         )
     }
     else { return <></> }

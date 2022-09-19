@@ -9,6 +9,7 @@ import globe from './../../assets/icons/Globe_grey.svg'
 import twitter from './../../assets/icons/Twitter_grey.svg'
 import discord from './../../assets/icons/Discord_grey.svg'
 
+
 export default function DAOCard({ data }) {
     return (
         <Link href={`/dao/${data.slug}`}>
@@ -26,7 +27,7 @@ export default function DAOCard({ data }) {
                     <div className={styles.review_stats}>
                         <div className={styles.ratingBox}>
                             <span>
-                                {addDecimal(data.average_rating)}
+                                {addDecimal(Math.ceil(data.average_rating))}
                             </span>
                             <img src={star.src} alt="" />
                         </div>
