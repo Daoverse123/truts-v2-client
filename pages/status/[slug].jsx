@@ -34,6 +34,8 @@ function index({ type, target }) {
         </div> */}
                     {(type == 'not-member') && <ErrorState message={"Oops! need to be a member of the Community to post the Review"} slug={target} />}
                     {(type == 'duplicate-review') && <ErrorState message={"Oops! Review already exists on this community by this User "} slug={target} />}
+                    {(type == 'community-listed-success') && <SuccessStateListDAO message={"Thank you for submitting the application to list your Community. Now sit back and relax. If we need more information, we will reach out to you. Otherwise, you are all set and you will see your DAO listed in a day or two :) "} slug={target} />}
+                    {(type == 'community-listed-failed') && <ErrorStateListDAO message={"Sorry, something went wrong. Can you please try again :)"} slug={target} />}
                 </div>
 
             </div>
@@ -49,17 +51,19 @@ export async function getServerSideProps(ctx) {
     return {
         props: {
             type,
-            target
+            target: target || ''
         }
     }
 }
 
-const SuccessState = () => {
+//Thank you for submitting the application to list your Community. Now sit back and relax. If we need more information, we will reach out to you. Otherwise, you are all set and you will see your DAO listed in a day or two :)
+
+const SuccessStateListDAO = ({ message }) => {
     return (
         <div className={styles.response}>
             <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" background="transparent" speed="1" style={{ width: "50%", height: "100%", marginBottom: "30px" }} autoplay></lottie-player>
             <span className={styles.message}>
-                <p>Thank you for reviewing with us. Join Truts discord community to get exclusive rewards and opportunities.</p>
+                <p>{message}</p>
                 <Button onClick={() => {
                     openNewTab('https://discord.truts.xyz/');
                 }} label={'Join Community'} />
@@ -76,6 +80,20 @@ const ErrorState = ({ slug, message }) => {
             <span className={styles.message}>
                 <p>{message}</p>
                 <Link href={`/dao/${slug}`}>
+                    <Button label={'Try Again'} />
+                </Link>
+            </span>
+        </div>
+    )
+}
+
+const ErrorStateListDAO = ({ slug, message }) => {
+    return (
+        <div className={styles.response}>
+            <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_afwjhfb2.json" background="transparent" speed="1" style={{ width: "60%", height: "100%", marginBottom: "30px" }} loop autoplay></lottie-player>
+            <span className={styles.message}>
+                <p>{message}</p>
+                <Link href={`/discover`}>
                     <Button label={'Try Again'} />
                 </Link>
             </span>

@@ -29,15 +29,19 @@ const API = process.env.API
 const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
 
 let discordFollowers = {
-    'Small (0 to 10K)': { min: 0, max: 10000 },
-    'Medium (10K to 50K)': { min: 0, max: 50000 },
-    'Large (50K & above)': { min: 50000, max: -1 }
+    '0 to 5K': { min: 0, max: 5000 },
+    '5K to 15K': { min: 0, max: 15000 },
+    '15K & 30k': { min: 15000, max: 30000 },
+    '30K & 50k': { min: 30000, max: 50000 },
+    '50K & 100k': { min: 50000, max: 100000 },
+    '100k+': { min: 100000, max: Infinity },
 }
 
 let twitterFollowers = {
-    'Small (0 to 10K)': { min: 0, max: 10000 },
-    'Medium (10K to 50K)': { min: 0, max: 50000 },
-    'Large (50K & above)': { min: 50000, max: -1 }
+    '0 to 20k': { min: 0, max: 20000 },
+    '20K to 50K': { min: 20000, max: 50000 },
+    '50K to 100k': { min: 50000, max: 100000 },
+    '100K+': { min: 50000, max: Infinity }
 }
 
 let initialState = {
@@ -46,7 +50,7 @@ let initialState = {
     "Network Chains": ["All"],
     "Discord Members": { min: 0, max: 0 },
     "Twitter Followers": { min: 0, max: 0 },
-    "Ratings": [1, 2, 3, 4, 5]
+    "Ratings": [0, 1, 2, 3, 4, 5]
 }
 
 let actionTypes = {
@@ -147,7 +151,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
         getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig)
     }, [])
 
-    console.log(state);
+    console.log(daoList_ssr.length);
 
     const filteredList = (daos) => {
 
@@ -535,7 +539,7 @@ const RatingComp = ({ state, dispatch }) => {
 
     return (<div className={styles.ratingComp}>
         {
-            [1, 2, 3, 4, 5].reverse().map((i) => {
+            [0, 1, 2, 3, 4, 5].reverse().map((i) => {
                 return <StarComp key={i + 'star'} count={i} />
             })
         }

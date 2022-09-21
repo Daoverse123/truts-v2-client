@@ -221,7 +221,7 @@ function CommunitiesWall({ daoList }) {
 
 // LEADERBOARD COMPONENT
 
-let StarRating = ({ rating, showCount, color }) => {
+let StarRating = ({ rating, showCount, color, count }) => {
   return (
     <div className={styles.starRating}>
       <span className={styles.stars} style={(color == 'black') ? { filter: 'invert(1)' } : null}>
@@ -234,7 +234,7 @@ let StarRating = ({ rating, showCount, color }) => {
           })
         }
       </span>
-      {(showCount) && <p className={styles.rating_count}>(456)</p>}
+      {(showCount) && <p className={styles.rating_count}>({count})</p>}
     </div>
   )
 }
@@ -258,7 +258,7 @@ let Entry = ({ idx, data }) => {
           <img className={styles.medal} src={medal_src} alt="" />
         </li>
         <li className={styles.c2}>{data.dao_name}</li>
-        <li className={styles.c3}><StarRating rating={data.average_rating} showCount={true} /></li>
+        <li className={styles.c3}><StarRating count={data.review_count} rating={data.average_rating} showCount={true} /></li>
         <li className={styles.c4}>
           <img src={twitter_w.src} alt="" onClick={() => {
             (data.twitter_link) && openNewTab(data.twitter_link)

@@ -25,7 +25,7 @@ import WalletConnect from '../WalletConnect'
 // CONSTANTS
 const API = process.env.API
 
-export default function Component({ isFloating }) {
+export default function Component({ isFloating, isStrech }) {
 
     const [TabletNavOpen, setTabletNavOpen] = useState(false);
     const [TabletSearchOpen, setTabletSearchOpen] = useState(false);
@@ -51,7 +51,7 @@ export default function Component({ isFloating }) {
             <nav key={navKey}
                 style={(isFloating == true) ? { position: 'fixed' } : { position: 'absolute' }}
                 className={styles.navWrapper}>
-                <div className={styles.nav}>
+                <div style={isStrech ? { maxWidth: '100%' } : { maxWidth: '1440px' }} className={styles.nav}>
                     <Link href={'/'}><img className={styles.logo} src={logo.src} alt="" /></Link>
                     {
                         isFloating &&
