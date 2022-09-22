@@ -117,6 +117,11 @@ const getDynamicCategoryDaoList = async (setter) => {
 function Hero() {
   return (
     <div className={styles.hero}>
+      <Head>
+        <title>Truts</title>
+        <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
       <div className={styles.hero_left}>
         <h1>Contribute, Reviews &</h1>
         <h1 className={styles.gradientText}>Communities.</h1>
@@ -362,7 +367,7 @@ function RecentReview({ text, address, daoName, rating, i }) {
     '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
   return (
     <div className={styles.recentReview}>
-      <p className={styles.review_text}>{text.slice(0,300)}...</p>
+      <p className={styles.review_text}>{text.slice(0, 300)}...</p>
       <div className={styles.profile}>
         <span style={{ backgroundColor: `${colorArray[i]}` }} className={styles.profile_img}>
 

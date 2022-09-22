@@ -44,6 +44,26 @@ function Dao({ dao_data, rid, slug }) {
             <TippingFlow tipReviewInfo={tipReviewInfo} tippingFlowVisible={tippingFlowVisible} settippingFlowVisible={settippingFlowVisible} />
             <div className={styles.dao}>
                 <Head>
+                    <title>{dao_data.dao_name}</title>
+                    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                    <link rel="preload" as="image" href="/verified.png"></link>
+                    <link rel="icon" href="/favicon.png" />
+                    <meta name="description" content={dao_data.dao_mission || dao_data.description} />
+
+                    {(rid.length > 0) && <><meta property="og:url" content={`https://www.truts.xyz/dao/${dao_data.slug}`} />
+                        <meta property="og:type" content="website" />
+                        <meta property="og:title" content={dao_data.dao_name} />
+                        <meta property="og:description" content={dao_data.dao_mission || dao_data.description} />
+                        <meta property="og:image" content={`https://www.truts.xyz/api/fetchcard?rid=${rid}`} />
+
+
+                        <meta name="twitter:card" content="summary_large_image" />
+                        <meta property="twitter:domain" content="truts.xyz" />
+                        <meta property="twitter:url" content={`https://www.truts.xyz/dao/${dao_data.slug}`} />
+                        <meta name="twitter:title" content={dao_data.dao_name} />
+                        <meta name="twitter:description" content={dao_data.dao_mission || dao_data.description} />
+                        <meta name="twitter:image" content={`https://www.truts.xyz/api/fetchcard?rid=${rid}`} /></>}
+
                     <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                     <link href="https://assets10.lottiefiles.com/packages/lf20_yt7b7vg3.json" rel="preload"></link>
                     <link href="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" rel="preload"></link>

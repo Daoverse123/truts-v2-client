@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './daoform.module.scss'
 import axios from 'axios'
 import fuzzy from 'fuzzy.js'
+import Head from 'next/head'
 
 //components
 import Nav from './../../components/Nav'
@@ -116,6 +117,14 @@ function DaoForm() {
     return (
         <>
             <div className={styles.daoPage}>
+
+
+                <Head>
+                    <title>Truts</title>
+                    <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
+                    <link rel="icon" href="/favicon.png" />
+                </Head>
+
                 <Nav isFloating isStrech />
                 <WalletConnect setwalletConnectVisible={setwalletConnectVisible} walletConnectVisible={walletConnectVisible} />
                 <form

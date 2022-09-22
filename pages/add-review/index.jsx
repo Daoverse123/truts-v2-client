@@ -93,6 +93,10 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
             <WalletConnect walletConnectVisible={walletConnectVisible} setwalletConnectVisible={setwalletConnectVisible} />
             <div className={styles.reviewPage}>
                 <Head>
+                    <title>Truts</title>
+                    <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
+                    <link rel="icon" href="/favicon.png" />
+
                     <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                     <link href="https://assets10.lottiefiles.com/packages/lf20_yt7b7vg3.json" rel="preload"></link>
                     <link href="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" rel="preload"></link>
