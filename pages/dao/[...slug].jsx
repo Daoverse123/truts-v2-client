@@ -47,7 +47,7 @@ function Dao({ dao_data, rid, slug }) {
                     <title>{dao_data.dao_name}</title>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                     <link rel="preload" as="image" href="/verified.png"></link>
-                    <link rel="icon" href="/favicon.png" />
+                    <link rel="icon" href="/favicon.ico" />
                     <meta name="description" content={dao_data.dao_mission || dao_data.description} />
 
                     {(rid.length > 0) && <><meta property="og:url" content={`https://www.truts.xyz/dao/${dao_data.slug}`} />
