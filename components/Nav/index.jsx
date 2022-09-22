@@ -164,7 +164,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, walletConnectVisible, setw
                             Home
                         </li>
                     </Link>
-                    <Link href={'https://www.truts.xyz/add-your-community'}>
+                    <Link href={'/add-your-community'}>
                         <li>
                             Add a Community
                         </li>
