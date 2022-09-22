@@ -349,18 +349,28 @@ function Leaderboard_mobile({ data }) {
 
 // RECENT REVIEWS
 
-function RecentReview({ data }) {
+function RecentReview({ text, address, daoName, rating, i }) {
+  var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+    '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+    '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+    '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+    '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+    '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+    '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+    '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+    '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+    '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
   return (
     <div className={styles.recentReview}>
-      <p className={styles.review_text}>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint.</p>
+      <p className={styles.review_text}>{text.slice(0,300)}...</p>
       <div className={styles.profile}>
-        <span className={styles.profile_img}>
+        <span style={{ backgroundColor: `${colorArray[i]}` }} className={styles.profile_img}>
 
         </span>
         <span className={styles.info}>
-          <h1>Van Nga</h1>
-          <p>Bankless DAO</p>
-          <StarRating rating={4} color={'black'} />
+          <h1>{address}</h1>
+          <p>{daoName}</p>
+          <StarRating rating={rating} color={'black'} />
         </span>
       </div>
     </div>
@@ -378,7 +388,7 @@ function RecentReviewsSection() {
   useEffect(() => {
     let nodes = document.querySelectorAll(`.${styles.recentReview}`)
     nodes.forEach((node) => {
-      node.style.animationPlayState = (!motion) ? 'paused' : 'running';
+      node.style.animationPlayState = (motion) ? 'paused' : 'running';
     })
   }, [motion])
 
@@ -394,26 +404,139 @@ function RecentReviewsSection() {
         }}
       >
         <div id={'slider1'} className={styles.row_review_1}>
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
+          <RecentReview
+            i={0}
+            rating={5}
+            address={'9GaUZ...tgcR'}
+            daoName={'SuperteamDAO'}
+            text={`I know of many a people are upskilling themselves using SuperteamDAO and all that is being put to great use. Such collaborative effort is super awesome! It adds so much value to the ecosystem and help people achieve their potential. This DAO is going to go places! ATB.`}
+          />
+          <RecentReview
+            i={1}
+            rating={5}
+            address={'0x044...96C0'}
+            daoName={'SuperteamDAO'}
+            text={`If WAGMI had a DAO, it would in all probability be SuperteamDAO. Super stuff keeps happening here with mind-blowing opportunities that will take your Web3 game to the next LEVEL 🚀`}
+          />
+          <RecentReview
+            i={7}
+            rating={5}
+            address={'0x30F...e805'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam DAO is tight-knit and has a familial vibe to begin your bounty hunting journey in web 3. It's still evolving and getting better but given that these are early days for DAOs it's definitely setting up an edifice for the future. 
+            Also, crazy memes and other stuff beyond web 3 on their discord. `}
+          />
+          <RecentReview
+            i={13}
+            rating={5}
+            address={'0xA9f...ca30'}
+            daoName={'SuperteamDAO'}
+            text={`SuperTeamDAO helped me realize that there's more to the crypto space than just cryptocurrencies and shitcoins. The vibes are awesome and the people here just keep it up. They've helped me contribute to DAOs and explore more about web3`}
+          />
+          < RecentReview
+            i={4}
+            rating={5}
+            address={'0xa30...5F94'}
+            daoName={'SuperteamDAO'}
+            text={`🚀Superteam DAO is one of my favorite DAO communities, built by crazy people to assist Web3 thrive all across the world, and to make Solana a global enabler for web3. Super cool folks are putting their support towards their super cool ideas.  I'm happy to be a part of it.... 🚀`}
+          />
+          < RecentReview
+            i={12}
+            rating={5}
+            address={'0x38C...7347'}
+            daoName={'SuperteamDAO'}
+            text={`It is a very great community to get started in Crypto. Has very great onboarding experiences as well as amazing bounties as well as weekly meet to keep you intact and involved. Tons of side projects to choose from and get your Web3 journey on nitro mode!`}
+          />
+          < RecentReview
+            i={6}
+            rating={5}
+            address={'0xC33...130E'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam DAO is a super awesome community. Superteam folks are always buidling cool stuff for the Solana ecosystem. Everyone contribute their absolute best in every way possible. As a part of the community, I can guarantee a great potential to learn and explore the web3 ecosystem. Everyone right from writers, designers, creators, memers, devs are welcomed to contribute.`}
+          />
+          < RecentReview
+            i={7}
+            rating={10}
+            address={'0x9Be...35dc'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam is a community that helps and uplifts all it's members and solana ecosystem. They help you grow both financially and socially. It's not a DAO it's a place where you make friends for life. The best part is there's opportunity for people from all the areas be it dev, design, marketing, content or memes. Would definitely recommend everyone to have this super experience. WAGMI.`}
+          />
+          < RecentReview
+            i={8}
+            rating={5}
+            address={'0x65e...f4b1'}
+            daoName={'SuperteamDAO'}
+            text={`SuperteamDAO is a crazy community, being build by crazy people, helping Web3 flourish alll around, making solana a global enabler for web3. Super cool floks backing super cool projects. Definitely community to be part off. 🚀🚀`}
+          />
         </div>
         <div id={'slider2'} className={styles.row_review_2}>
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
-          <RecentReview />
+
+          <RecentReview
+            i={13}
+            rating={5}
+            address={'0xA9f...ca30'}
+            daoName={'SuperteamDAO'}
+            text={`SuperTeamDAO helped me realize that there's more to the crypto space than just cryptocurrencies and shitcoins. The vibes are awesome and the people here just keep it up. They've helped me contribute to DAOs and explore more about web3`}
+          />
+          < RecentReview
+            i={4}
+            rating={5}
+            address={'0xa30...5F94'}
+            daoName={'SuperteamDAO'}
+            text={`🚀Superteam DAO is one of my favorite DAO communities, built by crazy people to assist Web3 thrive all across the world, and to make Solana a global enabler for web3. Super cool folks are putting their support towards their super cool ideas.  I'm happy to be a part of it.... 🚀`}
+          />
+          < RecentReview
+            i={12}
+            rating={5}
+            address={'0x38C...7347'}
+            daoName={'SuperteamDAO'}
+            text={`It is a very great community to get started in Crypto. Has very great onboarding experiences as well as amazing bounties as well as weekly meet to keep you intact and involved. Tons of side projects to choose from and get your Web3 journey on nitro mode!`}
+          />
+          < RecentReview
+            i={6}
+            rating={5}
+            address={'0xC33...130E'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam DAO is a super awesome community. Superteam folks are always buidling cool stuff for the Solana ecosystem. Everyone contribute their absolute best in every way possible. As a part of the community, I can guarantee a great potential to learn and explore the web3 ecosystem. Everyone right from writers, designers, creators, memers, devs are welcomed to contribute.`}
+          />
+          < RecentReview
+            i={7}
+            rating={10}
+            address={'0x9Be...35dc'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam is a community that helps and uplifts all it's members and solana ecosystem. They help you grow both financially and socially. It's not a DAO it's a place where you make friends for life. The best part is there's opportunity for people from all the areas be it dev, design, marketing, content or memes. Would definitely recommend everyone to have this super experience. WAGMI.`}
+          />
+          < RecentReview
+            i={8}
+            rating={5}
+            address={'0x65e...f4b1'}
+            daoName={'SuperteamDAO'}
+            text={`SuperteamDAO is a crazy community, being build by crazy people, helping Web3 flourish alll around, making solana a global enabler for web3. Super cool floks backing super cool projects. Definitely community to be part off. 🚀🚀`}
+          />
+
+          <RecentReview
+            i={0}
+            rating={5}
+            address={'9GaUZ...tgcR'}
+            daoName={'SuperteamDAO'}
+            text={`I know of many a people are upskilling themselves using SuperteamDAO and all that is being put to great use. Such collaborative effort is super awesome! It adds so much value to the ecosystem and help people achieve their potential. This DAO is going to go places! ATB.`}
+          />
+          <RecentReview
+            i={1}
+            rating={5}
+            address={'0x044...96C0'}
+            daoName={'SuperteamDAO'}
+            text={`If WAGMI had a DAO, it would in all probability be SuperteamDAO. Super stuff keeps happening here with mind-blowing opportunities that will take your Web3 game to the next LEVEL 🚀`}
+          />
+          <RecentReview
+            i={7}
+            rating={5}
+            address={'0x30F...e805'}
+            daoName={'SuperteamDAO'}
+            text={`Superteam DAO is tight-knit and has a familial vibe to begin your bounty hunting journey in web 3. It's still evolving and getting better but given that these are early days for DAOs it's definitely setting up an edifice for the future. 
+            Also, crazy memes and other stuff beyond web 3 on their discord. `}
+          />
+
         </div>
       </div>
     </div>
