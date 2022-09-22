@@ -349,7 +349,7 @@ function Leaderboard_mobile({ data }) {
 
 // RECENT REVIEWS
 
-function RecentReview() {
+function RecentReview({ data }) {
   return (
     <div className={styles.recentReview}>
       <p className={styles.review_text}>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint.</p>

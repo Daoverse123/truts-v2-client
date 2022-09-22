@@ -58,7 +58,7 @@ export default function Component({ isFloating, isStrech }) {
                         <span className={styles.search_wrappper}>  <Search /></span>
                     }
                     <ul className={styles.links}>
-                        <Link href={'https://www.truts.xyz/add-your-community'}><li>Add a Community</li></Link>
+                        <Link href={'/add-your-community'}><li>Add a Community</li></Link>
                         <Link href={'/discover'}><li>Discover Communities</li></Link>
                         {(walletState?.address?.length > 5)
                             ? // wallet connected

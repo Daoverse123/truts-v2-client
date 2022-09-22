@@ -3,6 +3,7 @@ import styles from '../dao/dao.module.scss'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
 import axios from 'axios'
+import Link from 'next/link'
 
 //utils
 import openNewTab from '../../utils/openNewTab'
@@ -123,7 +124,9 @@ const InfoSec = ({ dao_data }) => {
                         {
                             [...new Set(dao_category)].map((cat, idx) => {
                                 return (
-                                    <span key={cat + idx} className={styles.category}>{cat}</span>
+                                    <Link key={cat + idx} href={`/discover?category=${cat}`}>
+                                        <span className={styles.category}>{cat}</span>
+                                    </Link>
                                 )
                             })
                         }

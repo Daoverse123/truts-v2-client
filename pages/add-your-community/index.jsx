@@ -122,11 +122,11 @@ function DaoForm() {
                     onSubmit={submitForm}
                     className={styles.daoForm}>
 
-                    <h1 className={styles.title}>Application for listing your DAO</h1>
-                    <p className={styles.subtitle}>Please fill the basic information of your DAO to list your DAO on DAOverse. </p>
+                    <h1 className={styles.title}>Application for listing your Community</h1>
+                    <p className={styles.subtitle}>Please fill the basic information of your Community to list your community on Truts. </p>
 
                     <label htmlFor="">
-                        <p>What’s the name of your DAO?</p>
+                        <p>What’s the name of your Community?</p>
                         <input required value={state.dao_name}
                             onChange={(e) => {
                                 setState((s) => {
@@ -138,7 +138,7 @@ function DaoForm() {
                     </label>
 
                     <label htmlFor="">
-                        <p>Add a One Linear for your DAO</p>
+                        <p>Add a One Linear for your Community</p>
                         <textarea
                             required
                             value={state.dao_mission}
@@ -155,7 +155,7 @@ function DaoForm() {
                     <ChainSelectCon state={state} setState={setState} />
 
                     <label htmlFor="">
-                        <p>Brief description for your DAO</p>
+                        <p>Brief description for your Community</p>
                         <textarea
                             required
                             value={state.description}
@@ -327,7 +327,7 @@ const CategotyCon = ({ state, setState }) => {
     return (
         <>
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
-                <p>What’s the category of your DAO? (max 3 categories)</p>
+                <p>What’s the category of your Community? (max 3 categories)</p>
                 {(true) && <div className={styles.slectedTags}>
                     <p className={styles.p}>Selected Categories :</p>
 
@@ -457,7 +457,7 @@ const ChainSelectCon = ({ state, setState }) => {
     return (
         <>
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
-                <p>Select the Blockchain your DAO based on (max 3 categories)</p>
+                <p>Select the Blockchain your Community based on (max 3 categories)</p>
                 {(true) && <div className={styles.slectedTags}>
                     <p className={styles.p}>Selected Chains :</p>
 

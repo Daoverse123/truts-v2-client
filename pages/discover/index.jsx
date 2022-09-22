@@ -149,7 +149,12 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     useEffect(() => {
         getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig)
+        let query_category = window.location.href.split('=')[1];
+        if (query_category) {
+            dispatch({ type: actionTypes.COMMUNITY, payload: { label: query_category, type: true } })
+        }
     }, [])
+
 
     console.log(daoList_ssr.length);
 
