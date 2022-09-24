@@ -44,6 +44,16 @@ let twitterFollowers = {
     '100K+': { min: 50000, max: Infinity }
 }
 
+let chainMap = {
+    'All': "all",
+    'Ethereum': 'ethereum',
+    'Polygon': 'polygon-pos',
+    'Solana': 'solana',
+    'Tezos': 'tezos',
+    'Near': 'near',
+    'Cardano': 'cardano'
+}
+
 let initialState = {
     "sort by": "HL",
     "Types of Communities": ["All"],
@@ -213,6 +223,22 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
             })
         }
 
+        //chain filter 
+        let chainFilter = (daos) => {
+            if (state['Network Chains'].includes('All')) {
+                return daos;
+            }
+            return daos.filter((ele) => {
+                let true_condition = false;
+                state['Network Chains'].forEach((chain) => {
+                    if (ele.chain.includes(chainMap[chain])) {
+                        true_condition = true;
+                    }
+                })
+                return true_condition;
+            })
+        }
+
         //sorting
         let sort = (daos) => {
             if (state['sort by'] == 'HL') {
@@ -234,10 +260,13 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
             return daos;
         }
 
-        return sort(starFilter(tdRangeLimit(filterByCommunities(daos))));
+        return sort(starFilter(tdRangeLimit(filterByCommunities(chainFilter(daos)))));
+
     }
 
     let filteredDaoList = filteredList(daoList_ssr);
+
+    console.log(state);
 
     return (
         <div className={styles.discoverPage}>
@@ -280,7 +309,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                         {
                             filteredDaoList.map((ele, idx) => {
                                 return (
-                                    <DAOCard key={'cards' + idx} data={ele} />
+                                    <DAOCard key={idx + '_' + ele.dao_name} data={ele} />
                                 )
                             }).slice(0, galleryLimit)
                         }
@@ -341,8 +370,11 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => 
             daoList_ssr_final = [...daoList_ssr_final, ...ele.data.results]
         })
     }
-    setdaoList_ssr(daoList_ssr_final);
-    console.log(daoList_ssr_final)
+    const key = 'slug';
+    const arrayUniqueByKey = [...new Map(daoList_ssr_final.map(item =>
+        [item[key], item])).values()];
+    setdaoList_ssr(arrayUniqueByKey);
+    console.log(arrayUniqueByKey.length);
 }
 
 
@@ -503,7 +535,6 @@ const NetworkChains = ({ state, dispatch }) => {
                             <p>{ele}</p>
                             <input checked={(state["Network Chains"].includes(ele))}
                                 onChange={(e) => {
-
                                     dispatch({ type: actionTypes.CHAIN, payload: { label: ele, type: e.target.checked } })
                                 }}
                                 type={'checkbox'} />

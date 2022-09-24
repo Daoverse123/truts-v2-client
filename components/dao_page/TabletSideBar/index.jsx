@@ -12,9 +12,27 @@ import discord_white from '../../../assets/icons/twitter_white.svg'
 import twitter_white from '../../../assets/icons/discord_white.svg'
 import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
 import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
+import near_chain_icon from '../../../assets/icons/near_chain_icon.svg'
+import matic_chain_icon from '../../../assets/icons/matic_chain_icon.svg'
 import globe_white from '../../../assets/icons/web_white.svg'
 
-
+let getChainIcon = (chain) => {
+    if (chain == 'solana') {
+        return <img key={chain} src={sol_chain_icon.src} alt="" />
+    }
+    if (chain == 'ethereum') {
+        return <img key={chain} src={eth_chain_icon.src} alt="" />
+    }
+    if (chain == 'near') {
+        return <img key={chain} src={near_chain_icon.src} alt="" />
+    }
+    if (chain == 'polygon-pos') {
+        return <img key={chain} src={matic_chain_icon.src} alt="" />
+    }
+    else {
+        return (<span className={styles.chain_tag}>{chain}</span>)
+    }
+}
 
 const TabletSideBar = ({ dao_data }) => {
 
@@ -60,6 +78,25 @@ const TabletSideBar = ({ dao_data }) => {
         )
     }
 
+    let getChainIcon = (chain) => {
+        if (chain == 'solana') {
+            return <img key={chain} src={sol_chain_icon.src} alt="" />
+        }
+        if (chain == 'ethereum') {
+            return <img key={chain} src={eth_chain_icon.src} alt="" />
+        }
+        if (chain == 'near') {
+            return <img key={chain} src={near_chain_icon.src} alt="" />
+        }
+        if (chain == 'polygon-pos') {
+            return <img key={chain} src={matic_chain_icon.src} alt="" />
+        }
+        else {
+            return (<span className={styles.chain_tag}>{chain}</span>)
+        }
+    }
+
+
 
     return (
         <div className={styles.tabletSideBar}>
@@ -85,9 +122,12 @@ const TabletSideBar = ({ dao_data }) => {
             <div className={styles.tablet_dial_sec}>
                 <div className={styles.chain_row}>
                     <p>Chain</p>
-                    <span>
-                        <img src={eth_chain_icon.src} alt="" />
-                        <img src={sol_chain_icon.src} alt="" />
+                    <span className={styles.chain_icons}>
+                        {
+                            dao_data.chain.map((ele) => {
+                                return getChainIcon(ele)
+                            })
+                        }
                     </span>
                 </div>
                 <div className={styles.dialSectablet}>

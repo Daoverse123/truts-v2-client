@@ -123,7 +123,7 @@ $PHONE_N: 426;
             display: flex;
             column-gap: 8px;
             img {
-                width: 53px;
+                min-width: 53px;
                 height: 24px;
             }
         }
@@ -234,4 +234,18 @@ $PHONE_N: 426;
             margin-bottom: 0;
         }
     }
+}
+
+
+.chain_tag {
+    display: flex;
+    margin-left: auto;
+    column-gap: 8px;
+    height: 24px;
+    width: auto;
+    background-color: rgb(2, 196, 196);
+    border-radius: 5px;
+    padding: 0 10px;
+    justify-content: center;
+    align-items: center;
 }

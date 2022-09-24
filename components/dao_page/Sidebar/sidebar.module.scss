@@ -133,6 +133,7 @@ $PHONE_N: 426;
     .chain_con {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         width: 100%;
         padding: 10px 0;
         border-bottom: 1px solid rgba(224, 224, 224, 1);
@@ -146,6 +147,18 @@ $PHONE_N: 426;
             column-gap: 8px;
             height: 24px;
             width: auto;
+        }
+        .chain_tag {
+            display: flex;
+            margin-left: auto;
+            column-gap: 8px;
+            height: 24px;
+            width: auto;
+            background-color: rgb(2, 196, 196);
+            border-radius: 5px;
+            padding: 0 10px;
+            justify-content: center;
+            align-items: center;
         }
     }
 }
