@@ -5,6 +5,9 @@ import Link from 'next/link'
 //COMPONENTS
 import Button from '../Button'
 
+//utils 
+import openNewTab from '../../utils/openNewTab'
+
 //ASSETS
 import web_w from '../../assets/icons/web_white.svg'
 import twitter_w from '../../assets/icons/twitter_white.svg'
@@ -14,7 +17,9 @@ export default function Component() {
     return (
         <div className={styles.footer}>
             <h1 className={styles.footerTitle}>Love what we do? Truts your guts and join us now!</h1>
-            <Link href={'https://discord.truts.xyz'} > <Button label={'Join Community'} /></Link>
+            <Button onClick={() => {
+                openNewTab('https://discord.truts.xyz')
+            }} label={'Join Community'} />
             <ul className={styles.links}>
                 <Link href={'/'} ><li>Home</li></Link>
                 <Link href={'./add-your-community'} ><li>Add a Community</li></Link>
@@ -23,9 +28,9 @@ export default function Component() {
                 <Link href={'https://discord.truts.xyz'} ><li>Contact Us</li></Link>
             </ul>
             <span className={styles.socialIcons}>
-                <img onClick={'https://twitter.truts.xyz'} src={twitter_w.src} alt="" />
-                <img onClick={'https://discord.truts.xyz'} src={discord_w.src} alt="" />
-                <img onClick={'https://truts.xyz'} src={web_w.src} alt="" />
+                <img onClick={() => { 'https://twitter.truts.xyz' }} src={twitter_w.src} alt="" />
+                <img onClick={() => { 'https://discord.truts.xyz' }} src={discord_w.src} alt="" />
+                <img onClick={() => { 'https://truts.xyz' }} src={web_w.src} alt="" />
             </span>
             <ul className={styles.tnc}>
                 <li>Terms & Conditions</li>
