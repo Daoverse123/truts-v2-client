@@ -28,9 +28,9 @@ export default function Component() {
                 <Link href={'https://discord.truts.xyz'} ><li>Contact Us</li></Link>
             </ul>
             <span className={styles.socialIcons}>
-                <img onClick={() => { 'https://twitter.truts.xyz' }} src={twitter_w.src} alt="" />
-                <img onClick={() => { 'https://discord.truts.xyz' }} src={discord_w.src} alt="" />
-                <img onClick={() => { 'https://truts.xyz' }} src={web_w.src} alt="" />
+                <img onClick={() => {  openNewTab('https://twitter.truts.xyz') }} src={twitter_w.src} alt="" />
+                <img onClick={() => {  openNewTab('https://discord.truts.xyz') }} src={discord_w.src} alt="" />
+                <img onClick={() => {  openNewTab('https://truts.xyz') }} src={web_w.src} alt="" />
             </span>
             <ul className={styles.tnc}>
                 <li>Terms & Conditions</li>
