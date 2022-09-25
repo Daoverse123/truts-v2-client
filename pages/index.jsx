@@ -159,7 +159,9 @@ function Hero() {
             Start your Web3 Journey with <span className={styles.gradientText}>Truts</span>
           </h1>
           <h2>Discover, join, contribute and earn.</h2>
-          <button className={styles.black_btn}> <img src={searchIcon.src} alt="" /> Explore Communities</button>
+          <button onClick={()=>{
+            openNewTab('http://truts.xyz/discover');
+          }} className={styles.black_btn}> <img src={searchIcon.src} alt="" /> Explore Communities</button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
