@@ -25,7 +25,13 @@ import starBlank from '../assets/icons/star_blank.svg'
 import web_w from '../assets/icons/web_white.svg'
 import twitter_w from '../assets/icons/twitter_white.svg'
 import discord_w from '../assets/icons/discord_white.svg'
-import Link from 'next/link'
+import search_white from '../assets/icons/search_white.svg'
+
+//new hero
+import heroGradLeft from '../assets/leftGrad.png'
+import heroGradRight from '../assets/rightGrad.png'
+import heroImg from '../assets/hero_img.png'
+
 
 // CONSTANTS
 const API = process.env.API
@@ -50,9 +56,9 @@ export default function Home({ daoList_ssr, leaderboard_ssr }) {
         <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Hero />
       <main className={styles.main}>
-        <Hero />
-        <StatCards />
+        {/* <StatCards /> */}
         <CommunitiesWall daoList={daoList} />
         <Leaderboard data={leaderboard} />
         <Leaderboard_mobile data={leaderboard} />
@@ -112,42 +118,68 @@ const getDynamicCategoryDaoList = async (setter) => {
 
 
 //HERO COMPONENT
-function Hero() {
-  return (
-    <div className={styles.hero}>
-      <Head>
-        <title>Truts</title>
-        <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div className={styles.hero_left}>
-        <h1>Start your Web3</h1>
-        <h1 >journey with <span className={styles.gradientText}>Truts.</span></h1>
-        <p>Discover, join, contribute and earn</p>
-        <div className={styles.cta_btns}>
-          <Button onClick={() => {
-            let sc = document.querySelector('#search_box');
-            sc.focus()
-          }} label={'Search Truts'} icon={searchIcon.src} />
-          <Link href={'/discover'}>
-            <Button type={'secondary'} label={'Explore Communities'} />
-          </Link>
-        </div>
-      </div>
-      <div className={styles.hero_right}>
-        <img src={heroGraphic.src} alt="" />
-      </div>
-    </div>
-  )
-}
 
 // function Hero() {
 //   return (
-//     <div className={styles.new_hero}>
-
+//     <div className={styles.hero}>
+//       <Head>
+//         <title>Truts</title>
+//         <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
+//         <link rel="icon" href="/favicon.ico" />
+//       </Head>
+//       <div className={styles.hero_left}>
+//         <h1>Start your Web3</h1>
+//         <h1 >journey with <span className={styles.gradientText}>Truts.</span></h1>
+//         <p>Discover, join, contribute and earn</p>
+//         <div className={styles.cta_btns}>
+//           <Button onClick={() => {
+//             let sc = document.querySelector('#search_box');
+//             sc.focus()
+//           }} label={'Search Truts'} icon={searchIcon.src} />
+//           <Link href={'/discover'}>
+//             <Button type={'secondary'} label={'Explore Communities'} />
+//           </Link>
+//         </div>
+//       </div>
+//       <div className={styles.hero_right}>
+//         <img src={heroGraphic.src} alt="" />
+//       </div>
 //     </div>
 //   )
 // }
+
+function Hero() {
+  return (
+    <>
+      <img className={styles.heroLeft} src={heroGradLeft.src} alt="" />
+      <img className={styles.heroRight} src={heroGradRight.src} alt="" />
+      <div className={styles.new_hero}>
+        <span className={styles.new_heroText}>
+          <h1 className={styles.new_heroTitle}>
+            Start your Web3 Journey with <span className={styles.gradientText}>Truts</span>
+          </h1>
+          <h2>Discover, join, contribute and earn.</h2>
+          <button className={styles.black_btn}> <img src={searchIcon.src} alt="" /> Explore Communities</button>
+        </span>
+        <img src={heroImg.src} alt="" className={styles.heroImg} />
+        <div className={styles.heroStat}>
+          <div className={styles.stat}>
+            <h3>700+</h3>
+            <p>Community Listed</p>
+          </div>
+          <div className={styles.stat}>
+            <h3>350+</h3>
+            <p>Reviews Posted</p>
+          </div>
+          <div className={styles.stat}>
+            <h3>600+</h3>
+            <p>Onboarded</p>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 
 // STAT CARD COMPONENT
 function StatCards() {
