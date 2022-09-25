@@ -123,9 +123,9 @@ function Hero() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.hero_left}>
-        <h1>Contribute, Reviews &</h1>
-        <h1 className={styles.gradientText}>Communities.</h1>
-        <p>Discover, Contribute, Review and Earn with cool communities you love, Anonymously!</p>
+        <h1>Start your Web3</h1>
+        <h1 >journey with <span className={styles.gradientText}>Truts.</span></h1>
+        <p>Discover, join, contribute and earn</p>
         <div className={styles.cta_btns}>
           <Button onClick={() => {
             let sc = document.querySelector('#search_box');

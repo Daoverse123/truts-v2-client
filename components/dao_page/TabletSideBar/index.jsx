@@ -29,6 +29,9 @@ let getChainIcon = (chain) => {
     if (chain == 'polygon-pos') {
         return <img key={chain} src={matic_chain_icon.src} alt="" />
     }
+    if (chain == 'polygon-pos') {
+        return <img key={chain} src={matic_chain_icon.src} alt="" />
+    }
     else {
         return (<span className={styles.chain_tag}>{chain}</span>)
     }
@@ -87,6 +90,9 @@ const TabletSideBar = ({ dao_data }) => {
         }
         if (chain == 'near') {
             return <img key={chain} src={near_chain_icon.src} alt="" />
+        }
+        if (chain == 'polygon-pos') {
+            return <img key={chain} src={matic_chain_icon.src} alt="" />
         }
         if (chain == 'polygon-pos') {
             return <img key={chain} src={matic_chain_icon.src} alt="" />
