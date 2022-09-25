@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './footer.module.scss'
+import Link from 'next/link'
 
 //COMPONENTS
 import Button from '../Button'
@@ -15,16 +16,16 @@ export default function Component() {
             <h1 className={styles.footerTitle}>Love what we do? Truts your guts and join us now!</h1>
             <Button label={'Join Community'} />
             <ul className={styles.links}>
-                <li>Home</li>
-                <li>Add a Community</li>
-                <li>Explore Communities</li>
-                <li>Review Communities</li>
-                <li>Contact Us</li>
+                <Link href={'./'} > <li>Home</li></Link>
+                <Link href={'./add-your-community'} ><li>Add a Community</li></Link>
+                <Link href={'./discover'} ><li>Explore Communities</li></Link>
+                <Link href={'./discover'} ><li>Review Communities</li></Link>
+                <Link href={'https://discord.truts.xyz'} ><li>Contact Us</li></Link>
             </ul>
             <span className={styles.socialIcons}>
-                <img src={twitter_w.src} alt="" />
-                <img src={discord_w.src} alt="" />
-                <img src={web_w.src} alt="" />
+                <img onClick={'https://twitter.truts.xyz'} src={twitter_w.src} alt="" />
+                <img onClick={'https://discord.truts.xyz'} src={discord_w.src} alt="" />
+                <img onClick={'https://truts.xyz'} src={web_w.src} alt="" />
             </span>
             <ul className={styles.tnc}>
                 <li>Terms & Conditions</li>
