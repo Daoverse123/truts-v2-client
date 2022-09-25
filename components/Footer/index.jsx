@@ -24,7 +24,7 @@ export default function Component() {
                 <Link href={'/'} ><li>Home</li></Link>
                 <Link href={'/add-your-community'} ><li>Add a Community</li></Link>
                 <Link href={'/discover'} ><li>Explore Communities</li></Link>
-                <Link href={'/discover'} ><li>Review Communities</li></Link>
+                {/* <Link href={'/discover'} ><li>Review Communities</li></Link> */}
                 <Link href={'https://discord.truts.xyz'} ><li>Contact Us</li></Link>
             </ul>
             <span className={styles.socialIcons}>

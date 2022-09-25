@@ -17,11 +17,11 @@ import star_filled_gradient from '../../assets/icons/star_filled_gradient.svg'
 import close_btn from '../../assets/icons/close_icon.svg'
 
 let sideNavTabs = {
-    "Types of Communities": "",
+    "Categories": "",
     "Network Chains": "",
-    "Discord Members": "",
-    "Twitter Followers": "",
-    "Ratings": ""
+    "Ratings": "",
+    "Discord Member Count": "",
+    "Twitter Follower Count": "",
 }
 
 // CONSTANTS
@@ -427,17 +427,17 @@ const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
     }
     if (label == Object.keys(sideNavTabs)[2] && collapseState[2]) {
         return (
-            <DiscordMembers visible={collapseState[1]} state={state} dispatch={dispatch} />
+            <RatingComp visible={collapseState[4]} state={state} dispatch={dispatch} />
         )
     }
     if (label == Object.keys(sideNavTabs)[3] && collapseState[3]) {
         return (
-            <TwitterFollowers visible={collapseState[1]} state={state} dispatch={dispatch} />
+            <DiscordMembers visible={collapseState[1]} state={state} dispatch={dispatch} />
         )
     }
     if (label == Object.keys(sideNavTabs)[4] && collapseState[4]) {
         return (
-            <RatingComp visible={collapseState[4]} state={state} dispatch={dispatch} />
+            <TwitterFollowers visible={collapseState[1]} state={state} dispatch={dispatch} />
         )
     }
     else { return <></> }

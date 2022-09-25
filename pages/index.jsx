@@ -341,7 +341,7 @@ function Leaderboard_mobile_entry({ idx, data }) {
 function Leaderboard_mobile({ data }) {
   return (
     <div className={styles.mobile_leaderboard_con}>
-      <h1 className={styles.sec_title}>Our Communities Leaderboard</h1>
+      <h1 className={styles.sec_title}>community leaderboard</h1>
       <div className={styles.leaderboard_list}>
         {data.map((ele, idx) => {
           return (<Leaderboard_mobile_entry data={ele} key={'ml' + idx} idx={idx + 1} />)

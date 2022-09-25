@@ -79,6 +79,7 @@ $TABLET_N: 425;
         color: #f2f2f2;
         cursor: pointer;
 
+
         @media (max-width: $LAPTOP) and (min-width: $TABLET) {
             font-size: laptop_to_tablet_fluid(16);
         }

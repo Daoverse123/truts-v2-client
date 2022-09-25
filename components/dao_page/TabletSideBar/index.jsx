@@ -14,28 +14,10 @@ import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
 import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
 import near_chain_icon from '../../../assets/icons/near_chain_icon.svg'
 import matic_chain_icon from '../../../assets/icons/matic_chain_icon.svg'
+import binance_smart_chain from '../../../assets/icons/bsc_chain_icon.svg'
 import globe_white from '../../../assets/icons/web_white.svg'
 
-let getChainIcon = (chain) => {
-    if (chain == 'solana') {
-        return <img key={chain} src={sol_chain_icon.src} alt="" />
-    }
-    if (chain == 'ethereum') {
-        return <img key={chain} src={eth_chain_icon.src} alt="" />
-    }
-    if (chain == 'near') {
-        return <img key={chain} src={near_chain_icon.src} alt="" />
-    }
-    if (chain == 'polygon-pos') {
-        return <img key={chain} src={matic_chain_icon.src} alt="" />
-    }
-    if (chain == 'polygon-pos') {
-        return <img key={chain} src={matic_chain_icon.src} alt="" />
-    }
-    else {
-        return (<span className={styles.chain_tag}>{chain}</span>)
-    }
-}
+
 
 const TabletSideBar = ({ dao_data }) => {
 
@@ -94,8 +76,8 @@ const TabletSideBar = ({ dao_data }) => {
         if (chain == 'polygon-pos') {
             return <img key={chain} src={matic_chain_icon.src} alt="" />
         }
-        if (chain == 'polygon-pos') {
-            return <img key={chain} src={matic_chain_icon.src} alt="" />
+        if (chain == 'binance-smart-chain') {
+            return <img key={chain} src={binance_smart_chain.src} alt="" />
         }
         else {
             return (<span className={styles.chain_tag}>{chain}</span>)

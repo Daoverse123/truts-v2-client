@@ -69,9 +69,9 @@ $PHONE_N: 425;
         font-size: 25px;
     }
     @media (max-width: $PHONE) {
-        font-size: 25px;
-        width: 180px;
+        font-size: 20px;
         text-align: center;
+        width: fit-content;
     }
 }
 

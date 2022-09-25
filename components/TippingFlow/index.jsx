@@ -228,11 +228,11 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
                     </div>
                 }
                 <div className={styles.options}>
-                    <img src={setting.src} alt="" />
+                    {/* <img src={setting.src} alt="" /> */}
                     <img onClick={() => { seterrorMessage(undefined); settippingFlowVisible(false) }} src={close_icon.src} alt="" />
                 </div>
                 <h1 className={styles.title}>Tip the reviewer</h1>
-                <h3 className={styles.subtitle}>Please enter the amout you would like to tip. Change the chain network in settings menu</h3>
+                <h3 className={styles.subtitle}>Please enter the amout you would like to tip.</h3>
                 <h4 className={styles.tag}>Pay With</h4>
                 <span className={styles.tokenInput}>
                     <div className={styles.tokenSymbol}>

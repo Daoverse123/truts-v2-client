@@ -147,7 +147,7 @@ function DaoForm() {
                     </label>
 
                     <label htmlFor="">
-                        <p>Add a One Linear for your Community</p>
+                        <p>Add a One Liner for your Community</p>
                         <textarea
                             required
                             value={state.dao_mission}
@@ -237,7 +237,7 @@ function DaoForm() {
                         </label>
 
                         <label htmlFor="">
-                            <p>Mirror link</p>
+                            <p>Blog Link</p>
                             <input
                                 required
                                 value={state.mirror_link}
@@ -252,7 +252,7 @@ function DaoForm() {
                     </span>
 
                     <label htmlFor="">
-                        <p>Additional links</p>
+                        <p>Additional link</p>
                         <input
                             required
                             value={state.additional_link}
@@ -336,7 +336,7 @@ const CategotyCon = ({ state, setState }) => {
     return (
         <>
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
-                <p>What’s the category of your Community? (max 3 categories)</p>
+                <p>What categories does your Community belong to? (max 3 categories)</p>
                 {(true) && <div className={styles.slectedTags}>
                     <p className={styles.p}>Selected Categories :</p>
 
@@ -466,7 +466,7 @@ const ChainSelectCon = ({ state, setState }) => {
     return (
         <>
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
-                <p>Select the Blockchain your Community based on (max 3 categories)</p>
+                <p>Select the Blockchain your community is based on (max 3)</p>
                 {(true) && <div className={styles.slectedTags}>
                     <p className={styles.p}>Selected Chains :</p>
 

@@ -405,6 +405,9 @@ $PHONE_N: 426;
 
     .bottom_nav {
         display: flex;
+        span {
+            cursor: pointer;
+        }
         .iconText {
             display: flex;
             margin-right: 25px;
@@ -450,10 +453,6 @@ $PHONE_N: 426;
     font-size: 3vw;
     font-weight: 500;
     opacity: 0.4;
-    display: flex;
-}
-
-.chain_tag{
     display: flex;
 }
 
