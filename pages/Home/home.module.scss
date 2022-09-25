@@ -981,7 +981,7 @@ $PHONE_N: 425;
 .heroRight {
     position: absolute;
     right: 0;
-    bottom: 0;
+    top: 15%;
 }
 
 .heroImg {
@@ -1125,13 +1125,13 @@ $PHONE_N: 425;
         position: absolute;
         left: 0;
         top: 0;
-        width: 50%;
+        width: 90%;
     }
 
     .heroRight {
         position: absolute;
         right: 0;
-        bottom: 0;
+        top: 30%;
         width: 50%;
     }
 
@@ -1163,8 +1163,9 @@ $PHONE_N: 425;
         margin-top: 45px;
         margin-bottom: 45px;
         width: 90%;
-        .stat{
-            h3,p{
+        .stat {
+            h3,
+            p {
                 text-align: center;
             }
         }
