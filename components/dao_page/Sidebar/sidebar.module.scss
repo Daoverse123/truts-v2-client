@@ -135,6 +135,7 @@ $PHONE_N: 426;
         align-items: center;
         flex-wrap: wrap;
         width: 100%;
+        height: max-content;
         padding: 10px 0;
         border-bottom: 1px solid rgba(224, 224, 224, 1);
         p {
@@ -144,9 +145,11 @@ $PHONE_N: 426;
         .chain_icons {
             display: flex;
             margin-left: auto;
+            height: max-content;
             column-gap: 8px;
-            height: 24px;
             width: auto;
+            flex-wrap: wrap;
+            row-gap: 10px;
         }
         .chain_tag {
             display: flex;

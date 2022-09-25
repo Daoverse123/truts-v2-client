@@ -116,12 +116,17 @@ $PHONE_N: 426;
         margin-top: 20px;
         border-bottom: 1px solid rgba(224, 224, 224, 1);
         padding-bottom: 10px;
+        flex-wrap: wrap;
+        height: fit-content;
         p {
             font-size: 13px;
         }
         span {
             display: flex;
             column-gap: 8px;
+            flex-wrap: wrap;
+            height: fit-content;
+            row-gap: 10px;
             img {
                 min-width: 53px;
                 height: 24px;
@@ -236,7 +241,6 @@ $PHONE_N: 426;
     }
 }
 
-
 .chain_tag {
     display: flex;
     margin-left: auto;
@@ -248,4 +252,5 @@ $PHONE_N: 426;
     padding: 0 10px;
     justify-content: center;
     align-items: center;
+    text-transform: capitalize;
 }
