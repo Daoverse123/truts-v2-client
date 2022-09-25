@@ -16,7 +16,7 @@ export default function Component() {
             <h1 className={styles.footerTitle}>Love what we do? Truts your guts and join us now!</h1>
             <Button label={'Join Community'} />
             <ul className={styles.links}>
-                <Link href={'./'} > <li>Home</li></Link>
+                <Link href={'/'} ><li>Home</li></Link>
                 <Link href={'./add-your-community'} ><li>Add a Community</li></Link>
                 <Link href={'./discover'} ><li>Explore Communities</li></Link>
                 <Link href={'./discover'} ><li>Review Communities</li></Link>
