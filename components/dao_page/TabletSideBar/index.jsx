@@ -6,8 +6,9 @@ import React, { useState, useEffect } from 'react'
 import numFormatter from '../../../utils/numFormatter'
 import openNewTab from '../../../utils/openNewTab'
 
-//assets
+import chainIconMap from '../../../components/chainIconMap.json'
 
+//assets
 import discord_white from '../../../assets/icons/twitter_white.svg'
 import twitter_white from '../../../assets/icons/discord_white.svg'
 import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
@@ -64,24 +65,10 @@ const TabletSideBar = ({ dao_data }) => {
     }
 
     let getChainIcon = (chain) => {
-        if (chain == 'solana') {
-            return <img key={chain} src={sol_chain_icon.src} alt="" />
-        }
-        if (chain == 'ethereum') {
-            return <img key={chain} src={eth_chain_icon.src} alt="" />
-        }
-        if (chain == 'near') {
-            return <img key={chain} src={near_chain_icon.src} alt="" />
-        }
-        if (chain == 'polygon-pos') {
-            return <img key={chain} src={matic_chain_icon.src} alt="" />
-        }
-        if (chain == 'binance-smart-chain') {
-            return <img key={chain} src={binance_smart_chain.src} alt="" />
-        }
-        else {
-            return (<span className={styles.chain_tag}>{chain}</span>)
-        }
+        return (<span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
+            <img src={chainIconMap[chain].icon} alt="" />
+            {chainIconMap[chain].ticker}
+        </span>)
     }
 
 

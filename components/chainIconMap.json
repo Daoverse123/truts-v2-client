@@ -1,0 +1,138 @@
+{
+    "near": {
+        "ticker": "NEAR",
+        "icon": "https://assets.coingecko.com/coins/images/10365/small/near_icon.png?1601359077",
+        "color": "#f2f2f2"
+    },
+    "ethereum": {
+        "ticker": "ETH",
+        "icon": "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880",
+        "color": "#e3d1ff"
+    },
+    "avalanche": {
+        "ticker": "AVAX",
+        "icon": "https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png?1604021818",
+        "color": "#ffa6a7"
+    },
+    "arbitrum-one": {
+        "ticker": "ARRB",
+        "icon": "https://pbs.twimg.com/profile_images/1490751860461953029/046qIxwT_400x400.jpg",
+        "color": "#ccecff"
+    },
+    "optimistic-ethereum": {
+        "ticker": "OP",
+        "icon": "https://assets.coingecko.com/coins/images/25244/small/Optimism.png?1660904599",
+        "color": "#ffa6a7"
+    },
+    "binance-smart-chain": {
+        "ticker": "BSC",
+        "icon": "https://assets.coingecko.com/markets/images/52/small/binance.jpg?1519353250",
+        "color": "#fffdcf"
+    },
+    "solana": {
+        "ticker": "SOL",
+        "icon": "https://assets.coingecko.com/coins/images/4128/small/solana.png?1640133422",
+        "color": "#b0ffd7"
+    },
+    "flow": {
+        "ticker": "FLOW",
+        "icon": "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776"
+    },
+    "energi": {
+        "ticker": "NRG",
+        "icon": "https://assets.coingecko.com/coins/images/5795/small/3218.png?1604798557"
+    },
+    "moonriver": {
+        "ticker": "MOVR",
+        "icon": "https://assets.coingecko.com/coins/images/17984/small/9285.png?1630028620"
+    },
+    "fantom": {
+        "ticker": "FTM",
+        "icon": "https://assets.coingecko.com/coins/images/4001/small/Fantom.png?1558015016"
+    },
+    "harmony-shard-0": {
+        "ticker": "ONE",
+        "icon": "https://assets.coingecko.com/coins/images/4344/small/Y88JAze.png?1565065793"
+    },
+    "cosmos": {
+        "ticker": "ATOM",
+        "icon": "https://assets.coingecko.com/coins/images/1481/small/cosmos_hub.png?1555657960"
+    },
+    "arweave": {
+        "ticker": "AR",
+        "icon": "https://assets.coingecko.com/coins/images/4343/small/oRt6SiEN_400x400.jpg?1591059616"
+    },
+    "celestia": {
+        "ticker": "CEL",
+        "icon": "https://icodrops.com/wp-content/uploads/2022/01/Celestia_logo-150x150.jpeg"
+    },
+    "meter": {
+        "ticker": "MTRG",
+        "icon": "https://assets.coingecko.com/coins/images/11848/small/meter.png?1660274270"
+    },
+    "blockscout": {
+        "ticker": "blockscout",
+        "icon": "https://pbs.twimg.com/profile_images/1563254263161032704/1RBJKVcR_400x400.jpg"
+    },
+    "algorand": {
+        "ticker": "ALGO",
+        "icon": "https://assets.coingecko.com/coins/images/4380/small/download.png?1547039725"
+    },
+    "metis": {
+        "ticker": "METIS",
+        "icon": "https://assets.coingecko.com/coins/images/15595/small/metis.jpeg?1660285312"
+    },
+    "celo": {
+        "ticker": "CELO",
+        "icon": "https://assets.coingecko.com/coins/images/11090/small/icon-celo-CELO-color-500.png?1592293590"
+    },
+    "polkadot": {
+        "ticker": "DOT",
+        "icon": "https://assets.coingecko.com/coins/images/12171/small/polkadot.png?1639712644"
+    },
+    "bitcoin": {
+        "ticker": "BTC",
+        "icon": "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579"
+    },
+    "cardano": {
+        "ticker": "ADA",
+        "icon": "https://assets.coingecko.com/coins/images/975/small/cardano.png?1547034860"
+    },
+    "boba": {
+        "ticker": "BOBA",
+        "icon": "https://assets.coingecko.com/coins/images/20285/small/BOBA.png?1636811576"
+    },
+    "cronos": {
+        "ticker": "CRO",
+        "icon": "https://assets.coingecko.com/coins/images/7310/small/oCw2s3GI_400x400.jpeg?1645172042"
+    },
+    "tezos": {
+        "ticker": "XTZ",
+        "icon": "https://assets.coingecko.com/coins/images/976/small/Tezos-logo.png?1547034862"
+    },
+    "heco": {
+        "ticker": "HECO",
+        "icon": "https://pbs.twimg.com/profile_images/1479376443197263873/3Oeayev6_400x400.jpg"
+    },
+    "aurora": {
+        "ticker": "AURORA",
+        "icon": "https://assets.coingecko.com/coins/images/20582/small/aurora.jpeg?1637250883"
+    },
+    "thor": {
+        "ticker": "THOR",
+        "icon": "https://pbs.twimg.com/profile_images/1573334671508865025/DjovsG7w_400x400.jpg"
+    },
+    "ronin": {
+        "ticker": "RON",
+        "icon": "https://assets.coingecko.com/coins/images/20009/small/ronin.jpg?1649184678"
+    },
+    "aptos": {
+        "ticker": "APT",
+        "icon": "https://assets.coingecko.com/coins/images/26455/small/Aptos_mark_BLK.png?1658118095"
+    },
+    "polygon-pos": {
+        "ticker": "MATIC",
+        "icon": "https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png?1624446912",
+        "color": "#feb5ff"
+    }
+}

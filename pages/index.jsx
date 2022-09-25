@@ -27,8 +27,6 @@ import twitter_w from '../assets/icons/twitter_white.svg'
 import discord_w from '../assets/icons/discord_white.svg'
 import Link from 'next/link'
 
-
-
 // CONSTANTS
 const API = process.env.API
 const CATEGORY_LIST = ['all', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Event']
@@ -113,7 +111,7 @@ const getDynamicCategoryDaoList = async (setter) => {
 }
 
 
-// HERO COMPONENT
+//HERO COMPONENT
 function Hero() {
   return (
     <div className={styles.hero}>
@@ -142,6 +140,14 @@ function Hero() {
     </div>
   )
 }
+
+// function Hero() {
+//   return (
+//     <div className={styles.new_hero}>
+
+//     </div>
+//   )
+// }
 
 // STAT CARD COMPONENT
 function StatCards() {

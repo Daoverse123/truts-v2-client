@@ -127,10 +127,6 @@ $PHONE_N: 426;
             column-gap: 8px;
             flex-wrap: wrap;
             row-gap: 10px;
-            img {
-                min-width: 53px;
-                height: 24px;
-            }
         }
     }
     .dialCon {
@@ -246,10 +242,15 @@ $PHONE_N: 426;
     column-gap: 8px;
     height: 24px;
     width: auto;
-    background-color: rgb(2, 196, 196);
     border-radius: 5px;
     padding: 0 10px;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
+    background-color: rgb(204, 204, 204);
+    img {
+        width: 16px;
+        height: fit-content;
+        border-radius: 100%;
+    }
 }
