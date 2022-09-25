@@ -121,11 +121,10 @@ $PHONE_N: 426;
         p {
             font-size: 13px;
         }
-        span {
+        .chain_icons {
             display: flex;
             column-gap: 8px;
             flex-wrap: wrap;
-            height: fit-content;
             row-gap: 10px;
             img {
                 min-width: 53px;
@@ -243,7 +242,6 @@ $PHONE_N: 426;
 
 .chain_tag {
     display: flex;
-    margin-left: auto;
     column-gap: 8px;
     height: 24px;
     width: auto;
