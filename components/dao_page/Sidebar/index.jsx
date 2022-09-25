@@ -108,8 +108,6 @@ const Sidebar = ({ dao_data }) => {
                             return getChainIcon(ele)
                         })
                     }
-
-                    {/* <img src={sol_chain_icon.src} alt="" /> */}
                 </span>
             </span>
             <div className={styles.dialSec}>
