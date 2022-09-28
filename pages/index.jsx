@@ -168,7 +168,7 @@ function Hero() {
         <div className={styles.heroStat}>
           <div className={styles.stat}>
             <h3>700+</h3>
-            <p>Community Listed</p>
+            <p>Communities Listed</p>
           </div>
           <div className={styles.stat}>
             <h3>350+</h3>
