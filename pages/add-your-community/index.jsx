@@ -48,6 +48,7 @@ const CATEGORY_LIST = ['DAO',
     'Public Good',
     'Education'];
 const CHAIN_LIST = ['Ethereum', 'Polygon', 'Solana', 'Near', 'Cardano']
+const CHAIN_LIST_MAP = { 'Ethereum': "ethereum", 'Polygon': "polygon-pos", 'Solana': "solana", 'Near': 'near', 'Cardano': 'cardano' }
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
 
@@ -98,7 +99,7 @@ function DaoForm() {
         console.log('address :', address)
 
         try {
-            let res = await axios.post(`${API}/dao/create-new-dao-v2`, { ...state, submitter_public_address: address });
+            let res = await axios.post(`${API}/dao/create-new-dao-v2`, { ...state, chain: state.chain.map(ch => CHAIN_LIST_MAP[ch]), submitter_public_address: address });
             if (res.status == 201) {
                 console.log("redirect")
                 window.location.href = './status/community-listed-success'
