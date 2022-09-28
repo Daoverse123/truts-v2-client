@@ -999,7 +999,7 @@ $PHONE_N: 425;
         font-size: 72px;
         width: 713px;
         line-height: 120%;
-        font-weight: 900;
+        font-weight: 700;
         margin-bottom: 20px;
     }
     h2 {
@@ -1026,6 +1026,8 @@ $PHONE_N: 425;
     margin-top: 40px;
     img {
         margin-right: 10px;
+        width: 24px;
+        filter: invert(100%);
     }
 }
 

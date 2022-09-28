@@ -26,6 +26,7 @@ import web_w from '../assets/icons/web_white.svg'
 import twitter_w from '../assets/icons/twitter_white.svg'
 import discord_w from '../assets/icons/discord_white.svg'
 import search_white from '../assets/icons/search_white.svg'
+import binoculars_icon from '../assets/icons/binoculars_icon.svg'
 
 //new hero
 import heroGradLeft from '../assets/leftGrad.png'
@@ -159,9 +160,9 @@ function Hero() {
             Start your Web3 Journey with <span className={styles.gradientText}>Truts</span>
           </h1>
           <h2>Discover, join, contribute and earn.</h2>
-          <button onClick={()=>{
+          <button onClick={() => {
             openNewTab('http://truts.xyz/discover');
-          }} className={styles.black_btn}> <img src={searchIcon.src} alt="" /> Explore Communities</button>
+          }} className={styles.black_btn}> <img src={binoculars_icon.src} alt="" /> Discover Communities</button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
@@ -175,7 +176,7 @@ function Hero() {
           </div>
           <div className={styles.stat}>
             <h3>600+</h3>
-            <p>Onboarded</p>
+            <p>Contributors Onboarded</p>
           </div>
         </div>
       </div>
@@ -324,7 +325,7 @@ let Entry = ({ idx, data }) => {
 function Leaderboard({ data }) {
   return (
     <div className={styles.leaderboard}>
-      <h1 className={styles.leaderboard_title}>Our Community Leaderboard</h1>
+      <h1 className={styles.leaderboard_title}>Community Leaderboard</h1>
       <ul className={styles.tableHead}>
         <li className={styles.th1}>Position</li>
         <li className={styles.th2}>Name of the DAO</li>
@@ -381,7 +382,7 @@ function Leaderboard_mobile_entry({ idx, data }) {
 function Leaderboard_mobile({ data }) {
   return (
     <div className={styles.mobile_leaderboard_con}>
-      <h1 className={styles.sec_title}>community leaderboard</h1>
+      <h1 className={styles.sec_title}>Community Leaderboard</h1>
       <div className={styles.leaderboard_list}>
         {data.map((ele, idx) => {
           return (<Leaderboard_mobile_entry data={ele} key={'ml' + idx} idx={idx + 1} />)
@@ -439,7 +440,7 @@ function RecentReviewsSection() {
 
   return (
     <div className={styles.recentReviewsCon}>
-      <h1 className={styles.sec_title}>Recent reviews</h1>
+      <h1 className={styles.sec_title}>Recent Reviews</h1>
       <div className={styles.reviewCon}
         onMouseEnter={() => {
           setmotion(true);
