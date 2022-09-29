@@ -103,6 +103,7 @@
     width: 100%;
     justify-content: space-between;
     cursor: pointer;
+    padding-right: 10px;
     p {
         font-size: 18px;
         font-weight: 500;
@@ -140,6 +141,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-right: 10px;
     .option {
         margin-bottom: -10px;
     }
@@ -153,14 +155,30 @@
     flex-direction: column;
     width: 100%;
     height: max-content;
+    max-height: 50vh;
+    overflow-y: auto;
     margin-bottom: 12px;
-
+    padding-right: 10px;
     .reset {
         width: 100%;
         text-align: right;
         color: #d84f57;
         margin-top: 10px;
         cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #b1b1b1;
     }
 }
 
@@ -224,7 +242,7 @@
     flex-direction: column;
     width: 100%;
     height: max-content;
-
+    padding-right: 10px;
     .starComp {
         display: flex;
         column-gap: 17.5px;
