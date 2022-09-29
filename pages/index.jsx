@@ -36,7 +36,44 @@ import heroImg from '../assets/hero_img.png'
 
 // CONSTANTS
 const API = process.env.API
-const CATEGORY_LIST = ['all', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Event']
+//const CATEGORY_LIST = ['all', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Event']
+
+const CATEGORY_LIST = ['DAO',
+  'Media',
+  'Investment',
+  'Service',
+  'Grant',
+  'Social',
+  'DAO tool',
+  'Defi',
+  'CeFi',
+  'TradeFi',
+  'BlockFi',
+  'Lending',
+  'Yield aggregator',
+  'Stablecoin',
+  'NFT',
+  'Metaverse',
+  'Art',
+  'Music',
+  'NFT marketplace',
+  'Utilities',
+  'Analytics',
+  'Payment',
+  'Oracle',
+  'Games',
+  'Infrastructure',
+  'Wallet',
+  'Indexer',
+  'Storage',
+  'Identity',
+  'Exchange',
+  'Community',
+  'Guild',
+  'Marketing tool',
+  'Public Good',
+  'Education'];
+
 
 // MAIN COMPONENT
 export default function Home({ daoList_ssr, leaderboard_ssr }) {
@@ -221,13 +258,33 @@ function CommunitiesWall({ daoList }) {
   }
 
   const scrolltoEnd = () => {
-    document.querySelector('#cat_container').scrollLeft = 99999;
+    // document.querySelector('#cat_container').scrollLeft = 99999;
+    let rightArrow = document.querySelector('.' + styles.scrollEnd);
+    let rightMarker = rightArrow.getBoundingClientRect().x;
+    let list = document.querySelector('#cat_container').childNodes;
+    let startingPoint;
+    list = [...list].forEach((ele, idx) => {
+      let x = ele.getBoundingClientRect().x;
+      let delta = rightMarker - x;
+      console.log(delta, ele.innerText)
+      if (delta > 0) {
+        startingPoint = ele;
+      }
+    })
+    console.log(startingPoint.innerText);
+    document.querySelector('#cat_container').scrollLeft = document.querySelector('#cat_container').scrollLeft + startingPoint.getBoundingClientRect().x;
   }
+
   const scrolltoStart = () => {
     document.querySelector('#cat_container').scrollLeft = 0;
+    // let list = document.querySelector('#cat_container').childNodes;
+    // console.log(list);
   }
 
   let categoryTabs = CATEGORY_LIST.map((ele, idx) => {
+    if (daoList[ele].length <= 0) {
+      return null
+    }
     return (
       <button
         id={`t${idx}`}
@@ -245,11 +302,11 @@ function CommunitiesWall({ daoList }) {
     <div className={styles.wall_of_communties}>
       <h1 className={styles.sec_title}>Our Wall of Communities</h1>
       <div className={styles.categoryTabConWrapper}>
-        {(scrollPosDefault) && <button className={styles.scrollStart} onClick={scrolltoStart} />}
+        <button className={styles.scrollStart} onClick={scrolltoStart} />
         <div id='cat_container' className={styles.categoryTabCon} onScroll={categoryTabsOnScroll}>
           {categoryTabs}
         </div>
-        {(!scrollPosDefault) && <button className={styles.scrollEnd} onClick={scrolltoEnd} />}
+        <button className={styles.scrollEnd} onClick={scrolltoEnd} />
       </div>
       <div className={styles.cardCon} key={selectedTab}>
         {

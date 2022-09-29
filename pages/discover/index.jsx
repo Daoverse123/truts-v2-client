@@ -26,8 +26,44 @@ let sideNavTabs = {
 
 // CONSTANTS
 const API = process.env.API
-const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
+//const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
+const CATEGORY_LIST = ['DAO',
+    'Media',
+    'Investment',
+    'Service',
+    'Grant',
+    'Social',
+    'DAO tool',
+    'Defi',
+    'CeFi',
+    'TradeFi',
+    'BlockFi',
+    'Lending',
+    'Yield aggregator',
+    'Stablecoin',
+    'NFT',
+    'Metaverse',
+    'Art',
+    'Music',
+    'NFT marketplace',
+    'Utilities',
+    'Analytics',
+    'Payment',
+    'Oracle',
+    'Games',
+    'Infrastructure',
+    'Wallet',
+    'Indexer',
+    'Storage',
+    'Identity',
+    'Exchange',
+    'Community',
+    'Guild',
+    'Marketing tool',
+    'Public Good',
+    'Education'];
 
+    
 let discordFollowers = {
     '0 to 5K': { min: 0, max: 5000 },
     '5K to 15K': { min: 0, max: 15000 },
