@@ -12,14 +12,16 @@ import openNewTab from '../../utils/openNewTab'
 import web_w from '../../assets/icons/web_white.svg'
 import twitter_w from '../../assets/icons/twitter_white.svg'
 import discord_w from '../../assets/icons/discord_white.svg'
+import arrow_icon from '../../assets/icons/arrow-right.svg'
 
 export default function Component() {
     return (
         <div className={styles.footer}>
-            <h1 className={styles.footerTitle}>Love what we do? Truts your guts and join us now!</h1>
-            <Button onClick={() => {
-                openNewTab('https://discord.truts.xyz')
-            }} label={'Join Community'} />
+            <h1 className={styles.footerTitle}>Subscribe to our newsletter</h1>
+            <span className={styles.email}>
+                <input placeholder='Email Address' type="text" />
+                <img src={arrow_icon.src} alt="" />
+            </span>
             <ul className={styles.links}>
                 <Link href={'/'} ><li>Home</li></Link>
                 <Link href={'/add-your-community'} ><li>Add a Community</li></Link>

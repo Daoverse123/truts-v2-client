@@ -1145,7 +1145,7 @@ $PHONE_N: 425;
 
     .new_heroText {
         margin: 0 auto;
-        margin-top: 350px;
+        margin-top: 400px;
         .new_heroTitle,
         h2 {
             text-align: center;
@@ -1161,15 +1161,15 @@ $PHONE_N: 425;
         }
     }
     .black_btn {
-        margin: 0 auto;
+        margin: 10vw auto;
     }
 
     .heroStat {
         justify-content: center;
         flex-wrap: wrap;
         margin: 0 auto;
-        margin-top: 45px;
-        margin-bottom: 45px;
+        margin-top: 0px;
+        margin-bottom: 0px;
         width: 90%;
         .stat {
             h3,
