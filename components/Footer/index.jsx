@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './footer.module.scss'
 import Link from 'next/link'
+import axios from 'axios'
 
 //COMPONENTS
 import Button from '../Button'
+
+// CONSTANTS
+const API = process.env.API
 
 //utils 
 import openNewTab from '../../utils/openNewTab'
@@ -15,12 +19,39 @@ import discord_w from '../../assets/icons/discord_white.svg'
 import arrow_icon from '../../assets/icons/arrow-right.svg'
 
 export default function Component() {
+
+    const [email, setemail] = useState('');
+    const [saved, setsaved] = useState(false);
+    console.log(email);
+    const saveEmail = async () => {
+        const validateEmail = (email) => {
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
+        if (!validateEmail(email)) {
+            return alert("Please enter a valid email");
+        }
+        let res = await axios.get(`${API}/email-save?email=${email.toLowerCase()}`);
+        if (res) {
+            setsaved(true);
+        }
+        else {
+            alert("Something went wrong! please try again")
+        }
+    }
     return (
         <div className={styles.footer}>
-            <h1 className={styles.footerTitle}>Subscribe to our newsletter</h1>
+            {(saved) ? <h1 style={{ color: "#48C9B0 " }} className={styles.footerTitle}>Thanks for Subscribing to our newsletter</h1> : <h1 className={styles.footerTitle}>Subscribe to our newsletter</h1>}
             <span className={styles.email}>
-                <input placeholder='Email Address' type="text" />
-                <img src={arrow_icon.src} alt="" />
+                <input value={email} onChange={(e) => {
+                    setemail(e.target.value);
+                }} placeholder={'Enter Email address'} type="text" />
+                <img onClick={() => {
+                    saveEmail();
+                }} src={arrow_icon.src} alt="" />
             </span>
             <ul className={styles.links}>
                 <Link href={'/'} ><li>Home</li></Link>
