@@ -119,6 +119,7 @@ $PHONE_N: 426;
         width: 972px;
         padding-top: 44px;
         padding-bottom: 33px;
+
     }
 
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
@@ -184,6 +185,9 @@ $PHONE_N: 426;
 
 .navSec {
     display: flex;
+    flex-wrap: wrap;
+    //justify-content: center;
+    row-gap: 10px;
     list-style: none;
     font-weight: 400;
     font-size: 20px;
@@ -191,9 +195,13 @@ $PHONE_N: 426;
     padding: 0;
     column-gap: 40px;
     width: 1080px;
+    padding: 0 1vw;
     li {
         border-bottom: 2px solid rgba(0, 0, 255, 0);
         cursor: pointer;
+        padding-bottom: 8px;
+        border-bottom: 2px solid rgba(0, 0, 255, 0);
+     
     }
     .selected {
         padding-bottom: 8px;
@@ -203,6 +211,7 @@ $PHONE_N: 426;
 
     @media (max-width: $LAPTOP) {
         width: 972px;
+        justify-content: center;
     }
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
         width: laptop_to_tablet_fluid(972);

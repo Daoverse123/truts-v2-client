@@ -92,6 +92,14 @@ function Dao({ dao_data, rid, slug }) {
 
                     <h1 className={styles.coming_soon}>Coming Soon..</h1>
                 </div>}
+                {(selected == "Ecosystem") && <div className={styles.content}>
+
+                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                </div>}
+                {(selected == "Members") && <div className={styles.content}>
+
+                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                </div>}
                 <Footer />
             </div >
         </>
@@ -105,7 +113,9 @@ const NavSec = ({ selected, setSelected }) => {
                 [
                     'Reviews',
                     'Opportunites',
-                    'Insights'
+                    'Insights',
+                    'Ecosystem',
+                    'Members'
                 ].map((ele, i) => {
                     return (
                         <li
