@@ -85,20 +85,19 @@ function Dao({ dao_data, rid, slug }) {
 
                 </div>}
                 {(selected == "Opportunites") && <div className={styles.content}>
-                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
-
+                    <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
                 </div>}
                 {(selected == "Insights") && <div className={styles.content}>
 
-                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
                 </div>}
                 {(selected == "Ecosystem") && <div className={styles.content}>
 
-                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
                 </div>}
                 {(selected == "Members") && <div className={styles.content}>
 
-                    <h1 className={styles.coming_soon}>Coming Soon..</h1>
+                <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
                 </div>}
                 <Footer />
             </div >

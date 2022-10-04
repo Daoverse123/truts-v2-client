@@ -119,7 +119,6 @@ $PHONE_N: 426;
         width: 972px;
         padding-top: 44px;
         padding-bottom: 33px;
-
     }
 
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
@@ -201,7 +200,6 @@ $PHONE_N: 426;
         cursor: pointer;
         padding-bottom: 8px;
         border-bottom: 2px solid rgba(0, 0, 255, 0);
-     
     }
     .selected {
         padding-bottom: 8px;
@@ -458,11 +456,13 @@ $PHONE_N: 426;
 }
 
 .coming_soon {
-    margin: 15vh auto;
-    font-size: 3vw;
-    font-weight: 500;
-    opacity: 0.4;
+    width: 100%;
+    max-width: 500px;
+    height: fit-content;
     display: flex;
+    margin: 0 auto;
+    margin-top: 5vw;
+   // outline: 1px solid red;
 }
 
 @keyframes appear {
