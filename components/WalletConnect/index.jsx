@@ -214,7 +214,7 @@ const walletIconMap = {
     'Coinbase Wallet': coinbase_wallet.src,
     'WalletConnect': wallet_connect.src,
     'Phantom': phantom_icon.src
-}
+}  
 
 const chainIconMap = {
     'Ethereum': eth_icon.src,
