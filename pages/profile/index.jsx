@@ -10,12 +10,15 @@ import downArrow from '../../assets/icons/down_arrow.svg'
 
 //components
 import Nav from '../../components/Nav'
+import Footer from '../../components/Footer'
+
+
 let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
 function Profile() {
     const [selected, setSelected] = useState('Reviews');
     return (
         <>
-            <Nav />
+            <Nav  isStrech={true} isFloating />
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
                     <img className={styles.profileImg} src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000" alt="" />
@@ -219,6 +222,7 @@ function Profile() {
                 </div>
 
             </div>
+            <Footer />
         </>
     )
 }
