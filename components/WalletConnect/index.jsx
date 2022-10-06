@@ -5,7 +5,7 @@ import {
     useConnect,
     useDisconnect,
 } from 'wagmi';
-
+import * as nearAPI from "near-api-js";
 import { Buffer } from "buffer";
 
 //assets
@@ -17,6 +17,7 @@ import coinbase_wallet from '../../assets/icons/coinbase-icon.png'
 import close_icon from '../../assets/icons/close_icon.svg'
 import other_wallet from '../../assets/icons/other-wallet.png'
 import phantom_icon from '../../assets/icons/phantom.avif'
+import near_icon from '../../assets/icons/near_chain_icon.png'
 
 
 // { wallet state
@@ -78,6 +79,7 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
                 </div>
                 {(selectedChain == 'Ethereum') && < Eth_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
                 {(selectedChain == 'Solana') && <Solana_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
+                {(selectedChain == 'Near') && <Near_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
             </div>
         </div>)
 }
@@ -207,18 +209,89 @@ const Solana_wallets = ({ setwalletState, closePopUp }) => {
 }
 
 
-const Chains = ['Ethereum', 'Solana']
+
+const Near_wallets =  ({ setwalletState, closePopUp }) => {
+
+    const { connect, keyStores, WalletConnection } = nearAPI;
+
+    const connectionConfig = {
+        networkId: "testnet",
+        keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+    };
+
+    const walletConnection = null;
+
+    const connect_near = async () => {
+        // connect to NEAR
+        const nearConnection = await connect(connectionConfig);
+
+        // create wallet connection
+        walletConnection = new WalletConnection(nearConnection);
+
+        // const walletConnection = new WalletConnection(nearConnection);
+        walletConnection.requestSignIn(
+            "example-contract.testnet", // contract requesting access
+            // "Example App", // optional title
+            // "http://truts.xyz", // optional redirect URL on success
+            // "http://YOUR-URL.com/failure" // optional redirect URL on failure
+        );
+
+
+    }
+
+
+    return (
+        <div className={styles.list}>
+            <Wallet
+                onClick={async () => {
+                    await connect_near()
+                    if (walletConnection != null) {
+                        if (walletConnection.isSignedIn()) {
+                            // user is signed in
+                            // const walletConnection = new WalletConnection(nearConnection);
+                            const walletAccountObj = walletConnection.account();
+                            console.log('near connection established', walletAccountObj);
+
+                        }
+                        setwalletState({
+                            address: res.address,
+                            chain: "Near",
+                            status: "connected"
+                        })
+                        localStorage.setItem('wallet_state', JSON.stringify({
+                            address: res.address,
+                            chain: "Near",
+                            status: "connected"
+                        }));
+                    }
+
+                }
+                } icon={walletIconMap['Near'] || other_wallet.src} name={"Near"}
+            />
+        </div>
+    )
+}
+
+
+
+const Chains = ['Ethereum', 'Solana', 'Near']
 
 const walletIconMap = {
     'MetaMask': metamask.src,
     'Coinbase Wallet': coinbase_wallet.src,
     'WalletConnect': wallet_connect.src,
-    'Phantom': phantom_icon.src
+    'Phantom': phantom_icon.src,
+    'Near': near_icon.src
 }
 
 const chainIconMap = {
     'Ethereum': eth_icon.src,
     'Solana': sol_icon.src,
+    'Near': near_icon.src,
 }
 
 
