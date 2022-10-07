@@ -119,6 +119,8 @@ const ProfileDropDown = ({ walletState }) => {
         }
         else if (chain == Chains[1]) {
             localStorage.clear();
+        } else if (chain == Chains[2]) {
+            localStorage.clear();
         }
         setTimeout(() => {
             window.updateNav()
@@ -264,4 +266,4 @@ const SearchSuggestionEntry = ({ data }) => {
 
 
 
-const Chains = ['Ethereum', 'Solana']
+const Chains = ['Ethereum', 'Solana', 'Near']
