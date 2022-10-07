@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from './profile.module.scss'
-
+import ReactTooltip from 'react-tooltip';
 import chainIconMap from '../../components/chainIconMap.json'
 
 //assets
@@ -50,6 +50,7 @@ function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
     return (
         <>
+            <ReactTooltip backgroundColor={"#747c90"} />
             <Nav isStrech={true} isFloating />
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
@@ -78,17 +79,20 @@ function Profile() {
                             </div>
                         </div>
                         <div className={styles.walletTabs}>
-                            <div style={{ background: chainIconMap['ethereum'].color, borderColor: chainIconMap['ethereum'].color }} className={styles.tab}>
+                            <div onClick={() => { copyToClipBoard("sample address") }} id='w1' data-tip="Copy Address" style={{ background: chainIconMap['ethereum'].color, borderColor: chainIconMap['ethereum'].color }} className={styles.tab}>
                                 <img src={chainIconMap['ethereum'].icon} alt="" />
                                 0xe4....cfe
+                                <ReactTooltip backgroundColor={"#747c90"} />
                             </div>
-                            <div style={{ background: chainIconMap['solana'].color, borderColor: chainIconMap['solana'].color }} className={styles.tab}>
+                            <div onClick={() => { copyToClipBoard("sample address") }} id='w2' data-tip="Copy Address" style={{ background: chainIconMap['solana'].color, borderColor: chainIconMap['solana'].color }} className={styles.tab}>
                                 <img src={chainIconMap['solana'].icon} alt="" />
                                 0xe4....cfe
+                                <ReactTooltip backgroundColor={"#747c90"} />
                             </div>
-                            <div style={{ background: chainIconMap['near'].color, borderColor: chainIconMap['near'].color }} className={styles.tab}>
+                            <div onClick={() => { copyToClipBoard("sample address") }} id='w3' data-tip="Copy Address" style={{ background: chainIconMap['near'].color, borderColor: chainIconMap['near'].color }} className={styles.tab}>
                                 <img src={chainIconMap['near'].icon} alt="" />
                                 0xe4....cfe
+                                <ReactTooltip backgroundColor={"#747c90"} />
                             </div>
                         </div>
                     </div>
@@ -160,7 +164,7 @@ const ReviewComp = () => {
                 <div className={styles.userInfo}>
                     <img className={styles.profilePic} src={Placeholder} alt="" />
                     <span>
-                        <p className={styles.address}>Review for <span className={styles.daoName}>Bankless</span></p>
+                        <p className={styles.address}>Bankless</p>
                         <StarComp size={'s'} rating={4} />
                     </span>
                 </div>
@@ -379,6 +383,8 @@ const Communities = () => {
     )
 }
 
-
+const copyToClipBoard = (txt) => {
+    navigator.clipboard.writeText(txt);
+}
 
 export default Profile           

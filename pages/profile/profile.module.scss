@@ -76,6 +76,7 @@ $PHONE_N: 426;
             border-radius: 8px;
             font-weight: 400;
             font-size: 14px;
+            cursor: pointer;
             img {
                 height: 18px;
                 border-radius: 100%;
@@ -345,13 +346,9 @@ $PHONE_N: 426;
 
         .address {
             font-weight: 500;
-            font-size: 16px;
             margin-bottom: 8px;
-            color: #8C93A3;
-        }
-        .daoName{
             color: black;
-            font-size: 24px;
+            font-size: 18px;
         }
     }
 
