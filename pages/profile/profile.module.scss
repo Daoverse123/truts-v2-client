@@ -301,9 +301,102 @@ $PHONE_N: 426;
             height: 24px;
             border-radius: 15px;
         }
-        .arrow{
+        .arrow {
             margin-left: auto;
-            width: 20 px;
+            width: 20px;
         }
+    }
+}
+
+.reviewCon {
+    display: flex;
+    flex-direction: column;
+    width: 1080px;
+    row-gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 150px;
+}
+
+.reviewComp {
+    display: flex;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    padding: 24px;
+    padding-bottom: 8px;
+    border-radius: 16px;
+    flex-direction: column;
+    height: auto;
+
+    .profilePic {
+        display: flex;
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        background-size: contain;
+    }
+
+    .userInfo {
+        display: flex;
+        align-items: center;
+        p {
+            margin: 0;
+        }
+
+        .address {
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #8C93A3;
+        }
+        .daoName{
+            color: black;
+            font-size: 24px;
+        }
+    }
+
+    .review_desc {
+        margin-top: 16.5px;
+        //margin-bottom: 10px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 140%;
+        white-space: pre-wrap;
+    }
+
+    .bottom_nav {
+        display: flex;
+        span {
+            cursor: pointer;
+        }
+        .iconText {
+            display: flex;
+            margin-right: 25px;
+            align-items: center;
+            img {
+                margin-right: 4.5px;
+                height: 16.46px;
+            }
+        }
+    }
+}
+
+.starComp {
+    display: flex;
+    column-gap: 10px;
+    img {
+        width: 20px;
+        height: 20px;
+        padding: 0;
+    }
+}
+
+.starComp_small {
+    display: flex;
+    column-gap: 8px;
+    img {
+        width: 16px;
+        height: 16px;
+        padding: 0;
     }
 }
