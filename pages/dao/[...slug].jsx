@@ -132,7 +132,7 @@ const NavSec = ({ selected, setSelected }) => {
 const InfoSec = ({ dao_data }) => {
     let { dao_name, review_count, dao_category, dao_cover, average_rating, slug } = dao_data
 
-    let info = dao_data.description + '\n' + dao_data.dao_mission
+    let info = dao_data.dao_mission + '\n' + dao_data.description
 
     const [showmore, setshowmore] = useState(false);
 
