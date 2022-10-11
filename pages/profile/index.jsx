@@ -3,16 +3,15 @@ import styles from './profile.module.scss'
 import ReactTooltip from 'react-tooltip';
 import chainIconMap from '../../components/chainIconMap.json'
 
-//assets
-import discord_icon from '../../assets/icons/twitter_white.svg'
-import twitter_icon from '../../assets/icons/discord_white.svg'
-import downArrow from '../../assets/icons/down_arrow.svg'
-
 //components
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
 
-//
+//assets
+import discord_icon from '../../assets/icons/twitter_white.svg'
+import twitter_icon from '../../assets/icons/discord_white.svg'
+import downArrow from '../../assets/icons/down_arrow.svg'
+import eth_icon from '../../assets/icons/eth-icon.png'
 import gradient_star_filled from '../../assets/icons/star_gradient.svg'
 import gradient_star_blank from '../../assets/icons/star_gradient_blank.svg'
 import down_arrow from '../../assets/icons/down_arrow.svg'
@@ -32,7 +31,8 @@ const NavSec = ({ selected, setSelected }) => {
             {
                 [
                     'Communities',
-                    'Reviews'
+                    'Reviews',
+                    'Token/NFTs'
                 ].map((ele, i) => {
                     return (
                         <li
@@ -108,6 +108,7 @@ function Profile() {
                 {(selectedNav == 'Contributions') && <></>}
                 {(selectedNav == 'Reviews') && <Reviews />}
                 {(selectedNav == 'Communities') && <></>}
+                {(selectedNav == 'Token/NFTs') && <TokenNftCon />}
 
 
 
@@ -380,6 +381,147 @@ const Communities = () => {
                 </div>
             </div>
         </>
+    )
+}
+
+const TokenNftCon = () => {
+    const [selectedTab, setselectedTab] = useState('NFTS')
+    console.log(selectedTab)
+    return (
+        <section className={styles.tokenNftSec}>
+            <div className={styles.tokenSwitch}>
+                <button onClick={() => { setselectedTab('NFTS') }} className={(selectedTab == 'NFTS') ? styles.btnSwitchSelected : styles.btnSwitch}>NFTs</button>
+                <button onClick={() => { setselectedTab('TOKENS') }} className={(selectedTab == 'TOKENS') ? styles.btnSwitchSelected : styles.btnSwitch}>Tokens</button>
+            </div>
+            {(selectedTab == 'NFTS') && <Nfts />}
+            {(selectedTab == 'TOKENS') && <Tokens />}
+        </section>
+    )
+}
+
+const Nfts = () => {
+    return (
+        <>
+            <div className={styles.statCards}>
+                <div className={styles.stat}>
+                    <h3>Value of Assets</h3>
+                    <p>till Date</p>
+                    <h1 style={{ color: "#44AC21" }}>$3.4K</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>Avg Floor Price</h3>
+                    <p>for all NFTs</p>
+                    <h1>1.2ETH</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>Most Precious NFT</h3>
+                    <p>till date</p>
+                    <h1>BAYC</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>No. of NFTs</h3>
+                    <p>Updated 1m ago</p>
+                    <h1>46</h1>
+                </div>
+            </div>
+            <div className={styles.nfts}>
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+                <NftCon />
+            </div>
+        </>
+    )
+}
+
+const NftCon = () => {
+    return (
+        <div className={styles.nftCon}>
+            <img src='/grad.jpg' className={styles.cover} alt='' />
+
+
+            <div className={styles.info}>
+                <h3>NFT Title #3456</h3>
+                <p>Last Price</p>
+                <span className={styles.price}>
+                    <img src={eth_icon.src} alt="" />
+                    <h4>10.01</h4>
+                </span>
+            </div>
+        </div >
+    )
+}
+
+const Tokens = () => {
+    return (
+        <>
+            <div className={styles.statCards}>
+                <div className={styles.stat}>
+                    <h3>Value of Assets</h3>
+                    <p>till Date</p>
+                    <h1 style={{ color: "#44AC21" }}>$3.4K</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>Biggest Bag</h3>
+                    <p>for all Tokens</p>
+                    <h1>1.2ETH</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>No. of Tokens</h3>
+                    <p>till date</p>
+                    <h1>384</h1>
+                </div>
+                <div className={styles.stat}>
+                    <h3>Dataset XYZ</h3>
+                    <p>Updated 1m ago</p>
+                    <h1>46</h1>
+                </div>
+            </div>
+            <div className={styles.tokens}>
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+                <Token />
+            </div>
+        </>
+    )
+}
+
+const Token = () => {
+    return (
+        <div className={styles.token}>
+            <img className={styles.tokenLogo} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="" />
+            <span className={styles.topLine}>
+                <span className={styles.tokenName}>BTC <p>Bitcoin</p></span>
+                <h3>$1,238</h3>
+            </span>
+            <span className={styles.bottomLine}>
+                <p>$36,500</p>
+                <p>0.05</p>
+            </span>
+        </div>
     )
 }
 
