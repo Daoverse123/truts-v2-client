@@ -15,6 +15,10 @@ $PHONE_N: 426;
     background: #f7f7f7;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: $PHONE) {
+        padding-top: 80px;
+    }
 }
 
 .profileHeader {
@@ -28,6 +32,15 @@ $PHONE_N: 426;
     margin-top: 144px;
     justify-content: center;
     position: relative;
+
+    @media (max-width: $PHONE) {
+        width: 95%;
+        height: fit-content;
+        margin: 0 16px;
+        padding: 0 16px;
+        padding-top: 16px;
+    }
+
     .profileImg {
         width: 200px;
         height: 200px;
@@ -35,10 +48,24 @@ $PHONE_N: 426;
         border: 10px solid rgba(246, 246, 246, 1);
         position: absolute;
         margin-left: 40px;
+        @media (max-width: $PHONE) {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            margin: 0 auto;
+            border-radius: 15px;
+            border: none;
+            position: relative;
+            margin-bottom: 25px;
+        }
     }
 
     .data {
         margin-left: 276px;
+
+        @media (max-width: $PHONE) {
+            margin-left: 0;
+        }
     }
     .name {
         font-weight: 600;
@@ -51,14 +78,21 @@ $PHONE_N: 426;
         margin: 0;
         width: 505px;
         margin: 16px 0;
+        @media (max-width: $PHONE) {
+            width: 100%;
+        }
     }
 
     .tabs {
         display: flex;
         column-gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        padding-left: 5px;
         .tab {
             display: flex;
             font-weight: 400;
+            min-width: max-content;
             font-size: 12px;
             background: #ffffff;
             border: 0.5px solid #747c90;
@@ -69,7 +103,9 @@ $PHONE_N: 426;
 
     .walletTabs {
         @extend .tabs;
-        margin-top: 16px;
+        margin-top: 6px;
+        flex-wrap: wrap;
+        row-gap: 8px;
         .tab {
             background: #eaefff;
             border: 1px solid #cdd9ff;
@@ -124,6 +160,9 @@ $PHONE_N: 426;
             border-radius: 32px;
         }
     }
+    @media (max-width: $PHONE) {
+        width: 100%;
+    }
 }
 
 .socialIcon {
@@ -138,6 +177,9 @@ $PHONE_N: 426;
         width: 14.57px;
     }
     filter: invert(100%);
+    @media (max-width: $PHONE) {
+        display: none;
+    }
 }
 
 .navSec {
@@ -184,6 +226,12 @@ $PHONE_N: 426;
         column-gap: phone_fluid(40);
         width: 100%;
         justify-content: center;
+        li {
+            margin: 0;
+            p {
+                margin: 0;
+            }
+        }
     }
 }
 
@@ -218,6 +266,33 @@ $PHONE_N: 426;
             margin: 0;
             margin-top: auto;
             color: #3065f3;
+        }
+    }
+
+    @media (max-width: $PHONE) {
+        justify-content: unset;
+        width: 343px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 1fr 1fr;
+        justify-items: center;
+        gap: 24px;
+        margin: 20px auto;
+        .stat {
+            width: 163px !important ;
+            height: 130px;
+            h3 {
+                font-weight: 500;
+                font-size: 14px;
+            }
+            p {
+                font-weight: 400;
+                font-size: 10px;
+            }
+            h1 {
+                font-weight: 500;
+                font-size: 28px;
+            }
         }
     }
 }
@@ -316,6 +391,11 @@ $PHONE_N: 426;
     row-gap: 16px;
     margin-top: 16px;
     margin-bottom: 150px;
+
+    @media (max-width: $PHONE) {
+        width: 100%;
+        align-items: center;
+    }
 }
 
 .reviewComp {
@@ -376,6 +456,10 @@ $PHONE_N: 426;
             }
         }
     }
+
+    @media (max-width: $PHONE) {
+        width: 90%;
+    }
 }
 
 .starComp {
@@ -403,6 +487,10 @@ $PHONE_N: 426;
     flex-direction: column;
     width: 1080px;
     margin-bottom: 150px;
+    @media (max-width: $PHONE) {
+        width: 90%;
+        height: max-content;
+    }
 
     .tokenSwitch {
         display: flex;
@@ -412,6 +500,12 @@ $PHONE_N: 426;
         border-radius: 12px;
         margin-top: 28px;
         padding: 4px;
+        @media (max-width: $PHONE) {
+            width: 100%;
+            min-height: 46px;
+            height: max-content;
+            border-radius: 8px;
+        }
 
         .btnSwitchSelected {
             display: flex;
@@ -424,6 +518,11 @@ $PHONE_N: 426;
             justify-content: center;
             align-items: center;
             font-size: 15px;
+            @media (max-width: $PHONE) {
+                border-radius: 8px;
+                font-size: 14px;
+                min-height: 46px;
+            }
         }
         .btnSwitch {
             display: flex;
@@ -435,6 +534,14 @@ $PHONE_N: 426;
             justify-content: center;
             align-items: center;
             font-size: 15px;
+            @media (max-width: $PHONE) {
+                border-radius: 8px;
+                font-size: 14px;
+                min-height: 46px;
+            }
+            &:hover {
+                color: blue;
+            }
         }
     }
 }
@@ -446,6 +553,11 @@ $PHONE_N: 426;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
+    @media (max-width: $PHONE) {
+        width: 100%;
+        height: max-content;
+        justify-content: center;
+    }
 }
 
 .nftCon {
@@ -456,6 +568,12 @@ $PHONE_N: 426;
     border-radius: 8px;
     overflow: hidden;
     flex-direction: column;
+
+    @media (max-width: $PHONE) {
+        width: 163.5px;
+        height: 236px;
+    }
+
     .cover {
         display: flex;
         width: 100%;
@@ -463,6 +581,9 @@ $PHONE_N: 426;
         background-color: #3065f3;
         background-position: center;
         background-size: cover;
+        @media (max-width: $PHONE) {
+            height: 163px;
+        }
     }
     .info {
         padding: 12px;
@@ -491,6 +612,20 @@ $PHONE_N: 426;
                 margin: 0;
             }
         }
+        @media (max-width: $PHONE) {
+            h3 {
+                font-size: 12px;
+            }
+            p {
+                font-size: 8px;
+            }
+            .price {
+                h4 {
+                    font-weight: 600;
+                    font-size: 10px;
+                }
+            }
+        }
     }
 }
 
@@ -500,6 +635,9 @@ $PHONE_N: 426;
     width: 1080px;
     margin-top: 16px;
     gap: 16px;
+    @media (max-width: $PHONE) {
+        width: 100%;
+    }
 }
 
 .token {
@@ -517,12 +655,18 @@ $PHONE_N: 426;
     background: #ffffff;
     border-radius: 8px;
     padding: 25px 24px;
-
+    align-items: center;
     .tokenLogo {
         height: 44px;
         width: 44px;
         grid-area: a;
-        margin-top: 5px;
+        // margin-top: 5px;
+    }
+
+    @media (max-width: $PHONE) {
+        width: 100%;
+        grid-template-columns: 2fr 10fr;
+        padding: 18px 16px;
     }
 }
 
@@ -558,5 +702,139 @@ $PHONE_N: 426;
     p {
         margin: 0;
         color: #5c657d;
+    }
+}
+
+.xp {
+    display: flex;
+    width: 972px;
+    flex-direction: column;
+}
+
+.XpSec {
+    @extend .tokenNftSec;
+}
+
+.xpChipCon {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.xpChipWrapper {
+    background: #ffffff;
+    box-shadow: 0px 2.41684px 3.62525px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    width: 522px;
+    padding: 22px 15.6px;
+    // padding-bottom: 0;
+    height: fit-content;
+
+    .status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 15px;
+        .progress {
+            display: flex;
+            width: 389px;
+            height: 2px;
+            background: #eeeff2;
+
+            .progressInner {
+                height: 100%;
+                width: 60%;
+                background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+                border-radius: 32px;
+            }
+        }
+
+        p {
+            font-weight: 400;
+            font-size: 12px;
+            margin: 0;
+        }
+    }
+    @media (max-width: $PHONE) {
+        .status {
+            .progress {
+                width: 100%;
+            }
+            p {
+                font-size: 7px;
+            }
+        }
+    }
+}
+
+.xpChip {
+    display: flex;
+    width: 100%;
+    //  height: 85px;
+    align-items: center;
+
+    img {
+        width: 45.81px;
+        height: 45.81px;
+    }
+    span {
+        margin-left: 18.5px;
+        h1,
+        p {
+            margin: 0;
+        }
+        h1 {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6.7px;
+            display: flex;
+            align-items: center;
+            span {
+                font-weight: 500;
+                font-size: 8px;
+                outline: 1px solid gray;
+                padding: 4px 14.5px;
+                border-radius: 15px;
+            }
+        }
+        p {
+            font-weight: 400;
+            font-size: 10px;
+        }
+    }
+    button {
+        background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+        box-shadow: 0px 5.09688px 6.3711px -1.27422px rgba(0, 0, 0, 0.08);
+        border-radius: 10.1938px;
+        border: none;
+        color: white;
+        padding: 8px 20.15px;
+        margin-left: auto;
+        width: fit-content;
+    }
+    @media (max-width: $PHONE) {
+        span {
+            h1 {
+                font-size: 10px;
+                span {
+                    font-size: 7px;
+                    padding: 2px 4px;
+                }
+            }
+            p {
+                font-size: 8px;
+            }
+        }
+        button {
+            width: max-content;
+            height: 21.03px;
+            font-weight: 600;
+            font-size: 8px;
+            border-radius: 7.45779px;
+            padding: 0 10px;
+        }
     }
 }

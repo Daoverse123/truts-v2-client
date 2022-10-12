@@ -20,6 +20,7 @@ import thumbs_down from '../../assets/icons/thumbs_down.svg'
 import share from '../../assets/icons/share_icon.svg'
 import tip from '../../assets/icons/tip_icon.svg'
 import loader from '../../assets/mini-loader.gif'
+import twitter_blue from '../../assets/icons/twitter_icon_blue.png'
 
 
 let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
@@ -32,14 +33,15 @@ const NavSec = ({ selected, setSelected }) => {
                 [
                     'Communities',
                     'Reviews',
+                    'Xp',
                     'Token/NFTs'
                 ].map((ele, i) => {
                     return (
                         <li
-                            className={(selected == ele) ? styles.selected : {}}
+                            className={(selected == ele) ? styles.selected : null}
                             onClick={() => {
                                 setSelected(ele)
-                            }} key={ele + i}>{ele}</li>
+                            }} key={ele + i}>{<p>{ele}</p>}</li>
                     )
                 })
             }
@@ -94,6 +96,11 @@ function Profile() {
                                 0xe4....cfe
                                 <ReactTooltip backgroundColor={"#747c90"} />
                             </div>
+                            <div onClick={() => { copyToClipBoard("sample address") }} id='w3' data-tip="Copy Address" style={{ background: chainIconMap['near'].color, borderColor: chainIconMap['near'].color }} className={styles.tab}>
+                                <img src={chainIconMap['near'].icon} alt="" />
+                                0xe4....cfe
+                                <ReactTooltip backgroundColor={"#747c90"} />
+                            </div>
                         </div>
                     </div>
 
@@ -105,13 +112,10 @@ function Profile() {
                 </div>
                 <NavSec selected={selectedNav} setSelected={setSelectedNav} />
                 {(selectedNav == 'Communities') && <Communities />}
-                {(selectedNav == 'Contributions') && <></>}
+                {(selectedNav == 'Xp') && <Xp />}
                 {(selectedNav == 'Reviews') && <Reviews />}
                 {(selectedNav == 'Communities') && <></>}
                 {(selectedNav == 'Token/NFTs') && <TokenNftCon />}
-
-
-
             </div>
             <Footer />
         </>
@@ -125,7 +129,7 @@ const Reviews = () => {
                 <div className={styles.stat}>
                     <h3>Last Review On</h3>
                     <p>till Date</p>
-                    <h1 style={{ color: "#44AC21" }}>12.07.2022</h1>
+                    <h1 style={{ color: "#44AC21" }}>12.07</h1>
                 </div>
                 <div className={styles.stat}>
                     <h3>Total No. of Reviews</h3>
@@ -243,7 +247,7 @@ const Communities = () => {
                 <div style={{ width: "fit-content" }} className={styles.stat}>
                     <h3>Your Most Active Community</h3>
                     <p>Updated 1m ago</p>
-                    <h1>Bankless DAO</h1>
+                    <h1>Bankless</h1>
                 </div>
                 <div className={styles.stat}>
                     <h3>Dataset XYZ</h3>
@@ -252,7 +256,7 @@ const Communities = () => {
                 </div>
             </div>
 
-            <div className={styles.list_communities}>
+            {/* <div className={styles.list_communities}>
                 <h1 className={styles.title}>List of Communities</h1>
                 <span className={styles.tableHead}>
                     <p className={styles.name}>Name</p>
@@ -379,7 +383,7 @@ const Communities = () => {
                         </span>
                     </span>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 }
@@ -400,6 +404,26 @@ const TokenNftCon = () => {
 }
 
 const Nfts = () => {
+
+
+    const Nft = () => {
+        return (
+            <div className={styles.nftCon}>
+                <img src='/grad.jpg' className={styles.cover} alt='' />
+
+
+                <div className={styles.info}>
+                    <h3>NFT Title #3456</h3>
+                    <p>Last Price</p>
+                    <span className={styles.price}>
+                        <img src={eth_icon.src} alt="" />
+                        <h4>10.01</h4>
+                    </span>
+                </div>
+            </div >
+        )
+    }
+
     return (
         <>
             <div className={styles.statCards}>
@@ -425,46 +449,46 @@ const Nfts = () => {
                 </div>
             </div>
             <div className={styles.nfts}>
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
-                <NftCon />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
+                <Nft />
             </div>
         </>
     )
 }
 
-const NftCon = () => {
-    return (
-        <div className={styles.nftCon}>
-            <img src='/grad.jpg' className={styles.cover} alt='' />
-
-
-            <div className={styles.info}>
-                <h3>NFT Title #3456</h3>
-                <p>Last Price</p>
-                <span className={styles.price}>
-                    <img src={eth_icon.src} alt="" />
-                    <h4>10.01</h4>
-                </span>
-            </div>
-        </div >
-    )
-}
 
 const Tokens = () => {
+
+    const Token = () => {
+        return (
+            <div className={styles.token}>
+                <img className={styles.tokenLogo} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="" />
+                <span className={styles.topLine}>
+                    <span className={styles.tokenName}>BTC <p>Bitcoin</p></span>
+                    <h3>$1,238</h3>
+                </span>
+                <span className={styles.bottomLine}>
+                    <p>$36,500</p>
+                    <p>0.05</p>
+                </span>
+            </div>
+        )
+    }
+
     return (
         <>
             <div className={styles.statCards}>
@@ -509,21 +533,85 @@ const Tokens = () => {
     )
 }
 
-const Token = () => {
+const Xp = () => {
+    const [selectedTab, setselectedTab] = useState('COMPLETED')
+    console.log(selectedTab)
+
+    const XpChip = ({ status }) => {
+        return (
+            <div className={styles.xpChipWrapper}>
+                <div className={styles.xpChip}>
+                    <img src={twitter_blue.src} alt="" />
+                    <span>
+                        <h1>Connect your twitter<span>Task Owner</span> </h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </span>
+                    <button>300 XP</button>
+                </div>
+                {(status) && <span className={styles.status}>
+                    <div className={styles.progress}>
+                        <span className={styles.progressInner}></span>
+                    </div>
+                    <p>60% Completed</p>
+                </span>}
+            </div>
+        )
+    }
+
     return (
-        <div className={styles.token}>
-            <img className={styles.tokenLogo} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="" />
-            <span className={styles.topLine}>
-                <span className={styles.tokenName}>BTC <p>Bitcoin</p></span>
-                <h3>$1,238</h3>
-            </span>
-            <span className={styles.bottomLine}>
-                <p>$36,500</p>
-                <p>0.05</p>
-            </span>
-        </div>
+        <section className={styles.XpSec}>
+            <div className={styles.tokenSwitch}>
+                <button onClick={() => { setselectedTab('COMPLETED') }} className={(selectedTab == 'COMPLETED') ? styles.btnSwitchSelected : styles.btnSwitch}>Completed</button>
+                <button onClick={() => { setselectedTab('ACTIVE') }} className={(selectedTab == 'ACTIVE') ? styles.btnSwitchSelected : styles.btnSwitch}>Active Tasks</button>
+            </div>
+            {
+                (selectedTab == 'COMPLETED') &&
+                <div className={styles.xpChipCon}>
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                    <XpChip />
+                </div>
+
+            }
+            {
+                (selectedTab == 'ACTIVE') &&
+                <div className={styles.xpChipCon}>
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                    <XpChip status={true} />
+                </div>
+
+            }
+        </section>
     )
 }
+
 
 const copyToClipBoard = (txt) => {
     navigator.clipboard.writeText(txt);

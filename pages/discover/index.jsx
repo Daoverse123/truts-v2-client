@@ -63,7 +63,7 @@ const CATEGORY_LIST = ['DAO',
     'Public Good',
     'Education'];
 
-    
+
 let discordFollowers = {
     '0 to 5K': { min: 0, max: 5000 },
     '5K to 15K': { min: 0, max: 15000 },
@@ -276,7 +276,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
         }
 
         //sorting
-        let sort = (daos) => {
+        let sort_by_rating = (daos) => {
             if (state['sort by'] == 'HL') {
                 let sorted_daos = daos.sort(
                     (a, b) => b.average_rating - a.average_rating
@@ -296,7 +296,8 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
             return daos;
         }
 
-        return sort(starFilter(tdRangeLimit(filterByCommunities(chainFilter(daos)))));
+
+        return sort_by_rating(starFilter(tdRangeLimit(filterByCommunities(chainFilter(daos))))).sort((a, b) => { return b.review_count - a.review_count });
 
     }
 
