@@ -114,7 +114,6 @@ function Profile() {
                 {(selectedNav == 'Communities') && <Communities />}
                 {(selectedNav == 'Xp') && <Xp />}
                 {(selectedNav == 'Reviews') && <Reviews />}
-                {(selectedNav == 'Communities') && <></>}
                 {(selectedNav == 'Token/NFTs') && <TokenNftCon />}
             </div>
             <Footer />
@@ -256,7 +255,7 @@ const Communities = () => {
                 </div>
             </div>
 
-            {/* <div className={styles.list_communities}>
+            <div className={styles.list_communities_desktop}>
                 <h1 className={styles.title}>List of Communities</h1>
                 <span className={styles.tableHead}>
                     <p className={styles.name}>Name</p>
@@ -383,7 +382,82 @@ const Communities = () => {
                         </span>
                     </span>
                 </div>
-            </div> */}
+            </div>
+            <div className={styles.list_communities_mobile}>
+                <h1 className={styles.title}>List of Communities</h1>
+                <span className={styles.daoListCon}>
+                    <div className={styles.daoEntry}>
+                        <span className={styles.daoName}>
+                            <img src="/grad.jpg" alt="" />
+                            <h1>Bankless DAO</h1>
+                        </span>
+                        <h2>Jul 22, 2021 83.5% Attendence Score</h2>
+                        <span className={styles.friends}>
+                            <img className={styles.friendImg} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 1}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 2}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 3}px)` }} src={Placeholder} alt="" />
+                            <span className={styles.text} style={{ transform: `translateX(${-4 * 2.5}px)`, width: "max-content" }}>+4 others</span>
+                        </span>
+                    </div>
+                    <div className={styles.daoEntry}>
+                        <span className={styles.daoName}>
+                            <img src="/grad.jpg" alt="" />
+                            <h1>Bankless DAO</h1>
+                        </span>
+                        <h2>Jul 22, 2021 83.5% Attendence Score</h2>
+                        <span className={styles.friends}>
+                            <img className={styles.friendImg} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 1}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 2}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 3}px)` }} src={Placeholder} alt="" />
+                            <span className={styles.text} style={{ transform: `translateX(${-4 * 2.5}px)`, width: "max-content" }}>+4 others</span>
+                        </span>
+                    </div>
+                    <div className={styles.daoEntry}>
+                        <span className={styles.daoName}>
+                            <img src="/grad.jpg" alt="" />
+                            <h1>Bankless DAO</h1>
+                        </span>
+                        <h2>Jul 22, 2021 83.5% Attendence Score</h2>
+                        <span className={styles.friends}>
+                            <img className={styles.friendImg} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 1}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 2}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 3}px)` }} src={Placeholder} alt="" />
+                            <span className={styles.text} style={{ transform: `translateX(${-4 * 2.5}px)`, width: "max-content" }}>+4 others</span>
+                        </span>
+                    </div>
+                    <div className={styles.daoEntry}>
+                        <span className={styles.daoName}>
+                            <img src="/grad.jpg" alt="" />
+                            <h1>Bankless DAO</h1>
+                        </span>
+                        <h2>Jul 22, 2021 83.5% Attendence Score</h2>
+                        <span className={styles.friends}>
+                            <img className={styles.friendImg} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 1}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 2}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 3}px)` }} src={Placeholder} alt="" />
+                            <span className={styles.text} style={{ transform: `translateX(${-4 * 2.5}px)`, width: "max-content" }}>+4 others</span>
+                        </span>
+                    </div>
+                    <div className={styles.daoEntry}>
+                        <span className={styles.daoName}>
+                            <img src="/grad.jpg" alt="" />
+                            <h1>Bankless DAO</h1>
+                        </span>
+                        <h2>Jul 22, 2021 83.5% Attendence Score</h2>
+                        <span className={styles.friends}>
+                            <img className={styles.friendImg} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 1}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 2}px)` }} src={Placeholder} alt="" />
+                            <img className={styles.friendImg} style={{ transform: `translateX(${-4 * 3}px)` }} src={Placeholder} alt="" />
+                            <span className={styles.text} style={{ transform: `translateX(${-4 * 2.5}px)`, width: "max-content" }}>+4 others</span>
+                        </span>
+                    </div>
+                </span>
+            </div>
         </>
     )
 }
@@ -391,39 +465,6 @@ const Communities = () => {
 const TokenNftCon = () => {
     const [selectedTab, setselectedTab] = useState('NFTS')
     console.log(selectedTab)
-    return (
-        <section className={styles.tokenNftSec}>
-            <div className={styles.tokenSwitch}>
-                <button onClick={() => { setselectedTab('NFTS') }} className={(selectedTab == 'NFTS') ? styles.btnSwitchSelected : styles.btnSwitch}>NFTs</button>
-                <button onClick={() => { setselectedTab('TOKENS') }} className={(selectedTab == 'TOKENS') ? styles.btnSwitchSelected : styles.btnSwitch}>Tokens</button>
-            </div>
-            {(selectedTab == 'NFTS') && <Nfts />}
-            {(selectedTab == 'TOKENS') && <Tokens />}
-        </section>
-    )
-}
-
-const Nfts = () => {
-
-
-    const Nft = () => {
-        return (
-            <div className={styles.nftCon}>
-                <img src='/grad.jpg' className={styles.cover} alt='' />
-
-
-                <div className={styles.info}>
-                    <h3>NFT Title #3456</h3>
-                    <p>Last Price</p>
-                    <span className={styles.price}>
-                        <img src={eth_icon.src} alt="" />
-                        <h4>10.01</h4>
-                    </span>
-                </div>
-            </div >
-        )
-    }
-
     return (
         <>
             <div className={styles.statCards}>
@@ -448,6 +489,40 @@ const Nfts = () => {
                     <h1>46</h1>
                 </div>
             </div>
+            <section className={styles.tokenNftSec}>
+                <div className={styles.tokenSwitch}>
+                    <button onClick={() => { setselectedTab('NFTS') }} className={(selectedTab == 'NFTS') ? styles.btnSwitchSelected : styles.btnSwitch}>NFTs</button>
+                    <button onClick={() => { setselectedTab('TOKENS') }} className={(selectedTab == 'TOKENS') ? styles.btnSwitchSelected : styles.btnSwitch}>Tokens</button>
+                </div>
+                {(selectedTab == 'NFTS') && <Nfts />}
+                {(selectedTab == 'TOKENS') && <Tokens />}
+            </section>
+        </>
+    )
+}
+
+const Nfts = () => {
+    const Nft = () => {
+        return (
+            <div className={styles.nftCon}>
+                <img src='/grad.jpg' className={styles.cover} alt='' />
+
+
+                <div className={styles.info}>
+                    <h3>NFT Title #3456</h3>
+                    <p>Last Price</p>
+                    <span className={styles.price}>
+                        <img src={eth_icon.src} alt="" />
+                        <h4>10.01</h4>
+                    </span>
+                </div>
+            </div >
+        )
+    }
+
+    return (
+        <>
+
             <div className={styles.nfts}>
                 <Nft />
                 <Nft />
@@ -491,28 +566,6 @@ const Tokens = () => {
 
     return (
         <>
-            <div className={styles.statCards}>
-                <div className={styles.stat}>
-                    <h3>Value of Assets</h3>
-                    <p>till Date</p>
-                    <h1 style={{ color: "#44AC21" }}>$3.4K</h1>
-                </div>
-                <div className={styles.stat}>
-                    <h3>Biggest Bag</h3>
-                    <p>for all Tokens</p>
-                    <h1>1.2ETH</h1>
-                </div>
-                <div className={styles.stat}>
-                    <h3>No. of Tokens</h3>
-                    <p>till date</p>
-                    <h1>384</h1>
-                </div>
-                <div className={styles.stat}>
-                    <h3>Dataset XYZ</h3>
-                    <p>Updated 1m ago</p>
-                    <h1>46</h1>
-                </div>
-            </div>
             <div className={styles.tokens}>
                 <Token />
                 <Token />

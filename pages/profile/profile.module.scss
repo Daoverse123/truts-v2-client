@@ -1,12 +1,27 @@
 $DESKTOP: 1440px;
-$LAPTOP: 1090px;
+$LAPTOP: 1080px;
 $TABLET: 768px;
-$PHONE: 426px;
+$PHONE: 450px;
 
 $DESKTOP_N: 1440;
-$LAPTOP_N: 1090;
+$LAPTOP_N: 1080;
 $TABLET_N: 768;
-$PHONE_N: 426;
+$PHONE_N: 450;
+
+//FLUID FUNCTIONS
+
+@function desktop_to_laptop_fluid($units) {
+    @return #{calc(($units / $DESKTOP_N) * 100)}vw;
+}
+@function laptop_to_tablet_fluid($units) {
+    @return #{calc(($units / $LAPTOP_N) * 100)}vw;
+}
+@function tablet_to_phone_fluid($units) {
+    @return #{calc(($units / $TABLET_N) * 100)}vw;
+}
+@function phone_fluid($units) {
+    @return #{calc(($units / $PHONE_N) * 100)}vw;
+}
 
 .profilePage {
     display: flex;
@@ -24,14 +39,20 @@ $PHONE_N: 426;
 .profileHeader {
     display: flex;
     flex-direction: column;
-    width: 1080px;
-    height: 311px;
     background: white;
     border-radius: 16px;
     margin: 0 auto;
-    margin-top: 144px;
     justify-content: center;
     position: relative;
+    width: 1080px;
+    height: 311px;
+    margin-top: 144px;
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        height: laptop_to_tablet_fluid(311);
+        margin-top: laptop_to_tablet_fluid(144);
+    }
 
     @media (max-width: $PHONE) {
         width: 95%;
@@ -42,27 +63,34 @@ $PHONE_N: 426;
     }
 
     .profileImg {
-        width: 200px;
-        height: 200px;
         border-radius: 100%;
         border: 10px solid rgba(246, 246, 246, 1);
         position: absolute;
+        width: 200px;
+        height: 200px;
         margin-left: 40px;
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            width: laptop_to_tablet_fluid(200);
+            height: laptop_to_tablet_fluid(200);
+            margin-left: laptop_to_tablet_fluid(40);
+        }
         @media (max-width: $PHONE) {
             width: 100%;
             height: 380px;
             object-fit: cover;
             margin: 0 auto;
-            border-radius: 15px;
+            border-radius: phone_fluid(15);
             border: none;
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: phone_fluid(25);
         }
     }
 
     .data {
         margin-left: 276px;
-
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            margin-left: laptop_to_tablet_fluid(276);
+        }
         @media (max-width: $PHONE) {
             margin-left: 0;
         }
@@ -71,6 +99,10 @@ $PHONE_N: 426;
         font-weight: 600;
         font-size: 32px;
         margin: 0;
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            font-weight: laptop_to_tablet_fluid(600);
+            font-size: laptop_to_tablet_fluid(32);
+        }
     }
     .bio {
         font-weight: 400;
@@ -78,6 +110,11 @@ $PHONE_N: 426;
         margin: 0;
         width: 505px;
         margin: 16px 0;
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            font-size: laptop_to_tablet_fluid(16);
+            width: laptop_to_tablet_fluid(505);
+            margin: laptop_to_tablet_fluid(16) 0;
+        }
         @media (max-width: $PHONE) {
             width: 100%;
         }
@@ -85,26 +122,36 @@ $PHONE_N: 426;
 
     .tabs {
         display: flex;
-        column-gap: 16px;
         overflow-x: auto;
+        column-gap: 16px;
         padding-bottom: 10px;
         padding-left: 5px;
         .tab {
             display: flex;
             font-weight: 400;
             min-width: max-content;
-            font-size: 12px;
             background: #ffffff;
             border: 0.5px solid #747c90;
+            font-size: 12px;
             border-radius: 8px;
             padding: 7.5px;
+        }
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            column-gap: laptop_to_tablet_fluid(16);
+            padding-bottom: laptop_to_tablet_fluid(10);
+            padding-left: laptop_to_tablet_fluid(5);
+            .tab {
+                font-size: laptop_to_tablet_fluid(12);
+                border-radius: laptop_to_tablet_fluid(8);
+                padding: laptop_to_tablet_fluid(7.5);
+            }
         }
     }
 
     .walletTabs {
         @extend .tabs;
-        margin-top: 6px;
         flex-wrap: wrap;
+        margin-top: 6px;
         row-gap: 8px;
         .tab {
             background: #eaefff;
@@ -117,6 +164,18 @@ $PHONE_N: 426;
                 height: 18px;
                 border-radius: 100%;
                 margin-right: 5px;
+            }
+        }
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            margin-top: laptop_to_tablet_fluid(6);
+            row-gap: laptop_to_tablet_fluid(8);
+            .tab {
+                border-radius: laptop_to_tablet_fluid(8);
+                font-size: laptop_to_tablet_fluid(14);
+                img {
+                    height: laptop_to_tablet_fluid(18);
+                    margin-right: laptop_to_tablet_fluid(5);
+                }
             }
         }
     }
@@ -134,23 +193,23 @@ $PHONE_N: 426;
         height: fit-content;
         h3 {
             font-weight: 600;
-            font-size: 18px;
             margin: 0;
             color: rgba(48, 101, 243, 1);
+            font-size: 18px;
         }
         p {
             font-weight: 400;
-            font-size: 12px;
             margin: 0;
             color: #8c93a3;
+            font-size: 12px;
         }
     }
     .progressBard {
         display: flex;
         width: 100%;
-        height: 2px;
         background: #eeeff2;
         border-radius: 92.8323px;
+        height: 2px;
         margin-top: 4px;
         span {
             display: flex;
@@ -158,6 +217,25 @@ $PHONE_N: 426;
             width: 50%;
             background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
             border-radius: 32px;
+        }
+    }
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(353);
+        margin-bottom: laptop_to_tablet_fluid(12);
+        .levelCount {
+            h3 {
+                font-size: laptop_to_tablet_fluid(18);
+            }
+            p {
+                font-size: laptop_to_tablet_fluid(12);
+            }
+        }
+        .progressBard {
+            height: laptop_to_tablet_fluid(2);
+            margin-top: laptop_to_tablet_fluid(4);
+            span {
+                border-radius: laptop_to_tablet_fluid(32);
+            }
         }
     }
     @media (max-width: $PHONE) {
@@ -182,6 +260,8 @@ $PHONE_N: 426;
     }
 }
 
+////////////////////////////////////////////////////////////////
+
 .navSec {
     display: flex;
     flex-wrap: wrap;
@@ -199,13 +279,20 @@ $PHONE_N: 426;
     li {
         border-bottom: 2px solid rgba(0, 0, 255, 0);
         cursor: pointer;
-        padding-bottom: 8px;
         border-bottom: 2px solid rgba(0, 0, 255, 0);
+        p {
+            padding: 0;
+            margin: 0;
+            margin-bottom: 10px;
+        }
     }
     .selected {
-        padding-bottom: 8px;
         border-bottom: 2px solid blue;
         font-weight: 500;
+        p {
+            padding: 0;
+            margin: 0;
+        }
     }
 
     @media (max-width: $LAPTOP) {
@@ -237,73 +324,94 @@ $PHONE_N: 426;
 
 .statCards {
     display: flex;
+    justify-content: space-between;
     width: 1080px;
     margin-top: 24px;
-    justify-content: space-between;
     .stat {
         display: flex;
         flex-direction: column;
+        background-color: white;
         padding: 16px;
         width: 252px;
         height: 130px;
-        background-color: white;
         border-radius: 8px;
         h3 {
+            margin: 0;
             font-weight: 500;
             font-size: 16px;
-            margin: 0;
             margin-bottom: 5px;
         }
         p {
             font-weight: 400;
-            font-size: 10px;
             margin: 0;
             color: #8c93a3;
+            font-size: 10px;
         }
         h1 {
             font-weight: 500;
-            font-size: 32px;
             margin: 0;
             margin-top: auto;
             color: #3065f3;
+            font-size: 32px;
+        }
+    }
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        margin-top: laptop_to_tablet_fluid(24);
+        .stat {
+            padding: laptop_to_tablet_fluid(16);
+            width: laptop_to_tablet_fluid(252);
+            height: laptop_to_tablet_fluid(130);
+            border-radius: laptop_to_tablet_fluid(8);
+            h3 {
+                font-size: laptop_to_tablet_fluid(16);
+                margin-bottom: laptop_to_tablet_fluid(5);
+            }
+            p {
+                font-size: laptop_to_tablet_fluid(10);
+            }
+            h1 {
+                font-size: laptop_to_tablet_fluid(32);
+            }
         }
     }
 
     @media (max-width: $PHONE) {
         justify-content: unset;
-        width: 343px;
+        width: 90%;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-areas: 1fr 1fr;
         justify-items: center;
-        gap: 24px;
-        margin: 20px auto;
+        gap: phone_fluid(24);
+        margin: phone_fluid(20) auto;
         .stat {
-            width: 163px !important ;
-            height: 130px;
+            width: 100% !important ;
+            height: phone_fluid(130);
             h3 {
                 font-weight: 500;
-                font-size: 14px;
+                font-size: phone_fluid(14);
             }
             p {
                 font-weight: 400;
-                font-size: 10px;
+                font-size: phone_fluid(10);
             }
             h1 {
                 font-weight: 500;
-                font-size: 28px;
+                font-size: phone_fluid(28);
             }
         }
     }
 }
 
-.list_communities {
+.list_communities_desktop {
     display: flex;
     flex-direction: column;
+    background: #ffffff;
     margin-top: 16px;
     width: 1080px;
     height: 835px;
-    background: #ffffff;
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 100px;
@@ -312,13 +420,32 @@ $PHONE_N: 426;
         font-weight: 500;
         font-size: 16px;
     }
+
+    @media (max-width: $PHONE) {
+        display: none;
+    }
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        margin-top: laptop_to_tablet_fluid(16);
+        width: laptop_to_tablet_fluid(1050);
+        height: laptop_to_tablet_fluid(835);
+        border-radius: laptop_to_tablet_fluid(16);
+        padding: laptop_to_tablet_fluid(24);
+        margin-bottom: laptop_to_tablet_fluid(100);
+        .title {
+            font-size: laptop_to_tablet_fluid(16);
+        }
+    }
 }
 
+// table comp
 .tableHead {
     display: flex;
     width: 100%;
     color: #8c93a3;
     padding: 0 16px;
+    p {
+        font-size: 16px;
+    }
     .name {
         width: 30%;
     }
@@ -342,14 +469,15 @@ $PHONE_N: 426;
 .entry {
     display: flex;
     background: #f7f7f7;
+    align-items: center;
     border-radius: 8px;
     width: 1032px;
     height: 64px;
     padding: 0 16px;
-    align-items: center;
     p {
         display: flex;
         align-items: center;
+        font-size: 16px;
     }
     .name {
         width: 30%;
@@ -384,6 +512,127 @@ $PHONE_N: 426;
     }
 }
 
+@media (max-width: $LAPTOP) and (min-width: $PHONE) {
+    .tableHead {
+        padding: 0 laptop_to_tablet_fluid(16);
+        font-size: laptop_to_tablet_fluid(16);
+        p {
+            font-size: laptop_to_tablet_fluid(16);
+        }
+    }
+    .table {
+        row-gap: laptop_to_tablet_fluid(16);
+        font-size: laptop_to_tablet_fluid(16);
+    }
+    .entry {
+        border-radius: laptop_to_tablet_fluid(8);
+        width: laptop_to_tablet_fluid(1000);
+        height: laptop_to_tablet_fluid(64);
+        padding: 0 laptop_to_tablet_fluid(16);
+        p {
+            font-size: laptop_to_tablet_fluid(16);
+        }
+        .name {
+            img {
+                width: laptop_to_tablet_fluid(24);
+                height: laptop_to_tablet_fluid(24);
+                border-radius: laptop_to_tablet_fluid(15);
+                margin-right: laptop_to_tablet_fluid(10);
+            }
+        }
+        .friends {
+            .friendImg {
+                width: laptop_to_tablet_fluid(24);
+                height: laptop_to_tablet_fluid(24);
+                border-radius: laptop_to_tablet_fluid(15);
+            }
+            .arrow {
+                margin-left: auto;
+                width: laptop_to_tablet_fluid(20);
+            }
+        }
+    }
+}
+
+///////////////////
+
+.list_communities_mobile {
+    display: none;
+    width: 90%;
+    height: 651px;
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 50px;
+    padding: 16px;
+    flex-direction: column;
+
+    @media (max-width: $PHONE) {
+        display: flex;
+    }
+
+    .title {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .daoEntry {
+        display: flex;
+        width: 100%;
+        height: 108px;
+        background: #f7f7f7;
+        border-radius: 8px;
+        padding: 12px;
+        flex-direction: column;
+        margin-bottom: 8px;
+        h2 {
+            font-weight: 500;
+            font-size: 12px;
+            margin-top: 0px;
+            color: #8c93a3;
+        }
+        .daoName {
+            display: flex;
+            align-items: center;
+            height: fit-content;
+            h1 {
+                font-weight: 500;
+                font-size: 16px;
+                margin-left: 8px;
+            }
+            img {
+                width: 24px;
+                height: 24px;
+                border-radius: 100%;
+            }
+        }
+    }
+    .friends {
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        .friendImg {
+            width: 20px;
+            height: 20px;
+            border-radius: 15px;
+        }
+        .arrow {
+            margin-left: auto;
+            width: 20px;
+        }
+        .text {
+            width: max-content;
+            font-weight: 400;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+    }
+
+    .daoListCon {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .reviewCon {
     display: flex;
     flex-direction: column;
@@ -391,6 +640,13 @@ $PHONE_N: 426;
     row-gap: 16px;
     margin-top: 16px;
     margin-bottom: 150px;
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        row-gap: laptop_to_tablet_fluid(16);
+        margin-top: laptop_to_tablet_fluid(16);
+        margin-bottom: laptop_to_tablet_fluid(150);
+    }
 
     @media (max-width: $PHONE) {
         width: 100%;
@@ -402,19 +658,19 @@ $PHONE_N: 426;
     display: flex;
     width: 100%;
     background-color: rgb(255, 255, 255);
+    flex-direction: column;
+    height: auto;
     padding: 24px;
     padding-bottom: 8px;
     border-radius: 16px;
-    flex-direction: column;
-    height: auto;
 
     .profilePic {
         display: flex;
         border-radius: 100%;
+        background-size: contain;
         width: 40px;
         height: 40px;
         margin-right: 12px;
-        background-size: contain;
     }
 
     .userInfo {
@@ -450,9 +706,45 @@ $PHONE_N: 426;
             display: flex;
             margin-right: 25px;
             align-items: center;
+            font-size: 16px;
             img {
                 margin-right: 4.5px;
                 height: 16.46px;
+            }
+        }
+    }
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        padding: laptop_to_tablet_fluid(24);
+        padding-bottom: laptop_to_tablet_fluid(8);
+        border-radius: laptop_to_tablet_fluid(16);
+
+        .profilePic {
+            width: laptop_to_tablet_fluid(40);
+            height: laptop_to_tablet_fluid(40);
+            margin-right: laptop_to_tablet_fluid(12);
+        }
+
+        .userInfo {
+            .address {
+                margin-bottom: laptop_to_tablet_fluid(8);
+                font-size: laptop_to_tablet_fluid(18);
+            }
+        }
+
+        .review_desc {
+            margin-top: laptop_to_tablet_fluid(16.5);
+            font-size: laptop_to_tablet_fluid(16);
+        }
+
+        .bottom_nav {
+            .iconText {
+                margin-right: laptop_to_tablet_fluid(25);
+                font-size: laptop_to_tablet_fluid(16);
+                img {
+                    margin-right: laptop_to_tablet_fluid(4.5);
+                    height: laptop_to_tablet_fluid(16.46);
+                }
             }
         }
     }
@@ -482,11 +774,34 @@ $PHONE_N: 426;
     }
 }
 
+@media (max-width: $LAPTOP) and (min-width: $PHONE) {
+    .starComp {
+        column-gap: laptop_to_tablet_fluid(10);
+        img {
+            width: laptop_to_tablet_fluid(20);
+            height: laptop_to_tablet_fluid(20);
+        }
+    }
+    .starComp_small {
+        column-gap: laptop_to_tablet_fluid(8);
+        img {
+            width: laptop_to_tablet_fluid(16);
+            height: laptop_to_tablet_fluid(16);
+        }
+    }
+}
+
 .tokenNftSec {
     display: flex;
     flex-direction: column;
     width: 1080px;
     margin-bottom: 150px;
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        margin-bottom: laptop_to_tablet_fluid(150);
+    }
+
     @media (max-width: $PHONE) {
         width: 90%;
         height: max-content;
@@ -494,15 +809,24 @@ $PHONE_N: 426;
 
     .tokenSwitch {
         display: flex;
+        background: #eeeff2;
         width: 1080px;
         height: 50px;
-        background: #eeeff2;
         border-radius: 12px;
-        margin-top: 28px;
+        margin-top: 20px;
         padding: 4px;
+
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            width: laptop_to_tablet_fluid(1030);
+            height: laptop_to_tablet_fluid(50);
+            border-radius: laptop_to_tablet_fluid(12);
+            margin-top: laptop_to_tablet_fluid(28);
+            padding: laptop_to_tablet_fluid(4);
+        }
+
         @media (max-width: $PHONE) {
             width: 100%;
-            min-height: 46px;
+            min-height: phone_fluid(46);
             height: max-content;
             border-radius: 8px;
         }
@@ -514,14 +838,20 @@ $PHONE_N: 426;
             background-color: white;
             border: none;
             box-shadow: 0px 4px 5px -1px rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
             justify-content: center;
             align-items: center;
+            border-radius: 8px;
             font-size: 15px;
+
+            @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+                border-radius: laptop_to_tablet_fluid(8);
+                font-size: laptop_to_tablet_fluid(15);
+            }
+
             @media (max-width: $PHONE) {
-                border-radius: 8px;
-                font-size: 14px;
-                min-height: 46px;
+                border-radius: phone_fluid(8);
+                font-size: phone_fluid(14);
+                min-height: phone_fluid(46);
             }
         }
         .btnSwitch {
@@ -530,14 +860,18 @@ $PHONE_N: 426;
             height: 100%;
             background-color: transparent;
             border: none;
-            border-radius: 8px;
             justify-content: center;
             align-items: center;
+            border-radius: 8px;
             font-size: 15px;
+
+            @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+                font-size: laptop_to_tablet_fluid(15);
+            }
             @media (max-width: $PHONE) {
-                border-radius: 8px;
-                font-size: 14px;
-                min-height: 46px;
+                border-radius: phone_fluid(8);
+                font-size: phone_fluid(14);
+                min-height: phone_fluid(46);
             }
             &:hover {
                 color: blue;
@@ -547,12 +881,17 @@ $PHONE_N: 426;
 }
 
 .nfts {
-    margin-top: 16px;
     display: flex;
-    width: 1080px;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 1080px;
+    margin-top: 16px;
     gap: 16px;
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        margin-top: laptop_to_tablet_fluid(16);
+        gap: laptop_to_tablet_fluid(16);
+    }
     @media (max-width: $PHONE) {
         width: 100%;
         height: max-content;
@@ -562,16 +901,22 @@ $PHONE_N: 426;
 
 .nftCon {
     display: flex;
-    width: 258px;
-    height: 364px;
     background: #ffffff;
-    border-radius: 8px;
     overflow: hidden;
     flex-direction: column;
+    width: 258px;
+    height: 364px;
+    border-radius: 8px;
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(258);
+        height: laptop_to_tablet_fluid(364);
+        border-radius: laptop_to_tablet_fluid(8);
+    }
 
     @media (max-width: $PHONE) {
-        width: 163.5px;
-        height: 236px;
+        width: phone_fluid(163.5);
+        height: phone_fluid(236);
     }
 
     .cover {
@@ -581,6 +926,9 @@ $PHONE_N: 426;
         background-color: #3065f3;
         background-position: center;
         background-size: cover;
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            height: laptop_to_tablet_fluid(258);
+        }
         @media (max-width: $PHONE) {
             height: 163px;
         }
@@ -612,17 +960,41 @@ $PHONE_N: 426;
                 margin: 0;
             }
         }
-        @media (max-width: $PHONE) {
+
+        @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+            padding: laptop_to_tablet_fluid(12);
             h3 {
-                font-size: 12px;
+                font-size: laptop_to_tablet_fluid(16);
+
+                margin-bottom: laptop_to_tablet_fluid(20);
             }
             p {
-                font-size: 8px;
+                margin-bottom: laptop_to_tablet_fluid(5);
+                font-size: laptop_to_tablet_fluid(10);
+            }
+            .price {
+                img {
+                    width: laptop_to_tablet_fluid(10);
+                    margin-right: laptop_to_tablet_fluid(4);
+                }
+                h4 {
+                    font-weight: 600;
+                    font-size: laptop_to_tablet_fluid(16);
+                }
+            }
+        }
+
+        @media (max-width: $PHONE) {
+            h3 {
+                font-size: phone_fluid(12);
+            }
+            p {
+                font-size: phone_fluid(8);
             }
             .price {
                 h4 {
                     font-weight: 600;
-                    font-size: 10px;
+                    font-size: phone_fluid(10);
                 }
             }
         }
@@ -635,6 +1007,12 @@ $PHONE_N: 426;
     width: 1080px;
     margin-top: 16px;
     gap: 16px;
+    justify-content: center;
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        margin-top: laptop_to_tablet_fluid(16);
+        gap: laptop_to_tablet_fluid(16);
+    }
     @media (max-width: $PHONE) {
         width: 100%;
     }
@@ -666,7 +1044,7 @@ $PHONE_N: 426;
     @media (max-width: $PHONE) {
         width: 100%;
         grid-template-columns: 2fr 10fr;
-        padding: 18px 16px;
+        padding: phone_fluid(18) phone_fluid(16);
     }
 }
 
@@ -764,7 +1142,7 @@ $PHONE_N: 426;
                 width: 100%;
             }
             p {
-                font-size: 7px;
+                font-size: phone_fluid(7);
             }
         }
     }
@@ -818,10 +1196,10 @@ $PHONE_N: 426;
     @media (max-width: $PHONE) {
         span {
             h1 {
-                font-size: 10px;
+                font-size: phone_fluid(10);
                 span {
-                    font-size: 7px;
-                    padding: 2px 4px;
+                    font-size: phone_fluid(7);
+                    padding: phone_fluid(2) phone_fluid(4);
                 }
             }
             p {
@@ -830,11 +1208,11 @@ $PHONE_N: 426;
         }
         button {
             width: max-content;
-            height: 21.03px;
+            height: phone_fluid(21.03);
             font-weight: 600;
-            font-size: 8px;
-            border-radius: 7.45779px;
-            padding: 0 10px;
+            font-size: phone_fluid(8);
+            border-radius: phone_fluid(7.45779);
+            padding: 0 phone_fluid(10);
         }
     }
 }
