@@ -9,6 +9,7 @@ function numFormatter(num) {
     } else if (num < 900) {
         return num; // if value < 1000, nothing to do
     }
+    return num
 }
 
 export default numFormatter
