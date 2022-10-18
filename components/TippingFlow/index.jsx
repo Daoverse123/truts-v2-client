@@ -29,6 +29,8 @@ import {
     LAMPORTS_PER_SOL
 } from "@solana/web3.js";
 
+import * as nearAPI from "near-api-js";
+
 //components
 import Button from '../Button'
 
@@ -38,6 +40,9 @@ import close_icon from '../../assets/icons/close_icon_tip.svg'
 import matic_icon from '../../assets/icons/matic_icon.png'
 import down_arrow from '../../assets/icons/down_arrow.svg'
 import error_icon from '../../assets/icons/error_icon.svg'
+
+//near tokens
+import near_icon from '../../assets/icons/near_chain_icon.png'
 
 //polygon erc20 ABI
 import umbriaPolygonAbi from '../../assets/polygonERC20/umbriaNetworkPolygonAbi.json';
@@ -104,6 +109,14 @@ const solanaTokens = {
     }
 }
 
+const nearTokens = {
+    NEAR: {
+        icon: near_icon.src,
+        coingecko_id: 'near',
+        native: true,
+    }
+}
+
 let TokenList = ({ tokens, setselectedToken, selectedToken }) => {
     return (
         Object.keys(tokens).map((token, i) => {
@@ -136,9 +149,14 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             setTOKENS(solanaTokens);
             setselectedToken('SOL')
         }
-        else {
+        else if (review_details.chain == 'matic') {
             setTOKENS(polygonTokens);
             setselectedToken('MATIC')
+
+        }
+        else if (review_details.chain == 'near') {
+            setTOKENS(nearTokens);
+            setselectedToken('NEAR')
         }
 
     }, [review_details.chain])
@@ -189,6 +207,7 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
     let [isLoadingMatic, sendTransactionAsync] = useTipNativeMatic(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipNativeSol = useTipNativeSol(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipSPLSol = usetipSPLtoken(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
+    //let tipNativeNear = useTipNativeNear(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
 
     const intiateTransaction = async () => {
         if (inputField <= 0) {
@@ -210,6 +229,11 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             }
             else {
                 tipSPLSol();
+            }
+        }
+        else if (chain == 'near') {
+            if (selectedToken == 'NEAR') {
+                tipNativeNear();
             }
         }
     }
@@ -273,6 +297,41 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             </div >
         </section >
     )
+}
+
+const useTipNativeNear = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {
+    const { connect, keyStores, WalletConnection, utils } = nearAPI;
+    const [connectConfig, setConnectConfig] = useState({});
+    useEffect(() => {
+        const connectionConfig = {
+            networkId: "testnet",
+            keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+            nodeUrl: "https://rpc.testnet.near.org",
+            walletUrl: "https://wallet.testnet.near.org",
+            helperUrl: "https://helper.testnet.near.org",
+            explorerUrl: "https://explorer.testnet.near.org",
+        };
+        setConnectConfig(connectionConfig);
+    }, [])
+
+    // sends NEAR tokens
+    let sendTransaction = async () => {
+
+        // connect to NEAR
+        const nearConnection = await connect(connectConfig);
+
+        // create wallet connection
+        const walletConnection = new WalletConnection(nearConnection);
+
+        console.log('review details address: ', review_details.address);
+        console.log('connecting to wallet: ', walletConnection.getAccountId());
+        const account = await nearConnection.account(walletConnection.getAccountId());
+        await account.sendMoney(
+            review_details.address, // receiver account
+            utils.format.parseNearAmount(noOfTokens) // amount in yoctoNEAR
+        );
+    }
+    return sendTransaction
 }
 
 const useTipNativeMatic = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {

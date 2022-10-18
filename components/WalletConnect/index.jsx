@@ -212,41 +212,38 @@ const Solana_wallets = ({ setwalletState, closePopUp }) => {
 
 
 const Near_wallets = ({ setwalletState, closePopUp }) => {
-    const isSenderInstalled = window.near.isSender;
-    //const { connect, keyStores, WalletConnection } = nearAPI;
-    // const connectionConfig = {
-    //     networkId: "testnet",
-    //     keyStore: new keyStores.BrowserLocalStorageKeyStore(),
-    //     nodeUrl: "https://rpc.testnet.near.org",
-    //     walletUrl: "https://wallet.testnet.near.org",
-    //     helperUrl: "https://helper.testnet.near.org",
-    //     explorerUrl: "https://explorer.testnet.near.org",
-    // };
-    // const walletConnection = null;
+    //const isSenderInstalled = window.near.isSender;
+    // if (typeof window.near !== 'undefined' && window.near.isSender) {
+    //     console.log('Sender is installed!');
+    // }
 
-    if (typeof window.near !== 'undefined' && window.near.isSender) {
-        console.log('Sender is installed!');
-    }
-
+    const { connect, keyStores, WalletConnection } = nearAPI;
+    const connectionConfig = {
+        networkId: "testnet",
+        keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+    };
+    const walletConnection = null;
 
     const connect_near = async () => {
-        await window.near.requestSignIn({
-            contractId: "guest-book.testnet", // contract requesting access
-        });
-        // // connect to NEAR
-        // const nearConnection = await connect(connectionConfig);
 
-        // // create wallet connection
-        // walletConnection = new WalletConnection(nearConnection);
+        // connect to NEAR
+        const nearConnection = await connect(connectionConfig);
 
-        // // const walletConnection = new WalletConnection(nearConnection);
-        // walletConnection.requestSignIn(
-        //     "example-contract.testnet", // contract requesting access
-        //     // "Example App", // optional title
-        //     // "http://truts.xyz", // optional redirect URL on success
-        //     // "http://YOUR-URL.com/failure" // optional redirect URL on failure
-        // );
-
+        // create wallet connection
+        walletConnection = new WalletConnection(nearConnection);
+        // const walletConnection = new WalletConnection(nearConnection);
+        if (!walletConnection.isSignedIn()) {
+            walletConnection.requestSignIn(
+                "example-contract.testnet", // contract requesting access
+                "Truts App", // optional title
+                "http://YOUR-URL.com/success", // optional redirect URL on success
+                "http://YOUR-URL.com/failure" // optional redirect URL on failure
+            );
+        }
 
     }
 
@@ -255,34 +252,31 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
         <div className={styles.list}>
             <Wallet
                 onClick={async () => {
-                    if (window.near !== 'undefined' && window.near.isSender) {
-                        await connect_near()
+                    await connect_near()
+                    if (walletConnection.isSignedIn()) {
+                        // // user is signed in
+                        // const walletAccountObj = walletConnection.account();
+                        const account = walletConnection.account();
+                        console.log('near connection established', account);
 
-                        if (window.near.isSignedIn()) {
-                            // // user is signed in
-                            // const walletAccountObj = walletConnection.account();
-                            const account = window.near.account();
-                            console.log('near connection established', account);
-
-
-                        }
-                        setwalletState({
-                            address: window.near.getAccountId(),
-                            chain: "Near",
-                            status: "connected"
-                        })
-                        localStorage.setItem('wallet_state', JSON.stringify({
-                            address: window.near.getAccountId(),
-                            chain: "Near",
-                            status: "connected"
-                        }));
-
-                        window.updateNav()
-                        closePopUp()
                     }
+                    console.log(walletConnection.isSignedIn());
+                    setwalletState({
+                        address: walletConnection.getAccountId(),
+                        chain: "near",
+                        status: "connected"
+                    })
+                    localStorage.setItem('wallet_state', JSON.stringify({
+                        address: walletConnection.getAccountId(),
+                        chain: "near",
+                        status: "connected"
+                    }));
+
+                    window.updateNav()
+                    closePopUp()
 
                 }
-                } icon={walletIconMap['Sender'] || other_wallet.src} name={"Sender" + ((!isSenderInstalled) ? " (not-installed)" : "")}
+                } icon={walletIconMap['Near'] || other_wallet.src} name={"Near"}
             />
         </div>
     )
@@ -297,7 +291,7 @@ const walletIconMap = {
     'Coinbase Wallet': coinbase_wallet.src,
     'WalletConnect': wallet_connect.src,
     'Phantom': phantom_icon.src,
-    'Sender': senderWallet_icon.src
+    'Near': near_icon.src
 }
 
 const chainIconMap = {

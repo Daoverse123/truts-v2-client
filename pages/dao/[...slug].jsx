@@ -312,6 +312,7 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
         let chainMap = {
             'Ethereum': 'eth',
             'Solana': 'sol',
+            'Near': 'near',
         }
 
 

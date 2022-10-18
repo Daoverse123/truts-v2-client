@@ -61,7 +61,9 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
         }
 
         let public_address = JSON.parse(localStorage.getItem('wallet_state'))?.address;
+        // Change the logic here
         let chain = (JSON.parse(localStorage.getItem('wallet_state'))?.chain == 'Solana') ? "sol" : "eth"
+        chain = (JSON.parse(localStorage.getItem('wallet_state'))?.chain == 'near') ? "near" : "eth";
         if (!public_address || public_address?.length < 5) { return (setwalletConnectVisible(true)) }
         try {
             setpageState(status.LOADING)
@@ -72,6 +74,10 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
             }
             if (chain == 'sol') {
                 sign_msg = await solSign('sign message');
+            }
+            if (chain == 'near') {
+
+                sign_msg = true;
             }
             if (!sign_msg) {
                 return setpageState(status.ERROR)
