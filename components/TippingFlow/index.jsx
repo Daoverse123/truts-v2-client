@@ -32,6 +32,10 @@ import {
 //components
 import Button from '../Button'
 
+
+//near api
+import * as nearAPI from "near-api-js";
+
 //assets
 import setting from '../../assets/icons/setting_icon.svg'
 import close_icon from '../../assets/icons/close_icon_tip.svg'
@@ -53,6 +57,9 @@ import solrazrIcon from '../../assets/solanaIcons/solrazr.png'
 import bonfidaIcon from '../../assets/solanaIcons/bonfida.png'
 import meanfiIcon from '../../assets/solanaIcons/meanfi.png'
 
+
+//near tokens
+import near_icon from '../../assets/icons/near_chain_icon.png'
 
 
 const polygonTokens = {
@@ -104,6 +111,16 @@ const solanaTokens = {
     }
 }
 
+//near tokens
+const nearTokens = {
+    NEAR: {
+        icon: near_icon.src,
+        coingecko_id: 'near',
+        native: true,
+    }
+}
+
+
 let TokenList = ({ tokens, setselectedToken, selectedToken }) => {
     return (
         Object.keys(tokens).map((token, i) => {
@@ -136,11 +153,15 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             setTOKENS(solanaTokens);
             setselectedToken('SOL')
         }
-        else {
+        else if (review_details.chain == 'matic') {
             setTOKENS(polygonTokens);
             setselectedToken('MATIC')
-        }
 
+        }
+        else if (review_details.chain == 'near') {
+            setTOKENS(nearTokens);
+            setselectedToken('NEAR')
+        }
     }, [review_details.chain])
 
     console.log(selectedToken);
@@ -189,13 +210,14 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
     let [isLoadingMatic, sendTransactionAsync] = useTipNativeMatic(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipNativeSol = useTipNativeSol(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipSPLSol = usetipSPLtoken(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
+    let tipNativeNear = useTipNativeNear(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
 
     const intiateTransaction = async () => {
         if (inputField <= 0) {
             return alert("Please Enter a valid tipping Amount")
         }
         let chain = review_details.chain || 'eth'
-        console.log(chain)
+        console.log("chian connected", chain)
         if (chain == 'eth') {
             if (selectedToken == 'MATIC') {
                 sendTransactionAsync();
@@ -210,6 +232,12 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             }
             else {
                 tipSPLSol();
+            }
+        } else if (chain == 'near') {
+            console.log("connectd to near")
+            if (selectedToken == 'NEAR') {
+                let tx = tipNativeNear();
+                console.log(tx);
             }
         }
     }
@@ -263,6 +291,7 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
                             if (EM.WRONG_CHAIN == errorMessage) {
                                 let res = await switchNetworkAsync(137);
                             }
+                            console.log("check connecrted wallet");
                             seterrorMessage(undefined)
                         }}
                         className={styles.errorMessage}>
@@ -273,6 +302,67 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             </div >
         </section >
     )
+}
+
+const useTipNativeNear = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {
+    const { connect, keyStores, WalletConnection, utils } = nearAPI;
+    const [connectConfig, setConnectConfig] = useState({});
+    useEffect(() => {
+        const connectionConfig = {
+            networkId: "testnet",
+            keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+            nodeUrl: "https://rpc.testnet.near.org",
+            walletUrl: "https://wallet.testnet.near.org",
+            helperUrl: "https://helper.testnet.near.org",
+            explorerUrl: "https://explorer.testnet.near.org",
+        };
+        setConnectConfig(connectionConfig);
+    }, [])
+
+    // sends NEAR tokens
+    let sendTransaction = async () => {
+
+        // connect to NEAR
+        const nearConnection = await connect(connectConfig);
+
+        // create wallet connection
+        const walletConnection = new WalletConnection(nearConnection);
+
+        console.log(walletConnection.isSignedIn());
+
+        // const account = await nearConnection.account(walletConnection.getAccountId());
+        // let access = await account.getAccessKeys();
+        // let publicKey = access[0].public_key.slice(8);
+        // console.log('public key: ', publicKey);
+
+        // const BLOCK_HASH = publicKey
+
+        // const blockHash = nearAPI.utils.serialize.base_decode(BLOCK_HASH);
+        // const createTransferTx = nearAPI.transactions.createTransaction(
+        //     walletConnection.getAccountId(),
+        //     nearAPI.utils.PublicKey.fromString(publicKey),
+        //     review_details.address,
+        //     1,
+        //     [nearAPI.transactions.transfer(amount)],
+        //     blockHash
+        // );
+        // console.log(createTransferTx);
+        // let res = await walletConnection.requestSignTransactions({
+        //     transactions: [createTransferTx]
+        // });
+        // console.log(res);
+
+        const amount = nearAPI.utils.format.parseNearAmount(noOfTokens);
+
+        let res = await walletConnection.account().signAndSendTransaction({
+            receiverId: review_details.address,
+            actions: [nearAPI.transactions.transfer(amount)]
+        });
+        console.log(res.receipts_outcome());
+        console.log(res.status());
+        console.log(res.transaction_outcome());
+    }
+    return sendTransaction
 }
 
 const useTipNativeMatic = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {
