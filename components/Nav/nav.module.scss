@@ -28,8 +28,8 @@ $PHONE_N: 425;
     top: 0;
     left: 0;
     justify-content: center;
-    border-bottom: 1px solid rgba(135, 135, 135, 0.25);
-    background: #f7f7f7;
+  //  border-bottom: 1px solid rgba(135, 135, 135, 0.25);
+    background: #ffffff00;
     //animation: appear 0.5s ease-in-out forwards;
 
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
@@ -137,7 +137,7 @@ $PHONE_N: 425;
     }
 
     .profileDropDown {
-        animation: openSideNav 0.35s ease-in-out forwards;
+        //animation: openSideNav 0.35s ease-in-out forwards;
         position: absolute;
         top: 30px;
         right: 0px;
@@ -252,6 +252,7 @@ $PHONE_N: 425;
     right: 0;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.534);
+    overflow: hidden;
 }
 
 .menu {
@@ -263,6 +264,7 @@ $PHONE_N: 425;
     margin-left: auto;
     padding: 35px 24px;
     transform: translateX(100%);
+
     animation: openSideNav 0.5s ease-in-out forwards;
     .tablet_nav {
         width: 83px;
