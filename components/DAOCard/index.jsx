@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './card.module.scss'
 import Link from 'next/link'
+import ReactTooltip from 'react-tooltip';
 
 // ASSETS
 import verified from './../../assets/icons/verified.svg'
@@ -11,9 +12,16 @@ import discord from './../../assets/icons/Discord_grey.svg'
 
 
 export default function DAOCard({ data }) {
+
+    let name = data.dao_name
+    if (name.length > 20) {
+        name = data.dao_name.slice(0, 20) + '...'
+    }
+
     return (
         <Link href={`/dao/${data.slug}`}>
             <div className={styles.card}>
+                {(data.dao_name.length > 20) && < ReactTooltip backgroundColor={"#747c90"} />}
                 <div className={styles.cover} >
                     <img src={data.dao_cover} alt="" onError={({ currentTarget }) => {
                         currentTarget.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Pink_tints_and_shades.svg";
@@ -21,7 +29,7 @@ export default function DAOCard({ data }) {
                 </div>
                 <div className={styles.info}>
                     <span className={styles.title}>
-                        <h1>{data.dao_name}</h1>
+                        {(data.dao_name.length > 20) ? <h1 id={'w1' + name} data-tip={data.dao_name}>{name}</h1> : <h1>{name}</h1>}
                         <img src={verified.src} alt="" />
                     </span>
                     <div className={styles.review_stats}>
