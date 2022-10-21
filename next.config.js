@@ -21,6 +21,20 @@ const nextConfig = {
     UMBRIA_POLYGON_ERC20: '0x2e4b0Fb46a46C90CB410FE676f24E466753B469f',
     MAHADAO_POLYGON_ERC20: '0xedd6ca8a4202d4a36611e2fff109648c4863ae19',
   },
+  async redirects() {
+    return [
+      {
+        source: '/dao-form',
+        destination: '/add-your-community',
+        permanent: true,
+      },
+      {
+        source: '/talent',
+        destination: 'https://tally.so/r/3j81En',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
