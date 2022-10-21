@@ -3,6 +3,7 @@ import styles from './Home/home.module.scss'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import openNewTab from '../utils/openNewTab'
+import Link from 'next/link'
 
 // COMPONENTS
 import Button from '../components/Button'
@@ -38,7 +39,9 @@ import heroImg from '../assets/hero_img.png'
 const API = process.env.API
 //const CATEGORY_LIST = ['all', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Event']
 
-const CATEGORY_LIST = ['DAO',
+const CATEGORY_LIST = [
+  'DAO',
+  'Investors',
   'Media',
   'Investment',
   'Service',
@@ -332,7 +335,9 @@ function CommunitiesWall({ daoList }) {
           })
         }
       </div>
-      <Button label={"See More"} type={'secondary'} />
+      <Link href={'/discover'}>
+        <Button label={"See More"} type={'secondary'} />
+      </Link>
     </div>
   )
 }

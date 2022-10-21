@@ -79,12 +79,20 @@ const Sidebar = ({ dao_data }) => {
                     <img src={twitter_white.src} alt="" />
                     {numFormatter(dao_data?.twitter_followers)}
                 </button>
-                <button className={styles.discord_soc} onClick={() => {
-                    openNewTab(dao_data.discord_link)
-                }}>
-                    <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data?.discord_members)}
-                </button>
+                {(dao_data.dao_category.includes('Investors')) ?
+                    <button className={styles.discord_soc} onClick={() => {
+                        openNewTab(`mailto:${dao_data?.email}`)
+                    }}>
+                        <img src={'/email.png'} alt="" style={{ filter: "unset" }} />
+
+                        {/* {numFormatter(dao_data?.discord_members)} */}
+                    </button>
+                    : <button className={styles.discord_soc} onClick={() => {
+                        openNewTab(dao_data.discord_link)
+                    }}>
+                        <img src={discord_white.src} alt="" />
+                        {numFormatter(dao_data?.discord_members)}
+                    </button>}
                 <button onClick={() => {
                     navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
                 }} className={styles.long_btn} style={{ gridArea: "c" }}>

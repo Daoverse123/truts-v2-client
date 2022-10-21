@@ -29,7 +29,7 @@ const API = process.env.API
 //const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
 const CATEGORY_LIST = ['DAO',
     'Media',
-    'Investment',
+    'Investors',
     'Service',
     'Grant',
     'Social',
@@ -61,7 +61,8 @@ const CATEGORY_LIST = ['DAO',
     'Guild',
     'Marketing tool',
     'Public Good',
-    'Education'];
+    'Education',
+    'Investment'];
 
 
 let discordFollowers = {
