@@ -138,7 +138,7 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                         <h1 className={styles.title}>Please rate the following experiences</h1>
                         <div className={styles.dialsCon}>
                             <SliderComp label={"Do you resonate with the vibes in the Community?"} setter={dialValueSetter} />
-                            <SliderComp label={"How would you rate the DAO’s onboarding experience?"} setter={dialValueSetter} />
+                            <SliderComp label={"How would you rate the Community onboarding experience?"} setter={dialValueSetter} />
                             <SliderComp label={"Do you believe your opinions matter in the Community?"} setter={dialValueSetter} />
                             <SliderComp label={"Do you think that Community has great organizational structure?"} setter={dialValueSetter} />
                             <SliderComp label={"Would you recommed this Community to your friend?"} setter={dialValueSetter} />
