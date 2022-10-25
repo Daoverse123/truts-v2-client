@@ -307,9 +307,18 @@ const CategotyCon = ({ state, setState }) => {
         setsuggestionList(() => {
             return [...initialSuggestion.map((ele) => {
                 return fuzzy(ele.term, inputText);
-            }).sort((a, b) => b.score - a.score)]
+            }).sort((a, b) => b.score - a.score).filter((ele) => {
+                if (selectedItems.includes(ele.term)) {
+                    return false
+                }
+                return true
+            })]
         })
     }
+
+    useEffect(() => {
+        GenerateSuggestion()
+    }, [selectedItems])
 
 
     useEffect(() => {
@@ -439,9 +448,18 @@ const ChainSelectCon = ({ state, setState }) => {
         setsuggestionList(() => {
             return [...initialSuggestion.map((ele) => {
                 return fuzzy(ele.term, inputText);
-            }).sort((a, b) => b.score - a.score)]
+            }).sort((a, b) => b.score - a.score).filter((ele) => {
+                if (selectedItems.includes(ele.term)) {
+                    return false
+                }
+                return true
+            })]
         })
     }
+
+    useEffect(() => {
+        GenerateSuggestion()
+    }, [selectedItems])
 
 
     useEffect(() => {
