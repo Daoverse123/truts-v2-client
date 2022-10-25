@@ -94,11 +94,18 @@ const Sidebar = ({ dao_data }) => {
                         {numFormatter(dao_data?.discord_members)}
                     </button>}
                 <button onClick={() => {
-                    navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
+                    navigator.clipboard.writeText(dao_data.website_link);
                 }} className={styles.long_btn} style={{ gridArea: "c" }}>
+                    {dao_data.website_link}
+                    <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
+                </button>
+                <button onClick={() => {
+                    navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
+                }} className={styles.long_btn} style={{ gridArea: "d" }}>
                     trust.xyz/dao/{dao_data.slug}
                     <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
+
             </div>
             <span className={styles.chain_con}>
                 <p>Chain</p>
