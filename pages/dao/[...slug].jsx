@@ -268,43 +268,47 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
 
     const rateReviewHandler = async (rating) => {
         let wallet_state = JSON.parse(localStorage.getItem('wallet_state'));
-        if (!wallet_state.address) { return setwalletConnectVisible(true) }
-        let address = wallet_state.address;
-        setrateReviewLoading(true)
-        let api_res = await axios.post(`${API}/review-v2/rate-review`, { review_id: review._id, address, rating })
-        if (api_res.status != 200) { setrateReviewLoading(false); return null }
+        try {
+            let address = wallet_state.address;
+            setrateReviewLoading(true)
+            let api_res = await axios.post(`${API}/review-v2/rate-review`, { review_id: review._id, address, rating })
+            if (api_res.status != 200) { setrateReviewLoading(false); return null }
 
-        let types = { NEW: "new", SWITCH: "switch", DELETE: "delete" }
-        if (api_res.data.type == types.NEW) {
-            //new rating
-            if (api_res.data.rating) {
-                setthumbs_up_count(c => c + 1)
+            let types = { NEW: "new", SWITCH: "switch", DELETE: "delete" }
+            if (api_res.data.type == types.NEW) {
+                //new rating
+                if (api_res.data.rating) {
+                    setthumbs_up_count(c => c + 1)
+                }
+                else {
+                    setthumbs_down_count(c => c + 1)
+                }
             }
-            else {
-                setthumbs_down_count(c => c + 1)
+            else if (api_res.data.type == types.DELETE) {
+                //delete rating
+                if (api_res.data.rating) {
+                    setthumbs_up_count(c => c - 1)
+                }
+                else {
+                    setthumbs_down_count(c => c - 1)
+                }
             }
+            else if (api_res.data.type == types.SWITCH) {
+                //switch rating
+                if (api_res.data.rating) {
+                    setthumbs_up_count(c => c + 1)
+                    setthumbs_down_count(c => c - 1)
+                }
+                else {
+                    setthumbs_down_count(c => c + 1)
+                    setthumbs_up_count(c => c - 1)
+                }
+            }
+            setrateReviewLoading(false);
+        } catch (error) {
+            setwalletConnectVisible(true)
         }
-        else if (api_res.data.type == types.DELETE) {
-            //delete rating
-            if (api_res.data.rating) {
-                setthumbs_up_count(c => c - 1)
-            }
-            else {
-                setthumbs_down_count(c => c - 1)
-            }
-        }
-        else if (api_res.data.type == types.SWITCH) {
-            //switch rating
-            if (api_res.data.rating) {
-                setthumbs_up_count(c => c + 1)
-                setthumbs_down_count(c => c - 1)
-            }
-            else {
-                setthumbs_down_count(c => c + 1)
-                setthumbs_up_count(c => c - 1)
-            }
-        }
-        setrateReviewLoading(false);
+
     }
 
     const intiateTip = () => {
