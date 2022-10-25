@@ -137,12 +137,12 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                         </div>
                         <h1 className={styles.title}>Please rate the following experiences</h1>
                         <div className={styles.dialsCon}>
-                            <SliderComp label={"Do you resonate with the vibes in the DAO community?"} setter={dialValueSetter} />
+                            <SliderComp label={"Do you resonate with the vibes in the Community?"} setter={dialValueSetter} />
                             <SliderComp label={"How would you rate the DAO’s onboarding experience?"} setter={dialValueSetter} />
-                            <SliderComp label={"Do you believe your opinions matter in the DAO community?"} setter={dialValueSetter} />
-                            <SliderComp label={"Do you think that DAO has great organizational structure?"} setter={dialValueSetter} />
-                            <SliderComp label={"Would you recommed this DAO/community to your friend?"} setter={dialValueSetter} />
-                            <SliderComp label={"Do you think there are great incentives for DAO members?"} setter={dialValueSetter} />
+                            <SliderComp label={"Do you believe your opinions matter in the Community?"} setter={dialValueSetter} />
+                            <SliderComp label={"Do you think that Community has great organizational structure?"} setter={dialValueSetter} />
+                            <SliderComp label={"Would you recommed this Community to your friend?"} setter={dialValueSetter} />
+                            <SliderComp label={"Do you think there are great incentives for Community members?"} setter={dialValueSetter} />
                         </div>
                         <div className={styles.tc}>
                             <input onChange={() => { settc(!tc) }} className={styles.checkbox} type="checkbox" />

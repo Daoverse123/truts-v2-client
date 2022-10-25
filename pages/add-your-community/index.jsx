@@ -137,7 +137,7 @@ function DaoForm() {
 
                     <label htmlFor="">
                         <p>What’s the name of your Community?</p>
-                        <input required value={state.dao_name}
+                        <input placeholder='Community name' required value={state.dao_name}
                             onChange={(e) => {
                                 setState((s) => {
                                     s.dao_name = e.target.value;
