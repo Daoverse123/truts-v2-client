@@ -216,6 +216,24 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
 
 const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug }) => {
     const [selectedFilter, setselectedFilter] = useState('Newest');
+
+    const [reviews, setReviews] = useState([]);
+    const [reviewsLoading, setreviewsLoading] = useState(true);
+
+    const fetchReviews = async () => {
+        let res = await axios.get(`${API}/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`)
+        setReviews(res.data.map((ele) => {
+            ele.profile_img = newGradient();
+            return ele
+        }));
+        setreviewsLoading(false);
+    }
+
+    useEffect(() => {
+        fetchReviews()
+    }, [])
+
+
     return (
         <div className={styles.reviewSec}>
             {/* <div className={styles.info}>
@@ -232,17 +250,20 @@ const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, 
             </span>
             <div className={styles.reviewCon}>
                 {(selectedFilter == 'Newest') ?
-                    dao_data.reviews.map((review, idx) => {
+                    reviews.map((review, idx) => {
                         return (
                             <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
                     }).reverse() :
-                    dao_data.reviews.map((review, idx) => {
+                    reviews.map((review, idx) => {
                         return (
                             <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
                     })
                 }
+                   {(reviews.length <= 0) && <div className={styles.loadingReview}>
+                    {(reviewsLoading) ? <p>Loading Reviews</p> : <p>Sorry, No reviews to display. But hey, you can become the first one!!</p>}
+                </div>}
             </div>
         </div>
     )
@@ -408,18 +429,18 @@ export async function getServerSideProps(ctx) {
     let rid = slug[1] || '';
     // Pass data to the page via props
 
-    let reviews = res.reviews.map((ele) => {
-        return { ...ele, profile_img: newGradient() }
-    })
+    // let reviews = res.reviews.map((ele) => {
+    //     return { ...ele, profile_img: newGradient() }
+    // })
 
-    return { props: { dao_data: { ...res, reviews }, rid: rid, slug: slug[0] } }
+    return { props: { dao_data: res, rid: rid, slug: slug[0] } }
 }
 
 const fetchData = async (slug) => {
     console.log('slug :', slug);
     try {
-        const res = await axios.get(`${API}/dao/get-dao-by-slug?slug=${slug}`)
-        if (res.data.status) {
+        const res = await axios.get(`${API}/dao/get-dao-by-slug-plain?slug=${slug}`)
+        if (res.status == 200) {
             return JSON.parse(JSON.stringify(res.data.data))
         }
         else {
