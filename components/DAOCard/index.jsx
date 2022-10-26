@@ -45,23 +45,32 @@ export default function DAOCard({ data }) {
                     </div>
                     <div className={styles.social_icons}>
                         <span className={styles.icon}>
-                            <img src={globe.src} alt="" onClick={() => {
+                            <img src={globe.src} alt="" onClick={(e) => {
                                 (data.website_link) && openNewTab(data.website_link)
+                                e.stopPropagation()
                             }} />
                         </span>
                         <span className={styles.icon}>
-                            <img src={twitter.src} alt="" onClick={() => {
+                            <img src={twitter.src} alt="" onClick={(e) => {
                                 (data.twitter_link) && openNewTab(data.twitter_link)
+                                e.stopPropagation()
                             }} />
-                            <p>
+                            <p  onClick={(e) => {
+                                (data.twitter_link) && openNewTab(data.twitter_link)
+                                e.stopPropagation()
+                            }} >
                                 {(data.twitter_followers) ? numFormatter(data.twitter_followers) : 'n/a'}
                             </p>
                         </span>
                         <span className={styles.icon}>
-                            <img src={discord.src} alt="" onClick={() => {
+                            <img src={discord.src} alt="" onClick={(e) => {
                                 (data.discord_link) && openNewTab(data.discord_link)
+                                e.stopPropagation()
                             }} />
-                            <p>
+                            <p onClick={(e) => {
+                                (data.discord_link) && openNewTab(data.discord_link)
+                                e.stopPropagation()
+                            }}>
                                 {(data.discord_members) ? numFormatter(data.discord_members) : 'n/a'}
                             </p>
                         </span>

@@ -95,15 +95,17 @@ const Sidebar = ({ dao_data }) => {
                     </button>}
                 <button onClick={() => {
                     navigator.clipboard.writeText(dao_data.website_link);
+                    document.querySelector('#copy_1').src = '/copy_after.png'
                 }} className={styles.long_btn} style={{ gridArea: "c" }}>
                     {dao_data.website_link}
-                    <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
+                    <img id='copy_1' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
                 <button onClick={() => {
                     navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
+                    document.querySelector('#copy_2').src = '/copy_after.png'
                 }} className={styles.long_btn} style={{ gridArea: "d" }}>
                     trust.xyz/dao/{dao_data.slug}
-                    <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
+                    <img id='copy_2' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
 
             </div>

@@ -161,7 +161,7 @@ const InfoSec = ({ dao_data }) => {
                         }
                     </div>
                 </span>
-                <Button label={'Join Community'} onClick={() => { openNewTab(dao_data.discord_link) }} />
+                {(dao_data.discord_link.length > 0) && <Button label={'Join Community'} onClick={() => { openNewTab(dao_data.discord_link) }} />}
                 <Button onClick={() => {
                     setCookie('target', slug)
                     window.location.href = `${API}/auth/discord`
