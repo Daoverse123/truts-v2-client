@@ -36,8 +36,23 @@ function Dao({ dao_data, rid, slug }) {
     const [walletConnectVisible, setwalletConnectVisible] = useState(false)
     const [tippingFlowVisible, settippingFlowVisible] = useState(false);
     const [review_details, setreview_details] = useState({ address: "", chain: "" })
+    const [reviews, setReviews] = useState([]);
 
     let tipReviewInfo = { review_details, setreview_details }
+
+    const [reviewsLoading, setreviewsLoading] = useState(true);
+    const fetchReviews = async () => {
+        let res = await axios.get(`${API}/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`)
+        setReviews(res.data.map((ele) => {
+            ele.profile_img = newGradient();
+            return ele
+        }));
+        setreviewsLoading(false);
+    }
+
+    useEffect(() => {
+        fetchReviews()
+    }, [])
 
     return (
         <>
@@ -79,7 +94,7 @@ function Dao({ dao_data, rid, slug }) {
                 {(selected == "Reviews") && <div className={styles.content}>
                     <div className={styles.main}>
                         <TabletSideBar dao_data={dao_data} />
-                        <ReviewsSec slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
+                        <ReviewsSec reviewsLoading={reviewsLoading} reviews={reviews} setReviews={setReviews} slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
                     </div>
                     <Sidebar dao_data={dao_data} />
 
@@ -214,25 +229,8 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
     </span>)
 }
 
-const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug }) => {
+const ReviewsSec = ({ reviewsLoading, dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug, reviews, setReviews }) => {
     const [selectedFilter, setselectedFilter] = useState('Newest');
-
-    const [reviews, setReviews] = useState([]);
-    const [reviewsLoading, setreviewsLoading] = useState(true);
-
-    const fetchReviews = async () => {
-        let res = await axios.get(`${API}/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`)
-        setReviews(res.data.map((ele) => {
-            ele.profile_img = newGradient();
-            return ele
-        }));
-        setreviewsLoading(false);
-    }
-
-    useEffect(() => {
-        fetchReviews()
-    }, [])
-
 
     return (
         <div className={styles.reviewSec}>
@@ -261,7 +259,7 @@ const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, 
                         )
                     })
                 }
-                   {(reviews.length <= 0) && <div className={styles.loadingReview}>
+                {(reviews.length <= 0) && <div className={styles.loadingReview}>
                     {(reviewsLoading) ? <p>Loading Reviews</p> : <p>Sorry, No reviews to display. But hey, you can become the first one!!</p>}
                 </div>}
             </div>
