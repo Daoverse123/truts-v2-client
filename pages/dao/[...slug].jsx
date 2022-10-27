@@ -246,7 +246,7 @@ const ReviewsSec = ({ reviewsLoading, dao_data, setwalletConnectVisible, settipp
                 }} label={"Write a Review"} type={"secondary"} />
                 <Filter selectedFilter={selectedFilter} setselectedFilter={setselectedFilter} />
             </span>
-            <div className={styles.reviewCon}>
+            <div className={styles.reviewCon} key={"screen" + dao_data.dao_name}>
                 {(selectedFilter == 'Newest') ?
                     reviews.map((review, idx) => {
                         return (
