@@ -392,10 +392,10 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
                         <img src={rateReviewLoading ? loader.src : thumbs_down.src} alt="" />
                         <p>{thumbs_down_count}</p>
                     </span>
-                    <span className={styles.iconText}  >
+                    {/* <span className={styles.iconText}  >
                         <img src={share.src} alt="" />
                         <p>share</p>
-                    </span>
+                    </span> */}
                     <span className={styles.iconText} onClick={intiateTip}>
                         <img src={tip.src} alt="" />
                         {/* <p>$400</p> */}
