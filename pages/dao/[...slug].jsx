@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styles from '../dao/dao.module.scss'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
@@ -50,7 +50,7 @@ function Dao({ dao_data, rid, slug }) {
         setreviewsLoading(false);
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         fetchReviews()
     }, [])
 
