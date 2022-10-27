@@ -42,17 +42,23 @@ function Dao({ dao_data, rid, slug }) {
 
     const [reviewsLoading, setreviewsLoading] = useState(true);
     const fetchReviews = async () => {
+        console.log(`/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`);
         let res = await axios.get(`${API}/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`)
-        setReviews(res.data.map((ele) => {
-            ele.profile_img = newGradient();
-            return ele
-        }));
+        setReviews((ele) => {
+            ele = res.data.map((ele) => {
+                ele.profile_img = newGradient();
+                return ele
+            })
+
+            return [...ele]
+        })
         setreviewsLoading(false);
     }
 
     useLayoutEffect(() => {
-        fetchReviews()
-    }, [])
+        console.log("useEffect called")
+        fetchReviews();
+    }, [dao_data.dao_name])
 
     return (
         <>
@@ -250,12 +256,12 @@ const ReviewsSec = ({ reviewsLoading, dao_data, setwalletConnectVisible, settipp
                 {(selectedFilter == 'Newest') ?
                     reviews.map((review, idx) => {
                         return (
-                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx + dao_data.dao_name} />
                         )
                     }).reverse() :
                     reviews.map((review, idx) => {
                         return (
-                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx + dao_data.dao_name} />
                         )
                     })
                 }
