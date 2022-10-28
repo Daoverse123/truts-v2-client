@@ -23,7 +23,7 @@ let getChainIcon = (chain) => {
     </span>)
 }
 
-const Sidebar = ({ dao_data }) => {
+const Sidebar = ({ dao_data, reviews }) => {
     console.log(dao_data);
 
     let key_label_map = {
@@ -38,7 +38,7 @@ const Sidebar = ({ dao_data }) => {
     const getAverageRating = (key) => {
         let avg = 50;
         let sum = 0;
-        let list = dao_data?.reviews;
+        let list = reviews;
         if (list?.length > 0) {
             list.forEach((ele) => {
                 sum = sum + ele[key];

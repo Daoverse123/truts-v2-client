@@ -99,10 +99,10 @@ function Dao({ dao_data, rid, slug }) {
                 <NavSec selected={selected} setSelected={setSelected} />
                 {(selected == "Reviews") && <div className={styles.content}>
                     <div className={styles.main}>
-                        <TabletSideBar dao_data={dao_data} />
+                        <TabletSideBar reviews={reviews} dao_data={dao_data} />
                         <ReviewsSec reviewsLoading={reviewsLoading} reviews={reviews} setReviews={setReviews} slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
                     </div>
-                    <Sidebar dao_data={dao_data} />
+                    <Sidebar reviews={reviews} dao_data={dao_data} />
 
                 </div>}
                 {(selected == "Opportunities") && <div className={styles.content}>
