@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from '../dao/dao.module.scss'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
@@ -36,29 +36,8 @@ function Dao({ dao_data, rid, slug }) {
     const [walletConnectVisible, setwalletConnectVisible] = useState(false)
     const [tippingFlowVisible, settippingFlowVisible] = useState(false);
     const [review_details, setreview_details] = useState({ address: "", chain: "" })
-    const [reviews, setReviews] = useState([]);
 
     let tipReviewInfo = { review_details, setreview_details }
-
-    const [reviewsLoading, setreviewsLoading] = useState(true);
-    const fetchReviews = async () => {
-        console.log(`/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`);
-        let res = await axios.get(`${API}/dao/get-reviews?dao_name=${dao_data.dao_name}&guild_id=${dao_data.guild_id}`)
-        setReviews((ele) => {
-            ele = res.data.map((ele) => {
-                ele.profile_img = newGradient();
-                return ele
-            })
-
-            return [...ele]
-        })
-        setreviewsLoading(false);
-    }
-
-    useLayoutEffect(() => {
-        console.log("useEffect called")
-        fetchReviews();
-    }, [dao_data.dao_name])
 
     return (
         <>
@@ -99,10 +78,10 @@ function Dao({ dao_data, rid, slug }) {
                 <NavSec selected={selected} setSelected={setSelected} />
                 {(selected == "Reviews") && <div className={styles.content}>
                     <div className={styles.main}>
-                        <TabletSideBar reviews={reviews} dao_data={dao_data} />
-                        <ReviewsSec reviewsLoading={reviewsLoading} reviews={reviews} setReviews={setReviews} slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
+                        <TabletSideBar dao_data={dao_data} />
+                        <ReviewsSec slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
                     </div>
-                    <Sidebar reviews={reviews} dao_data={dao_data} />
+                    <Sidebar dao_data={dao_data} />
 
                 </div>}
                 {(selected == "Opportunities") && <div className={styles.content}>
@@ -235,9 +214,8 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
     </span>)
 }
 
-const ReviewsSec = ({ reviewsLoading, dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug, reviews, setReviews }) => {
+const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug }) => {
     const [selectedFilter, setselectedFilter] = useState('Newest');
-
     return (
         <div className={styles.reviewSec}>
             {/* <div className={styles.info}>
@@ -252,22 +230,19 @@ const ReviewsSec = ({ reviewsLoading, dao_data, setwalletConnectVisible, settipp
                 }} label={"Write a Review"} type={"secondary"} />
                 <Filter selectedFilter={selectedFilter} setselectedFilter={setselectedFilter} />
             </span>
-            <div className={styles.reviewCon} key={"screen" + dao_data.dao_name}>
+            <div className={styles.reviewCon}>
                 {(selectedFilter == 'Newest') ?
-                    reviews.map((review, idx) => {
+                    dao_data.reviews.map((review, idx) => {
                         return (
-                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx + dao_data.dao_name} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
                     }).reverse() :
-                    reviews.map((review, idx) => {
+                    dao_data.reviews.map((review, idx) => {
                         return (
-                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx + dao_data.dao_name} />
+                            <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
                     })
                 }
-                {(reviews.length <= 0) && <div className={styles.loadingReview}>
-                    {(reviewsLoading) ? <p>Loading Reviews</p> : <p>Sorry, No reviews to display. But hey, you can become the first one!!</p>}
-                </div>}
             </div>
         </div>
     )
@@ -398,10 +373,10 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
                         <img src={rateReviewLoading ? loader.src : thumbs_down.src} alt="" />
                         <p>{thumbs_down_count}</p>
                     </span>
-                    {/* <span className={styles.iconText}  >
+                    <span className={styles.iconText}  >
                         <img src={share.src} alt="" />
                         <p>share</p>
-                    </span> */}
+                    </span>
                     <span className={styles.iconText} onClick={intiateTip}>
                         <img src={tip.src} alt="" />
                         {/* <p>$400</p> */}
@@ -433,18 +408,18 @@ export async function getServerSideProps(ctx) {
     let rid = slug[1] || '';
     // Pass data to the page via props
 
-    // let reviews = res.reviews.map((ele) => {
-    //     return { ...ele, profile_img: newGradient() }
-    // })
+    let reviews = res.reviews.map((ele) => {
+        return { ...ele, profile_img: newGradient() }
+    })
 
-    return { props: { dao_data: res, rid: rid, slug: slug[0] } }
+    return { props: { dao_data: { ...res, reviews }, rid: rid, slug: slug[0] } }
 }
 
 const fetchData = async (slug) => {
     console.log('slug :', slug);
     try {
-        const res = await axios.get(`${API}/dao/get-dao-by-slug-plain?slug=${slug}`)
-        if (res.status == 200) {
+        const res = await axios.get(`${API}/dao/get-dao-by-slug?slug=${slug}`)
+        if (res.data.status) {
             return JSON.parse(JSON.stringify(res.data.data))
         }
         else {
