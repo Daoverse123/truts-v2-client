@@ -12,6 +12,7 @@
     margin-top: 130px;
     margin-left: 0;
     margin-bottom: 178px;
+    width: 100%;
 }
 
 .breadCrum {
@@ -36,6 +37,11 @@
         font-weight: 500;
         font-size: 25px;
         margin: 0;
+    }
+
+    @media (max-width: 880px) {
+        width: 95%;
+        margin: 0 auto;
     }
 }
 
@@ -76,7 +82,7 @@
     padding: 32px;
 
     @media (max-width: 880px) {
-        width: 90%;
+        width: 95%;
     }
 }
 
@@ -115,6 +121,9 @@
     font-size: 16px;
     width: 326px;
     margin-bottom: 10px;
+    @media (max-width: 880px) {
+        width: 100%;
+    }
 }
 
 .slider {
@@ -131,6 +140,10 @@
         width: 301px;
         position: relative;
         align-items: center;
+
+        @media (max-width: 880px) {
+            width: 100%;
+        }
         input {
             -webkit-appearance: none;
             width: 100%;

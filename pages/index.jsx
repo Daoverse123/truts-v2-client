@@ -666,7 +666,6 @@ function RecentReviewsSection() {
             daoName={'IndiGG'}
             text={`Well, Indigg is one great project that actually offered me my first ever opportunity of belonging to a guild in my first web3 guild experiences. Ever since I've been with Indigg, its been all sorts of fun and adventure. I will always definitely recommend this great guild to anyone out there that’s just coming into the web 3 space. This guild packs lots of perks for its members and community as a w...`}
           />
-
         </div>
       </div>
     </div>
