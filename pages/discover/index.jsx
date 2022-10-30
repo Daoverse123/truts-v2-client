@@ -514,7 +514,7 @@ const TypesOfCommunities = ({ state, dispatch, catCount }) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
                             {
-                                (catCount[ele] || (catCount[ele] == 0)) ? <p>{ele} {`(${catCount[ele]})`}</p> : <p>{ele}</p>
+                                (catCount[ele] || (catCount[ele] == 0)) ? <p>{ele} {`(${catCount[ele]})`}</p> : <p>{ele} {<img src='/mini-loader.gif' />}</p>
                             }
                             <input checked={(state["Types of Communities"].includes(ele))}
                                 onChange={(e) => {
