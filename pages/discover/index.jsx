@@ -4,6 +4,7 @@ import axios from 'axios'
 import DoubleSlider from 'double-slider';
 import { useMediaQuery } from 'react-responsive'
 import Head from 'next/head'
+import { removeDuplicates } from 'remove-duplicates-from-an-array-of-object';
 
 //components
 import Nav from '../../components/Nav'
@@ -27,7 +28,8 @@ let sideNavTabs = {
 // CONSTANTS
 const API = process.env.API
 //const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
-const CATEGORY_LIST = ['DAO',
+const CATEGORY_LIST = [
+    'DAO',
     'Media',
     'Investors',
     'Service',
@@ -62,7 +64,8 @@ const CATEGORY_LIST = ['DAO',
     'Marketing tool',
     'Public Good',
     'Education',
-    'Investment'];
+    'Investment'
+];
 
 
 let discordFollowers = {
@@ -190,12 +193,14 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     const [filtersVisible, setfiltersVisible] = useState(false);
 
+    const [catCount, setcatCount] = useState({});
+
     useEffect(() => {
         setfiltersVisible(!isMobile);
     }, [isMobile])
 
     useEffect(() => {
-        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig)
+        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount)
         let query_category = window.location.href.split('=')[1];
         if (query_category) {
             dispatch({ type: actionTypes.COMMUNITY, payload: { label: query_category, type: true } })
@@ -335,7 +340,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                                         <p >{ele}</p>
                                         <img src={downArrow.src} alt="" />
                                     </span>
-                                    <GetSection key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
+                                    <GetSection catCount={catCount} key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
                                     <span key={i + 'dv'} className={styles.divider} />
                                 </>
                             )
@@ -387,7 +392,7 @@ const getDaolistAPI = async () => {
 }
 
 //dynamic load all the daos
-const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => {
+const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount) => {
     //gets initial 20 doas
     let daoList_ssr_current = daoList_ssr;
     let { lastPage, limit } = paginationConfig;
@@ -412,7 +417,25 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => 
     const arrayUniqueByKey = [...new Map(daoList_ssr_final.map(item =>
         [item[key], item])).values()];
     setdaoList_ssr(arrayUniqueByKey);
-    console.log(arrayUniqueByKey.length);
+
+    // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
+
+    let catCount = {};
+
+    CATEGORY_LIST.forEach((ele) => {
+        catCount[ele] = 0
+    })
+
+    CATEGORY_LIST.forEach((ele) => {
+        arrayUniqueByKey.forEach((alx) => {
+            if (alx.dao_category.includes(ele)) {
+                catCount[ele] = catCount[ele] + 1;
+            }
+        })
+    })
+
+    console.log(catCount)
+    setcatCount(catCount)
 }
 
 
@@ -452,10 +475,10 @@ const SortComp = ({ state, dispatch }) => {
     )
 }
 
-const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
+const GetSection = ({ label, idx, collapseState, state, dispatch, catCount }) => {
     if (label == Object.keys(sideNavTabs)[0] && collapseState[0]) {
         return (
-            <TypesOfCommunities state={state} dispatch={dispatch} />
+            <TypesOfCommunities state={state} dispatch={dispatch} catCount={catCount} />
         )
     }
     if (label == Object.keys(sideNavTabs)[1] && collapseState[1]) {
@@ -481,7 +504,8 @@ const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
     else { return <></> }
 }
 
-const TypesOfCommunities = ({ state, dispatch }) => {
+const TypesOfCommunities = ({ state, dispatch, catCount }) => {
+    console.log(catCount);
     return (
         <div className={styles.typesOfCommunities}>
             <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.COMMUNITY, payload: { label: 'All', type: true } }) }} >Reset</p>
@@ -489,7 +513,9 @@ const TypesOfCommunities = ({ state, dispatch }) => {
                 CATEGORY_LIST.map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
-                            <p>{ele}</p>
+                            {
+                                (catCount[ele] || (catCount[ele] == 0)) ? <p>{ele} {`(${catCount[ele]})`}</p> : <p>{ele}</p>
+                            }
                             <input checked={(state["Types of Communities"].includes(ele))}
                                 onChange={(e) => {
                                     dispatch({ type: actionTypes.COMMUNITY, payload: { label: ele, type: e.target.checked } })
@@ -561,12 +587,12 @@ const NetworkChains = ({ state, dispatch }) => {
             {
                 [
                     'All',
+                    'Cardano',
                     'Ethereum',
+                    'Near',
                     'Polygon',
                     'Solana',
                     'Tezos',
-                    'Near',
-                    'Cardano'
                 ].map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>

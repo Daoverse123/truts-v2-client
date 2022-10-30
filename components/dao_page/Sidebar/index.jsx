@@ -12,6 +12,7 @@ import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
 import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
 import near_chain_icon from '../../../assets/icons/near_chain_icon.svg'
 import matic_chain_icon from '../../../assets/icons/matic_chain_icon.svg'
+import web_white from '../../../assets/icons/web_white.svg'
 
 import chainIconMap from '../../../components/chainIconMap.json'
 
@@ -97,7 +98,7 @@ const Sidebar = ({ dao_data }) => {
                     navigator.clipboard.writeText(dao_data.website_link);
                     document.querySelector('#copy_1').src = '/copy_after.png'
                 }} className={styles.long_btn} style={{ gridArea: "c" }}>
-                    {dao_data.website_link}
+                    {<img src={web_white.src} />} {dao_data.website_link}
                     <img id='copy_1' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
                 <button onClick={() => {
