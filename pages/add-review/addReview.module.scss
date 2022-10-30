@@ -71,8 +71,13 @@
     height: max-content;
     background: #ffffff;
     border-radius: 32px;
+    margin: 0 auto;
     margin-top: 25px;
     padding: 32px;
+
+    @media (max-width: 880px) {
+        width: 90%;
+    }
 }
 
 .desc_input {
@@ -88,6 +93,10 @@
     &:focus {
         outline: 2px solid blue;
     }
+
+    @media (max-width: 880px) {
+        width: 100%;
+    }
 }
 
 .dialsCon {
@@ -95,6 +104,10 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 80px;
     row-gap: 20px;
+
+    @media (max-width: 880px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .dialLabel {
@@ -202,6 +215,9 @@
         width: 621px;
         font-weight: 400;
         font-size: 16px;
+    }
+    @media (max-width: 880px) {
+        width: 90%;
     }
 }
 

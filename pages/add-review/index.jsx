@@ -106,7 +106,7 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                 </Head>
                 <Nav />
                 <div className={styles.mainCon}>
-                    <div className={styles.breadCrum}>
+                    {/* <div className={styles.breadCrum}>
                         <img src={left_arrow.src} alt="" />
                         <Link href={`./dao/${slug}`}>
                             <span>
@@ -114,7 +114,7 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                                 <h3>{dao_name}</h3>
                             </span>
                         </Link>
-                    </div>
+                    </div> */}
 
                     {(pageState == status.LOADING) && <LoadingState />}
                     {(pageState == status.ERROR) && <ErrorState slug={slug} />}
