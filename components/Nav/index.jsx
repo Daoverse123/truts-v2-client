@@ -60,6 +60,7 @@ export default function Component({ isFloating, isStrech }) {
                     <ul className={styles.links}>
                         <Link href={'/add-your-community'}><li>Add a Community</li></Link>
                         <Link href={'/discover'}><li>Discover Communities</li></Link>
+                        <Link href={'https://www.academy.truts.xyz/'}><li>Truts Academy</li></Link>
                         {(walletState?.address?.length > 5)
                             ? // wallet connected
                             <li className={styles.profileIcon}>
@@ -174,6 +175,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, walletConnectVisible, setw
                             Discover a Communities
                         </li>
                     </Link>
+                    <Link href={'https://www.academy.truts.xyz/'}><li>Truts Academy</li></Link>
                 </ul>
                 <div className={styles.btn_wrapper}>
                     <Button onClick={() => { setwalletConnectVisible(true) }} label={"Connect wallet"} />

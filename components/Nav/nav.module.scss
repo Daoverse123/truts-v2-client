@@ -98,6 +98,10 @@ $PHONE_N: 425;
         column-gap: desktop_to_laptop_fluid(41);
     }
 
+    @media (max-width: 1230px) {
+        column-gap: desktop_to_laptop_fluid(25);
+    }
+
     li {
         font-weight: 400;
         font-size: 16.5246px;
@@ -108,6 +112,11 @@ $PHONE_N: 425;
         }
         @media (max-width: 1026px) {
             display: none;
+        }
+
+        @media (max-width: 1230px) {
+            text-align: center;
+            font-size: 12px;
         }
     }
 }
