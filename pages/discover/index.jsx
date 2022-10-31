@@ -86,12 +86,14 @@ let twitterFollowers = {
 
 let chainMap = {
     'All': "all",
+    'Arbitrum': 'arbitrum-one',
+    'Binance Smart Chain': 'binance-smart-chain',
+    'Cardano': 'cardano',
     'Ethereum': 'ethereum',
+    'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
-    'Tezos': 'tezos',
-    'Near': 'near',
-    'Cardano': 'cardano'
+    'Tezos': 'tezos'
 }
 
 let initialState = {
@@ -585,15 +587,7 @@ const NetworkChains = ({ state, dispatch }) => {
                 onClick={() => { dispatch({ type: actionTypes.CHAIN, payload: { label: 'All', type: true } }) }}
             >Reset</p>
             {
-                [
-                    'All',
-                    'Cardano',
-                    'Ethereum',
-                    'Near',
-                    'Polygon',
-                    'Solana',
-                    'Tezos',
-                ].map((ele, i) => {
+                Object.keys(chainMap).map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
                             <p>{ele}</p>
