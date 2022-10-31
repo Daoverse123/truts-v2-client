@@ -247,8 +247,8 @@
     margin-top: 30px;
 
     .breadCrum {
-        width: auto;
         margin-bottom: 15px;
+        margin: 0 auto;
     }
 
     .response {
@@ -267,10 +267,10 @@
     flex-direction: column;
     background: #ffffff;
     border-radius: 16px;
-    width: 704px;
+    width: 863px;
     height: 655px;
     margin-top: 25px;
-
+    margin: 0 auto;
     @media (max-width: 730px) {
         width: 100%;
     }
