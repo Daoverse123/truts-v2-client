@@ -436,6 +436,8 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
         })
     })
 
+    console.log(daoList_ssr_final.length)
+
     console.log(catCount)
     setcatCount(catCount)
 }
