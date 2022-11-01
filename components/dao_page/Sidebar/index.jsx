@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from './sidebar.module.scss'
-
+import Link from 'next/link'
 
 //utils
 import numFormatter from '../../../utils/numFormatter'
@@ -18,10 +18,12 @@ import chainIconMap from '../../../components/chainIconMap.json'
 
 let getChainIcon = (chain) => {
 
-    return (<span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
-        <img src={chainIconMap[chain].icon} alt="" />
-        {chainIconMap[chain].ticker}
-    </span>)
+    return (<Link href={`/discover?chain=${chain}`}>
+        <span style={{ backgroundColor: `${chainIconMap[chain].color}`, cursor: "pointer" }} className={styles.chain_tag}>
+            <img src={chainIconMap[chain].icon} alt="" />
+            {chainIconMap[chain].ticker}
+        </span>
+    </Link>)
 }
 
 const Sidebar = ({ dao_data }) => {

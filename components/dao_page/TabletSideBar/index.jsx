@@ -1,5 +1,5 @@
 import styles from './tabletSideBar.module.scss'
-
+import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 
 //utils
@@ -65,10 +65,12 @@ const TabletSideBar = ({ dao_data }) => {
     }
 
     let getChainIcon = (chain) => {
-        return (<span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
-            <img src={chainIconMap[chain].icon} alt="" />
-            {chainIconMap[chain].ticker}
-        </span>)
+        return (<Link href={`/discover?chain=${chain}`}>
+            <span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
+                <img src={chainIconMap[chain].icon} alt="" />
+                {chainIconMap[chain].ticker}
+            </span>
+        </Link>)
     }
 
 

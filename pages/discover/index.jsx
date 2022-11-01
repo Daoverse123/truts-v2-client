@@ -5,6 +5,7 @@ import DoubleSlider from 'double-slider';
 import { useMediaQuery } from 'react-responsive'
 import Head from 'next/head'
 import { removeDuplicates } from 'remove-duplicates-from-an-array-of-object';
+import { useRouter } from 'next/router';
 
 //components
 import Nav from '../../components/Nav'
@@ -197,16 +198,22 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     const [catCount, setcatCount] = useState({});
 
+    const router = useRouter();
+
     useEffect(() => {
         setfiltersVisible(!isMobile);
     }, [isMobile])
 
     useEffect(() => {
         getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount)
-        let query_category = window.location.href.split('=')[1];
-        if (query_category) {
-            dispatch({ type: actionTypes.COMMUNITY, payload: { label: query_category, type: true } })
+        let query = router.query;
+        if (Object.keys(query)[0] == 'category') {
+            dispatch({ type: actionTypes.COMMUNITY, payload: { label: query['category'], type: true } })
         }
+        if (Object.keys(query)[0] == 'chain') {
+            dispatch({ type: actionTypes.CHAIN, payload: { label: inverse(chainMap)[query['chain']], type: true } })
+        }
+
     }, [])
 
 
@@ -680,6 +687,14 @@ const SliderComp = ({ label, min, max, state, dispatch }) => {
             </span>
         </span>
     )
+}
+
+function inverse(obj) {
+    var retobj = {};
+    for (var key in obj) {
+        retobj[obj[key]] = key;
+    }
+    return retobj;
 }
 
 export default Discover
