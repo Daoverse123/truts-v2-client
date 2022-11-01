@@ -47,8 +47,17 @@ const CATEGORY_LIST = ['DAO',
     'Marketing tool',
     'Public Good',
     'Education'];
-const CHAIN_LIST = ['Ethereum', 'Polygon', 'Solana', 'Near', 'Cardano']
-const CHAIN_LIST_MAP = { 'Ethereum': "ethereum", 'Polygon': "polygon-pos", 'Solana': "solana", 'Near': 'near', 'Cardano': 'cardano' }
+
+const CHAIN_LIST_MAP = {
+    'Arbitrum': 'arbitrum-one',
+    'Binance Smart Chain': 'binance-smart-chain',
+    'Cardano': 'cardano',
+    'Ethereum': 'ethereum',
+    'Near': 'near',
+    'Polygon': 'polygon-pos',
+    'Solana': 'solana',
+    'Tezos': 'tezos'
+}
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
 
@@ -255,7 +264,6 @@ function DaoForm() {
                     <label htmlFor="">
                         <p>Additional link</p>
                         <input
-                            required
                             value={state.additional_link}
                             onChange={(e) => {
                                 setState((s) => {
@@ -429,7 +437,7 @@ const CategotyCon = ({ state, setState }) => {
 }
 
 const ChainSelectCon = ({ state, setState }) => {
-    let initialSuggestion = CHAIN_LIST.map(term => { return { term } });
+    let initialSuggestion = Object.keys(CHAIN_LIST_MAP).map(term => { return { term } });
     const [selectedItems, setselectedItems] = useState([]);
     const [inputText, setinputText] = useState('');
     const [active, setactive] = useState(0)
@@ -525,7 +533,7 @@ const ChainSelectCon = ({ state, setState }) => {
                         else if (e.key == 'Enter') {
                             setselectedItems(() => {
                                 let elm = new Set(selectedItems);
-                                if (CHAIN_LIST.includes(inputText.trim())) {
+                                if (Object.keys(CHAIN_LIST_MAP).includes(inputText.trim())) {
                                     elm.add(inputText.trim())
                                 }
                                 return [...elm];
