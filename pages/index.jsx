@@ -222,7 +222,7 @@ function Hero() {
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
           <div className={styles.stat}>
-            <h3>1700+</h3>
+            <h3>1900+</h3>
             <p>Communities Listed</p>
           </div>
           <div className={styles.stat}>
