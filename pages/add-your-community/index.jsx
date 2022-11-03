@@ -60,7 +60,9 @@ const CHAIN_LIST_MAP = {
 }
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
-
+{/* 
+opensea_link: { type: String },
+magiceden_link: { type: String }, */}
 function DaoForm() {
 
     const [walletConnectVisible, setwalletConnectVisible] = useState(false)
@@ -77,8 +79,12 @@ function DaoForm() {
         submitter_discord_id: "",
         submitter_public_address: "",
         chain: "",
-        treasury: ""
+        treasury: "",
+        opensea_link: "",
+        magiceden_link: ""
     })
+
+    console.log(state)
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -268,6 +274,33 @@ function DaoForm() {
                             onChange={(e) => {
                                 setState((s) => {
                                     s.additional_link = e.target.value;
+                                    return { ...s }
+                                })
+                            }}
+                            type="text" placeholder='Additional links' />
+                    </label>
+                    {/* 
+                    opensea_link: { type: String },
+                     magiceden_link: { type: String }, */}
+                    <label htmlFor="">
+                        <p>Opensea link (if applicable)</p>
+                        <input
+                            value={state.opensea_link}
+                            onChange={(e) => {
+                                setState((s) => {
+                                    s.opensea_link = e.target.value;
+                                    return { ...s }
+                                })
+                            }}
+                            type="text" placeholder='Additional links' />
+                    </label>
+                    <label htmlFor="">
+                        <p>Magic Eden link (if applicable)</p>
+                        <input
+                            value={state.magiceden_link}
+                            onChange={(e) => {
+                                setState((s) => {
+                                    s.magiceden_link = e.target.value;
                                     return { ...s }
                                 })
                             }}
