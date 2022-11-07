@@ -118,10 +118,99 @@ const OnBoardForm = () => {
                             <h1>Your Socials</h1>
                             <p>Connect all your socials to earn XP points</p>
                         </span>
-                        <span className={styles.iconXp}>
-                            <img src="/xpCoin.png" alt="" />
-                            <p>50</p>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Twitter</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Discord</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Email</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Tags</h1>
+                            <p>Select tags that describes you</p>
                         </span>
+                    </div>
+                    <div className={styles.tagsCon}>
+                        <div className={styles.selectedChips}>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                        </div>
+                        <div className={styles.chipOptions}>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
