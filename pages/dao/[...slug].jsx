@@ -316,6 +316,7 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
         let chainMap = {
             'Ethereum': 'eth',
             'Solana': 'sol',
+            'near': 'near',
         }
 
 
@@ -331,7 +332,7 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
         setreview_details({ address: review.public_address, chain: review.chain });
         let wallet_state = JSON.parse(localStorage.getItem('wallet_state'));
         if (wallet_state) {
-
+            console.log('Review chainMap ', review.chain);
             let chain = review.chain || 'eth'
             if (chainMap[wallet_state.chain] != chain) {
 

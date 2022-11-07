@@ -7,7 +7,7 @@ import {
 } from 'wagmi';
 
 import { Buffer } from "buffer";
-
+import * as nearAPI from "near-api-js";
 //assets
 import eth_icon from '../../assets/icons/eth-icon.png'
 import sol_icon from '../../assets/icons/sol-icon.png'
@@ -17,6 +17,7 @@ import coinbase_wallet from '../../assets/icons/coinbase-icon.png'
 import close_icon from '../../assets/icons/close_icon.svg'
 import other_wallet from '../../assets/icons/other-wallet.png'
 import phantom_icon from '../../assets/icons/phantom.avif'
+import near_icon from '../../assets/icons/near_chain_icon.png'
 
 
 // { wallet state
@@ -35,6 +36,17 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
         let wallet_state = localStorage.getItem('wallet_state');
         if (wallet_state) {
             setwalletState(JSON.parse(wallet_state))
+        }
+    }, [])
+
+    useEffect(() => {
+        let query = window.location.search;
+        if (query.includes("account_id") && query.includes("all_keys")) {
+            //set wallet screen visible
+            setwalletConnectVisible(true);
+            //select near
+            setselectedChain("Near");
+            //click on near
         }
     }, [])
 
@@ -78,6 +90,7 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
                 </div>
                 {(selectedChain == 'Ethereum') && < Eth_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
                 {(selectedChain == 'Solana') && <Solana_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
+                {(selectedChain == 'Near') && <Near_wallets setwalletState={setwalletState} closePopUp={closePopUp} />}
             </div>
         </div>)
 }
@@ -85,7 +98,7 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
 
 const Wallet = ({ icon, name, onClick }) => {
     return (
-        <span onClick={() => { onClick() }} className={styles.elm}>
+        <span id={'btn' + name} onClick={() => { onClick() }} className={styles.elm}>
             <img src={icon} alt="" />
             <p>{name}</p>
         </span>
@@ -207,18 +220,103 @@ const Solana_wallets = ({ setwalletState, closePopUp }) => {
 }
 
 
-const Chains = ['Ethereum', 'Solana']
+const Near_wallets = ({ setwalletState, closePopUp }) => {
+    //const isSenderInstalled = window.near.isSender;
+    // if (typeof window.near !== 'undefined' && window.near.isSender) {
+    //     console.log('Sender is installed!');
+    // }
+    const [accessKey, setAccessKey] = useState('');
+    const { connect, keyStores, WalletConnection } = nearAPI;
+    const connectionConfig = {
+        networkId: "testnet",
+        keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+        nodeUrl: "https://rpc.testnet.near.org",
+        walletUrl: "https://wallet.testnet.near.org",
+        helperUrl: "https://helper.testnet.near.org",
+        explorerUrl: "https://explorer.testnet.near.org",
+    };
+    const walletConnection = null;
+
+    const connect_near = async () => {
+
+        // connect to NEAR
+        const nearConnection = await connect(connectionConfig);
+
+        // create wallet connection
+        walletConnection = new WalletConnection(nearConnection);
+        // const walletConnection = new WalletConnection(nearConnection);
+        if (!walletConnection.isSignedIn()) {
+            let AccessKey = walletConnection.requestSignIn(
+                "example-contract.testnet", // contract requesting access
+                "Truts App", // optional title
+                "http://YOUR-URL.com/success", // optional redirect URL on success
+                "http://YOUR-URL.com/failure" // optional redirect URL on failure
+            );
+            setAccessKey(AccessKey);
+            console.log(AccessKey);
+        }
+
+    }
+
+    useEffect(() => {
+        let query = window.location.search;
+        if (query.includes("account_id") && query.includes("all_keys")) {
+            document.getElementById('btn' + 'Near').click();
+        }
+    }, [])
+
+
+
+    return (
+        <div className={styles.list}>
+            <Wallet
+                onClick={async () => {
+                    await connect_near()
+                    if (walletConnection.isSignedIn()) {
+                        // // user is signed in
+                        // const walletAccountObj = walletConnection.account();
+                        const account = walletConnection.account();
+                        console.log('near connection established', account);
+                        console.log(accessKey);
+                    }
+
+                    setwalletState({
+                        address: walletConnection.getAccountId(),
+                        chain: "near",
+                        status: "connected"
+                    })
+                    localStorage.setItem('wallet_state', JSON.stringify({
+                        address: walletConnection.getAccountId(),
+                        chain: "near",
+                        status: "connected"
+                    }));
+
+                    window.updateNav()
+                    closePopUp()
+
+                }
+                } icon={walletIconMap['Near'] || other_wallet.src} name={"Near"}
+            />
+        </div>
+    )
+}
+
+
+
+const Chains = ['Ethereum', 'Solana', 'Near']
 
 const walletIconMap = {
     'MetaMask': metamask.src,
     'Coinbase Wallet': coinbase_wallet.src,
     'WalletConnect': wallet_connect.src,
-    'Phantom': phantom_icon.src
-}  
+    'Phantom': phantom_icon.src,
+    'Near': near_icon.src
+}
 
 const chainIconMap = {
     'Ethereum': eth_icon.src,
     'Solana': sol_icon.src,
+    'Near': near_icon.src,
 }
 
 
