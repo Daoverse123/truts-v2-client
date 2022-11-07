@@ -4,6 +4,8 @@ import axios from 'axios'
 import DoubleSlider from 'double-slider';
 import { useMediaQuery } from 'react-responsive'
 import Head from 'next/head'
+import { removeDuplicates } from 'remove-duplicates-from-an-array-of-object';
+import { useRouter } from 'next/router';
 
 //components
 import Nav from '../../components/Nav'
@@ -27,9 +29,10 @@ let sideNavTabs = {
 // CONSTANTS
 const API = process.env.API
 //const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
-const CATEGORY_LIST = ['DAO',
+const CATEGORY_LIST = [
+    'DAO',
     'Media',
-    'Investment',
+    'Investors',
     'Service',
     'Grant',
     'Social',
@@ -61,7 +64,9 @@ const CATEGORY_LIST = ['DAO',
     'Guild',
     'Marketing tool',
     'Public Good',
-    'Education'];
+    'Education',
+    'Investment'
+];
 
 
 let discordFollowers = {
@@ -82,12 +87,14 @@ let twitterFollowers = {
 
 let chainMap = {
     'All': "all",
+    'Arbitrum': 'arbitrum-one',
+    'Binance Smart Chain': 'binance-smart-chain',
+    'Cardano': 'cardano',
     'Ethereum': 'ethereum',
+    'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
-    'Tezos': 'tezos',
-    'Near': 'near',
-    'Cardano': 'cardano'
+    'Tezos': 'tezos'
 }
 
 let initialState = {
@@ -189,16 +196,24 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     const [filtersVisible, setfiltersVisible] = useState(false);
 
+    const [catCount, setcatCount] = useState({});
+
+    const router = useRouter();
+
     useEffect(() => {
         setfiltersVisible(!isMobile);
     }, [isMobile])
 
     useEffect(() => {
-        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig)
-        let query_category = window.location.href.split('=')[1];
-        if (query_category) {
-            dispatch({ type: actionTypes.COMMUNITY, payload: { label: query_category, type: true } })
+        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount)
+        let query = router.query;
+        if (Object.keys(query)[0] == 'category') {
+            dispatch({ type: actionTypes.COMMUNITY, payload: { label: query['category'], type: true } })
         }
+        if (Object.keys(query)[0] == 'chain') {
+            dispatch({ type: actionTypes.CHAIN, payload: { label: inverse(chainMap)[query['chain']], type: true } })
+        }
+
     }, [])
 
 
@@ -334,7 +349,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                                         <p >{ele}</p>
                                         <img src={downArrow.src} alt="" />
                                     </span>
-                                    <GetSection key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
+                                    <GetSection catCount={catCount} key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
                                     <span key={i + 'dv'} className={styles.divider} />
                                 </>
                             )
@@ -386,7 +401,7 @@ const getDaolistAPI = async () => {
 }
 
 //dynamic load all the daos
-const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => {
+const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount) => {
     //gets initial 20 doas
     let daoList_ssr_current = daoList_ssr;
     let { lastPage, limit } = paginationConfig;
@@ -411,7 +426,27 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig) => 
     const arrayUniqueByKey = [...new Map(daoList_ssr_final.map(item =>
         [item[key], item])).values()];
     setdaoList_ssr(arrayUniqueByKey);
-    console.log(arrayUniqueByKey.length);
+
+    // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
+
+    let catCount = {};
+
+    CATEGORY_LIST.forEach((ele) => {
+        catCount[ele] = 0
+    })
+
+    CATEGORY_LIST.forEach((ele) => {
+        arrayUniqueByKey.forEach((alx) => {
+            if (alx.dao_category.includes(ele)) {
+                catCount[ele] = catCount[ele] + 1;
+            }
+        })
+    })
+
+    console.log(daoList_ssr_final.length)
+
+    console.log(catCount)
+    setcatCount(catCount)
 }
 
 
@@ -451,10 +486,10 @@ const SortComp = ({ state, dispatch }) => {
     )
 }
 
-const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
+const GetSection = ({ label, idx, collapseState, state, dispatch, catCount }) => {
     if (label == Object.keys(sideNavTabs)[0] && collapseState[0]) {
         return (
-            <TypesOfCommunities state={state} dispatch={dispatch} />
+            <TypesOfCommunities state={state} dispatch={dispatch} catCount={catCount} />
         )
     }
     if (label == Object.keys(sideNavTabs)[1] && collapseState[1]) {
@@ -480,7 +515,8 @@ const GetSection = ({ label, idx, collapseState, state, dispatch }) => {
     else { return <></> }
 }
 
-const TypesOfCommunities = ({ state, dispatch }) => {
+const TypesOfCommunities = ({ state, dispatch, catCount }) => {
+    console.log(catCount);
     return (
         <div className={styles.typesOfCommunities}>
             <p className={styles.reset} onClick={() => { dispatch({ type: actionTypes.COMMUNITY, payload: { label: 'All', type: true } }) }} >Reset</p>
@@ -488,7 +524,9 @@ const TypesOfCommunities = ({ state, dispatch }) => {
                 CATEGORY_LIST.map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
-                            <p>{ele}</p>
+                            {
+                                (catCount[ele] || (catCount[ele] == 0)) ? <p>{ele} {`(${catCount[ele]})`}</p> : <p>{ele} {<img src='/mini-loader.gif' />}</p>
+                            }
                             <input checked={(state["Types of Communities"].includes(ele))}
                                 onChange={(e) => {
                                     dispatch({ type: actionTypes.COMMUNITY, payload: { label: ele, type: e.target.checked } })
@@ -558,15 +596,7 @@ const NetworkChains = ({ state, dispatch }) => {
                 onClick={() => { dispatch({ type: actionTypes.CHAIN, payload: { label: 'All', type: true } }) }}
             >Reset</p>
             {
-                [
-                    'All',
-                    'Ethereum',
-                    'Polygon',
-                    'Solana',
-                    'Tezos',
-                    'Near',
-                    'Cardano'
-                ].map((ele, i) => {
+                Object.keys(chainMap).map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
                             <p>{ele}</p>
@@ -657,6 +687,14 @@ const SliderComp = ({ label, min, max, state, dispatch }) => {
             </span>
         </span>
     )
+}
+
+function inverse(obj) {
+    var retobj = {};
+    for (var key in obj) {
+        retobj[obj[key]] = key;
+    }
+    return retobj;
 }
 
 export default Discover

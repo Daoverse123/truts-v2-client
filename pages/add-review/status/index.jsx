@@ -20,17 +20,17 @@ function index({ type, slug }) {
           <link href="https://assets1.lottiefiles.com/packages/lf20_s2lryxtd.json" rel="preload"></link>
           <link href="https://assets5.lottiefiles.com/packages/lf20_afwjhfb2.json" rel="preload"></link>
         </Head>
-        <Nav />
+        <Nav isFloating={true} />
         <div style={{ margin: "0" }} className={styles.mainCon}>
-          {/* <div className={styles.breadCrum}>
-          <img src={left_arrow.src} alt="" />
-          <Link href={`/`}>
-            <span>
-              <p>Add review for</p>
-              <h3>{"Test"}</h3>
-            </span>
-          </Link>
-        </div> */}
+          <div className={styles.breadCrum}>
+            <img src={left_arrow.src} alt="" />
+            <Link href={`/dao/${slug}`}>
+              <span>
+                <p>Add review for</p>
+                <h3>{slug}</h3>
+              </span>
+            </Link>
+          </div>
           {(type == 'success') && < SuccessState />}
           {(type == 'error') && <ErrorState slug={slug} />}
         </div>

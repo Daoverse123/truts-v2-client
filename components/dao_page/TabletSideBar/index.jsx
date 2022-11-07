@@ -1,5 +1,5 @@
 import styles from './tabletSideBar.module.scss'
-
+import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 
 //utils
@@ -65,10 +65,12 @@ const TabletSideBar = ({ dao_data }) => {
     }
 
     let getChainIcon = (chain) => {
-        return (<span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
-            <img src={chainIconMap[chain].icon} alt="" />
-            {chainIconMap[chain].ticker}
-        </span>)
+        return (<Link href={`/discover?chain=${chain}`}>
+            <span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
+                <img src={chainIconMap[chain].icon} alt="" />
+                {chainIconMap[chain].ticker}
+            </span>
+        </Link>)
     }
 
 
@@ -82,12 +84,19 @@ const TabletSideBar = ({ dao_data }) => {
                     <img src={twitter_white.src} alt="" />
                     {numFormatter(dao_data?.twitter_followers)}
                 </button>
-                <button onClick={() => {
-                    openNewTab(dao_data.discord_link)
-                }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
-                    <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data?.discord_members)}
-                </button>
+                {dao_data.dao_category.includes('Investors') ?
+                    <button onClick={() => {
+                        openNewTab(`mailto:${dao_data?.email}`)
+                    }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
+                        <img style={{ margin: "unset", filter: "invert(100%)" }} src={'/email.png'} alt="" />
+                        {/* {numFormatter(dao_data?.discord_members)} */}
+                    </button>
+                    : <button onClick={() => {
+                        openNewTab(dao_data.discord_link)
+                    }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
+                        <img src={discord_white.src} alt="" />
+                        {numFormatter(dao_data?.discord_members)}
+                    </button>}
                 <button onClick={() => {
                     openNewTab(dao_data.website_link)
                 }} className={styles.soc_btn} style={{ background: '#121212' }}>

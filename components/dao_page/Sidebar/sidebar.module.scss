@@ -49,7 +49,9 @@ $PHONE_N: 426;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             "a b"
-            "c c";
+            "c c"
+            "d d"
+            ;
         padding-bottom: 16px;
         grid-column-gap: 24px;
         grid-row-gap: 16px;
@@ -167,6 +169,7 @@ $PHONE_N: 426;
                 width: 16px;
                 height: fit-content;
                 border-radius: 100%;
+                object-fit: contain;
             }
         }
     }

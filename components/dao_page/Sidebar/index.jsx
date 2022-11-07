@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from './sidebar.module.scss'
-
+import Link from 'next/link'
 
 //utils
 import numFormatter from '../../../utils/numFormatter'
@@ -12,15 +12,18 @@ import eth_chain_icon from '../../../assets/icons/eth_chain_icon.svg'
 import sol_chain_icon from '../../../assets/icons/sol_chain_icon.svg'
 import near_chain_icon from '../../../assets/icons/near_chain_icon.svg'
 import matic_chain_icon from '../../../assets/icons/matic_chain_icon.svg'
+import web_white from '../../../assets/icons/web_white.svg'
 
 import chainIconMap from '../../../components/chainIconMap.json'
 
 let getChainIcon = (chain) => {
 
-    return (<span style={{ backgroundColor: `${chainIconMap[chain].color}` }} className={styles.chain_tag}>
-        <img src={chainIconMap[chain].icon} alt="" />
-        {chainIconMap[chain].ticker}
-    </span>)
+    return (<Link href={`/discover?chain=${chain}`}>
+        <span style={{ backgroundColor: `${chainIconMap[chain].color}`, cursor: "pointer" }} className={styles.chain_tag}>
+            <img src={chainIconMap[chain].icon} alt="" />
+            {chainIconMap[chain].ticker}
+        </span>
+    </Link>)
 }
 
 const Sidebar = ({ dao_data }) => {
@@ -79,18 +82,35 @@ const Sidebar = ({ dao_data }) => {
                     <img src={twitter_white.src} alt="" />
                     {numFormatter(dao_data?.twitter_followers)}
                 </button>
-                <button className={styles.discord_soc} onClick={() => {
-                    openNewTab(dao_data.discord_link)
-                }}>
-                    <img src={discord_white.src} alt="" />
-                    {numFormatter(dao_data?.discord_members)}
+                {(dao_data.dao_category.includes('Investors')) ?
+                    <button className={styles.discord_soc} onClick={() => {
+                        openNewTab(`mailto:${dao_data?.email}`)
+                    }}>
+                        <img src={'/email.png'} alt="" style={{ filter: "unset" }} />
+
+                        {/* {numFormatter(dao_data?.discord_members)} */}
+                    </button>
+                    : <button className={styles.discord_soc} onClick={() => {
+                        openNewTab(dao_data.discord_link)
+                    }}>
+                        <img src={discord_white.src} alt="" />
+                        {numFormatter(dao_data?.discord_members)}
+                    </button>}
+                <button onClick={() => {
+                    navigator.clipboard.writeText(dao_data.website_link);
+                    document.querySelector('#copy_1').src = '/copy_after.png'
+                }} className={styles.long_btn} style={{ gridArea: "c" }}>
+                    {<img src={web_white.src} />} {dao_data.website_link}
+                    <img id='copy_1' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
                 <button onClick={() => {
                     navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
-                }} className={styles.long_btn} style={{ gridArea: "c" }}>
+                    document.querySelector('#copy_2').src = '/copy_after.png'
+                }} className={styles.long_btn} style={{ gridArea: "d" }}>
                     trust.xyz/dao/{dao_data.slug}
-                    <img style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
+                    <img id='copy_2' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
+
             </div>
             <span className={styles.chain_con}>
                 <p>Chain</p>

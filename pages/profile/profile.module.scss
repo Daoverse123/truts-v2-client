@@ -1216,3 +1216,301 @@ $PHONE_N: 450;
         }
     }
 }
+
+.onBoardingFlow {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.466);
+    position: fixed;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.onBoardingForm {
+    display: flex;
+    width: 600px;
+    height: 592px;
+    background: #ffffff;
+    margin: 0 auto;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .progressBar {
+        display: flex;
+        width: 100%;
+        height: 5px;
+        background-color: #f7f7f7;
+        margin-top: auto;
+        z-index: 100;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        .progressInner {
+            display: flex;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            border-radius: 64px;
+        }
+    }
+}
+
+.progressHeader {
+    display: flex;
+    width: 100%;
+    height: 110px;
+    background-color: #ffffff;
+    position: relative;
+    align-items: center;
+    padding: 24px;
+
+    .title {
+        h1 {
+            font-weight: 500;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        p {
+            font-weight: 400;
+            font-size: 12px;
+            margin-top: 0;
+        }
+    }
+
+    .xpCon {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        .xpIcon {
+            display: flex;
+            align-items: center;
+            p {
+                margin: 0;
+                font-weight: 500;
+                font-size: 20px;
+            }
+            img {
+                height: 32px;
+                width: 32px;
+                margin-right: 4px;
+            }
+        }
+        p {
+            margin: 0;
+            margin-top: 5px;
+            font-weight: 400;
+            font-size: 12px;
+            margin-left: auto;
+        }
+    }
+}
+
+.formContent {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0 24px;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding-bottom: 50px;
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        background-color: #ffffff;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #b1b1b1;
+    }
+
+    .inputTitle {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        height: max-content;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eeeff2;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        margin-top: 20px;
+        .titleSub {
+            h1 {
+                font-weight: 400;
+                font-size: 16px;
+                margin: 0;
+                margin-bottom: 4px;
+            }
+            p {
+                font-weight: 400;
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+
+        .iconXp {
+            display: flex;
+            align-items: center;
+            height: 20px;
+            img {
+                height: 17.5px;
+                width: 17.5px;
+                margin-right: 1.9px;
+            }
+            margin-bottom: auto;
+        }
+    }
+
+    .profilePicture {
+        border-radius: 100%;
+        min-height: 104px;
+        min-width: 104px;
+        height: 104px;
+        width: 104px;
+        outline: 2px solid #f7f7f7;
+    }
+
+    .walletSec {
+        display: flex;
+        width: 100%;
+        gap: 15px;
+        flex-wrap: wrap;
+        height: max-content;
+
+        .walletChip {
+            display: flex;
+            width: 184px;
+            height: 38px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border: 1.5px solid rgba(48, 101, 243, 1);
+            border-radius: 16px;
+            p {
+                font-weight: 400;
+                font-size: 14px;
+            }
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .walletChipAdd {
+            @extend .walletChip;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            color: white;
+        }
+    }
+
+    .bioInput {
+        width: 549px;
+        min-height: 101px;
+        border: 1px solid #cacdd5;
+        border-radius: 8px;
+    }
+
+    .connectSocials {
+        display: flex;
+        width: 100%;
+        .walletChip {
+            display: flex;
+            width: 184px;
+            height: 38px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border: 1.5px solid rgba(48, 101, 243, 1);
+            border-radius: 16px;
+            margin-left: auto;
+            p {
+                font-weight: 400;
+                font-size: 14px;
+            }
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .socialInput {
+            display: flex;
+            width: 100%;
+        }
+
+        .socialInputTitle {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            img {
+                width: 12px;
+                height: 12px;
+                margin-left: 5px;
+            }
+
+            .xpNum {
+                font-weight: 600;
+                font-size: 10px;
+                background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-fill-color: transparent;
+            }
+        }
+    }
+}
+
+.tagsCon {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .selectedChips {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid #eeeff2;
+        gap: 8px;
+        padding-bottom: 15px;
+    }
+
+    .chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid gray;
+        border-radius: 16px;
+        width: fit-content;
+        padding: 8px 15px;
+        p {
+            padding: 0;
+            margin: 0;
+            font-size: 12px;
+        }
+    }
+
+    .chip_selected {
+        @extend .chip;
+        border: 1px solid rgb(33, 33, 248);
+        background: #d6e0fd;
+
+        img {
+            margin-left: 10px;
+        }
+    }
+
+    .chipOptions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 15px 0;
+    }
+}

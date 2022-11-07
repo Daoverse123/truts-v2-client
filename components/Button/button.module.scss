@@ -47,6 +47,10 @@ $PHONE_N: 425;
         height: 41px;
         padding: 12px 24px;
     }
+
+    &:disabled{
+        opacity: 0.1;
+    }
 }
 
 .btn_icon {

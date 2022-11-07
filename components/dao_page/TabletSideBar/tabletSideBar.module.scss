@@ -184,7 +184,7 @@ $PHONE_N: 426;
             span {
                 column-gap: tablet_to_phone_fluid(8);
                 img {
-                    width: tablet_to_phone_fluid(53);
+                    // width: tablet_to_phone_fluid(53);
                     height: tablet_to_phone_fluid(24);
                 }
             }
@@ -249,8 +249,10 @@ $PHONE_N: 426;
     text-transform: capitalize;
     background-color: rgb(204, 204, 204);
     img {
-        width: 16px;
-        height: fit-content;
+        width: auto;
+        height: 60%;
         border-radius: 100%;
+        object-fit: contain;
+        background-color: black;
     }
 }

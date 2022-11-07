@@ -28,8 +28,9 @@ $PHONE_N: 425;
     top: 0;
     left: 0;
     justify-content: center;
-    border-bottom: 1px solid rgba(135, 135, 135, 0.25);
+    //  border-bottom: 1px solid rgba(135, 135, 135, 0.25);
     background: #f7f7f7;
+    box-shadow: 0px 1px 0px rgba(105, 105, 105, 0.25);
     //animation: appear 0.5s ease-in-out forwards;
 
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
@@ -97,6 +98,10 @@ $PHONE_N: 425;
         column-gap: desktop_to_laptop_fluid(41);
     }
 
+    @media (max-width: 1230px) {
+        column-gap: desktop_to_laptop_fluid(25);
+    }
+
     li {
         font-weight: 400;
         font-size: 16.5246px;
@@ -107,6 +112,11 @@ $PHONE_N: 425;
         }
         @media (max-width: 1026px) {
             display: none;
+        }
+
+        @media (max-width: 1230px) {
+            text-align: center;
+            font-size: 12px;
         }
     }
 }
@@ -137,7 +147,7 @@ $PHONE_N: 425;
     }
 
     .profileDropDown {
-        animation: openSideNav 0.35s ease-in-out forwards;
+        //animation: openSideNav 0.35s ease-in-out forwards;
         position: absolute;
         top: 30px;
         right: 0px;
@@ -252,6 +262,7 @@ $PHONE_N: 425;
     right: 0;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.534);
+    overflow: hidden;
 }
 
 .menu {
@@ -263,6 +274,7 @@ $PHONE_N: 425;
     margin-left: auto;
     padding: 35px 24px;
     transform: translateX(100%);
+
     animation: openSideNav 0.5s ease-in-out forwards;
     .tablet_nav {
         width: 83px;
@@ -328,7 +340,6 @@ $PHONE_N: 425;
     background: #f7f7f7;
     align-items: center;
     padding: 10px 17px;
-
 
     .searchInput {
         background: #ffffff;

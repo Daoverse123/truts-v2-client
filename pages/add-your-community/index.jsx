@@ -47,11 +47,22 @@ const CATEGORY_LIST = ['DAO',
     'Marketing tool',
     'Public Good',
     'Education'];
-const CHAIN_LIST = ['Ethereum', 'Polygon', 'Solana', 'Near', 'Cardano']
-const CHAIN_LIST_MAP = { 'Ethereum': "ethereum", 'Polygon': "polygon-pos", 'Solana': "solana", 'Near': 'near', 'Cardano': 'cardano' }
+
+const CHAIN_LIST_MAP = {
+    'Arbitrum': 'arbitrum-one',
+    'Binance Smart Chain': 'binance-smart-chain',
+    'Cardano': 'cardano',
+    'Ethereum': 'ethereum',
+    'Near': 'near',
+    'Polygon': 'polygon-pos',
+    'Solana': 'solana',
+    'Tezos': 'tezos'
+}
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
-
+{/* 
+opensea_link: { type: String },
+magiceden_link: { type: String }, */}
 function DaoForm() {
 
     const [walletConnectVisible, setwalletConnectVisible] = useState(false)
@@ -68,8 +79,12 @@ function DaoForm() {
         submitter_discord_id: "",
         submitter_public_address: "",
         chain: "",
-        treasury: ""
+        treasury: "",
+        opensea_link: "",
+        magiceden_link: ""
     })
+
+    console.log(state)
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -137,7 +152,7 @@ function DaoForm() {
 
                     <label htmlFor="">
                         <p>What’s the name of your Community?</p>
-                        <input required value={state.dao_name}
+                        <input placeholder='Community name' required value={state.dao_name}
                             onChange={(e) => {
                                 setState((s) => {
                                     s.dao_name = e.target.value;
@@ -255,11 +270,37 @@ function DaoForm() {
                     <label htmlFor="">
                         <p>Additional link</p>
                         <input
-                            required
                             value={state.additional_link}
                             onChange={(e) => {
                                 setState((s) => {
                                     s.additional_link = e.target.value;
+                                    return { ...s }
+                                })
+                            }}
+                            type="text" placeholder='Additional links' />
+                    </label>
+                    {/* 
+                    opensea_link: { type: String },
+                     magiceden_link: { type: String }, */}
+                    <label htmlFor="">
+                        <p>Opensea link (if applicable)</p>
+                        <input
+                            value={state.opensea_link}
+                            onChange={(e) => {
+                                setState((s) => {
+                                    s.opensea_link = e.target.value;
+                                    return { ...s }
+                                })
+                            }}
+                            type="text" placeholder='Additional links' />
+                    </label>
+                    <label htmlFor="">
+                        <p>Magic Eden link (if applicable)</p>
+                        <input
+                            value={state.magiceden_link}
+                            onChange={(e) => {
+                                setState((s) => {
+                                    s.magiceden_link = e.target.value;
                                     return { ...s }
                                 })
                             }}
@@ -307,9 +348,18 @@ const CategotyCon = ({ state, setState }) => {
         setsuggestionList(() => {
             return [...initialSuggestion.map((ele) => {
                 return fuzzy(ele.term, inputText);
-            }).sort((a, b) => b.score - a.score)]
+            }).sort((a, b) => b.score - a.score).filter((ele) => {
+                if (selectedItems.includes(ele.term)) {
+                    return false
+                }
+                return true
+            })]
         })
     }
+
+    useEffect(() => {
+        GenerateSuggestion()
+    }, [selectedItems])
 
 
     useEffect(() => {
@@ -420,7 +470,7 @@ const CategotyCon = ({ state, setState }) => {
 }
 
 const ChainSelectCon = ({ state, setState }) => {
-    let initialSuggestion = CHAIN_LIST.map(term => { return { term } });
+    let initialSuggestion = Object.keys(CHAIN_LIST_MAP).map(term => { return { term } });
     const [selectedItems, setselectedItems] = useState([]);
     const [inputText, setinputText] = useState('');
     const [active, setactive] = useState(0)
@@ -439,9 +489,18 @@ const ChainSelectCon = ({ state, setState }) => {
         setsuggestionList(() => {
             return [...initialSuggestion.map((ele) => {
                 return fuzzy(ele.term, inputText);
-            }).sort((a, b) => b.score - a.score)]
+            }).sort((a, b) => b.score - a.score).filter((ele) => {
+                if (selectedItems.includes(ele.term)) {
+                    return false
+                }
+                return true
+            })]
         })
     }
+
+    useEffect(() => {
+        GenerateSuggestion()
+    }, [selectedItems])
 
 
     useEffect(() => {
@@ -507,7 +566,7 @@ const ChainSelectCon = ({ state, setState }) => {
                         else if (e.key == 'Enter') {
                             setselectedItems(() => {
                                 let elm = new Set(selectedItems);
-                                if (CHAIN_LIST.includes(inputText.trim())) {
+                                if (Object.keys(CHAIN_LIST_MAP).includes(inputText.trim())) {
                                     elm.add(inputText.trim())
                                 }
                                 return [...elm];

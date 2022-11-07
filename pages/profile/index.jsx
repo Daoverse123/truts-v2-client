@@ -48,11 +48,182 @@ const NavSec = ({ selected, setSelected }) => {
         </ul>
     )
 }
+
+const OnBoardForm = () => {
+    return (
+        <div className={styles.onBoardingFlow}>
+            <div className={styles.onBoardingForm}>
+                <div className={styles.progressHeader}>
+                    <div className={styles.title}>
+                        <h1>Your Profile</h1>
+                        <p>Complete every details on your profile to earn XP points</p>
+                    </div>
+                    <div className={styles.xpCon}>
+                        <span className={styles.xpIcon}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>100 XP</p>
+                        </span>
+                        <p>Earned so far</p>
+                    </div>
+                    <div className={styles.progressBar}>
+                        <div className={styles.progressInner}>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.formContent}>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Profile Picture</h1>
+                        </span>
+                        <span className={styles.iconXp}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>50</p>
+                        </span>
+                    </div>
+                    <img className={styles.profilePicture} src="/grad.jpg" alt="" />
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>TrutsID</h1>
+                            <p>Your ENS/Primary Wallet address also serves as Truts ID</p>
+                        </span>
+                        <span className={styles.iconXp}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>50</p>
+                        </span>
+                    </div>
+                    <div className={styles.walletSec}>
+                        <span className={styles.walletChip}>
+                            <p>xefd....3tf23</p>
+                            <img src="/close-icon.png" alt="" />
+                        </span>
+                        <span className={styles.walletChip}>
+                            <p>xefd....3tf23</p>
+                            <img src="/close-icon.png" alt="" />
+                        </span>
+                        <span className={styles.walletChipAdd}>
+                            <p>Add more Wallet</p>
+                            <img src="/add-icon.png" alt="" />
+                        </span>
+                    </div>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Bio</h1>
+                        </span>
+                    </div>
+                    <textarea className={styles.bioInput}>
+
+                    </textarea>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Socials</h1>
+                            <p>Connect all your socials to earn XP points</p>
+                        </span>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Twitter</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Discord</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Email</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Tags</h1>
+                            <p>Select tags that describes you</p>
+                        </span>
+                    </div>
+                    <div className={styles.tagsCon}>
+                        <div className={styles.selectedChips}>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                        </div>
+                        <div className={styles.chipOptions}>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
     return (
         <>
             <ReactTooltip backgroundColor={"#747c90"} />
+            <OnBoardForm />
             <Nav isStrech={true} isFloating />
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
