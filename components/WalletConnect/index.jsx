@@ -39,6 +39,17 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
         }
     }, [])
 
+    useEffect(() => {
+        let query = window.location.search;
+        if (query.includes("account_id") && query.includes("all_keys")) {
+            //set wallet screen visible
+            setwalletConnectVisible(true);
+            //select near
+            setselectedChain("Near");
+            //click on near
+        }
+    }, [])
+
     const closePopUp = () => {
         setwalletConnectVisible(false);
     }
@@ -87,7 +98,7 @@ export default function WalletConnect({ walletConnectVisible, setwalletConnectVi
 
 const Wallet = ({ icon, name, onClick }) => {
     return (
-        <span onClick={() => { onClick() }} className={styles.elm}>
+        <span id={'btn' + name} onClick={() => { onClick() }} className={styles.elm}>
             <img src={icon} alt="" />
             <p>{name}</p>
         </span>
@@ -246,6 +257,14 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
         }
 
     }
+
+    useEffect(() => {
+        let query = window.location.search;
+        if (query.includes("account_id") && query.includes("all_keys")) {
+            document.getElementById('btn' + 'Near').click();
+        }
+    }, [])
+
 
 
     return (
