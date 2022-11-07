@@ -11,7 +11,7 @@ const nextConfig = {
     path: '',
   },
   env: {
-    API: LOCALHOST,
+    API: AWS,
     SPLTOKENACCOUNTSPAREKEY: process.env.SPLTOKENACCOUNTSPAREKEY,
 
     MEAN_SPL_TOKEN: 'MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD',
