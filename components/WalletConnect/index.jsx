@@ -260,9 +260,11 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
 
     useEffect(() => {
         let query = window.location.search;
-        if (query.includes("account_id") && query.includes("all_keys")) {
-            document.getElementById('btn' + 'Near').click();
-        }
+        setTimeout(() => {
+            if (query.includes("account_id") && query.includes("all_keys")) {
+                document.getElementById('btn' + 'Near').click();
+            }
+        }, 0)
     }, [])
 
 
