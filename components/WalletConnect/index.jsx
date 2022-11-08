@@ -227,13 +227,14 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
     // }
     const [accessKey, setAccessKey] = useState('');
     const { connect, keyStores, WalletConnection } = nearAPI;
+    const myKeyStore = new keyStores.BrowserLocalStorageKeyStore();
     const connectionConfig = {
-        networkId: "testnet",
-        keyStore: new keyStores.BrowserLocalStorageKeyStore(),
-        nodeUrl: "https://rpc.testnet.near.org",
-        walletUrl: "https://wallet.testnet.near.org",
-        helperUrl: "https://helper.testnet.near.org",
-        explorerUrl: "https://explorer.testnet.near.org",
+        networkId: "mainnet",
+        keyStore: myKeyStore, // first create a key store
+        nodeUrl: "https://rpc.mainnet.near.org",
+        walletUrl: "https://wallet.mainnet.near.org",
+        helperUrl: "https://helper.mainnet.near.org",
+        explorerUrl: "https://explorer.mainnet.near.org",
     };
     const walletConnection = null;
 
