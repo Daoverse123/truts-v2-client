@@ -227,6 +227,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
     // }
     const [accessKey, setAccessKey] = useState('');
     const { connect, keyStores, WalletConnection } = nearAPI;
+    //mainet added
     const myKeyStore = new keyStores.BrowserLocalStorageKeyStore();
     const connectionConfig = {
         networkId: "mainnet",
