@@ -477,7 +477,7 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
         setter(catCount)
     }
 
-    //staging c
+    //staging build
 
     generateCatCount(CATEGORY_LIST, 'dao_category', setcatCount)
     generateChainCount(CHAIN_LIST, 'chain', setchainCount)
