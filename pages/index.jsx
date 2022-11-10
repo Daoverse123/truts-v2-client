@@ -208,7 +208,7 @@ function Hero() {
   return (
     <>
       <img className={styles.heroLeft} src={heroGradLeft.src} alt="" />
-      <img className={styles.heroRight} src={'https://daoverse-bucket.s3.ap-south-1.amazonaws.com/rightGrad.1a237d6b+(Small).png'} alt="" />
+      <img className={styles.heroRight} src={'//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/rightGrad.1a237d6b+(Small).png'} alt="" />
       <div className={styles.new_hero}>
         <span className={styles.new_heroText}>
           <h1 className={styles.new_heroTitle}>
