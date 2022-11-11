@@ -45,14 +45,14 @@ let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 
 function MyApp({ Component, pageProps }) {
   return <WagmiConfig client={client}>
-    <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
+    <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${`G-MD3Z8PGBZV`}`} />
 
     <Script id='script' strategy="lazyOnload">
       {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${GOOGLE_ANALYTICS_ID}', {
+        gtag('config', 'G-MD3Z8PGBZV'); {
         page_path: window.location.pathname,
         });
     `}
