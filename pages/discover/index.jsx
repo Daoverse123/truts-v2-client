@@ -77,7 +77,8 @@ const CHAIN_LIST = [
     'Near',
     'Polygon',
     'Solana',
-    'Tezos'
+    'Tezos',
+    'Cosmos'
 ]
 
 let discordFollowers = {
@@ -105,7 +106,8 @@ let chainMap = {
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
-    'Tezos': 'tezos'
+    'Tezos': 'tezos',
+    'Cosmos':'cosmos'
 }
 
 let initialState = {

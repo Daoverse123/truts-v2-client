@@ -23,7 +23,7 @@ export default function DAOCard({ data }) {
             <div className={styles.card}>
                 {(data.dao_name.length > 20) && < ReactTooltip backgroundColor={"#747c90"} />}
                 <div className={styles.cover} >
-                    <img src={`//wsrv.nl/?url=${data.dao_cover}&w=313&h=114`} alt="" onError={({ currentTarget }) => {
+                    <img src={data.dao_cover} alt="" onError={({ currentTarget }) => {
                         currentTarget.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Pink_tints_and_shades.svg";
                     }} />
                 </div>

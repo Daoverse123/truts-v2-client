@@ -1,0 +1,88 @@
+.cardgen {
+    display: flex;
+    width: 800px;
+    height: 418px;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+}
+
+.reviewComp {
+    display: flex;
+    width: 80%;
+    background-color: rgb(255, 255, 255);
+    padding: 24px;
+    padding-bottom: 8px;
+    border-radius: 16px;
+    flex-direction: column;
+    height: auto;
+    box-shadow: 0 0 50px rgba(128, 128, 128, 0.329);
+
+    .profilePic {
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+    }
+
+    .userInfo {
+        display: flex;
+        align-items: center;
+        p {
+            margin: 0;
+        }
+
+        .address {
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+    }
+
+    .review_desc {
+        margin-top: 16.5px;
+        //margin-bottom: 10px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 140%;
+        white-space: pre-wrap;
+    }
+
+    .bottom_nav {
+        display: flex;
+        margin-top: 10px;
+        span {
+            cursor: pointer;
+        }
+        .iconText {
+            display: flex;
+            margin-right: 25px;
+            align-items: center;
+            img {
+                margin-right: 4.5px;
+                height: 16.46px;
+            }
+        }
+    }
+}
+
+.starComp {
+    display: flex;
+    column-gap: 10px;
+    img {
+        width: 20px;
+        height: 20px;
+        padding: 0;
+    }
+}
+
+.starComp_small {
+    display: flex;
+    column-gap: 8px;
+    img {
+        width: 16px;
+        height: 16px;
+        padding: 0;
+    }
+}

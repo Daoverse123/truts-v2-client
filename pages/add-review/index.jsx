@@ -112,7 +112,9 @@ function AddReview({ dao_name, guild_id, uid, slug }) {
                 <Nav />
                 <div className={styles.mainCon}>
                     <div className={styles.breadCrum}>
-                        <img src={left_arrow.src} alt="" />
+                        <Link href={`./dao/${slug}`}>
+                            <img src={left_arrow.src} alt="" />
+                        </Link>
                         <Link href={`./dao/${slug}`}>
                             <span>
                                 <p>Add review for</p>

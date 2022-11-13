@@ -207,7 +207,7 @@ const getDynamicCategoryDaoList = async (setter) => {
 function Hero() {
   return (
     <>
-      <img className={styles.heroLeft} src={heroGradLeft.src} alt="" />
+      <img className={styles.heroLeft} src={`//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/leftGrad.png`} alt="" />
       <img className={styles.heroRight} src={'//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/rightGrad.1a237d6b+(Small).png'} alt="" />
       <div className={styles.new_hero}>
         <span className={styles.new_heroText}>
@@ -222,11 +222,11 @@ function Hero() {
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
           <div className={styles.stat}>
-            <h3>1900+</h3>
+            <h3>1930+</h3>
             <p>Communities Listed</p>
           </div>
           <div className={styles.stat}>
-            <h3>400+</h3>
+            <h3>450+</h3>
             <p>Reviews Posted</p>
           </div>
           <div className={styles.stat}>
@@ -473,21 +473,21 @@ function Leaderboard_mobile({ data }) {
 // RECENT REVIEWS
 
 function RecentReview({ text, address, daoName, rating, i }) {
-  var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-    '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-    '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-    '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-    '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-    '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-    '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
-    '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-    '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
-    '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+  const [gradArray, setgradArray] = useState([])
+  
+  useEffect(() => {
+    let newGradArray = [];
+    for (let i = 0; i < 16; i++) {
+      newGradArray.push(newGradient());
+    }
+    setgradArray(newGradArray);
+  }, [])
+
   return (
     <div className={styles.recentReview}>
       <p className={styles.review_text}>{text.slice(0, 300)}...</p>
       <div className={styles.profile}>
-        <span style={{ backgroundColor: `${colorArray[i]}` }} className={styles.profile_img}>
+        <span style={{ background: gradArray[i] }} className={styles.profile_img}>
 
         </span>
         <span className={styles.info}>
@@ -672,3 +672,19 @@ function RecentReviewsSection() {
   )
 }
 
+
+function newGradient() {
+  var c1 = {
+    r: Math.floor(Math.random() * 255),
+    g: Math.floor(Math.random() * 255),
+    b: Math.floor(Math.random() * 255)
+  };
+  var c2 = {
+    r: Math.floor(Math.random() * 255),
+    g: Math.floor(Math.random() * 255),
+    b: Math.floor(Math.random() * 255)
+  };
+  c1.rgb = 'rgb(' + c1.r + ',' + c1.g + ',' + c1.b + ')';
+  c2.rgb = 'rgb(' + c2.r + ',' + c2.g + ',' + c2.b + ')';
+  return 'radial-gradient(at top left, ' + c1.rgb + ', ' + c2.rgb + ')';
+}
