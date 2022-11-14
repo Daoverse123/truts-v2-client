@@ -68,6 +68,18 @@ const CATEGORY_LIST = [
     'Investment'
 ];
 
+const CHAIN_LIST = [
+    'All',
+    'Arbitrum',
+    'Binance Smart Chain',
+    'Cardano',
+    'Ethereum',
+    'Near',
+    'Polygon',
+    'Solana',
+    'Tezos',
+    'Cosmos'
+]
 
 let discordFollowers = {
     '0 to 5K': { min: 0, max: 5000 },
@@ -94,7 +106,8 @@ let chainMap = {
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
-    'Tezos': 'tezos'
+    'Tezos': 'tezos',
+    'Cosmos':'cosmos'
 }
 
 let initialState = {
@@ -198,6 +211,8 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     const [catCount, setcatCount] = useState({});
 
+    const [chainCount, setchainCount] = useState({})
+
     const router = useRouter();
 
     useEffect(() => {
@@ -205,7 +220,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
     }, [isMobile])
 
     useEffect(() => {
-        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount)
+        getDynamicLoad(daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount, setchainCount)
         let query = router.query;
         if (Object.keys(query)[0] == 'category') {
             dispatch({ type: actionTypes.COMMUNITY, payload: { label: query['category'], type: true } })
@@ -349,7 +364,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                                         <p >{ele}</p>
                                         <img src={downArrow.src} alt="" />
                                     </span>
-                                    <GetSection catCount={catCount} key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
+                                    <GetSection catCount={catCount} chainCount={chainCount} key={i + 'gsd'} state={state} dispatch={dispatch} label={ele} idx={i} collapseState={collapseState} />
                                     <span key={i + 'dv'} className={styles.divider} />
                                 </>
                             )
@@ -401,7 +416,7 @@ const getDaolistAPI = async () => {
 }
 
 //dynamic load all the daos
-const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount) => {
+const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, setcatCount, setchainCount) => {
     //gets initial 20 doas
     let daoList_ssr_current = daoList_ssr;
     let { lastPage, limit } = paginationConfig;
@@ -429,24 +444,47 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
 
     // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
 
-    let catCount = {};
 
-    CATEGORY_LIST.forEach((ele) => {
-        catCount[ele] = 0
-    })
-
-    CATEGORY_LIST.forEach((ele) => {
-        arrayUniqueByKey.forEach((alx) => {
-            if (alx.dao_category.includes(ele)) {
-                catCount[ele] = catCount[ele] + 1;
-            }
+    const generateCatCount = (LIST, key, setter) => {
+        let catCount = {};
+        LIST.forEach((ele) => {
+            catCount[ele] = 0
         })
-    })
+
+        LIST.forEach((ele) => {
+            arrayUniqueByKey.forEach((alx) => {
+                if (alx[key].includes(ele)) {
+                    console.log(ele)
+                    catCount[ele] = catCount[ele] + 1;
+                }
+            })
+        })
+        setter(catCount)
+    }
+
+    const generateChainCount = (LIST, key, setter) => {
+        let catCount = {};
+        LIST.forEach((ele) => {
+            catCount[ele] = 0
+        })
+
+        LIST.forEach((ele) => {
+            arrayUniqueByKey.forEach((alx) => {
+                if (alx[key].includes(chainMap[ele])) {
+                    console.log(ele)
+                    catCount[ele] = catCount[ele] + 1;
+                }
+            })
+        })
+        setter(catCount)
+    }
+
+    //staging build new
+
+    generateCatCount(CATEGORY_LIST, 'dao_category', setcatCount)
+    generateChainCount(CHAIN_LIST, 'chain', setchainCount)
 
     console.log(daoList_ssr_final.length)
-
-    console.log(catCount)
-    setcatCount(catCount)
 }
 
 
@@ -486,7 +524,7 @@ const SortComp = ({ state, dispatch }) => {
     )
 }
 
-const GetSection = ({ label, idx, collapseState, state, dispatch, catCount }) => {
+const GetSection = ({ label, idx, collapseState, state, dispatch, catCount, chainCount }) => {
     if (label == Object.keys(sideNavTabs)[0] && collapseState[0]) {
         return (
             <TypesOfCommunities state={state} dispatch={dispatch} catCount={catCount} />
@@ -494,7 +532,7 @@ const GetSection = ({ label, idx, collapseState, state, dispatch, catCount }) =>
     }
     if (label == Object.keys(sideNavTabs)[1] && collapseState[1]) {
         return (
-            <NetworkChains visible={collapseState[1]} state={state} dispatch={dispatch} />
+            <NetworkChains visible={collapseState[1]} state={state} dispatch={dispatch} chainCount={chainCount} />
         )
     }
     if (label == Object.keys(sideNavTabs)[2] && collapseState[2]) {
@@ -589,7 +627,7 @@ const DiscordMembers = ({ state, dispatch }) => {
 }
 
 
-const NetworkChains = ({ state, dispatch }) => {
+const NetworkChains = ({ state, dispatch, chainCount }) => {
     return (
         <div className={styles.typesOfCommunities}>
             <p className={styles.reset}
@@ -599,7 +637,10 @@ const NetworkChains = ({ state, dispatch }) => {
                 Object.keys(chainMap).map((ele, i) => {
                     return (
                         <span key={i + ele} className={styles.typesOption}>
-                            <p>{ele}</p>
+                            {/* <p>{ele}</p> */}
+                            {
+                                (chainCount[ele] || (chainCount[ele] == 0)) ? <p>{ele} {(ele != 'All') && `(${chainCount[ele]})`}</p> : <p>{ele} {<img src='/mini-loader.gif' />}</p>
+                            }
                             <input checked={(state["Network Chains"].includes(ele))}
                                 onChange={(e) => {
                                     dispatch({ type: actionTypes.CHAIN, payload: { label: ele, type: e.target.checked } })
