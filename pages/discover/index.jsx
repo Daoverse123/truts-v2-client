@@ -73,12 +73,12 @@ const CHAIN_LIST = [
     'Arbitrum',
     'Binance Smart Chain',
     'Cardano',
+    'Cosmos',
     'Ethereum',
     'Near',
     'Polygon',
     'Solana',
     'Tezos',
-    'Cosmos'
 ]
 
 let discordFollowers = {
@@ -102,12 +102,12 @@ let chainMap = {
     'Arbitrum': 'arbitrum-one',
     'Binance Smart Chain': 'binance-smart-chain',
     'Cardano': 'cardano',
+    'Cosmos': 'cosmos',
     'Ethereum': 'ethereum',
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
     'Tezos': 'tezos',
-    'Cosmos':'cosmos'
 }
 
 let initialState = {
