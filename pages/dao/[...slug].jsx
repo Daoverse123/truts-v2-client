@@ -79,7 +79,7 @@ function Dao({ dao_data, rid, slug }) {
                 {(selected == "Reviews") && <div className={styles.content}>
                     <div className={styles.main}>
                         <TabletSideBar dao_data={dao_data} />
-                        <ReviewsSec slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
+                        <ReviewsSec rid={rid} slug={slug} setreview_details={setreview_details} dao_data={dao_data} setwalletConnectVisible={setwalletConnectVisible} settippingFlowVisible={settippingFlowVisible} />
                     </div>
                     <Sidebar dao_data={dao_data} />
 
@@ -214,8 +214,22 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
     </span>)
 }
 
-const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug }) => {
+const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, setreview_details, slug, rid }) => {
     const [selectedFilter, setselectedFilter] = useState('Newest');
+
+    const [selectedReview, setselected] = useState(null);
+
+    useEffect(() => {
+        if (rid) {
+            dao_data.reviews.forEach(element => {
+                if (element._id == rid) {
+                    setselected(element);
+                }
+            });
+        }
+    }, [])
+
+
     return (
         <div className={styles.reviewSec}>
             {/* <div className={styles.info}>
@@ -231,13 +245,24 @@ const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, 
                 <Filter selectedFilter={selectedFilter} setselectedFilter={setselectedFilter} />
             </span>
             <div className={styles.reviewCon}>
+                {
+                    (selectedReview && rid) && <ReviewComp selected={true} setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={selectedReview} key={'r' + 'selected'} />
+                }
                 {(selectedFilter == 'Newest') ?
                     dao_data.reviews.map((review, idx) => {
+                        if (review._id == rid) {
+                            //filter selected rid
+                            return null
+                        }
                         return (
                             <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
                     }).reverse() :
                     dao_data.reviews.map((review, idx) => {
+                        if (review._id == rid) {
+                            //filter selected rid
+                            return null
+                        }
                         return (
                             <ReviewComp setreview_details={setreview_details} settippingFlowVisible={settippingFlowVisible} setwalletConnectVisible={setwalletConnectVisible} review={review} key={'r' + idx} />
                         )
@@ -248,7 +273,7 @@ const ReviewsSec = ({ dao_data, setwalletConnectVisible, settippingFlowVisible, 
     )
 }
 
-const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, setreview_details }) => {
+const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, setreview_details, selected }) => {
     let min_public_address = review.public_address.slice(0, 5) + '....' + review.public_address.slice(-3)
     const [isreadMore, setisreadMore] = useState(false);
 
@@ -349,7 +374,7 @@ const ReviewComp = ({ review, setwalletConnectVisible, settippingFlowVisible, se
 
     return (
         <>
-            <div className={styles.reviewComp}>
+            <div className={styles.reviewComp} style={(selected) ? { border: "2px solid #3065f3" } : {}}>
                 <div className={styles.userInfo}>
                     <span className={styles.profilePic} style={{ background: review.profile_img }} src={"https://pbs.twimg.com/profile_banners/1380589844838055937/1634756837/1500x500"} alt="" />
                     <span>
@@ -402,6 +427,7 @@ function setCookie(name, value) {
 
 //SSR DATA DAO PAGE
 export async function getServerSideProps(ctx) {
+    console.log(ctx.query)
     let { slug } = ctx.query
     // Fetch data from external API
     if (!slug) return null
