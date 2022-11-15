@@ -148,7 +148,13 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
     const { chains, error, isLoading: switchNetworkLoading, pendingChainId, switchNetwork, switchNetworkAsync } =
         useSwitchNetwork()
 
+    console.log("info", tipReviewInfo)
+    console.log("chian", review_details.chain)
+
+
     useEffect(() => {
+        setTOKENS(polygonTokens);
+        setselectedToken('MATIC')
         if (review_details.chain == 'sol') {
             setTOKENS(solanaTokens);
             setselectedToken('SOL')
