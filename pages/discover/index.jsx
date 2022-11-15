@@ -73,12 +73,12 @@ const CHAIN_LIST = [
     'Arbitrum',
     'Binance Smart Chain',
     'Cardano',
+    'Cosmos',
     'Ethereum',
     'Near',
     'Polygon',
     'Solana',
     'Tezos',
-    'Cosmos'
 ]
 
 let discordFollowers = {
@@ -102,12 +102,12 @@ let chainMap = {
     'Arbitrum': 'arbitrum-one',
     'Binance Smart Chain': 'binance-smart-chain',
     'Cardano': 'cardano',
+    'Cosmos': 'cosmos',
     'Ethereum': 'ethereum',
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
     'Tezos': 'tezos',
-    'Cosmos':'cosmos'
 }
 
 let initialState = {
@@ -483,12 +483,12 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
 
     generateCatCount(CATEGORY_LIST, 'dao_category', setcatCount)
     generateChainCount(CHAIN_LIST, 'chain', setchainCount)
-
+    
     console.log(daoList_ssr_final.length)
 }
 
 
-
+//push .. .
 const SortComp = ({ state, dispatch }) => {
     return (
         <span className={styles.sortComp}>
