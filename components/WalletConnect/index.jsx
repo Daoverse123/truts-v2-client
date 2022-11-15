@@ -283,19 +283,21 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
                         console.log('near connection established', account);
                         console.log(accessKey);
                     }
+                    if (walletConnection.isSignedIn()) {
+                        setwalletState({
+                            address: walletConnection.getAccountId(),
+                            chain: "near",
+                            status: "connected"
+                        })
+                        localStorage.setItem('wallet_state', JSON.stringify({
+                            address: walletConnection.getAccountId(),
+                            chain: "near",
+                            status: "connected"
+                        }));
+                        window.updateNav()
 
-                    setwalletState({
-                        address: walletConnection.getAccountId(),
-                        chain: "near",
-                        status: "connected"
-                    })
-                    localStorage.setItem('wallet_state', JSON.stringify({
-                        address: walletConnection.getAccountId(),
-                        chain: "near",
-                        status: "connected"
-                    }));
+                    }
 
-                    window.updateNav()
                     closePopUp()
 
                 }

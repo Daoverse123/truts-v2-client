@@ -483,7 +483,7 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
 
     generateCatCount(CATEGORY_LIST, 'dao_category', setcatCount)
     generateChainCount(CHAIN_LIST, 'chain', setchainCount)
-
+    
     console.log(daoList_ssr_final.length)
 }
 

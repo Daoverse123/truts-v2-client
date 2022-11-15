@@ -29,6 +29,9 @@ import {
     LAMPORTS_PER_SOL
 } from "@solana/web3.js";
 
+//near api
+import * as nearAPI from "near-api-js";
+
 //components
 import Button from '../Button'
 
@@ -53,7 +56,7 @@ import solrazrIcon from '../../assets/solanaIcons/solrazr.png'
 import bonfidaIcon from '../../assets/solanaIcons/bonfida.png'
 import meanfiIcon from '../../assets/solanaIcons/meanfi.png'
 
-
+import near_icon from '../../assets/icons/near_chain_icon.png'
 
 const polygonTokens = {
     MATIC: {
@@ -104,6 +107,15 @@ const solanaTokens = {
     }
 }
 
+//near tokens
+const nearTokens = {
+    NEAR: {
+        icon: near_icon.src,
+        coingecko_id: 'near',
+        native: true,
+    }
+}
+
 let TokenList = ({ tokens, setselectedToken, selectedToken }) => {
     return (
         Object.keys(tokens).map((token, i) => {
@@ -131,16 +143,23 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
     const { chains, error, isLoading: switchNetworkLoading, pendingChainId, switchNetwork, switchNetworkAsync } =
         useSwitchNetwork()
 
+    console.log(review_details.address)
     useEffect(() => {
+        setTOKENS(polygonTokens);
+        setselectedToken('MATIC')
         if (review_details.chain == 'sol') {
             setTOKENS(solanaTokens);
             setselectedToken('SOL')
         }
-        else {
+        else if (review_details.chain == 'matic') {
             setTOKENS(polygonTokens);
             setselectedToken('MATIC')
-        }
 
+        }
+        else if (review_details.chain == 'near') {
+            setTOKENS(nearTokens);
+            setselectedToken('NEAR')
+        }
     }, [review_details.chain])
 
     console.log(selectedToken);
@@ -189,6 +208,7 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
     let [isLoadingMatic, sendTransactionAsync] = useTipNativeMatic(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipNativeSol = useTipNativeSol(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
     let tipSPLSol = usetipSPLtoken(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
+    let tipNativeNear = useTipNativeNear(review_details, selectedToken, calculatePrice().noOfTokens, seterrorMessage, setsuccessScreen)
 
     const intiateTransaction = async () => {
         if (inputField <= 0) {
@@ -210,6 +230,13 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
             }
             else {
                 tipSPLSol();
+            }
+        }
+        else if (chain == 'near') {
+            console.log("connectd to near")
+            if (selectedToken == 'NEAR') {
+                let tx = tipNativeNear();
+                console.log(tx);
             }
         }
     }
@@ -274,6 +301,68 @@ export default function TippingFlow({ settippingFlowVisible, tippingFlowVisible,
         </section >
     )
 }
+
+const useTipNativeNear = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {
+    const { connect, keyStores, WalletConnection, utils } = nearAPI;
+    const [connectConfig, setConnectConfig] = useState({});
+    useEffect(() => {
+        const connectionConfig = {
+            networkId: "mainnet",
+            keyStore: new keyStores.BrowserLocalStorageKeyStore(),
+            nodeUrl: "https://rpc.mainnet.near.org",
+            walletUrl: "https://wallet.mainnet.near.org",
+            helperUrl: "https://helper.mainnet.near.org",
+            explorerUrl: "https://explorer.mainnet.near.org",
+        };
+        setConnectConfig(connectionConfig);
+    }, [])
+
+    // sends NEAR tokens
+    let sendTransaction = async () => {
+
+        // connect to NEAR
+        const nearConnection = await connect(connectConfig);
+
+        // create wallet connection
+        const walletConnection = new WalletConnection(nearConnection);
+
+        console.log(walletConnection.isSignedIn());
+
+        // const account = await nearConnection.account(walletConnection.getAccountId());
+        // let access = await account.getAccessKeys();
+        // let publicKey = access[0].public_key.slice(8);
+        // console.log('public key: ', publicKey);
+
+        // const BLOCK_HASH = publicKey
+
+        // const blockHash = nearAPI.utils.serialize.base_decode(BLOCK_HASH);
+        // const createTransferTx = nearAPI.transactions.createTransaction(
+        //     walletConnection.getAccountId(),
+        //     nearAPI.utils.PublicKey.fromString(publicKey),
+        //     review_details.address,
+        //     1,
+        //     [nearAPI.transactions.transfer(amount)],
+        //     blockHash
+        // );
+        // console.log(createTransferTx);
+        // let res = await walletConnection.requestSignTransactions({
+        //     transactions: [createTransferTx]
+        // });
+        // console.log(res);
+
+        const amount = nearAPI.utils.format.parseNearAmount(noOfTokens);
+
+        let res = await walletConnection.account().signAndSendTransaction({
+            receiverId: review_details.address,
+            actions: [nearAPI.transactions.transfer(amount)]
+        });
+        console.log(res.receipts_outcome());
+        console.log(res.status());
+        console.log(res.transaction_outcome());
+    }
+    return sendTransaction
+}
+
 
 const useTipNativeMatic = (review_details, selectedToken, noOfTokens, seterrorMessage, setsuccessScreen) => {
 
