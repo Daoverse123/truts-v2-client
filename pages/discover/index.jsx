@@ -68,19 +68,6 @@ const CATEGORY_LIST = [
     'Investment'
 ];
 
-const CHAIN_LIST = [
-    'All',
-    'Arbitrum',
-    'Binance Smart Chain',
-    'Cardano',
-    'Cosmos',
-    'Ethereum',
-    'Near',
-    'Polygon',
-    'Solana',
-    'Tezos',
-]
-
 let discordFollowers = {
     '0 to 5K': { min: 0, max: 5000 },
     '5K to 15K': { min: 0, max: 15000 },
@@ -107,6 +94,8 @@ let chainMap = {
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
+    'Sei': "sei",
+    'Syscoin': "syscoin",
     'Tezos': 'tezos',
 }
 
@@ -482,8 +471,8 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
     //staging build new
 
     generateCatCount(CATEGORY_LIST, 'dao_category', setcatCount)
-    generateChainCount(CHAIN_LIST, 'chain', setchainCount)
-    
+    generateChainCount(Object.keys(chainMap), 'chain', setchainCount)
+
     console.log(daoList_ssr_final.length)
 }
 

@@ -134,5 +134,15 @@
         "ticker": "MATIC",
         "icon": "https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png?1624446912",
         "color": "#feb5ff"
+    },
+    "sei": {
+        "ticker": "SEI",
+        "icon": "/sei.png",
+        "color": "rgb(197,223,233)"
+    },
+    "syscoin": {
+        "ticker": "SYS",
+        "icon": "https://assets.coingecko.com/coins/images/119/small/Syscoin.png?1560401261",
+        "color": "rgb(76,180,250)"
     }
 }
