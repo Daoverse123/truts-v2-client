@@ -223,7 +223,7 @@ function Profile() {
     return (
         <>
             <ReactTooltip backgroundColor={"#747c90"} />
-            <OnBoardForm />
+            {/* <OnBoardForm /> */}
             <Nav isStrech={true} isFloating />
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
