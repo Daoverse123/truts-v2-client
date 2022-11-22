@@ -216,8 +216,8 @@ function Hero() {
           </h1>
           <h2>Discover, join, contribute and earn.</h2>
           <button onClick={() => {
-            openNewTab('http://truts.xyz/discover');
-          }} className={styles.black_btn}> <img src={binoculars_icon.src} alt="" /> Discover Communities</button>
+            openNewTab('/early-alpha.html');
+          }} className={styles.black_btn}> <img src={binoculars_icon.src} alt="" /> Get Alpha Access</button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
