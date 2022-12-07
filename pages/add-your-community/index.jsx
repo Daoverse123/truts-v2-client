@@ -56,7 +56,8 @@ const CHAIN_LIST_MAP = {
     'Near': 'near',
     'Polygon': 'polygon-pos',
     'Solana': 'solana',
-    'Tezos': 'tezos'
+    'Tezos': 'tezos',
+    'Sui': 'sui'
 }
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API

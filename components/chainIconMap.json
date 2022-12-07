@@ -144,5 +144,10 @@
         "ticker": "SYS",
         "icon": "https://assets.coingecko.com/coins/images/119/small/Syscoin.png?1560401261",
         "color": "rgb(76,180,250)"
+    },
+    "sui": {
+        "ticker": "SUI",
+        "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/20947.png",
+        "color": "#7AC1F2"
     }
 }
