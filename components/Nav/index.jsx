@@ -157,7 +157,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, walletConnectVisible, setw
             </div>
             <div className={styles.menu}>
                 <div className={styles.top_bar}>
-                    <img src={logo.src} alt="" />
+                    <img className={styles.main_logo} src={logo.src} alt="" />
                     <img onClick={() => {
                         setTabletNavOpen(false)
                     }} className={styles.close_icon} src={close_icon.src} alt="" />
