@@ -175,7 +175,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, walletConnectVisible, setw
                     </Link>
                     <Link href={'/discover'}>
                         <li>
-                            Discover a Communities
+                            Discover Communities
                         </li>
                     </Link>
                     <Link href={'https://www.academy.truts.xyz/'}><li>Truts Academy</li></Link>
