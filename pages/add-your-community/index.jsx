@@ -53,6 +53,7 @@ const CATEGORY_LIST = ['DAO',
 
 const CHAIN_LIST_MAP = {
     'Arbitrum': 'arbitrum-one',
+    'Avalanche': 'avalanche',
     'Binance Smart Chain': 'binance-smart-chain',
     'Cardano': 'cardano',
     'Ethereum': 'ethereum',
@@ -62,6 +63,7 @@ const CHAIN_LIST_MAP = {
     'Tezos': 'tezos',
     'Sui': 'sui'
 }
+
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
 {/* 
@@ -88,7 +90,17 @@ function DaoForm() {
         magiceden_link: ""
     })
 
-    console.log(state)
+    useEffect(() => {
+        if (localStorage.getItem("form_state")) {
+            setState({ ...JSON.parse(localStorage.getItem("form_state")) })
+        }
+    }, [])
+
+
+    useEffect(() => {
+        localStorage.setItem("form_state", JSON.stringify(state));
+    }, [state])
+
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -341,12 +353,17 @@ const CategotyCon = ({ state, setState }) => {
     const [suggestionVisible, setsuggestionVisible] = useState(false);
     //console.log(suggestionList)
 
+
     useEffect(() => {
         setState((s) => {
             s.dao_category = selectedItems;
             return { ...s }
         })
     }, [selectedItems])
+
+    useEffect(() => {
+
+    }, [state])
 
     let GenerateSuggestion = () => {
         setsuggestionList(() => {
