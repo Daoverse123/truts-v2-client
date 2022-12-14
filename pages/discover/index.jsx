@@ -86,6 +86,7 @@ let twitterFollowers = {
 
 let chainMap = {
     'All': "all",
+    'Avalanche': 'avalanche',
     'Arbitrum': 'arbitrum-one',
     'Binance Smart Chain': 'binance-smart-chain',
     'Cardano': 'cardano',
