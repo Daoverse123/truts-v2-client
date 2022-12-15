@@ -100,7 +100,7 @@ const Sidebar = ({ dao_data }) => {
                     navigator.clipboard.writeText(dao_data.website_link);
                     document.querySelector('#copy_1').src = '/copy_after.png'
                 }} className={styles.long_btn} style={{ gridArea: "c" }}>
-                    {<img src={web_white.src} />} {dao_data.website_link}
+                    {<img src={web_white.src} />} {textLimiter(dao_data.website_link)}
                     <img id='copy_1' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>
                 <button onClick={() => {
@@ -133,6 +133,13 @@ const Sidebar = ({ dao_data }) => {
 
         </div>
     )
+}
+
+const textLimiter = (name) => {
+    if (name.length > 30) {
+        return name.slice(0, 30) + '...'
+    }
+    name
 }
 
 export default Sidebar
