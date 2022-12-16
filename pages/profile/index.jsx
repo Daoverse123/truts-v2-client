@@ -223,7 +223,7 @@ function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
     return (
         <>
-            <WalletConnect_v2 />
+            {/* <WalletConnect_v2 /> */}
             <ReactTooltip backgroundColor={"#747c90"} />
             {/* <OnBoardForm /> */}
             <Nav isStrech={true} isFloating />
