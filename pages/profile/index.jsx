@@ -6,6 +6,7 @@ import chainIconMap from '../../components/chainIconMap.json'
 //components
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
+import WalletConnect_v2 from '../../components/WalletConnect_v2';
 
 //assets
 import discord_icon from '../../assets/icons/twitter_white.svg'
@@ -222,6 +223,7 @@ function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
     return (
         <>
+            <WalletConnect_v2 />
             <ReactTooltip backgroundColor={"#747c90"} />
             {/* <OnBoardForm /> */}
             <Nav isStrech={true} isFloating />

@@ -12,6 +12,7 @@ const nextConfig = {
   },
   env: {
     API: process.env.API,
+    P_API: 'http://localhost:3000',
     SPLTOKENACCOUNTSPAREKEY: process.env.SPLTOKENACCOUNTSPAREKEY,
 
     MEAN_SPL_TOKEN: 'MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD',
