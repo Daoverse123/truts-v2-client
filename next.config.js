@@ -12,9 +12,9 @@ const nextConfig = {
   },
   env: {
     API: process.env.API,
-    P_API: 'http://localhost:3000',
+    P_API: 'http://localhost:3000/api/v1',
     SPLTOKENACCOUNTSPAREKEY: process.env.SPLTOKENACCOUNTSPAREKEY,
-
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     MEAN_SPL_TOKEN: 'MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD',
     SOLRAZR_SPL_TOKEN: '7j7H7sgsnNDeCngAPjpaCN4aaaru4HS7NAFYSEUyzJ3k',
     BONFIDA_SPL_TOKEN: 'EchesyfXePKdLtoiZSL8pBe8Myagyy8ZRqsACNCFGnvp',

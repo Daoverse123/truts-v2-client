@@ -1,12 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './edit-profile.module.scss'
 
 import Nav from '../../components/Nav'
 import Button from '../../components/Button'
+import axios from 'axios';
 
 let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
 
+const P_API = process.env.P_API;
+
+const fetchUserDetails = async (setter) => {
+    let jwt = localStorage.getItem('token')
+    axios.post(`${P_API}/user/intrest-tag`, {}, {
+        headers: {
+            Authorization: jwt
+        }
+    });
+    try {
+        let res = await axios.get(`${P_API}/user`, {
+            headers: {
+                Authorization: jwt
+            }
+        })
+        console.log(res);
+        if (res.status == 200) {
+            setter(res.data.data.user)
+        }
+        else {
+            alert("Invalid Auth");
+        }
+    } catch (error) {
+        alert("Invalid Auth");
+    }
+}
+
+async function handleCredentialResponse(response) {
+    // console.log("Encoded JWT ID token: " + response.credential);
+    let res = await axios.post(`${P_API}/api/v1/login/google`, {
+        token: response.credential
+    })
+    if (res.status == 200) {
+        let jwt = res.data.data.token;
+        localStorage.setItem("token", `Bearer ${jwt}`);
+    }
+    else {
+        alert("SignUp failed Please try Again");
+    }
+}
+
+
+function signUpGoogle() {
+    window.google.accounts.id.initialize({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse
+    });
+    window.google.accounts.id.renderButton(
+        document.getElementById("google-login"),
+        { theme: "outline", size: "large" }
+        // customization attributes
+    );
+    window.google.accounts.id.prompt(); // also display the One Tap dialog
+}
+
 function Index() {
+
+    const [initUserData, setinitUserData] = useState({});
+
+    console.log(initUserData);
+
+    useEffect(() => {
+        fetchUserDetails((user_data) => {
+            (!user_data.email) && signUpGoogle()
+            setinitUserData(user_data);
+        })
+    }, [])
 
     let options = ['Profile', 'Wallets', 'Socials', 'Superpowers'];
     const [selectedPage, setselectedPage] = useState('Profile');
@@ -40,7 +107,7 @@ function Index() {
                         })}
                     </div>
                     {
-                        (selectedPage == options[0]) && <Profile />
+                        (selectedPage == options[0]) && <Profile initUserData={initUserData} />
                     }
                     {
                         (selectedPage == options[1]) && <Wallets />
@@ -55,7 +122,29 @@ function Index() {
     )
 }
 
-const Profile = () => {
+const fetchInterest = async (setter) => {
+    let res = await axios.get(`${P_API}/user/intrest-tag`, {
+        headers: {
+            Authorization: window.localStorage.getItem('token')
+        }
+    });
+    if (res.status == 200) {
+        console.log(res.data)
+        setter(res.data.data.tags)
+    }
+}
+
+const Profile = ({ initUserData }) => {
+
+    const [profileImg, setprofileImg] = useState(null);
+    const [interests, setinterests] = useState([]);
+    console.log(interests)
+    useEffect(() => {
+        fetchInterest((ele) => {
+            setinterests(ele);
+        })
+    }, [])
+
     return (
         <div className={styles.formContent}>
             <div className={styles.mainTitle}>
@@ -70,10 +159,18 @@ const Profile = () => {
                         <p>50</p>
                     </span>
                 </div>
-                <div className={styles.profile}>
-                    <img className={styles.profileImg} src={Placeholder} alt="" />
+                <label htmlFor='image-upload' className={styles.profile}>
+                    <img className={styles.profileImg} src={profileImg || Placeholder} alt="" />
                     <img src="./add-icon.png" alt="" className={styles.addIcon} />
-                </div>
+                    <input accept="image/*" onChange={(e) => {
+                        const file = e.target.files[0];
+                        const reader = new FileReader();
+                        reader.onload = function () {
+                            setprofileImg(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }} id='image-upload' className={styles.profileUpload} type="file" />
+                </label>
             </div>
             <div className={styles.section}>
                 <div className={styles.secTitle}>
@@ -83,7 +180,15 @@ const Profile = () => {
                         <p>50</p>
                     </span>
                 </div>
-                <input placeholder='ABC@gmail.com' className={styles.input} />
+                <span id='google-login'>
+
+                </span>
+                {
+                    (initUserData.email) &&
+                    <p className={styles.displayEmail}>
+                        {initUserData.email}
+                    </p>
+                }
             </div>
             <div className={styles.section}>
                 <div className={styles.secTitle}>
@@ -106,31 +211,23 @@ const Profile = () => {
                 <p className={styles.subText}>Select (maximum 3) and show your interests to web3 world!</p>
 
                 <div className={styles.tagSelector}>
-                    <span className={styles.tag + ' ' + styles.selected}>Product Designer</span>
-                    <span className={styles.tag + ' ' + styles.selected}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
-                    <span className={styles.tag}>Product Designer</span>
+                    {interests.map((ele, idx) => {
+                        return (
+                            <span onClick={() => {
+                                setinterests((int) => {
+                                    int[idx].selected = !(int[idx].selected);
+                                    if (int.filter(ele => ele.selected).length > 3) {
+                                        return interests
+                                    }
+                                    else {
+                                        return [...int];
+                                    }
+                                })
+                            }} key={ele._id} className={styles.tag + ' ' + (interests[idx].selected ? styles.selected : "")}>
+                                {ele.name}
+                            </span>
+                        )
+                    })}
                 </div>
             </div>
             <span className={styles.bottomNav}>

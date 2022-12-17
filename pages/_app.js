@@ -46,7 +46,6 @@ let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 function MyApp({ Component, pageProps }) {
   return <WagmiConfig client={client}>
     <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
-
     <Script id='script' strategy="lazyOnload">
       {`
         window.dataLayer = window.dataLayer || [];
@@ -57,6 +56,7 @@ function MyApp({ Component, pageProps }) {
         });
     `}
     </Script>
+    <Script src="https://accounts.google.com/gsi/client" strategy={'beforeInteractive'}></Script>
     <NextNProgress color="#2e68f5" />
     <Component {...pageProps} />
   </WagmiConfig>

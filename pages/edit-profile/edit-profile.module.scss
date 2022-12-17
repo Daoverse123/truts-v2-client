@@ -255,6 +255,12 @@ $secWidth: 467px;
             }
         }
     }
+
+    .displayEmail {
+        font-size: 16px;
+        font-weight: 500;
+        color: gray;
+    }
 }
 
 .walletSection {
@@ -354,4 +360,21 @@ $secWidth: 467px;
             width: 18px;
         }
     }
+}
+
+.profileLoginPage {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: black;
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.profileUpload {
+    position: absolute;
+    height: 0;
+    width: 0;
 }

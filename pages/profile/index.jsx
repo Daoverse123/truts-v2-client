@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './profile.module.scss'
 import ReactTooltip from 'react-tooltip';
 import chainIconMap from '../../components/chainIconMap.json'
@@ -6,7 +6,6 @@ import chainIconMap from '../../components/chainIconMap.json'
 //components
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
-import WalletConnect_v2 from '../../components/WalletConnect_v2';
 
 //assets
 import discord_icon from '../../assets/icons/twitter_white.svg'
@@ -22,6 +21,7 @@ import share from '../../assets/icons/share_icon.svg'
 import tip from '../../assets/icons/tip_icon.svg'
 import loader from '../../assets/mini-loader.gif'
 import twitter_blue from '../../assets/icons/twitter_icon_blue.png'
+import axios from 'axios';
 
 
 let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
@@ -50,168 +50,66 @@ const NavSec = ({ selected, setSelected }) => {
     )
 }
 
-const OnBoardForm = () => {
-    return (
-        <div className={styles.onBoardingFlow}>
-            <div className={styles.onBoardingForm}>
-                <div className={styles.progressHeader}>
-                    <div className={styles.title}>
-                        <h1>Your Profile</h1>
-                        <p>Complete every details on your profile to earn XP points</p>
-                    </div>
-                    <div className={styles.xpCon}>
-                        <span className={styles.xpIcon}>
-                            <img src="/xpCoin.png" alt="" />
-                            <p>100 XP</p>
-                        </span>
-                        <p>Earned so far</p>
-                    </div>
-                    <div className={styles.progressBar}>
-                        <div className={styles.progressInner}>
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.formContent}>
-                    <div className={styles.inputTitle}>
-                        <span className={styles.titleSub}>
-                            <h1>Your Profile Picture</h1>
-                        </span>
-                        <span className={styles.iconXp}>
-                            <img src="/xpCoin.png" alt="" />
-                            <p>50</p>
-                        </span>
-                    </div>
-                    <img className={styles.profilePicture} src="/grad.jpg" alt="" />
-                    <div className={styles.inputTitle}>
-                        <span className={styles.titleSub}>
-                            <h1>TrutsID</h1>
-                            <p>Your ENS/Primary Wallet address also serves as Truts ID</p>
-                        </span>
-                        <span className={styles.iconXp}>
-                            <img src="/xpCoin.png" alt="" />
-                            <p>50</p>
-                        </span>
-                    </div>
-                    <div className={styles.walletSec}>
-                        <span className={styles.walletChip}>
-                            <p>xefd....3tf23</p>
-                            <img src="/close-icon.png" alt="" />
-                        </span>
-                        <span className={styles.walletChip}>
-                            <p>xefd....3tf23</p>
-                            <img src="/close-icon.png" alt="" />
-                        </span>
-                        <span className={styles.walletChipAdd}>
-                            <p>Add more Wallet</p>
-                            <img src="/add-icon.png" alt="" />
-                        </span>
-                    </div>
-                    <div className={styles.inputTitle}>
-                        <span className={styles.titleSub}>
-                            <h1>Bio</h1>
-                        </span>
-                    </div>
-                    <textarea className={styles.bioInput}>
+let P_API = process.env.P_API;
 
-                    </textarea>
-                    <div className={styles.inputTitle}>
-                        <span className={styles.titleSub}>
-                            <h1>Your Socials</h1>
-                            <p>Connect all your socials to earn XP points</p>
-                        </span>
-                    </div>
-                    <div className={styles.connectSocials}>
-                        <div className={styles.socialInput}>
-                            <span className={styles.socialInputTitle}>
-                                <p>Twitter</p>
-                                <img src="/gift.png" alt="" />
-                                <p className={styles.xpNum}>50xp</p>
-                                <img src="/info.png" alt="" />
-                            </span>
-                            <span className={styles.walletChip}>
-                                <p>xefd....3tf23</p>
-                                <img src="/close-icon.png" alt="" />
-                            </span>
+async function handleCredentialResponse(response) {
+    // console.log("Encoded JWT ID token: " + response.credential);
+    let res = await axios.post(`${P_API}/login/google`, {
+        token: response.credential
+    })
+    if (res.status == 200) {
+        let jwt = res.data.data.token;
+        localStorage.setItem("token", `Bearer ${jwt}`);
+        window.location.href = '/edit-profile'
+    }
+    else {
+        alert("SignUp failed Please try Again");
+    }
+}
+
+
+function signUpGoogle() {
+    window.google.accounts.id.initialize({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse
+    });
+    window.google.accounts.id.renderButton(
+        document.getElementById("google-login"),
+        { theme: "outline", size: "large" }
+        // customization attributes
+    );
+    window.google.accounts.id.prompt(); // also display the One Tap dialog
+}
+
+const ProfileLogin = () => {
+
+    useEffect(() => {
+        signUpGoogle()
+    }, [])
+
+
+    return (
+        <div className={styles.profileLoginPage}>
+            <div className={styles.loginModel} >
+                <div className={styles.messageCon}>
+                    <h3>Let’s start by</h3>
+                    <h1>Sign up/Login</h1>
+                    <p>Sign up/Login with either email or wallet to start your web3 journey with Truts and earn some XPs!</p>
+                </div>
+                <div className={styles.colScreens}>
+                    <div className={styles.screen + ' ' + styles.right}>
+                        <div className={styles.imgBg}>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/archive/5/53/20161128230037%21Google_%22G%22_Logo.svg" alt="" />
                         </div>
+                        <p>Please make sure to connect your primary wallet as it will also serve as your TrutsID and all data on profile would be linked and fetched from it.</p>
+                        <span id={"google-login"}  ></span>
                     </div>
-                    <div className={styles.connectSocials}>
-                        <div className={styles.socialInput}>
-                            <span className={styles.socialInputTitle}>
-                                <p>Discord</p>
-                                <img src="/gift.png" alt="" />
-                                <p className={styles.xpNum}>50xp</p>
-                                <img src="/info.png" alt="" />
-                            </span>
-                            <span className={styles.walletChip}>
-                                <p>xefd....3tf23</p>
-                                <img src="/close-icon.png" alt="" />
-                            </span>
+                    <div className={styles.screen}>
+                        <div className={styles.imgBg}>
+                            <img src="/assets/wallet-black.svg" alt="" />
                         </div>
-                    </div>
-                    <div className={styles.connectSocials}>
-                        <div className={styles.socialInput}>
-                            <span className={styles.socialInputTitle}>
-                                <p>Email</p>
-                                <img src="/gift.png" alt="" />
-                                <p className={styles.xpNum}>50xp</p>
-                                <img src="/info.png" alt="" />
-                            </span>
-                            <span className={styles.walletChip}>
-                                <p>xefd....3tf23</p>
-                                <img src="/close-icon.png" alt="" />
-                            </span>
-                        </div>
-                    </div>
-                    <div className={styles.inputTitle}>
-                        <span className={styles.titleSub}>
-                            <h1>Your Tags</h1>
-                            <p>Select tags that describes you</p>
-                        </span>
-                    </div>
-                    <div className={styles.tagsCon}>
-                        <div className={styles.selectedChips}>
-                            <div className={styles.chip_selected}>
-                                <p>Product Designer</p>
-                                <img src="/close-icon.png" alt="" />
-                            </div>
-                            <div className={styles.chip_selected}>
-                                <p>Product Designer</p>
-                                <img src="/close-icon.png" alt="" />
-                            </div>
-                            <div className={styles.chip_selected}>
-                                <p>Product Designer</p>
-                                <img src="/close-icon.png" alt="" />
-                            </div>
-                        </div>
-                        <div className={styles.chipOptions}>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                            <div className={styles.chip}>
-                                <p>Product Designer</p>
-                            </div>
-                        </div>
+                        <p>Please make sure to connect your primary wallet as it will also serve as your TrutsID and all data on profile would be linked and fetched from it.</p>
+                        <button>Wallet</button>
                     </div>
                 </div>
             </div>
@@ -219,14 +117,17 @@ const OnBoardForm = () => {
     )
 }
 
+
+
 function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
+
     return (
         <>
-            {/* <WalletConnect_v2 /> */}
             <ReactTooltip backgroundColor={"#747c90"} />
             {/* <OnBoardForm /> */}
             <Nav isStrech={true} isFloating />
+            <ProfileLogin />
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
                     <img className={styles.profileImg} src={Placeholder} alt="" />
@@ -842,5 +743,176 @@ const Xp = () => {
 const copyToClipBoard = (txt) => {
     navigator.clipboard.writeText(txt);
 }
+
+
+const OnBoardForm = () => {
+    return (
+        <div className={styles.onBoardingFlow}>
+            <div className={styles.onBoardingForm}>
+                <div className={styles.progressHeader}>
+                    <div className={styles.title}>
+                        <h1>Your Profile</h1>
+                        <p>Complete every details on your profile to earn XP points</p>
+                    </div>
+                    <div className={styles.xpCon}>
+                        <span className={styles.xpIcon}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>100 XP</p>
+                        </span>
+                        <p>Earned so far</p>
+                    </div>
+                    <div className={styles.progressBar}>
+                        <div className={styles.progressInner}>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.formContent}>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Profile Picture</h1>
+                        </span>
+                        <span className={styles.iconXp}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>50</p>
+                        </span>
+                    </div>
+                    <img className={styles.profilePicture} src="/grad.jpg" alt="" />
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>TrutsID</h1>
+                            <p>Your ENS/Primary Wallet address also serves as Truts ID</p>
+                        </span>
+                        <span className={styles.iconXp}>
+                            <img src="/xpCoin.png" alt="" />
+                            <p>50</p>
+                        </span>
+                    </div>
+                    <div className={styles.walletSec}>
+                        <span className={styles.walletChip}>
+                            <p>xefd....3tf23</p>
+                            <img src="/close-icon.png" alt="" />
+                        </span>
+                        <span className={styles.walletChip}>
+                            <p>xefd....3tf23</p>
+                            <img src="/close-icon.png" alt="" />
+                        </span>
+                        <span className={styles.walletChipAdd}>
+                            <p>Add more Wallet</p>
+                            <img src="/add-icon.png" alt="" />
+                        </span>
+                    </div>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Bio</h1>
+                        </span>
+                    </div>
+                    <textarea className={styles.bioInput}>
+
+                    </textarea>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Socials</h1>
+                            <p>Connect all your socials to earn XP points</p>
+                        </span>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Twitter</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Discord</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.connectSocials}>
+                        <div className={styles.socialInput}>
+                            <span className={styles.socialInputTitle}>
+                                <p>Email</p>
+                                <img src="/gift.png" alt="" />
+                                <p className={styles.xpNum}>50xp</p>
+                                <img src="/info.png" alt="" />
+                            </span>
+                            <span className={styles.walletChip}>
+                                <p>xefd....3tf23</p>
+                                <img src="/close-icon.png" alt="" />
+                            </span>
+                        </div>
+                    </div>
+                    <div className={styles.inputTitle}>
+                        <span className={styles.titleSub}>
+                            <h1>Your Tags</h1>
+                            <p>Select tags that describes you</p>
+                        </span>
+                    </div>
+                    <div className={styles.tagsCon}>
+                        <div className={styles.selectedChips}>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                            <div className={styles.chip_selected}>
+                                <p>Product Designer</p>
+                                <img src="/close-icon.png" alt="" />
+                            </div>
+                        </div>
+                        <div className={styles.chipOptions}>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                            <div className={styles.chip}>
+                                <p>Product Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 
 export default Profile           
