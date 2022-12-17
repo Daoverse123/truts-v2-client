@@ -48,9 +48,6 @@ const CATEGORY_LIST = ['DAO',
     'Public Good',
     'Education'];
 
-//push deploy again . . .
-
-
 const CHAIN_LIST_MAP = {
     'Arbitrum': 'arbitrum-one',
     'Avalanche': 'avalanche',
@@ -63,7 +60,6 @@ const CHAIN_LIST_MAP = {
     'Tezos': 'tezos',
     'Sui': 'sui'
 }
-
 let categoriesWithId = CATEGORY_LIST.map((name, id) => { return { id, name } })
 const API = process.env.API
 {/* 
@@ -90,17 +86,7 @@ function DaoForm() {
         magiceden_link: ""
     })
 
-    useEffect(() => {
-        if (localStorage.getItem("form_state")) {
-            setState({ ...JSON.parse(localStorage.getItem("form_state")) })
-        }
-    }, [])
-
-
-    useEffect(() => {
-        localStorage.setItem("form_state", JSON.stringify(state));
-    }, [state])
-
+    console.log(state)
 
     const submitForm = async (e) => {
         e.preventDefault();
@@ -154,7 +140,7 @@ function DaoForm() {
                 <Head>
                     <title>Truts</title>
                     <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
-                    <link rel="icon" href="/favicon.png" />
+                    <link rel="icon" href="/favicon.ico" />
                 </Head>
 
                 <Nav isFloating isStrech />
@@ -353,17 +339,12 @@ const CategotyCon = ({ state, setState }) => {
     const [suggestionVisible, setsuggestionVisible] = useState(false);
     //console.log(suggestionList)
 
-
     useEffect(() => {
         setState((s) => {
             s.dao_category = selectedItems;
             return { ...s }
         })
     }, [selectedItems])
-
-    useEffect(() => {
-
-    }, [state])
 
     let GenerateSuggestion = () => {
         setsuggestionList(() => {

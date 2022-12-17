@@ -65,8 +65,10 @@ function signUpGoogle() {
 function Index() {
 
     const [initUserData, setinitUserData] = useState({});
+    const [updatedUserData, setupdatedUserData] = useState({ bio: "" })
 
     console.log(initUserData);
+    console.log(updatedUserData);
 
     useEffect(() => {
         fetchUserDetails((user_data) => {
@@ -107,7 +109,7 @@ function Index() {
                         })}
                     </div>
                     {
-                        (selectedPage == options[0]) && <Profile initUserData={initUserData} />
+                        (selectedPage == options[0]) && <Profile {...{ updatedUserData, setupdatedUserData, initUserData }} />
                     }
                     {
                         (selectedPage == options[1]) && <Wallets />
@@ -134,7 +136,7 @@ const fetchInterest = async (setter) => {
     }
 }
 
-const Profile = ({ initUserData }) => {
+const Profile = ({ updatedUserData, setupdatedUserData, initUserData }) => {
 
     const [profileImg, setprofileImg] = useState(null);
     const [interests, setinterests] = useState([]);
@@ -144,6 +146,13 @@ const Profile = ({ initUserData }) => {
             setinterests(ele);
         })
     }, [])
+
+    useEffect(() => {
+        setupdatedUserData((usd) => {
+            usd.interests = interests.filter(elm => elm.selected).map(elm => elm._id);
+            return { ...usd }
+        })
+    }, [interests])
 
     return (
         <div className={styles.formContent}>
@@ -164,6 +173,10 @@ const Profile = ({ initUserData }) => {
                     <img src="./add-icon.png" alt="" className={styles.addIcon} />
                     <input accept="image/*" onChange={(e) => {
                         const file = e.target.files[0];
+                        setupdatedUserData((usd) => {
+                            usd.photo = file;
+                            return { ...usd }
+                        })
                         const reader = new FileReader();
                         reader.onload = function () {
                             setprofileImg(reader.result);
@@ -198,7 +211,12 @@ const Profile = ({ initUserData }) => {
                         <p>50</p>
                     </span>
                 </div>
-                <textarea rows={8} placeholder='Write an amazing bio about yourself.....' className={styles.input} />
+                <textarea value={updatedUserData.bio} onChange={(e) => {
+                    setupdatedUserData((ud) => {
+                        ud.bio = e.target.value;
+                        return { ...ud }
+                    })
+                }} rows={8} placeholder='Write an amazing bio about yourself.....' className={styles.input} />
             </div>
             <div className={styles.section}>
                 <div className={styles.secTitle}>

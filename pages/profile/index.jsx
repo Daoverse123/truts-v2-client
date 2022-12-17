@@ -56,11 +56,16 @@ async function handleCredentialResponse(response) {
     // console.log("Encoded JWT ID token: " + response.credential);
     let res = await axios.post(`${P_API}/login/google`, {
         token: response.credential
-    })
+    },
+        {
+            headers: {
+                'Authorization': `${window.localStorage.getItem('token')}`
+            }
+        })
     if (res.status == 200) {
         let jwt = res.data.data.token;
         localStorage.setItem("token", `Bearer ${jwt}`);
-        window.location.href = '/edit-profile'
+        // window.location.href = '/edit-profile'
     }
     else {
         alert("SignUp failed Please try Again");
