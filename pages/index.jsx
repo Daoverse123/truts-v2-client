@@ -10,6 +10,8 @@ import Button from '../components/Button'
 import DAOCard from '../components/DAOCard'
 import Footer from '../components/Footer'
 import Nav from '../components/Nav'
+import Profile_signup from './../components/Profile_signup'
+import WalletConnectProfile from '../components/WalletConnect_v3'
 
 // ASSETS
 import searchIcon from '../assets/icons/search_white.svg'
@@ -205,8 +207,15 @@ const getDynamicCategoryDaoList = async (setter) => {
 // }
 //s
 function Hero() {
+
+  const [profileSignupPrompt, setprofileSignupPrompt] = useState(false);
+  const [walletConnectVisible, setwalletConnectVisible] = useState(false);
   return (
     <>
+      {(profileSignupPrompt) && <Profile_signup setprofileSignupPrompt={setprofileSignupPrompt} showWalletConnect={() => {
+        setwalletConnectVisible(true)
+      }} />}
+      <WalletConnectProfile walletConnectVisible={walletConnectVisible} setwalletConnectVisible={setwalletConnectVisible} />
       <img className={styles.heroLeft} src={`//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/leftGrad.png`} alt="" />
       <img className={styles.heroRight} src={'//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/rightGrad.1a237d6b+(Small).png'} alt="" />
       <div className={styles.new_hero}>
@@ -216,7 +225,8 @@ function Hero() {
           </h1>
           <h2>Discover, join, contribute and earn.</h2>
           <button onClick={() => {
-            openNewTab('/early-alpha.html');
+            setprofileSignupPrompt(true);
+            // openNewTab('/early-alpha.html');
           }} className={styles.black_btn}> <img src={binoculars_icon.src} alt="" /> Get Alpha Access</button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
@@ -474,7 +484,7 @@ function Leaderboard_mobile({ data }) {
 
 function RecentReview({ text, address, daoName, rating, i }) {
   const [gradArray, setgradArray] = useState([])
-  
+
   useEffect(() => {
     let newGradArray = [];
     for (let i = 0; i < 16; i++) {

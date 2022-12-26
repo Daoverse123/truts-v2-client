@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styles from './profile.module.scss'
 import ReactTooltip from 'react-tooltip';
 import chainIconMap from '../../components/chainIconMap.json'
+import WalletConnect_v3 from '../../components/WalletConnect_v3'
 
 //components
 import Nav from '../../components/Nav'
 import Footer from '../../components/Footer'
+import DAOCard from '../../components/DAOCard';
 
 //assets
 import discord_icon from '../../assets/icons/twitter_white.svg'
@@ -22,6 +24,7 @@ import tip from '../../assets/icons/tip_icon.svg'
 import loader from '../../assets/mini-loader.gif'
 import twitter_blue from '../../assets/icons/twitter_icon_blue.png'
 import axios from 'axios';
+import Link from 'next/link';
 
 
 let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
@@ -50,92 +53,82 @@ const NavSec = ({ selected, setSelected }) => {
     )
 }
 
-let P_API = process.env.P_API;
+const P_API = process.env.P_API;
 
-async function handleCredentialResponse(response) {
-    // console.log("Encoded JWT ID token: " + response.credential);
-    let res = await axios.post(`${P_API}/login/google`, {
-        token: response.credential
-    },
-        {
-            headers: {
-                'Authorization': `${window.localStorage.getItem('token')}`
-            }
-        })
-    if (res.status == 200) {
-        let jwt = res.data.data.token;
-        localStorage.setItem("token", `Bearer ${jwt}`);
-        // window.location.href = '/edit-profile'
-    }
-    else {
-        alert("SignUp failed Please try Again");
-    }
+const fetchWalletAssets = async (data, setter) => {
+    let key = data.user.wallets.address
+    let [tokenData, nftData] = await Promise.all([axios.get(`api/get-chain-assets?key=${key}&type=token`), axios.get(`api/get-chain-assets?key=${key}&type=nft`)]);
+    console.log(nftData)
+    setter((data) => {
+        return {
+            ...data, tokenData: tokenData.data.assets, nftData: nftData.data.assets
+        }
+    })
+
 }
 
+const fetchUserData = async (setter) => {
+    let option = {
+        headers: {
+            "Authorization": window.localStorage.getItem('token')
+        }
+    };
 
-function signUpGoogle() {
-    window.google.accounts.id.initialize({
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse
-    });
-    window.google.accounts.id.renderButton(
-        document.getElementById("google-login"),
-        { theme: "outline", size: "large" }
-        // customization attributes
-    );
-    window.google.accounts.id.prompt(); // also display the One Tap dialog
-}
-
-const ProfileLogin = () => {
-
-    useEffect(() => {
-        signUpGoogle()
-    }, [])
-
-
-    return (
-        <div className={styles.profileLoginPage}>
-            <div className={styles.loginModel} >
-                <div className={styles.messageCon}>
-                    <h3>Let’s start by</h3>
-                    <h1>Sign up/Login</h1>
-                    <p>Sign up/Login with either email or wallet to start your web3 journey with Truts and earn some XPs!</p>
-                </div>
-                <div className={styles.colScreens}>
-                    <div className={styles.screen + ' ' + styles.right}>
-                        <div className={styles.imgBg}>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/archive/5/53/20161128230037%21Google_%22G%22_Logo.svg" alt="" />
-                        </div>
-                        <p>Please make sure to connect your primary wallet as it will also serve as your TrutsID and all data on profile would be linked and fetched from it.</p>
-                        <span id={"google-login"}  ></span>
-                    </div>
-                    <div className={styles.screen}>
-                        <div className={styles.imgBg}>
-                            <img src="/assets/wallet-black.svg" alt="" />
-                        </div>
-                        <p>Please make sure to connect your primary wallet as it will also serve as your TrutsID and all data on profile would be linked and fetched from it.</p>
-                        <button>Wallet</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    let user_data = await Promise.all(
+        [
+            axios.get(`${P_API}/user`, option),
+            axios.get(`${P_API}/user/reviews`, option),
+            axios.get(`${P_API}/user/guilds`, option),
+        ]
     )
+
+    if (user_data[0].status == 200) {
+        setter(user_data[0].data.data.user);
+
+        fetchWalletAssets(user_data[0].data.data, setter);
+
+    } else {
+        alert("Auth error")
+    }
+
+    if (user_data[1].status == 200) {
+        setter((data) => {
+            return { ...data, reviews: user_data[1].data.data.reviews }
+        });
+    } else {
+        alert("Auth error")
+    }
+
+    if (user_data[2].status == 200) {
+        setter((data) => {
+            return { ...data, daos: user_data[2].data.data.listings }
+        });
+    } else {
+        alert("Auth error")
+    }
 }
 
 
 
 function Profile() {
     const [selectedNav, setSelectedNav] = useState('Reviews');
+    const [userData, setuserData] = useState({});
+
+    useEffect(() => {
+        fetchUserData(setuserData)
+    }, [])
+
+    console.log(userData);
 
     return (
         <>
             <ReactTooltip backgroundColor={"#747c90"} />
             {/* <OnBoardForm /> */}
             <Nav isStrech={true} isFloating />
-            <ProfileLogin />
+            {/* <ProfileLogin /> */}
             <div className={styles.profilePage}>
                 <div className={styles.profileHeader}>
-                    <img className={styles.profileImg} src={Placeholder} alt="" />
+                    <img className={styles.profileImg} src={userData.photo?.secure_url || '/profile.png'} alt="" />
                     <div className={styles.data}>
                         <span className={styles.xpLevel}>
                             <span className={styles.levelCount}>
@@ -146,40 +139,36 @@ function Profile() {
                                 <span></span>
                             </div>
                         </span>
-                        <h1 className={styles.name}>darkjedi.eth</h1>
-                        <p className={styles.bio}>Risus cursus faucibus blandit malesuada convallis dignissim sed tincidunt. Sit integer viverra rutrum arcu sit feugiat. Risus cursus</p>
+                        <h1 className={styles.name}>{userData.name || (('wallets' in userData) ? minimizeWallet(userData.wallets.address) : 'Username')}</h1>
+                        {
+                            (userData.bio) ? <p className={styles.bio}>{userData.bio}</p> :
+                                <p style={{ color: "grey" }} className={styles.bio}>Write a amazing bio introducing
+                                    yourself.....</p>
+                        }
                         <div className={styles.tabs}>
-                            <div className={styles.tab}>
-                                Product Designer
-                            </div>
-                            <div className={styles.tab}>
-                                Product Designer
-                            </div>
-                            <div className={styles.tab}>
-                                Product Designer
-                            </div>
+                            {
+                                ('tags' in userData && userData.tags.length > 0) ? userData.tags.map((tgs) => {
+                                    return (
+                                        <div key={"id" + tgs?.name} className={styles.tab}>
+                                            {tgs?.name}
+                                        </div>
+                                    )
+                                }) : <div style={{ opacity: 0.6 }} className={styles.tab}>
+                                    {"Add Tags"}
+                                </div>
+                            }
+
                         </div>
                         <div className={styles.walletTabs}>
-                            <div onClick={() => { copyToClipBoard("sample address") }} id='w1' data-tip="Copy Address" style={{ background: chainIconMap['ethereum'].color, borderColor: chainIconMap['ethereum'].color }} className={styles.tab}>
+                            {('wallets' in userData) ? <div onClick={() => { copyToClipBoard(userData.wallets.address) }} id='w1' data-tip="Copy Address" style={{ background: chainIconMap['ethereum'].color, borderColor: chainIconMap['ethereum'].color }} className={styles.tab}>
                                 <img src={chainIconMap['ethereum'].icon} alt="" />
-                                0xe4....cfe
+                                {minimizeWallet(userData.wallets.address)}
                                 <ReactTooltip backgroundColor={"#747c90"} />
-                            </div>
-                            <div onClick={() => { copyToClipBoard("sample address") }} id='w2' data-tip="Copy Address" style={{ background: chainIconMap['solana'].color, borderColor: chainIconMap['solana'].color }} className={styles.tab}>
-                                <img src={chainIconMap['solana'].icon} alt="" />
-                                0xe4....cfe
+                            </div> : <div onClick={() => { copyToClipBoard("sample address") }} id='w1' data-tip="Copy Address" style={{ background: chainIconMap['ethereum'].color, borderColor: chainIconMap['ethereum'].color }} className={styles.tab}>
+                                <img src={chainIconMap['ethereum'].icon} alt="" />
+                                Wallet Address
                                 <ReactTooltip backgroundColor={"#747c90"} />
-                            </div>
-                            <div onClick={() => { copyToClipBoard("sample address") }} id='w3' data-tip="Copy Address" style={{ background: chainIconMap['near'].color, borderColor: chainIconMap['near'].color }} className={styles.tab}>
-                                <img src={chainIconMap['near'].icon} alt="" />
-                                0xe4....cfe
-                                <ReactTooltip backgroundColor={"#747c90"} />
-                            </div>
-                            <div onClick={() => { copyToClipBoard("sample address") }} id='w3' data-tip="Copy Address" style={{ background: chainIconMap['near'].color, borderColor: chainIconMap['near'].color }} className={styles.tab}>
-                                <img src={chainIconMap['near'].icon} alt="" />
-                                0xe4....cfe
-                                <ReactTooltip backgroundColor={"#747c90"} />
-                            </div>
+                            </div>}
                         </div>
                     </div>
 
@@ -190,20 +179,36 @@ function Profile() {
 
                 </div>
                 <NavSec selected={selectedNav} setSelected={setSelectedNav} />
-                {(selectedNav == 'Communities') && <Communities />}
-                {(selectedNav == 'Xp') && <Xp />}
-                {(selectedNav == 'Reviews') && <Reviews />}
-                {(selectedNav == 'Token/NFTs') && <TokenNftCon />}
+
+                {('discord' in userData) ? <>
+                    {(selectedNav == 'Communities') && <Communites_temp {...{ userData }} />}
+                    {(selectedNav == 'Xp') && <Xp />}
+                    {(selectedNav == 'Reviews') && <Reviews {...{ userData }} />}
+                    {(selectedNav == 'Token/NFTs') && <TokenNftCon {...{ userData }} />}
+                </>
+                    : <div className={styles.completeProfilePrompt}>
+                        <span>
+                            <h1>We would love to know about the communities that you’re part of. </h1>
+                            <p>Please complete your user profile to view your community data</p>
+                        </span>
+                        <Link href={'/edit-profile'}>
+                            <button>Complete Profile</button>
+                        </Link>
+                    </div>}
             </div>
             <Footer />
         </>
     )
 }
 
-const Reviews = () => {
+const minimizeWallet = (wt) => {
+    return wt.slice(0, 5) + '...' + wt.slice(-5)
+}
+
+const Reviews = ({ userData }) => {
     return (
         <>
-            <div className={styles.statCards}>
+            {/* <div className={styles.statCards}>
                 <div className={styles.stat}>
                     <h3>Last Review On</h3>
                     <p>till Date</p>
@@ -224,35 +229,36 @@ const Reviews = () => {
                     <p>Updated 1m ago</p>
                     <h1>XYZ</h1>
                 </div>
-            </div>
+            </div> */}
             <div className={styles.reviewCon}>
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
-                < ReviewComp />
+                {
+                    ('reviews' in userData) && userData.reviews.map((ele, idx) => {
+                        return (
+                            <ReviewComp userData={userData} key={'re' + idx} data={ele} />
+                        )
+                    })
+                }
             </div>
         </>
     )
 }
 
-const ReviewComp = () => {
-
+const ReviewComp = ({ data, userData }) => {
+    let dao_name = data.listing.name;
+    let review = data.content;
+    let rating = data.rating;
     return (
         <>
             <div className={styles.reviewComp}>
                 <div className={styles.userInfo}>
-                    <img className={styles.profilePic} src={Placeholder} alt="" />
+                    <img className={styles.profilePic} src={userData.photo?.secure_url || '/profile.png'} alt="" />
                     <span>
-                        <p className={styles.address}>Bankless</p>
-                        <StarComp size={'s'} rating={4} />
+                        <p className={styles.address}>{dao_name}</p>
+                        <StarComp size={'s'} rating={rating} />
                     </span>
                 </div>
                 <div className={styles.review_desc}  >
-                    {'There’s no other program that walks you through exactly what you need to know to start an online store fast, written by someone who has built several 7-figure ecommerce businesses from scratch. What’s more, everything has been broken down in step-by-step detail with real action plans including finding your niche.'}
+                    {review}
                 </div>
                 {/* {(isTextLarge) && <p
 
@@ -305,6 +311,30 @@ const StarComp = ({ rating, size }) => {
                 })
             }
         </span>
+    )
+}
+
+const Communites_temp = ({ userData }) => {
+    return (
+        <div className={styles.communities_list}>
+            {userData.daos.map((ele, idx) => {
+                let data = {
+                    dao_name: ele?.name,
+                    twitter_link: ele?.twitter.link,
+                    twitter_followers: ele?.twitter.count,
+                    discord_link: ele?.discord.link,
+                    discord_members: ele?.discord.count,
+                    average_rating: ele?.ratings.average,
+                    review_count: ele?.ratings.count,
+                    slug: ele.slug,
+                    dao_cover: ele?.image.cover.url,
+                    website_link: ele?.website,
+                }
+                return (
+                    <DAOCard key={"d" + idx} data={data} />
+                )
+            })}
+        </div>
     )
 }
 
@@ -541,9 +571,11 @@ const Communities = () => {
     )
 }
 
-const TokenNftCon = () => {
+const TokenNftCon = ({ userData }) => {
     const [selectedTab, setselectedTab] = useState('NFTS')
     console.log(selectedTab)
+
+
     return (
         <>
             <div className={styles.statCards}>
@@ -573,22 +605,20 @@ const TokenNftCon = () => {
                     <button onClick={() => { setselectedTab('NFTS') }} className={(selectedTab == 'NFTS') ? styles.btnSwitchSelected : styles.btnSwitch}>NFTs</button>
                     <button onClick={() => { setselectedTab('TOKENS') }} className={(selectedTab == 'TOKENS') ? styles.btnSwitchSelected : styles.btnSwitch}>Tokens</button>
                 </div>
-                {(selectedTab == 'NFTS') && <Nfts />}
-                {(selectedTab == 'TOKENS') && <Tokens />}
+                {(selectedTab == 'NFTS') && <Nfts userData={userData} />}
+                {(selectedTab == 'TOKENS') && <Tokens userData={userData} />}
             </section>
         </>
     )
 }
 
-const Nfts = () => {
-    const Nft = () => {
+const Nfts = ({ userData }) => {
+    const Nft = ({ data }) => {
         return (
             <div className={styles.nftCon}>
-                <img src='/grad.jpg' className={styles.cover} alt='' />
-
-
+                <img src={data.tokenImage || '/grad.jpg'} className={styles.cover} alt='' />
                 <div className={styles.info}>
-                    <h3>NFT Title #3456</h3>
+                    <h3>{limit(25, data.title)}</h3>
                     <p>Last Price</p>
                     <span className={styles.price}>
                         <img src={eth_icon.src} alt="" />
@@ -601,38 +631,34 @@ const Nfts = () => {
 
     return (
         <>
-
             <div className={styles.nfts}>
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
-                <Nft />
+                {
+                    ('nftData' in userData) && userData.nftData.map((ele, idx) => {
+                        return (
+                            <Nft key={"nft" + idx} data={ele} />
+                        )
+                    })
+                }
             </div>
         </>
     )
 }
 
+let limit = (lt, name) => {
+    if (name?.length > lt) {
+        return name.slice(0, lt) + '...'
+    }
+    return (name)
+}
 
-const Tokens = () => {
+const Tokens = ({ userData }) => {
 
-    const Token = () => {
+    const Token = ({ data }) => {
         return (
             <div className={styles.token}>
-                <img className={styles.tokenLogo} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1024px-Bitcoin.svg.png" alt="" />
+                <img className={styles.tokenLogo} src={data.logo || '/blue.png'} alt="" />
                 <span className={styles.topLine}>
-                    <span className={styles.tokenName}>BTC <p>Bitcoin</p></span>
+                    <span className={styles.tokenName}>{limit(10, data.symbol)} <p>{limit(10, data.name)}</p></span>
                     <h3>$1,238</h3>
                 </span>
                 <span className={styles.bottomLine}>
@@ -643,23 +669,22 @@ const Tokens = () => {
         )
     }
 
+    // logo : "https://static.alchemyapi.io/images/assets/5617.png"
+    // name :"UMA"
+    // symbol :"UMA"
+    // tokenAddress :"0x04fa0d235c4abf4bcf4787af4cf447de572ef828"
+    // tokenBalance :628.3984457034
+
     return (
         <>
             <div className={styles.tokens}>
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
-                <Token />
+                {
+                    ('tokenData' in userData) && userData.tokenData.map((ele, id) => {
+                        return (
+                            <Token key={"tkn" + id} data={ele} />
+                        )
+                    })
+                }
             </div>
         </>
     )

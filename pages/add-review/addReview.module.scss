@@ -168,7 +168,7 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(117, 117, 117, 0.856);
             opacity: 1;
-            z-index: 2222;
+            z-index: 300;
         }
         input::-moz-range-thumb {
             -webkit-appearance: none;
@@ -181,7 +181,7 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(117, 117, 117, 0.856);
             opacity: 1;
-            z-index: 2222;
+            z-index: 300;
         }
 
         .sliderBar {

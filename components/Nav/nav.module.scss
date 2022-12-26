@@ -22,7 +22,7 @@ $PHONE_N: 425;
 .navWrapper {
     display: flex;
     position: absolute;
-    z-index: 9999;
+    z-index: 100;
     height: 100px;
     width: 100%;
     top: 0;
@@ -80,7 +80,10 @@ $PHONE_N: 425;
             margin-right: desktop_to_laptop_fluid(50);
         }
         @media (max-width: $LAPTOP) and (min-width: $TABLET) {
-            margin-right: laptop_to_tablet_fluid(50);
+            margin-right: laptop_to_tablet_fluid(40);
+        }
+        @media (max-width: $PHONE) {
+            width: 60px;
         }
     }
 }
@@ -260,7 +263,7 @@ $PHONE_N: 425;
     width: 100%;
     height: 100vh;
     right: 0;
-    z-index: 1000;
+    z-index: 200;
     background-color: rgba(0, 0, 0, 0.534);
     overflow: hidden;
 }
@@ -291,7 +294,7 @@ $PHONE_N: 425;
             cursor: pointer;
         }
 
-        .main_logo{
+        .main_logo {
             width: 80px;
         }
     }

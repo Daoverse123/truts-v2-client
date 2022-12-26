@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import styles from './edit-profile.module.scss'
-
+import { useRouter } from 'next/router';
 import Nav from '../../components/Nav'
 import Button from '../../components/Button'
 import axios from 'axios';
+import WalletConnect from '../../components/WalletConnect_v3';
+import auth0 from 'auth0-js'
+import Loader from '../../components/Loader'
 
-let Placeholder = "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
+let Placeholder = "/profile.png";
 
 const P_API = process.env.P_API;
 
@@ -36,12 +39,18 @@ const fetchUserDetails = async (setter) => {
 
 async function handleCredentialResponse(response) {
     // console.log("Encoded JWT ID token: " + response.credential);
-    let res = await axios.post(`${P_API}/api/v1/login/google`, {
+    let res = await axios.post(`${P_API}/login/google`, {
         token: response.credential
+    }, {
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     })
     if (res.status == 200) {
         let jwt = res.data.data.token;
         localStorage.setItem("token", `Bearer ${jwt}`);
+        // window.router.push('/edit-profile');
+        window.location = '/edit-profile';
     }
     else {
         alert("SignUp failed Please try Again");
@@ -70,18 +79,47 @@ function Index() {
     console.log(initUserData);
     console.log(updatedUserData);
 
+    const router = useRouter();
+
+    useEffect(() => {
+        window.router = router;
+    }, [])
+
+
     useEffect(() => {
         fetchUserDetails((user_data) => {
             (!user_data.email) && signUpGoogle()
             setinitUserData(user_data);
+            setupdatedUserData({ bio: user_data.bio })
         })
     }, [])
 
-    let options = ['Profile', 'Wallets', 'Socials', 'Superpowers'];
+    const saveProfileDetails = async () => {
+        setLoaderVisible(true);
+        let resp = await axios.patch(`${P_API}/user/update`, { ...updatedUserData, "tags": JSON.stringify(updatedUserData.interests) }, {
+            headers: {
+                "Authorization": localStorage.getItem('token'),
+                "Content-Type": 'multipart/form-data'
+            }
+        })
+        if (resp.status == 200) {
+
+        }
+        else {
+            alert("error");
+        }
+        setLoaderVisible(false);
+    }
+
+    let options = ['Profile', 'Wallets', 'Socials'];
     const [selectedPage, setselectedPage] = useState('Profile');
+    const [showWallet, setshowWallet] = useState(false);
+    const [LoaderVisible, setLoaderVisible] = useState(false);
     return (
         <>
+            {(LoaderVisible) && < Loader />}
             <Nav isFloating={true} />
+            <WalletConnect isLogin={true} walletConnectVisible={showWallet} setwalletConnectVisible={setshowWallet} />
             <div className={styles.editProfile}>
                 <div className={styles.progressHeader}>
                     <span className={styles.titles}>
@@ -98,6 +136,18 @@ function Index() {
                     </div>
                 </div>
                 <div className={styles.profile_form}>
+                    <div className={styles.mobileNav}>
+                        {
+                            options.map((ele) => {
+                                if (selectedPage == ele) {
+                                    return <span key={ele} className={styles.option + ' ' + styles.selected}>{ele}</span>
+                                }
+                                return (
+                                    <span onClick={() => { setselectedPage(ele) }} key={ele} className={styles.option}>{ele}</span>
+                                )
+                            })
+                        }
+                    </div>
                     <div className={styles.leftSideNav}>
                         {options.map((ele) => {
                             if (selectedPage == ele) {
@@ -109,13 +159,13 @@ function Index() {
                         })}
                     </div>
                     {
-                        (selectedPage == options[0]) && <Profile {...{ updatedUserData, setupdatedUserData, initUserData }} />
+                        (selectedPage == options[0]) && <Profile {...{ updatedUserData, setupdatedUserData, initUserData, saveProfileDetails }} />
                     }
                     {
-                        (selectedPage == options[1]) && <Wallets />
+                        (selectedPage == options[1]) && <Wallets {...{ showWallet, setshowWallet, initUserData, setselectedPage }} />
                     }
                     {
-                        (selectedPage == options[2]) && <Socials />
+                        (selectedPage == options[2]) && <Socials {...{ initUserData }} />
                     }
                 </div>
 
@@ -136,16 +186,42 @@ const fetchInterest = async (setter) => {
     }
 }
 
-const Profile = ({ updatedUserData, setupdatedUserData, initUserData }) => {
+const Profile = ({ updatedUserData, setupdatedUserData, initUserData, saveProfileDetails }) => {
 
     const [profileImg, setprofileImg] = useState(null);
     const [interests, setinterests] = useState([]);
+
     console.log(interests)
+
+    useEffect(() => {
+        try {
+            setprofileImg(initUserData.photo.secure_url)
+        } catch (error) {
+
+        }
+    }, [initUserData])
+
     useEffect(() => {
         fetchInterest((ele) => {
             setinterests(ele);
         })
     }, [])
+
+    useEffect(() => {
+        if (interests.length > 0) {
+            setinterests((tag) => {
+                let selelectedIdTagArray = initUserData.tags.map(ele => ele._id);
+                let updatedList = tag.map((t) => {
+                    if (selelectedIdTagArray.includes(t._id)) {
+                        t.selected = true;
+                    }
+                    return t
+                })
+                console.log(updatedList)
+                return [...updatedList]
+            })
+        }
+    }, [initUserData])
 
     useEffect(() => {
         setupdatedUserData((usd) => {
@@ -156,6 +232,7 @@ const Profile = ({ updatedUserData, setupdatedUserData, initUserData }) => {
 
     return (
         <div className={styles.formContent}>
+
             <div className={styles.mainTitle}>
                 <h1>Profile Settings</h1>
                 <p>Complete every details on your profile to earn XP points. Total of 100 to be earned in this section</p>
@@ -249,13 +326,16 @@ const Profile = ({ updatedUserData, setupdatedUserData, initUserData }) => {
                 </div>
             </div>
             <span className={styles.bottomNav}>
-                <button className={styles.saveBtn}>Save</button>
+                <button onClick={() => {
+                    saveProfileDetails();
+                }} className={styles.saveBtn}>Save</button>
             </span>
         </div>
     )
 }
 
-const Wallets = () => {
+const Wallets = ({ initUserData, showWallet, setshowWallet, setselectedPage }) => {
+
     return (
         <div className={styles.formContent}>
             <div className={styles.mainTitle}>
@@ -265,10 +345,23 @@ const Wallets = () => {
             <div className={styles.walletSection}>
                 <div className={styles.wTitle}>
                     <h1>List of Wallets</h1>
-                    <h2>+ Add Wallets</h2>
+                    <h2>+ Add Wallet</h2>
                 </div>
+                {('wallets' in initUserData) ? <><div className={styles.wallet}>
+                    <img className={styles.profileName} src="./blue.png" alt="" />
+                    <p>{miniMizewallet(initUserData.wallets.address)}</p>
+                    <img className={styles.option} src="./threedot.png" alt="" />
+                </div>
+                    <button onClick={() => {
+                        setselectedPage('Socials');
+                    }} className={styles.saveBtn}>Continue</button></>
+                    :
+                    <button onClick={() => {
+                        setshowWallet(true)
+                    }} className={styles.saveBtn}>Connect Wallet</button>
+                }
 
-                <div className={styles.wallet}>
+                {/* <div className={styles.wallet}>
                     <img className={styles.profileName} src="./blue.png" alt="" />
                     <p>0x123...456</p>
                     <img className={styles.option} src="./threedot.png" alt="" />
@@ -277,16 +370,20 @@ const Wallets = () => {
                     <img className={styles.profileName} src="./blue.png" alt="" />
                     <p>0x123...456</p>
                     <img className={styles.option} src="./threedot.png" alt="" />
-                </div>
-                <button className={styles.saveBtn}>Save</button>
+                </div> */}
+                {/* <button className={styles.saveBtn}>Save</button> */}
             </div>
 
         </div>
     )
 }
 
+const miniMizewallet = (wt) => {
+    return wt.slice(0, 5) + '...' + wt.slice(-5)
+}
 
-const Socials = () => {
+const Socials = ({ initUserData }) => {
+
     return (
         <div className={styles.formContent}>
             <div className={styles.mainTitle}>
@@ -318,13 +415,26 @@ const Socials = () => {
                         <p>50</p>
                     </span>
                 </div>
-                <div className={styles.connectDiscord}>
-                    <button>
-                        <img src="./discord.png" alt="" />
-                        Connect Discord
-                    </button>
-                </div>
+                {(initUserData.discord) ?
+                    <p className={styles.displayEmail}>{initUserData.discord.username + '  #' + initUserData.discord.discriminator}</p>
+                    : <div className={styles.connectDiscord}>
+                        <button onClick={() => {
+                            window.localStorage.setItem('redirect_pre_discord', window.location);
+                            window.location = 'https://discord.com/oauth2/authorize?client_id=966238946294116382&redirect_uri=http://localhost:3001/discord-auth-callback&response_type=code&scope=identify%20email%20guilds'
+                        }} >
+                            <img src="./discord.png" alt="" />
+                            Connect Discord
+                        </button>
+                    </div>
+                }
             </div>
+            {/* <button onClick={() => {
+                axios.get(`${P_API}/user/guilds`, {
+                    headers: {
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+            }}>get guilds</button> */}
         </div>
     )
 }
