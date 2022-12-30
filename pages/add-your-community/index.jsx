@@ -18,19 +18,19 @@ const CATEGORY_LIST = ['DAO',
     'Service',
     'Grant',
     'Social',
-    'DAO tool',
+    'DAO Tool',
     'Defi',
     'CeFi',
     'TradeFi',
     'BlockFi',
     'Lending',
-    'Yield aggregator',
+    'Yield Aggregator',
     'Stablecoin',
     'NFT',
     'Metaverse',
     'Art',
     'Music',
-    'NFT marketplace',
+    'NFT Marketplace',
     'Utilities',
     'Analytics',
     'Payment',
@@ -44,7 +44,7 @@ const CATEGORY_LIST = ['DAO',
     'Exchange',
     'Community',
     'Guild',
-    'Marketing tool',
+    'Marketing Tool',
     'Public Good',
     'Education'];
 
@@ -94,16 +94,16 @@ function DaoForm() {
         let address;
 
         if (state.dao_category.length < 1) {
-            return alert("Please add Community categories");
+            return alert("Please add applicable categories for your Community.");
         }
         if (state.chain.length < 1) {
-            return alert("Please add Chain details");
+            return alert("Please add Chains relevant to your Community.");
         }
         if (state.dao_mission.length < 5) {
-            return alert("Please add more details in One Liner for your Community");
+            return alert("Please add more details in One Line Statement for your Community. Atleast 5 characters required.");
         }
         if (state.description.length < 50) {
-            return alert("Please add more details in  description");
+            return alert("Please add more details in Community Description. Atleast 50 characters required.");
         }
 
         try {
@@ -149,12 +149,12 @@ function DaoForm() {
                     onSubmit={submitForm}
                     className={styles.daoForm}>
 
-                    <h1 className={styles.title}>Application for listing your Community</h1>
-                    <p className={styles.subtitle}>Please fill the basic information of your Community to list your community on Truts. </p>
+                    <h1 className={styles.title}>Application for Listing your Community on Truts</h1>
+                    <p className={styles.subtitle}>Please fill the following details of your Community to apply for your page on Truts.</p>
 
                     <label htmlFor="">
-                        <p>What’s the name of your Community?</p>
-                        <input placeholder='Community name' required value={state.dao_name}
+                        <p>What’s the Name of your Community?*</p>
+                        <input placeholder='Community Name' required value={state.dao_name}
                             onChange={(e) => {
                                 setState((s) => {
                                     s.dao_name = e.target.value;
@@ -165,7 +165,7 @@ function DaoForm() {
                     </label>
 
                     <label htmlFor="">
-                        <p>Add a One Liner for your Community</p>
+                        <p>Add a One Line Statement for your Community.*</p>
                         <textarea
                             required
                             value={state.dao_mission}
@@ -175,14 +175,14 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            placeholder='Please keep it within 1 or 2 lines' rows={5} type="text" />
+                            placeholder='Please keep it within 1 to 2 lines.' rows={5} type="text" />
                     </label>
 
                     <CategotyCon state={state} setState={setState} />
                     <ChainSelectCon state={state} setState={setState} />
 
                     <label htmlFor="">
-                        <p>Brief description for your Community</p>
+                        <p>Add a brief Description for your Community.*</p>
                         <textarea
                             required
                             value={state.description}
@@ -192,11 +192,11 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            placeholder='Even though there are no words limit but please do keep it short and brief :)' rows={15} type="text" />
+                            placeholder='Even though there is no word limit but please do keep it short and brief :)' rows={15} type="text" />
                     </label>
 
                     <label htmlFor="">
-                        <p>Add treasury address (if exists)</p>
+                        <p>Add your Treasury address: (if exists)</p>
                         <input
                             value={state.treasury}
                             onChange={(e) => {
@@ -210,7 +210,7 @@ function DaoForm() {
 
                     <span className={styles.linkRow}>
                         <label htmlFor="">
-                            <p>Discord link</p>
+                            <p>Discord Link:*</p>
                             <input
                                 required
                                 value={state.discord_link}
@@ -220,11 +220,11 @@ function DaoForm() {
                                         return { ...s }
                                     })
                                 }}
-                                placeholder='Discord link' type="text" />
+                                placeholder='https://discord.com/invite/...' type="text" />
                         </label>
 
                         <label htmlFor="">
-                            <p>Twitter link</p>
+                            <p>Twitter Link:*</p>
                             <input
                                 required
                                 value={state.twitter_link}
@@ -234,14 +234,14 @@ function DaoForm() {
                                         return { ...s }
                                     })
                                 }}
-                                placeholder='Twitter link' type="text" />
+                                placeholder='https://twitter.com/...' type="text" />
                         </label>
                     </span>
 
 
                     <span className={styles.linkRow}>
                         <label htmlFor="">
-                            <p>Website link</p>
+                            <p>Website Link:*</p>
                             <input
                                 required
                                 value={state.website_link}
@@ -251,13 +251,12 @@ function DaoForm() {
                                         return { ...s }
                                     })
                                 }}
-                                placeholder='Website link' type="text" />
+                                placeholder='https://samplesite.xyz' type="text" />
                         </label>
 
                         <label htmlFor="">
-                            <p>Blog Link</p>
+                            <p>Blog Link:</p>
                             <input
-                                required
                                 value={state.mirror_link}
                                 onChange={(e) => {
                                     setState((s) => {
@@ -265,12 +264,12 @@ function DaoForm() {
                                         return { ...s }
                                     })
                                 }}
-                                placeholder='Mirror link' type="text" />
+                                placeholder='https://samplesite.xyz/blog' type="text" />
                         </label>
                     </span>
 
                     <label htmlFor="">
-                        <p>Additional link</p>
+                        <p>Additional Link:</p>
                         <input
                             value={state.additional_link}
                             onChange={(e) => {
@@ -279,13 +278,13 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            type="text" placeholder='Additional links' />
+                            type="text" placeholder='Additional Link' />
                     </label>
                     {/* 
                     opensea_link: { type: String },
                      magiceden_link: { type: String }, */}
                     <label htmlFor="">
-                        <p>Opensea link (if applicable)</p>
+                        <p>OpenSea Link: (if applicable)</p>
                         <input
                             value={state.opensea_link}
                             onChange={(e) => {
@@ -294,10 +293,10 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            type="text" placeholder='Additional links' />
+                            type="text" placeholder='https://opensea.io/collection/...' />
                     </label>
                     <label htmlFor="">
-                        <p>Magic Eden link (if applicable)</p>
+                        <p>MagicEden Link: (if applicable)</p>
                         <input
                             value={state.magiceden_link}
                             onChange={(e) => {
@@ -306,11 +305,11 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            type="text" placeholder='Additional links' />
+                            type="text" placeholder='https://magiceden.io/marketplace/...' />
                     </label>
 
                     <label htmlFor="">
-                        <p>Submiters Discord Id</p>
+                        <p>Submitter's Discord ID*</p>
                         <input
                             required
                             value={state.submitter_discord_id}
@@ -320,7 +319,7 @@ function DaoForm() {
                                     return { ...s }
                                 })
                             }}
-                            type="text" placeholder='Example : sampleuser#8493' />
+                            type="text" placeholder='Example: sampleuser#8493' />
                     </label>
                     <Button label={'Submit'} />
                 </form>
@@ -391,7 +390,7 @@ const CategotyCon = ({ state, setState }) => {
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
                 <p>What categories does your Community belong to? (max 3 categories)</p>
                 {(true) && <div className={styles.slectedTags}>
-                    <p className={styles.p}>Selected Categories :</p>
+                    <p className={styles.p}>Selected Categories:</p>
 
                     {
                         selectedItems.map((ele, i) => {
@@ -405,7 +404,7 @@ const CategotyCon = ({ state, setState }) => {
                     }
                 </div>}
                 <input type="text"
-                    placeholder='Enter category'
+                    placeholder='Enter Categories'
                     value={inputText}
                     onChange={(e) => {
                         // console.log("changr")
@@ -530,7 +529,7 @@ const ChainSelectCon = ({ state, setState }) => {
             <label htmlFor="" className={styles.customInputelm} key={JSON.stringify(selectedItems)} >
                 <p>Select the Blockchain your community is based on (max 3)</p>
                 {(true) && <div className={styles.slectedTags}>
-                    <p className={styles.p}>Selected Chains :</p>
+                    <p className={styles.p}>Selected Chains:</p>
 
                     {
                         selectedItems.map((ele, i) => {
@@ -544,7 +543,7 @@ const ChainSelectCon = ({ state, setState }) => {
                     }
                 </div>}
                 <input type="text"
-                    placeholder='Enter chains'
+                    placeholder='Enter Chains'
                     value={inputText}
                     onChange={(e) => {
                         //console.log("changr")
