@@ -153,7 +153,7 @@ function DaoForm() {
                     <p className={styles.subtitle}>Please fill the following details of your Community to apply for your page on Truts.</p>
 
                     <label htmlFor="">
-                        <p>What’s the Name of your Community?*</p>
+                        <p>What`s the Name of your Community?*</p>
                         <input placeholder='Community Name' required value={state.dao_name}
                             onChange={(e) => {
                                 setState((s) => {
@@ -309,7 +309,7 @@ function DaoForm() {
                     </label>
 
                     <label htmlFor="">
-                        <p>Submitter's Discord ID*</p>
+                        <p>Submitter`s Discord ID*</p>
                         <input
                             required
                             value={state.submitter_discord_id}
