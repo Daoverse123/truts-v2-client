@@ -1,3 +1,5 @@
+$tablet: 860px;
+
 .profileLoginPage {
     display: flex;
     width: 100%;
@@ -9,7 +11,7 @@
     top: 0;
     justify-content: center;
     align-items: center;
-    animation: appear 0.5s ease-in-out forwards;
+    animation: appear 0.5s ease-in-out;
     position: fixed;
 
     .closeIcon {
@@ -31,12 +33,21 @@
         border-radius: 16px;
         flex-direction: column;
         position: relative;
+
+        @media (max-width: $tablet) {
+            max-width: 370px;
+            margin: 0 10px;
+            width: 100%;
+            height: min-content;
+            padding: 25px 5px;
+        }
     }
 
     .colScreens {
         display: flex;
         justify-content: center;
         align-items: center;
+
         .right {
             border-right: 1px solid rgba(128, 128, 128, 0.226);
         }
@@ -46,12 +57,14 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+
             .imgBg {
                 background: #eeeff2;
                 border-radius: 100%;
             }
             img {
                 width: 100px;
+                height: 100px;
                 padding: 25px;
             }
             p {
@@ -69,6 +82,20 @@
                 border-radius: 16px;
                 color: white;
                 border: none;
+            }
+        }
+
+        @media (max-width: $tablet) {
+            flex-direction: column;
+            row-gap: 5vh;
+            .right {
+                border-right: 0;
+            }
+            .screen {
+                width: 100%;
+                button {
+                    width: 80%;
+                }
             }
         }
     }

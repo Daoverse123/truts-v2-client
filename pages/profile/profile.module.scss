@@ -1521,6 +1521,7 @@ $PHONE_N: 450;
     border-radius: 12px;
     padding: 32px;
     margin: 24px 0;
+
     span {
         display: flex;
         flex-direction: column;
@@ -1540,6 +1541,29 @@ $PHONE_N: 450;
         }
     }
 
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+        padding: 0;
+        font-size: 12px;
+        img {
+            margin-right: 8px;
+        }
+    }
+
+    img {
+        height: 15px;
+        width: 15px;
+        object-fit: fill;
+    }
+
     button {
         border: none;
         background-color: white;
@@ -1549,11 +1573,13 @@ $PHONE_N: 450;
         border-radius: 15px;
         font-size: 14px;
         height: fit-content;
-        margin: auto 0;
+        margin: 0 0;
+        margin-top: auto;
     }
 
     @media (max-width: $LAPTOP) and (min-width: $PHONE) {
         width: laptop_to_tablet_fluid(1030);
+
         span {
             h1 {
                 font-size: laptop_to_tablet_fluid(20);
@@ -1561,6 +1587,18 @@ $PHONE_N: 450;
             p {
                 font-size: laptop_to_tablet_fluid(14);
             }
+        }
+
+        li {
+            font-size: laptop_to_tablet_fluid(12);
+            img {
+                margin-right: laptop_to_tablet_fluid(8);
+            }
+        }
+
+        img {
+            height: laptop_to_tablet_fluid(15);
+            width: laptop_to_tablet_fluid(15);
         }
         button {
             padding: laptop_to_tablet_fluid(10) laptop_to_tablet_fluid(30);
@@ -1572,6 +1610,9 @@ $PHONE_N: 450;
     @media (max-width: $PHONE) {
         width: 95%;
         flex-direction: column;
+        ul {
+            margin: 15px 0;
+        }
         span {
             width: 100%;
             h1 {
@@ -1593,4 +1634,17 @@ $PHONE_N: 450;
     margin: 50px 0;
     justify-content: center;
     gap: 25px 35px;
+}
+
+.appear {
+    animation: appear 0.25 ease-in-out;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

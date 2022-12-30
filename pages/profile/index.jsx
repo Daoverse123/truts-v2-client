@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import styles from './profile.module.scss'
 import ReactTooltip from 'react-tooltip';
 import chainIconMap from '../../components/chainIconMap.json'
-import WalletConnect_v3 from '../../components/WalletConnect_v3'
+import ContentLoader, { Facebook } from "react-content-loader";
+import addLoader from '../../utils/addLoader';
 
 //components
 import Nav from '../../components/Nav'
@@ -56,7 +57,7 @@ const NavSec = ({ selected, setSelected }) => {
 const P_API = process.env.P_API;
 
 const fetchWalletAssets = async (data, setter) => {
-    let key = data.user.wallets.address
+    let key = data.wallets.address
     let [tokenData, nftData] = await Promise.all([axios.get(`api/get-chain-assets?key=${key}&type=token`), axios.get(`api/get-chain-assets?key=${key}&type=nft`)]);
     console.log(nftData)
     setter((data) => {
@@ -74,37 +75,42 @@ const fetchUserData = async (setter) => {
         }
     };
 
+    let user_res = await axios.get(`${P_API}/user`, option);
+    let main_user_data = user_res.data.data.user
+    if (user_res.status == 200) {
+        setter(main_user_data);
+        main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
+    } else {
+        alert("Auth error")
+    }
     let user_data = await Promise.all(
         [
-            axios.get(`${P_API}/user`, option),
-            axios.get(`${P_API}/user/reviews`, option),
-            axios.get(`${P_API}/user/guilds`, option),
+            (async () => {
+                if (!('discord' in main_user_data)) {
+                    return { status: 500 }
+                }
+                let res = await axios.get(`${P_API}/user/reviews`, option)
+                return res
+            })(),
+            (async () => {
+                if (!('discord' in main_user_data)) {
+                    return { status: 500 }
+                }
+                let res = await axios.get(`${P_API}/user/guilds`, option)
+                return res
+            })(),
         ]
     )
 
     if (user_data[0].status == 200) {
-        setter(user_data[0].data.data.user);
-
-        fetchWalletAssets(user_data[0].data.data, setter);
-
-    } else {
-        alert("Auth error")
+        setter((data) => {
+            return { ...data, reviews: user_data[0].data.data.reviews }
+        });
     }
-
     if (user_data[1].status == 200) {
         setter((data) => {
-            return { ...data, reviews: user_data[1].data.data.reviews }
+            return { ...data, daos: user_data[1].data.data.listings }
         });
-    } else {
-        alert("Auth error")
-    }
-
-    if (user_data[2].status == 200) {
-        setter((data) => {
-            return { ...data, daos: user_data[2].data.data.listings }
-        });
-    } else {
-        alert("Auth error")
     }
 }
 
@@ -118,8 +124,6 @@ function Profile() {
         fetchUserData(setuserData)
     }, [])
 
-    console.log(userData);
-
     return (
         <>
             <ReactTooltip backgroundColor={"#747c90"} />
@@ -127,7 +131,7 @@ function Profile() {
             <Nav isStrech={true} isFloating />
             {/* <ProfileLogin /> */}
             <div className={styles.profilePage}>
-                <div className={styles.profileHeader}>
+                <div className={styles.profileHeader + addLoader(!('_id' in userData))}>
                     <img className={styles.profileImg} src={userData.photo?.secure_url || '/profile.png'} alt="" />
                     <div className={styles.data}>
                         <span className={styles.xpLevel}>
@@ -180,16 +184,20 @@ function Profile() {
                 </div>
                 <NavSec selected={selectedNav} setSelected={setSelectedNav} />
 
-                {('discord' in userData) ? <>
+                {(userData.isCompleted) ? <>
                     {(selectedNav == 'Communities') && <Communites_temp {...{ userData }} />}
                     {(selectedNav == 'Xp') && <Xp />}
                     {(selectedNav == 'Reviews') && <Reviews {...{ userData }} />}
                     {(selectedNav == 'Token/NFTs') && <TokenNftCon {...{ userData }} />}
                 </>
-                    : <div className={styles.completeProfilePrompt}>
+                    : <div className={styles.completeProfilePrompt + addLoader(!('_id' in userData))}>
                         <span>
-                            <h1>We would love to know about the communities that you’re part of. </h1>
-                            <p>Please complete your user profile to view your community data</p>
+                            <h1>Please complete your user profile to view your community data</h1>
+                            <ul>
+                                <li><img src={('email' in userData) ? "assets/tick.png" : "assets/wrong.png"} alt="" /> Email Id</li>
+                                <li><img src={('wallets' in userData) ? "assets/tick.png" : "assets/wrong.png"} alt="" /> Connect Wallet</li>
+                                <li><img src={('discord' in userData) ? "assets/tick.png" : "assets/wrong.png"} alt="" /> Connect Discord</li>
+                            </ul>
                         </span>
                         <Link href={'/edit-profile'}>
                             <button>Complete Profile</button>
@@ -230,7 +238,7 @@ const Reviews = ({ userData }) => {
                     <h1>XYZ</h1>
                 </div>
             </div> */}
-            <div className={styles.reviewCon}>
+            <div key={"x"} className={styles.reviewCon + ' ' + styles.appear}>
                 {
                     ('reviews' in userData) && userData.reviews.map((ele, idx) => {
                         return (
@@ -316,7 +324,7 @@ const StarComp = ({ rating, size }) => {
 
 const Communites_temp = ({ userData }) => {
     return (
-        <div className={styles.communities_list}>
+        <div className={styles.communities_list + ' ' + styles.appear}>
             {userData.daos.map((ele, idx) => {
                 let data = {
                     dao_name: ele?.name,
@@ -578,7 +586,7 @@ const TokenNftCon = ({ userData }) => {
 
     return (
         <>
-            <div className={styles.statCards}>
+            <div className={styles.statCards + ' ' + styles.appear}>
                 <div className={styles.stat}>
                     <h3>Value of Assets</h3>
                     <p>till Date</p>
@@ -600,7 +608,7 @@ const TokenNftCon = ({ userData }) => {
                     <h1>46</h1>
                 </div>
             </div>
-            <section className={styles.tokenNftSec}>
+            <section className={styles.tokenNftSec + ' ' + styles.appear}>
                 <div className={styles.tokenSwitch}>
                     <button onClick={() => { setselectedTab('NFTS') }} className={(selectedTab == 'NFTS') ? styles.btnSwitchSelected : styles.btnSwitch}>NFTs</button>
                     <button onClick={() => { setselectedTab('TOKENS') }} className={(selectedTab == 'TOKENS') ? styles.btnSwitchSelected : styles.btnSwitch}>Tokens</button>

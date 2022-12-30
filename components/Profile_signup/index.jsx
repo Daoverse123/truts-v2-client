@@ -48,10 +48,13 @@ const ProfileLogin = ({ showWalletConnect, setprofileSignupPrompt }) => {
 
 
     return (
-        <div className={styles.profileLoginPage}>
+        <div className={styles.profileLoginPage}
+            onTransitionEnd={() => {
+                setprofileSignupPrompt(false)
+            }} >
             <div className={styles.loginModel} >
-                <img onClick={() => {
-                    setprofileSignupPrompt(false)
+                <img alt='' onClick={() => {
+                    document.querySelector(`.${styles.profileLoginPage}`).classList.add('close')
                 }} src='/close-icon.png' className={styles.closeIcon} />
                 <div className={styles.messageCon}>
                     <h3>Let’s start by</h3>

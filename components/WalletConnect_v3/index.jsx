@@ -131,9 +131,8 @@ export default function WalletConnect({ isLogin, walletConnectVisible, setwallet
     }, [])
 
     const closePopUp = async () => {
-        setTimeout(() => {
-            walletAuth(isLogin, walletState, signMessage);
-        }, 0)
+        let wallet = JSON.parse(localStorage.getItem('wallet_state'))
+        walletAuth(isLogin, wallet, signMessage);
         //setwalletConnectVisible(false);
     }
 

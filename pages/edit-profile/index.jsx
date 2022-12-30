@@ -5,7 +5,6 @@ import Nav from '../../components/Nav'
 import Button from '../../components/Button'
 import axios from 'axios';
 import WalletConnect from '../../components/WalletConnect_v3';
-import auth0 from 'auth0-js'
 import Loader from '../../components/Loader'
 
 let Placeholder = "/profile.png";
@@ -79,13 +78,6 @@ function Index() {
     console.log(initUserData);
     console.log(updatedUserData);
 
-    const router = useRouter();
-
-    useEffect(() => {
-        window.router = router;
-    }, [])
-
-
     useEffect(() => {
         fetchUserDetails((user_data) => {
             (!user_data.email) && signUpGoogle()
@@ -121,7 +113,7 @@ function Index() {
             <Nav isFloating={true} />
             <WalletConnect isLogin={true} walletConnectVisible={showWallet} setwalletConnectVisible={setshowWallet} />
             <div className={styles.editProfile}>
-                <div className={styles.progressHeader}>
+                <div className={styles.progressHeader} >
                     <span className={styles.titles}>
                         <h1 className={styles.title}>
                             Complete your Profile to earn XP Points
@@ -154,7 +146,7 @@ function Index() {
                                 return <span key={ele} className={styles.option + ' ' + styles.selected}>{ele}</span>
                             }
                             return (
-                                <span onClick={() => { setselectedPage(ele) }} key={ele} className={styles.option}>{ele}</span>
+                                <span onClick={() => { setselectedPage(ele); }} key={ele} className={styles.option}>{ele}</span>
                             )
                         })}
                     </div>
