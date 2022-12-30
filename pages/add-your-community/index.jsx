@@ -86,7 +86,7 @@ function DaoForm() {
         magiceden_link: ""
     })
 
-    console.log(state)
+    //console.log(state)
 
     const submitForm = async (e) => {
         e.preventDefault();
