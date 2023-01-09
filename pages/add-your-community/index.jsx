@@ -140,7 +140,7 @@ function DaoForm() {
                 <Head>
                     <title>Truts</title>
                     <meta name="description" content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them" />
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/favicon.png" />
                 </Head>
 
                 <Nav isFloating isStrech />
