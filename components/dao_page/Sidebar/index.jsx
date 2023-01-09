@@ -76,14 +76,19 @@ const Sidebar = ({ dao_data }) => {
     return (
         <div className={styles.sidebar}>
             <div className={styles.socials}>
-                <button className={styles.twitter_soc} onClick={() => {
+                <button onClick={() => {
+                    openNewTab('/partner.html')
+                }} className={styles.long_btn} style={{ gridArea: "a", background: "rgba(48, 101, 243, 1)", color: "white", fontWeight: "500", fontSize: "16px" }}>
+                    Partner
+                </button>
+                <button style={{ gridArea: "b" }} className={styles.twitter_soc} onClick={() => {
                     openNewTab(dao_data.twitter_link)
                 }}>
                     <img src={twitter_white.src} alt="" />
                     {numFormatter(dao_data?.twitter_followers)}
                 </button>
                 {(dao_data.dao_category.includes('Investors')) ?
-                    <button className={styles.discord_soc} onClick={() => {
+                    <button style={{ gridArea: "c" }} className={styles.discord_soc} onClick={() => {
                         openNewTab(`mailto:${dao_data?.email}`)
                     }}>
                         <img src={'/email.png'} alt="" style={{ filter: "unset" }} />
@@ -97,16 +102,14 @@ const Sidebar = ({ dao_data }) => {
                         {numFormatter(dao_data?.discord_members)}
                     </button>}
                 <button onClick={() => {
-                    navigator.clipboard.writeText(dao_data.website_link);
-                    document.querySelector('#copy_1').src = '/copy_after.png'
-                }} className={styles.long_btn} style={{ gridArea: "c" }}>
-                    {<img src={web_white.src} />} {textLimiter(dao_data.website_link)}
-                    <img id='copy_1' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
+                    openNewTab(dao_data.website_link)
+                }} className={styles.discord_soc} style={{ gridArea: "d" }}>
+                    {<img src={web_white.src} />}
                 </button>
                 <button onClick={() => {
                     navigator.clipboard.writeText(`https://www.truts.xyz/dao/${dao_data.slug}`);
                     document.querySelector('#copy_2').src = '/copy_after.png'
-                }} className={styles.long_btn} style={{ gridArea: "d" }}>
+                }} className={styles.long_btn} >
                     trust.xyz/dao/{dao_data.slug}
                     <img id='copy_2' style={{ filter: "invert(0 )" }} src={copy_icon.src} alt="" />
                 </button>

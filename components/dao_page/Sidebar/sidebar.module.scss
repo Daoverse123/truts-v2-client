@@ -45,15 +45,13 @@ $PHONE_N: 426;
     top: 125px;
     .socials {
         display: grid;
-        grid-template-rows: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 30% 30% 30%;
+        grid-template-rows: 1fr 1fr 1fr;
         grid-template-areas:
-            "a b"
-            "c c"
-            "d d"
-            ;
+            "a a a"
+            "b c d";
         padding-bottom: 16px;
-        grid-column-gap: 24px;
+        grid-column-gap: 14px;
         grid-row-gap: 16px;
         border-bottom: 1px solid rgba(224, 224, 224, 1);
         button {
@@ -63,11 +61,12 @@ $PHONE_N: 426;
             justify-content: center;
             align-items: center;
             border-radius: 16px;
-            padding: 14px;
+            padding: 14px 0;
             column-gap: 8px;
             font-weight: 400;
             font-size: 13px;
-            width: 144.5px;
+            width: fit-content;
+            min-width: 95px;
             height: 47px;
             img {
                 filter: invert(100%);
@@ -117,10 +116,11 @@ $PHONE_N: 426;
         width: laptop_to_tablet_fluid(313);
 
         .socials {
-            grid-column-gap: laptop_to_tablet_fluid(15);
+            grid-column-gap: laptop_to_tablet_fluid(14);
             grid-row-gap: laptop_to_tablet_fluid(16);
             button {
-                width: laptop_to_tablet_fluid(129);
+                width: fit-content;
+                min-width: laptop_to_tablet_fluid(95);
             }
             .long_btn {
                 width: laptop_to_tablet_fluid(282);
