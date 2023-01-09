@@ -219,3 +219,10 @@ $PHONE_N: 426;
         }
     }
 }
+
+.partner {
+    transition: all 0.2s ease-in-out;
+    &:hover {
+       opacity: 0.7;
+    }
+}

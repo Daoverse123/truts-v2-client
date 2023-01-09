@@ -78,7 +78,7 @@ const Sidebar = ({ dao_data }) => {
             <div className={styles.socials}>
                 <button onClick={() => {
                     openNewTab('/partner.html')
-                }} className={styles.long_btn} style={{ gridArea: "a", background: "rgba(48, 101, 243, 1)", color: "white", fontWeight: "500", fontSize: "16px" }}>
+                }} className={styles.long_btn + ' ' + styles.partner} style={{ gridArea: "a", background: "rgba(48, 101, 243, 1)", color: "white", fontWeight: "500", fontSize: "16px" }}>
                     Partner
                 </button>
                 <button style={{ gridArea: "b" }} className={styles.twitter_soc} onClick={() => {
