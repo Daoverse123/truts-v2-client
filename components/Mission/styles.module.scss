@@ -1,0 +1,103 @@
+.mission {
+    display: flex;
+    flex-direction: column;
+    width: 313px;
+    height: 274px;
+    background-color: white;
+    border: 0.753935px solid #f2eeee;
+    border-radius: 16px;
+    position: relative;
+    .topCon {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        padding-bottom: 0;
+    }
+
+    h2,
+    h1,
+    p {
+        margin: 0;
+    }
+    h2 {
+        font-weight: 600;
+        font-size: 12px;
+        margin: 8px 0;
+        color: #7d7d7d;
+    }
+    h1 {
+        font-weight: 600;
+        font-size: 18px;
+    }
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        margin: 8px 0;
+        line-height: 17px;
+        color: #8c93a3;
+    }
+    .tags {
+        display: flex;
+        column-gap: 8px;
+        margin-top: 10px;
+        .tag {
+            display: flex;
+            align-items: center;
+            border-radius: 20px;
+            padding: 0 10px;
+            outline: 1px solid black;
+            img {
+                width: 10px;
+                height: 10px;
+                margin-right: 4px;
+            }
+            p {
+                font-weight: 400;
+                font-size: 10px;
+                margin: 2px 0;
+            }
+        }
+    }
+    .xpCon {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        border-top: 1.5px solid #eeeff2;
+        margin-top: auto;
+        justify-content: center;
+        padding: 8px 16px;
+        img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            margin-right: 6px;
+        }
+        p {
+            margin-right: auto;
+        }
+    }
+}
+
+.profileImg {
+    display: flex;
+    width: 59px;
+    height: 59px;
+    border-radius: 100%;
+}
+
+.timeChip {
+    background-color: red;
+    border-radius: 15px;
+    padding: 4px 15px;
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: -5%;
+    p {
+        color: white;
+        font-weight: 400;
+        font-size: 12px;
+        margin: 0;
+        margin-left: 3px;
+    }
+}

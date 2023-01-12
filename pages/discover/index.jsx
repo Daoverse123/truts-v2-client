@@ -205,6 +205,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
 
     const router = useRouter();
 
+
     useEffect(() => {
         setfiltersVisible(!isMobile);
     }, [isMobile])
@@ -431,6 +432,8 @@ const getDynamicLoad = async (daoList_ssr, setdaoList_ssr, paginationConfig, set
     const arrayUniqueByKey = [...new Map(daoList_ssr_final.map(item =>
         [item[key], item])).values()];
     setdaoList_ssr(arrayUniqueByKey);
+
+    arrayUniqueByKey = daoList_ssr_final;
 
     // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
 

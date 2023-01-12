@@ -473,3 +473,12 @@ $PHONE_N: 426;
         opacity: 1;
     }
 }
+
+.missions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 30px;
+    gap: 30px;
+}

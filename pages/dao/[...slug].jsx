@@ -13,6 +13,7 @@ import Button from '../../components/Button'
 import Nav from '../../components/Nav'
 import WalletConnect from '../../components/WalletConnect'
 import TippingFlow from '../../components/TippingFlow'
+import Mission from '../../components/Mission'
 
 //local components
 import Sidebar from '../../components/dao_page/Sidebar'
@@ -84,8 +85,23 @@ function Dao({ dao_data, rid, slug }) {
                     <Sidebar dao_data={dao_data} />
 
                 </div>}
-                {(selected == "Opportunities") && <div className={styles.content}>
-                    <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
+                {(selected == "Missions") && <div className={styles.content}>
+                    <section className={styles.missions}>
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                        <Mission />
+                    </section>
                 </div>}
                 {(selected == "Insights") && <div className={styles.content}>
 
@@ -111,7 +127,7 @@ const NavSec = ({ selected, setSelected }) => {
             {
                 [
                     'Reviews',
-                    'Opportunities',
+                    'Missions',
                     'Insights',
                     'Ecosystem',
                     'Members'
