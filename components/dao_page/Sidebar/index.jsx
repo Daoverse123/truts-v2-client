@@ -78,8 +78,8 @@ const Sidebar = ({ dao_data }) => {
             <div className={styles.socials}>
                 <button onClick={() => {
                     openNewTab('/partner.html')
-                }} className={styles.long_btn + ' ' + styles.partner} style={{ gridArea: "a", background: "rgba(48, 101, 243, 1)", color: "white", fontWeight: "500", fontSize: "16px" }}>
-                    Partner
+                }} className={styles.long_btn + ' ' + styles.partner} style={{ gridArea: "a" }}>
+                    Partner 
                 </button>
                 <button style={{ gridArea: "b" }} className={styles.twitter_soc} onClick={() => {
                     openNewTab(dao_data.twitter_link)
@@ -103,7 +103,7 @@ const Sidebar = ({ dao_data }) => {
                     </button>}
                 <button onClick={() => {
                     openNewTab(dao_data.website_link)
-                }} className={styles.discord_soc} style={{ gridArea: "d" }}>
+                }} className={styles.web_soc} style={{ gridArea: "d" }}>
                     {<img src={web_white.src} />}
                 </button>
                 <button onClick={() => {

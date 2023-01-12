@@ -106,14 +106,14 @@ function DaoForm() {
             return alert("Please add more details in Community Description. Atleast 50 characters required.");
         }
 
-        try {
-            address = ws.address;
-        }
-        catch (er) {
-            console.log(er)
-            return setwalletConnectVisible(true);
-        }
-        console.log('address :', address)
+        // try {
+        //     address = ws.address;
+        // }
+        // catch (er) {
+        //     console.log(er)
+        //     return setwalletConnectVisible(true);
+        // }
+        // console.log('address :', address)
 
         try {
             let res = await axios.post(`${API}/dao/create-new-dao-v2`, { ...state, chain: state.chain.map(ch => CHAIN_LIST_MAP[ch]), submitter_public_address: address });
