@@ -76,7 +76,6 @@ $PHONE_N: 426;
             }
 
             &:hover {
-              
                 background-color: rgb(202, 202, 202);
             }
         }
@@ -86,6 +85,7 @@ $PHONE_N: 426;
         }
 
         .twitter_soc {
+            font-weight: 600;
             &:hover {
                 background-color: rgb(29, 155, 240);
                 color: white;
@@ -95,6 +95,7 @@ $PHONE_N: 426;
             }
         }
         .discord_soc {
+            font-weight: 600;
             &:hover {
                 transition: all 0.25s ease-in-out;
                 background-color: #5865f2;

@@ -84,7 +84,7 @@ function Dao({ dao_data, rid, slug }) {
                     <Sidebar dao_data={dao_data} />
 
                 </div>}
-                {(selected == "Opportunities") && <div className={styles.content}>
+                {(selected == "Missions") && <div className={styles.content}>
                     <img className={styles.coming_soon} src={"https://media.tenor.com/koVlM3TmNy4AAAAd/itll-be-coming-very-soon-kyle-thomas-harvey.gif"} />
                 </div>}
                 {(selected == "Insights") && <div className={styles.content}>
@@ -111,7 +111,7 @@ const NavSec = ({ selected, setSelected }) => {
             {
                 [
                     'Reviews',
-                    'Opportunities',
+                    'Missions',
                     'Insights',
                     'Ecosystem',
                     'Members'

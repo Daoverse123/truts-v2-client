@@ -79,7 +79,7 @@ const Sidebar = ({ dao_data }) => {
                 <button onClick={() => {
                     openNewTab('/partner.html')
                 }} className={styles.long_btn + ' ' + styles.partner} style={{ gridArea: "a" }}>
-                    Partner 
+                    🤝 Partner with Us
                 </button>
                 <button style={{ gridArea: "b" }} className={styles.twitter_soc} onClick={() => {
                     openNewTab(dao_data.twitter_link)

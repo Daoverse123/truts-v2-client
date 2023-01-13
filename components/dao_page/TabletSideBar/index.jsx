@@ -107,7 +107,7 @@ const TabletSideBar = ({ dao_data }) => {
                 <button onClick={() => {
                     openNewTab('/partner.html')
                 }} className={styles.partnerBtn}>
-                    Partner
+                    🤝 Partner with Us
                 </button>
             </span>
             <div className={styles.tablet_dial_sec}>
