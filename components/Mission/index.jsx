@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './styles.module.scss'
+import styles from './compMission.module.scss'
 
 
 const Tag = ({ src, color, title }) => {
@@ -15,15 +15,15 @@ let defaultChip = { color: '', status: false, text: '', iconSrc: '' };
 let date = { color: 'red', status: true, text: '3 days left', iconSrc: '/missions/date.png' };
 
 const getChipType = () => {
-    return date
+    return defaultChip
 }
 
-export default function Component({ chipType }) {
+export default function Component({ min }) {
 
-    let chip = getChipType(chipType);
+    let chip = getChipType();
 
     return (
-        <div style={{ borderColor: ('color' in chip) ? chip.color : '' }} className={styles.mission}>
+        <div style={{ borderColor: ('color' in chip) ? chip.color : '', width: (min) && '258px' }} className={styles.mission}>
             {(chip.status) && <div className={styles.timeChip}>
                 <img src={chip.iconSrc} alt="" />
                 <p>3 days left</p>

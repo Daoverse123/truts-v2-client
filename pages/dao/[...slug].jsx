@@ -87,20 +87,18 @@ function Dao({ dao_data, rid, slug }) {
                 </div>}
                 {(selected == "Missions") && <div className={styles.content}>
                     <section className={styles.missions}>
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
-                        <Mission />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
+                        <Mission min={true} />
                     </section>
                 </div>}
                 {(selected == "Insights") && <div className={styles.content}>
