@@ -8,10 +8,15 @@ $mobile: 800px;
     min-height: 100vh;
     background: #f7f7f7;
     align-items: center;
+    padding-top: 100px;
 
-    * {
-        //background-color: rgba(255, 0, 0, 0.281);
+    @media (max-width: $mobile) {
+        padding-top: 60px;
     }
+
+    // * {
+    //     background-color: rgba(255, 0, 0, 0.281);
+    // }
 }
 
 .missionHead {
@@ -47,23 +52,27 @@ $mobile: 800px;
         width: 95%;
     }
 
-    // @media (max-width: $mobile) {
-    //     flex-direction: column;
-    //     height: fit-content;
-    //     .profileImg {
-    //         width: 69px;
-    //         height: 69px;
-    //     }
-    //     .content {
-    //         width: 100%;
-    //     }
-    // }
+    @media (max-width: $mobile) {
+        flex-direction: column;
+        height: fit-content;
+        padding: 16px;
+        margin: 0 15px;
+        .profileImg {
+            width: 69px;
+            height: 69px;
+        }
+        .content {
+            width: 90%;
+        }
+    }
 }
 
 .profileImg {
     width: 109px;
     height: 109px;
     border-radius: 100%;
+    margin-left: 16px;
+    margin-bottom: 5px;
 }
 
 .content {
@@ -107,6 +116,17 @@ $mobile: 800px;
             font-size: 14px;
         }
     }
+    @media (max-width: $mobile) {
+        h2 {
+            font-size: 10px;
+        }
+        h1 {
+            font-size: 18px;
+        }
+        desc {
+            font-size: 12px;
+        }
+    }
 }
 
 .xp {
@@ -115,7 +135,7 @@ $mobile: 800px;
     height: 100%;
     margin-left: auto;
     justify-content: center;
-
+    position: relative;
     p,
     h1 {
         margin: 0;
@@ -150,11 +170,26 @@ $mobile: 800px;
             font-size: 16px;
         }
     }
+
+    @media (max-width: $mobile) {
+        position: absolute;
+        top: 17px;
+        right: 17px;
+        height: max-content;
+        p {
+            font-size: 12px;
+        }
+        .xpCount {
+            h1 {
+                font-size: 18px;
+            }
+        }
+    }
 }
 
 .tags {
     display: flex;
-    width: 100%;
+
     margin-top: auto !important;
     align-items: center;
     column-gap: 16px;
@@ -179,10 +214,21 @@ $mobile: 800px;
     }
 }
 
+.bottomNav {
+    display: flex;
+    margin-top: auto;
+
+    @media (max-width: $mobile) {
+        padding-top: 12px;
+        flex-direction: column;
+    }
+}
+
 .profilesCompleted {
     display: flex;
-    width: fit-content;
+    width: max-content;
     align-items: center;
+    margin-left: 16px;
 
     img {
         width: 16px;
@@ -197,13 +243,18 @@ $mobile: 800px;
         font-size: 13.75px;
         margin-left: -5px !important;
     }
+
+    @media (max-width: 800px) {
+        margin-left: 0;
+        margin-top: 16px;
+    }
 }
 
 .subtitle {
     font-weight: 500;
     font-size: 18px;
     margin: 0;
-    margin-top: 24px;
+    margin: 16px 0;
     width: 1080px;
     display: flex;
     align-items: center;
@@ -216,14 +267,20 @@ $mobile: 800px;
         height: 28px;
         margin-right: 8px;
     }
+    @media (max-width: $mobile) {
+        width: 95%;
+        margin-left: 15px;
+        font-weight: 500;
+        font-size: 18px;
+    }
 }
 
 .tasksCon {
     display: flex;
     flex-direction: column;
-    margin-top: 16px;
     row-gap: 16px;
     align-items: center;
+    animation: appear 0.5s ease-in-out forwards;
     .task {
         display: flex;
         width: 1077px;
@@ -233,6 +290,8 @@ $mobile: 800px;
         border-radius: 16px;
         align-items: center;
         border: 1px solid #3065f3;
+        opacity: 0;
+        animation: appear 0.5s 0.5s ease-in-out forwards;
         h1 {
             font-weight: 600;
             font-size: 18px;
@@ -259,6 +318,9 @@ $mobile: 800px;
             margin-left: 24px;
         }
         button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 106px;
             height: 51px;
             margin-left: auto;
@@ -277,10 +339,53 @@ $mobile: 800px;
             }
             img {
                 margin-left: 10px;
+
+                height: 22px;
+                width: 22px;
             }
         }
         @media (max-width: $tablet) {
             width: 95%;
+        }
+        @media (max-width: $mobile) {
+            flex-direction: column;
+            align-items: baseline;
+            padding: 16px;
+            height: max-content;
+
+            .textCont {
+                margin-left: 5px;
+            }
+            .count {
+                min-width: 32px;
+                min-height: 32px;
+                width: 32px;
+                height: 32px;
+                border-radius: 100%;
+                font-size: 11.6px;
+            }
+            h1 {
+                font-weight: 600;
+                font-size: 16px;
+                margin-top: 8px;
+            }
+            p {
+                font-weight: 400;
+                font-size: 12px;
+            }
+            button {
+                margin-left: 0;
+                margin-top: 16px;
+                width: 91px;
+                height: 33px;
+                border-radius: 12px;
+                font-weight: 500;
+                font-size: 12px;
+                img {
+                    height: 14px;
+                    width: 14px;
+                }
+            }
         }
     }
     @media (max-width: $tablet) {
@@ -325,7 +430,40 @@ $mobile: 800px;
     color: gray;
     margin-top: 31px;
     margin-bottom: 240px;
+    opacity: 0;
+    animation: appear 0.5s 0.5s ease-in-out forwards;
     @media (max-width: $tablet) {
         width: 95%;
+    }
+}
+
+.mainBtnDisabled {
+    @extend .mainBtn;
+}
+
+.mainBtnClaim {
+    @extend .mainBtn;
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+    &:hover {
+        background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+    }
+
+    &:focus {
+        outline: thick double #1248d9;
+    }
+    color: white;
+}
+
+.taskNav {
+    display: flex;
+    column-gap: 20px;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
