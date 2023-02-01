@@ -249,7 +249,7 @@ $PHONE_N: 450;
     row-gap: 30px;
     position: absolute;
     right: 0;
-    top: 47.2px;
+    bottom: 47.2px;
     right: 45.83px;
     img {
         width: 14.57px;
@@ -258,6 +258,15 @@ $PHONE_N: 450;
     @media (max-width: $PHONE) {
         display: none;
     }
+}
+
+.editProfile {
+    width: 92px;
+    height: 42px;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    cursor: pointer;
 }
 
 ////////////////////////////////////////////////////////////////
@@ -1088,10 +1097,6 @@ $PHONE_N: 450;
     flex-direction: column;
 }
 
-.XpSec {
-    @extend .tokenNftSec;
-}
-
 .xpChipCon {
     display: flex;
     flex-wrap: wrap;
@@ -1634,6 +1639,132 @@ $PHONE_N: 450;
     margin: 50px 0;
     justify-content: center;
     gap: 25px 35px;
+}
+
+.mission {
+    display: flex;
+    flex-direction: column;
+    width: 532px;
+    height: 169px;
+    background-color: white;
+    border-radius: 8px;
+
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 1) 75%,
+        rgba(0, 81, 255, 0.274) 100%
+    );
+    position: relative;
+    &::after {
+        content: "";
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: url("/missions/imggrad.png");
+        background-repeat: no-repeat;
+        background-position: right;
+        opacity: 0.13;
+    }
+    padding: 20px;
+
+    .xpCount {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        bottom: 50%;
+        img {
+            width: 22.57px;
+            height: 22.57px;
+            margin-right: 5px;
+        }
+        p {
+            color: #2c3857;
+            margin-left: auto;
+            font-weight: 700;
+            font-size: 20px;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+
+        p,
+        h2,
+        p {
+            margin: 0;
+        }
+
+        .daoName {
+            font-weight: 600;
+            font-size: 12px;
+            color: #7d7d7d;
+        }
+        .missionName {
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }
+        .missionDesc {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 160%;
+            margin-top: 16px;
+            color: #8c93a3;
+        }
+    }
+
+    @media (max-width: $LAPTOP) {
+        width: 478px;
+        height: 169px;
+    }
+    @media (max-width: 1024px) {
+        width: 704px;
+        height: 169px;
+    }
+
+    .tags {
+        display: flex;
+        margin-top: auto !important;
+        align-items: center;
+        column-gap: 8px;
+
+        .tag {
+            display: flex;
+            height: min-content;
+            width: min-content;
+            align-items: center;
+            border-radius: 20px;
+            padding: 2px 10px;
+            outline: 1px solid black;
+            img {
+                width: 10px;
+                height: 10px;
+                margin-right: 6px;
+            }
+            p {
+                font-weight: 400;
+                font-size: 10px;
+                margin: 2px 0 !important;
+            }
+        }
+    }
+}
+
+.XpSec {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1080px;
+    justify-content: center;
+    width: 95%;
+    gap: 16px;
+    margin: 30px 0;
 }
 
 .appear {

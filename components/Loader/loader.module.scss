@@ -1,0 +1,27 @@
+.loader {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.192);
+    backdrop-filter: blur(3px);
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    img {
+        height: 10vw;
+        width: 10vw;
+    }
+    animation: appear 0.5s ease-in-out forwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -74,7 +74,7 @@ $mobile: 650px;
 
     .progressInner {
         display: flex;
-        width: 50%;
+        width: 0;
         height: 100%;
         background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
         border-radius: 64px;
@@ -303,7 +303,7 @@ $mobile: 650px;
             border: 1px solid #cacdd5;
             border-radius: 6px;
             padding: 10px;
-
+            font-family: inherit;
             &::placeholder {
                 font-weight: 400;
                 font-size: 14px;
@@ -499,4 +499,14 @@ $mobile: 650px;
     position: absolute;
     height: 0;
     width: 0;
+}
+
+.exitbtn {
+    border: none;
+    background-color: rgb(255, 50, 50);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    width: 80px;
+    font-weight: 600;
 }

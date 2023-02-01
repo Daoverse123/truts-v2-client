@@ -56,6 +56,7 @@ function Dao({ dao_data, rid, slug }) {
 
   useEffect(() => {
     fetchMissions();
+    localStorage.setItem("mission-callback", slug);
   }, []);
 
   return (

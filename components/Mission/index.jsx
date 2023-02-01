@@ -56,7 +56,7 @@ export default function Component({ min, data }) {
           />
           <h2>{limitText(20, data.community.dao_name)}</h2>
           <h1>{limitText(20, data.name)}</h1>
-          <p>{limitText(60, data.description)}</p>
+          <p>{limitText(55, data.description)}</p>
           <div className={styles.tags}>
             {data.tags.map((tgs, idx) => {
               return (

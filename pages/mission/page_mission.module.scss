@@ -344,6 +344,20 @@ $mobile: 800px;
                 width: 22px;
             }
         }
+        .startBtn {
+            border: 1.8px solid rgba(123, 97, 255, 1);
+            color: rgb(83, 55, 226);
+            background: transparent;
+
+            &:hover {
+                background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+                color: white;
+            }
+
+            &:focus {
+                outline: thick double #1248d9;
+            }
+        }
         @media (max-width: $tablet) {
             width: 95%;
         }
@@ -405,16 +419,27 @@ $mobile: 800px;
     .taskCompleted {
         transform: scale(0.97);
         border: 1px solid #3064f300;
-        background: linear-gradient(90deg, rgba(68, 172, 33, 0.16) 0.05%, rgba(68, 172, 33, 0) 99.23%);
+
+        background: linear-gradient(90deg, rgba(43, 195, 127, 0.16) 0.05%, rgba(43, 195, 127, 0) 99.23%);
         button {
-            background: rgba(68, 172, 33, 0.3);
+            background: rgba(43, 195, 127, 0.15);
             border: 1px solid #44ac21;
-            color: #44ac21;
             display: flex;
             align-items: center;
             justify-content: center;
             width: max-content;
             padding: 0 25px;
+            color: #49536e;
+            font-size: 16px;
+            line-height: 19px;
+            font-weight: 500;
+            letter-spacing: 1.1px;
+            &:hover {
+                background: rgba(43, 195, 127, 0.15);
+                border: 1px solid #44ac21;
+                color: #49536e;
+                outline: none;
+            }
         }
     }
 }

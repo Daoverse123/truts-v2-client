@@ -48,12 +48,15 @@ function Index({ mission }) {
   }, []);
 
   let getTaskStatus = (id) => {
-    if (status.attemptedMission.tasks[id] == "COMPLETE") {
-      return STATUS.COMPLETED;
-    }
-    if (status.attemptedMission.tasks[id] == "INCOMPLETE") {
-      return STATUS.CURRENT;
-    }
+    try {
+      if (status.attemptedMission.tasks[id] == "COMPLETE") {
+        return STATUS.COMPLETED;
+      }
+      if (status.attemptedMission.tasks[id] == "INCOMPLETE") {
+        return STATUS.CURRENT;
+      }
+    } catch (error) {}
+    return STATUS.DISABLED;
   };
 
   let claimMission = async () => {
@@ -64,7 +67,7 @@ function Index({ mission }) {
         },
       });
       if (res.status == 200) {
-        alert("success");
+        location.href = "/status/mission";
       }
     } catch (error) {}
   };
@@ -173,6 +176,10 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
     taskStatus = styles.taskCompleted;
   }
 
+  const startTask = () => {
+    openNewTab(data.redirect_url);
+  };
+
   const verifyTask = async () => {
     try {
       setloading(true);
@@ -206,6 +213,14 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
         </button>
       ) : (
         <span className={styles.taskNav}>
+          <button
+            className={styles.startBtn}
+            onClick={() => {
+              startTask();
+            }}
+          >
+            Start
+          </button>
           {!loading ? (
             <button
               onClick={() => {
@@ -219,13 +234,6 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
               Verify <img src="/white-loader.gif" alt="" />
             </button>
           )}
-          <button
-            onClick={() => {
-              openNewTab(data.redirect_url);
-            }}
-          >
-            Start
-          </button>
         </span>
       )}
     </div>

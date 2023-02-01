@@ -26,6 +26,7 @@ import loader from "../../assets/mini-loader.gif";
 import twitter_blue from "../../assets/icons/twitter_icon_blue.png";
 import axios from "axios";
 import Link from "next/link";
+import openNewTab from "../../utils/openNewTab";
 
 let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
@@ -116,9 +117,10 @@ const fetchUserData = async (setter) => {
 function Profile() {
   const [selectedNav, setSelectedNav] = useState("Reviews");
   const [userData, setuserData] = useState({});
-
+  const [token, settoken] = useState(null);
   useEffect(() => {
     fetchUserData(setuserData);
+    settoken(localStorage.getItem("token"));
   }, []);
 
   return (
@@ -131,7 +133,7 @@ function Profile() {
         <div className={styles.profileHeader + addLoader(!("_id" in userData))}>
           <img
             className={styles.profileImg}
-            src={userData.photo?.secure_url || "/profile.png"}
+            src={userData.photo?.secure_url || "/profile.jpg"}
             alt=""
           />
           <div className={styles.data}>
@@ -215,6 +217,17 @@ function Profile() {
             <img src={twitter_icon.src} alt="" />
             <img src={discord_icon.src} alt="" />
           </div>
+
+          {token && (
+            <img
+              className={styles.editProfile}
+              src="/edit-profile.png"
+              alt=""
+              onClick={() => {
+                openNewTab("/edit-profile");
+              }}
+            />
+          )}
         </div>
         <NavSec selected={selectedNav} setSelected={setSelectedNav} />
 
@@ -335,7 +348,7 @@ const ReviewComp = ({ data, userData }) => {
         <div className={styles.userInfo}>
           <img
             className={styles.profilePic}
-            src={userData.photo?.secure_url || "/profile.png"}
+            src={userData.photo?.secure_url || "/profile.jpg"}
             alt=""
           />
           <span>
@@ -1142,73 +1155,52 @@ const Xp = () => {
 
   return (
     <section className={styles.XpSec}>
-      <div className={styles.tokenSwitch}>
-        <button
-          onClick={() => {
-            setselectedTab("COMPLETED");
-          }}
-          className={
-            selectedTab == "COMPLETED"
-              ? styles.btnSwitchSelected
-              : styles.btnSwitch
-          }
-        >
-          Completed
-        </button>
-        <button
-          onClick={() => {
-            setselectedTab("ACTIVE");
-          }}
-          className={
-            selectedTab == "ACTIVE"
-              ? styles.btnSwitchSelected
-              : styles.btnSwitch
-          }
-        >
-          Active Tasks
-        </button>
-      </div>
-      {selectedTab == "COMPLETED" && (
-        <div className={styles.xpChipCon}>
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-          <XpChip />
-        </div>
-      )}
-      {selectedTab == "ACTIVE" && (
-        <div className={styles.xpChipCon}>
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-          <XpChip status={true} />
-        </div>
-      )}
+      <Mission />
+      <Mission />
     </section>
+  );
+};
+
+const Mission = () => {
+  return (
+    <div className={styles.mission}>
+      <div className={styles.content}>
+        <p className={styles.daoName}>Polygon</p>
+        <h2 className={styles.missionName}>Title for the Mission</h2>
+        <div className={styles.tags}>
+          <Tag
+            title={"Task"}
+            color={"rgba(203, 56, 240)"}
+            src={"/missions/bounty.png"}
+          />
+          <Tag
+            title={"Task"}
+            color={"rgba(203, 56, 240)"}
+            src={"/missions/bounty.png"}
+          />
+        </div>
+        <p className={styles.missionDesc}>
+          Lorem ipsum dolor sit amet, consectetur dipiscing elit Lorem ipsum
+          dolor sit amet
+        </p>
+      </div>
+      <span className={styles.xpCount}>
+        <img src="/xpCoin.png" alt="" />
+        <p>300 XP</p>
+      </span>
+    </div>
+  );
+};
+
+const Tag = ({ src, color, title }) => {
+  return (
+    <div
+      className={styles.tag}
+      style={{ outlineColor: color, background: color.replace(")", ",0.1)") }}
+    >
+      <img src={src} alt=" " />
+      <p style={{ color: color }}>{title}</p>
+    </div>
   );
 };
 
