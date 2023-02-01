@@ -149,5 +149,10 @@
         "ticker": "SUI",
         "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/20947.png",
         "color": "#7AC1F2"
+    },
+    "shardeum": {
+        "ticker": "SHM",
+        "icon": "https://assets.coingecko.com/coins/images/27937/small/shm.png?1666515519",
+        "color": "#7AC1F2"
     }
 }
