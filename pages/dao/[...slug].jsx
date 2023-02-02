@@ -48,7 +48,9 @@ function Dao({ dao_data, rid, slug }) {
   const fetchMissions = async () => {
     try {
       let res = await axios.get(`${P_API}/mission?communityID=${dao_data._id}`);
-      setmissions(res.data.data);
+      setmissions((ele) => {
+        return res.data.data;
+      });
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +59,7 @@ function Dao({ dao_data, rid, slug }) {
   useEffect(() => {
     fetchMissions();
     localStorage.setItem("mission-callback", slug);
-  }, []);
+  }, [slug]);
 
   return (
     <>
@@ -151,12 +153,13 @@ function Dao({ dao_data, rid, slug }) {
                 dao_data={dao_data}
                 setwalletConnectVisible={setwalletConnectVisible}
                 settippingFlowVisible={settippingFlowVisible}
+                key={slug}
               />
             </div>
             <Sidebar dao_data={dao_data} />
           </div>
         )}
-        {selected == "Missions" && <Missions missions={missions} />}
+        {selected == "Missions" && <Missions key={slug} missions={missions} />}
         {selected == "Insights" && (
           <div className={styles.content}>
             <img

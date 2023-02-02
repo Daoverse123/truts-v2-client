@@ -35,7 +35,7 @@ const NavSec = ({ selected, setSelected }) => {
   // 'Token/NFTs'
   return (
     <ul className={styles.navSec}>
-      {["Communities", "Reviews", "Xp", "Token/NFTs"].map((ele, i) => {
+      {["Communities", "Reviews", "Missions", "Token/NFTs"].map((ele, i) => {
         return (
           <li
             className={selected == ele ? styles.selected : null}
@@ -236,7 +236,7 @@ function Profile() {
             {selectedNav == "Communities" && (
               <Communites_temp {...{ userData }} />
             )}
-            {selectedNav == "Xp" && <Xp />}
+            {selectedNav == "Missions" && <Xp />}
             {selectedNav == "Reviews" && <Reviews {...{ userData }} />}
             {selectedNav == "Token/NFTs" && <TokenNftCon {...{ userData }} />}
           </>

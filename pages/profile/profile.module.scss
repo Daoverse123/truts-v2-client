@@ -261,12 +261,17 @@ $PHONE_N: 450;
 }
 
 .editProfile {
-    width: 92px;
-    height: 42px;
+    width: 7%;
+    object-fit: contain;
     position: absolute;
-    right: 40px;
-    top: 40px;
+    right: 4%;
+    top: 5%;
     cursor: pointer;
+
+    @media (max-width: $PHONE) {
+        width: 18%;
+        right: 8%;
+    }
 }
 
 ////////////////////////////////////////////////////////////////
@@ -1666,6 +1671,8 @@ $PHONE_N: 450;
         background-repeat: no-repeat;
         background-position: right;
         opacity: 0.13;
+        top: 0;
+        right: 0;
     }
     padding: 20px;
 

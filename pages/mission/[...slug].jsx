@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./page_mission.module.scss";
-
+import { toast } from "react-toastify";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import axios from "axios";
@@ -150,12 +150,16 @@ function Index({ mission }) {
                 );
               })}
             </div>
-            {claimReady ? (
+            {claimReady && !status.attemptedMission.isCompleted ? (
               <button onClick={claimMission} className={styles.mainBtnClaim}>
                 Claim Mission
               </button>
             ) : (
-              <button className={styles.mainBtnDisabled}>Claim Mission</button>
+              <button className={styles.mainBtnDisabled}>
+                {status.attemptedMission.isCompleted
+                  ? "Mission Claimed"
+                  : "Claim Mission"}
+              </button>
             )}
           </>
         )}
@@ -196,7 +200,18 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
         setloading(false);
       }
     } catch (error) {
-      console.log(error);
+      setloading(false);
+      console.log("error");
+      toast.error("Please make sure the task is completed!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
