@@ -159,5 +159,10 @@
         "ticker": "OKT",
         "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/8267.png",
         "color": "rgb(88, 102, 126)"
+    },
+    "chain-agnostic": {
+        "ticker": "Chain Agnostic",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/GNOME_Web_logo_40.png",
+        "color": "#48C9B0"
     }
 }
