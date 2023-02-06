@@ -547,8 +547,8 @@ const Socials = ({ initUserData }) => {
                   "redirect_pre_discord",
                   window.location
                 );
-                window.location =
-                  "https://discord.com/oauth2/authorize?client_id=966238946294116382&redirect_uri=http://localhost:3001/discord-auth-callback&response_type=code&scope=identify%20email%20guilds";
+                let domain = location.host;
+                window.location = `https://discord.com/oauth2/authorize?client_id=966238946294116382&redirect_uri=https://${domain}/discord-auth-callback&response_type=code&scope=identify%20email%20guilds`;
               }}
             >
               <img src="./discord.png" alt="" />
