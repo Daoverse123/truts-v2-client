@@ -154,5 +154,10 @@
         "ticker": "SHM",
         "icon": "https://assets.coingecko.com/coins/images/27937/small/shm.png?1666515519",
         "color": "#808080"
+    },
+    "okc": {
+        "ticker": "OKT",
+        "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/8267.png",
+        "color": "rgb(88, 102, 126)"
     }
 }

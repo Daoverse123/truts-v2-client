@@ -62,6 +62,7 @@ const CHAIN_LIST_MAP = {
   Tezos: "tezos",
   Sui: "sui",
   Bitcoin: "bitcoin",
+  OKC: "okc",
 };
 let categoriesWithId = CATEGORY_LIST.map((name, id) => {
   return { id, name };
