@@ -166,7 +166,7 @@
         "color": "#48C9B0"
     },
     "multi-chain": {
-        "ticker": "Chain Agnostic",
+        "ticker": "Multi Chain",
         "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/GNOME_Web_logo_40.png",
         "color": "#48C9B0"
     }
