@@ -100,6 +100,7 @@ const fetchUserData = async (setter) => {
       let res = await axios.get(`${P_API}/user/guilds`, option);
       return res;
     })(),
+    
   ]);
 
   if (user_data[0].status == 200) {
