@@ -547,7 +547,8 @@ const Socials = ({ initUserData }) => {
                   "redirect_pre_discord",
                   window.location
                 );
-                window.location = process.env.DISCORD_OAUTH_URL;
+
+                window.location = `https://discord.com/oauth2/authorize?client_id=782120524956434432&redirect_uri=https%3A%2F%2Fstaging.truts.xyz%2Fdiscord-auth-callback&response_type=code&scope=identify%20email%20guilds`;
               }}
             >
               <img src="./discord.png" alt="" />
