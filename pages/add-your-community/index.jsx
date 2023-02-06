@@ -51,6 +51,7 @@ const CATEGORY_LIST = [
 ];
 
 const CHAIN_LIST_MAP = {
+  "Multi Chain": "multi-chain",
   Arbitrum: "arbitrum-one",
   Avalanche: "avalanche",
   "Binance Smart Chain": "binance-smart-chain",
