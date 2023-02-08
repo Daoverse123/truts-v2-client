@@ -32,10 +32,10 @@ let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
 const NavSec = ({ selected, setSelected }) => {
   //'Contributions'
-  // 'Token/NFTs'
+  // 'Assets'
   return (
     <ul className={styles.navSec}>
-      {["Communities", "Reviews", "Missions", "Token/NFTs"].map((ele, i) => {
+      {["Communities", "Reviews", "Missions", "Assets"].map((ele, i) => {
         return (
           <li
             className={selected == ele ? styles.selected : null}
@@ -100,7 +100,20 @@ const fetchUserData = async (setter) => {
       let res = await axios.get(`${P_API}/user/guilds`, option);
       return res;
     })(),
-    
+    (async () => {
+      if (!("discord" in main_user_data)) {
+        return { status: 500 };
+      }
+      let res = await axios.get(`${P_API}/user/completed-mission`, option);
+      return res;
+    })(),
+    (async () => {
+      if (!("discord" in main_user_data)) {
+        return { status: 500 };
+      }
+      let res = await axios.get(`${P_API}/user/truts-xp`, option);
+      return res;
+    })(),
   ]);
 
   if (user_data[0].status == 200) {
@@ -111,6 +124,16 @@ const fetchUserData = async (setter) => {
   if (user_data[1].status == 200) {
     setter((data) => {
       return { ...data, daos: user_data[1].data.data.listings };
+    });
+  }
+  if (user_data[2].status == 200) {
+    setter((data) => {
+      return { ...data, missions: user_data[2].data.data.missions };
+    });
+  }
+  if (user_data[3].status == 200) {
+    setter((data) => {
+      return { ...data, xp: user_data[3].data.data };
     });
   }
 };
@@ -138,15 +161,21 @@ function Profile() {
             alt=""
           />
           <div className={styles.data}>
-            <span className={styles.xpLevel}>
-              <span className={styles.levelCount}>
-                <h3>Level 15</h3>
-                <p>500 to next XP</p>
+            {"xp" in userData && (
+              <span className={styles.xpLevel}>
+                <span className={styles.levelCount}>
+                  <h3>Level {userData.xp.level.currentLevel}</h3>
+                  <p>{userData.xp.level.xpForNextLevel} to next XP</p>
+                </span>
+                <div className={styles.progressBard}>
+                  <span
+                    style={{
+                      width: `${userData.xp.level.precentToNextLevel}%`,
+                    }}
+                  ></span>
+                </div>
               </span>
-              <div className={styles.progressBard}>
-                <span></span>
-              </div>
-            </span>
+            )}
             <h1 className={styles.name}>
               {userData.name ||
                 ("wallets" in userData
@@ -225,7 +254,7 @@ function Profile() {
               src="/edit-profile.png"
               alt=""
               onClick={() => {
-                openNewTab("/edit-profile");
+                location.href = "/edit-profile";
               }}
             />
           )}
@@ -234,12 +263,18 @@ function Profile() {
 
         {userData.isCompleted ? (
           <>
-            {selectedNav == "Communities" && (
+            {selectedNav == "Communities" && "daos" in userData && (
               <Communites_temp {...{ userData }} />
             )}
-            {selectedNav == "Missions" && <Xp />}
-            {selectedNav == "Reviews" && <Reviews {...{ userData }} />}
-            {selectedNav == "Token/NFTs" && <TokenNftCon {...{ userData }} />}
+            {selectedNav == "Missions" && "missions" in userData && (
+              <Xp {...{ userData }} />
+            )}
+            {selectedNav == "Reviews" && "reviews" in userData && (
+              <Reviews {...{ userData }} />
+            )}
+            {selectedNav == "Assets" && "daos" in userData && (
+              <TokenNftCon {...{ userData }} />
+            )}
           </>
         ) : (
           <div
@@ -1125,69 +1160,71 @@ const Tokens = ({ userData }) => {
   );
 };
 
-const Xp = () => {
-  const [selectedTab, setselectedTab] = useState("COMPLETED");
-  console.log(selectedTab);
-
-  const XpChip = ({ status }) => {
-    return (
-      <div className={styles.xpChipWrapper}>
-        <div className={styles.xpChip}>
-          <img src={twitter_blue.src} alt="" />
-          <span>
-            <h1>
-              Connect your twitter<span>Task Owner</span>{" "}
-            </h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </span>
-          <button>300 XP</button>
-        </div>
-        {status && (
-          <span className={styles.status}>
-            <div className={styles.progress}>
-              <span className={styles.progressInner}></span>
-            </div>
-            <p>60% Completed</p>
-          </span>
-        )}
+const XpChip = ({ status }) => {
+  return (
+    <div className={styles.xpChipWrapper}>
+      <div className={styles.xpChip}>
+        <img src={twitter_blue.src} alt="" />
+        <span>
+          <h1>
+            Connect your twitter<span>Task Owner</span>{" "}
+          </h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </span>
+        <button>300 XP</button>
       </div>
-    );
-  };
+      {status && (
+        <span className={styles.status}>
+          <div className={styles.progress}>
+            <span className={styles.progressInner}></span>
+          </div>
+          <p>60% Completed</p>
+        </span>
+      )}
+    </div>
+  );
+};
+
+const Xp = ({ userData }) => {
+  const [selectedTab, setselectedTab] = useState("COMPLETED");
 
   return (
     <section className={styles.XpSec}>
-      <Mission />
-      <Mission />
+      {userData.missions.map((ele) => {
+        return <Mission data={ele} key={ele._id} />;
+      })}
     </section>
   );
 };
 
-const Mission = () => {
+const Mission = ({ data }) => {
   return (
-    <div className={styles.mission}>
+    <div
+      className={styles.mission}
+      onClick={() => {
+        openNewTab(`/mission/${data._id}`);
+      }}
+    >
       <div className={styles.content}>
-        <p className={styles.daoName}>Polygon</p>
-        <h2 className={styles.missionName}>Title for the Mission</h2>
+        <p className={styles.daoName}>{data.community.name}</p>
+        <h2 className={styles.missionName}>{data.name}</h2>
         <div className={styles.tags}>
-          <Tag
-            title={"Task"}
-            color={"rgba(203, 56, 240)"}
-            src={"/missions/bounty.png"}
-          />
-          <Tag
-            title={"Task"}
-            color={"rgba(203, 56, 240)"}
-            src={"/missions/bounty.png"}
-          />
+          {data.tags.map((tg) => {
+            return (
+              <Tag
+                key={tg._id}
+                title={tg.name}
+                color={`rgba(${tg.color.rgba[0]}, ${tg.color.rgba[1]}, ${tg.color.rgba[2]})`}
+                src={tg.logo.secure_url}
+              />
+            );
+          })}
         </div>
-        <p className={styles.missionDesc}>
-          Lorem ipsum dolor sit amet, consectetur dipiscing elit Lorem ipsum
-          dolor sit amet
-        </p>
+        <p className={styles.missionDesc}>{limit(90, data.description)}</p>
       </div>
       <span className={styles.xpCount}>
         <img src="/xpCoin.png" alt="" />
-        <p>300 XP</p>
+        <p>{data.trutsXP} XP</p>
       </span>
     </div>
   );

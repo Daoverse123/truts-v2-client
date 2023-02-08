@@ -37,9 +37,8 @@ export default function Component({ min, data }) {
     <div
       style={{
         borderColor: "color" in chip ? chip.color : "",
-        width: min && "258px",
       }}
-      className={styles.mission}
+      className={styles.mission + " " + (min ? styles.missionMin : "")}
     >
       {chip.status && (
         <div className={styles.timeChip}>

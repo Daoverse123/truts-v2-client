@@ -4,6 +4,7 @@ let LOCALHOST = 'http://localhost:5000'
 let AWS = 'https://7cjecbsr4a.us-west-2.awsapprunner.com'
 let TEST_SERVER = 'https://rf2rcgt6ax.us-west-2.awsapprunner.com'
 
+
 const nextConfig = {
   reactStrictMode: false,
   images: {
@@ -12,7 +13,7 @@ const nextConfig = {
   },
   env: {
     API: process.env.API,
-    P_API: 'https://6d3haybwpq.us-west-2.awsapprunner.com/api/v1',
+    P_API: process.env.P_API,
     SPLTOKENACCOUNTSPAREKEY: process.env.SPLTOKENACCOUNTSPAREKEY,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     MEAN_SPL_TOKEN: 'MEANeD3XDdUmNMsRGjASkSWdC8prLYsoRJ61pPeHctD',

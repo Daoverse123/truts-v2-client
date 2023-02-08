@@ -14,15 +14,12 @@ const P_API = process.env.P_API;
 
 const fetchUserDetails = async (setter) => {
   let jwt = localStorage.getItem("token");
-  axios.post(
-    `${P_API}/user/intrest-tag`,
-    {},
-    {
-      headers: {
-        Authorization: jwt,
-      },
-    }
-  );
+  let intrests = await axios.get(`${P_API}/user/intrest-tag`, {
+    headers: {
+      Authorization: jwt,
+    },
+  });
+
   try {
     let res = await axios.get(`${P_API}/user`, {
       headers: {
@@ -31,7 +28,7 @@ const fetchUserDetails = async (setter) => {
     });
     console.log(res);
     if (res.status == 200) {
-      setter(res.data.data.user);
+      setter(res.data.data.user, intrests.data.data.tags);
     } else {
       alert("Invalid Auth");
     }
@@ -84,15 +81,31 @@ function Index() {
   console.log(updatedUserData);
 
   useEffect(() => {
-    fetchUserDetails((user_data) => {
+    fetchUserDetails((user_data, intrests) => {
       !user_data.email && signUpGoogle();
       setinitUserData(user_data);
-      setupdatedUserData({ bio: user_data.bio });
+      setupdatedUserData({
+        bio: user_data.bio,
+        interests: user_data.tags.map((ele) => ele._id),
+        interestsOptions: intrests,
+      });
     });
   }, []);
 
-  const saveProfileDetails = async () => {
-    setLoaderVisible(true);
+  const saveProfileDetails = async (username) => {
+    if (!initUserData.username) {
+      let updateUsername = axios.patch(
+        `${P_API}/user/set/username`,
+        {
+          username,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+    }
     let resp = await axios.patch(
       `${P_API}/user/update`,
       { ...updatedUserData, tags: JSON.stringify(updatedUserData.interests) },
@@ -236,18 +249,6 @@ function Index() {
   );
 }
 
-const fetchInterest = async (setter) => {
-  let res = await axios.get(`${P_API}/user/intrest-tag`, {
-    headers: {
-      Authorization: window.localStorage.getItem("token"),
-    },
-  });
-  if (res.status == 200) {
-    console.log(res.data);
-    setter(res.data.data.tags);
-  }
-};
-
 const Profile = ({
   updatedUserData,
   setupdatedUserData,
@@ -255,46 +256,35 @@ const Profile = ({
   saveProfileDetails,
 }) => {
   const [profileImg, setprofileImg] = useState(null);
-  const [interests, setinterests] = useState([]);
+  const [username, setusername] = useState("");
+  const [usernameValid, setusernameValid] = useState(false);
 
-  console.log(interests);
+  const checkUsernameAvailability = async () => {
+    let res = await axios.get(
+      `${P_API}/user/availability/username?username=${username}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (res.status == 200) {
+      console.log(res.data.data.available);
+      setusernameValid(res.data.data.available);
+    }
+  };
+
+  useEffect(() => {
+    if (username.length > 0) {
+      checkUsernameAvailability();
+    }
+  }, [username]);
 
   useEffect(() => {
     try {
       setprofileImg(initUserData.photo.secure_url);
     } catch (error) {}
   }, [initUserData]);
-
-  useEffect(() => {
-    fetchInterest((ele) => {
-      setinterests(ele);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (interests.length > 0) {
-      setinterests((tag) => {
-        let selelectedIdTagArray = initUserData.tags.map((ele) => ele._id);
-        let updatedList = tag.map((t) => {
-          if (selelectedIdTagArray.includes(t._id)) {
-            t.selected = true;
-          }
-          return t;
-        });
-        console.log(updatedList);
-        return [...updatedList];
-      });
-    }
-  }, [initUserData]);
-
-  useEffect(() => {
-    setupdatedUserData((usd) => {
-      usd.interests = interests
-        .filter((elm) => elm.selected)
-        .map((elm) => elm._id);
-      return { ...usd };
-    });
-  }, [interests]);
 
   return (
     <div className={styles.formContent}>
@@ -342,6 +332,37 @@ const Profile = ({
       </div>
       <div className={styles.section}>
         <div className={styles.secTitle}>
+          <h2>Username</h2>
+          <span className={styles.xp}>
+            <img src="./xpCoin.png" alt="" />
+            <p>50</p>
+          </span>
+        </div>
+        {initUserData.username ? (
+          <p className={styles.displayEmail}>{initUserData.username}</p>
+        ) : (
+          <input
+            value={username}
+            onChange={(e) => {
+              setusername(e.target.value);
+            }}
+            className={styles.input}
+            style={{ color: usernameValid ? "black" : "red" }}
+          />
+        )}
+        {usernameValid && username.length > 0 && (
+          <p style={{ color: "green", marginLeft: "5px", fontWeight: "500" }}>
+            {username} is available
+          </p>
+        )}
+        {!usernameValid && username.length > 0 && (
+          <p style={{ color: "red", marginLeft: "5px", fontWeight: "500" }}>
+            {username} is unavailable
+          </p>
+        )}
+      </div>
+      <div className={styles.section}>
+        <div className={styles.secTitle}>
           <h2>Email ID</h2>
           <span className={styles.xp}>
             <img src="./xpCoin.png" alt="" />
@@ -353,6 +374,7 @@ const Profile = ({
           <p className={styles.displayEmail}>{initUserData.email}</p>
         )}
       </div>
+
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Bio</h2>
@@ -387,25 +409,45 @@ const Profile = ({
         </p>
 
         <div className={styles.tagSelector}>
-          {interests.map((ele, idx) => {
+          {updatedUserData?.interestsOptions?.map((ele, idx) => {
             return (
               <span
-                onClick={() => {
-                  setinterests((int) => {
-                    int[idx].selected = !int[idx].selected;
-                    if (int.filter((ele) => ele.selected).length > 3) {
-                      return interests;
-                    } else {
-                      return [...int];
-                    }
-                  });
-                }}
                 key={ele._id}
                 className={
                   styles.tag +
                   " " +
-                  (interests[idx].selected ? styles.selected : "")
+                  (updatedUserData.interests.includes(ele._id)
+                    ? styles.selected
+                    : "")
                 }
+                onClick={() => {
+                  setupdatedUserData((data) => {
+                    if (data.interests.includes(ele._id)) {
+                      data.interests = data.interests.filter((dt) => {
+                        if (dt == ele._id) {
+                          return false;
+                        }
+                        return true;
+                      });
+                    } else {
+                      if (data.interests.length >= 3) {
+                        toast.warn("Max 3 interests allowed", {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: true,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "colored",
+                        });
+                      } else {
+                        data.interests.push(ele._id);
+                      }
+                    }
+                    return { ...data };
+                  });
+                }}
               >
                 {ele.name}
               </span>
@@ -416,7 +458,7 @@ const Profile = ({
       <span className={styles.bottomNav}>
         <button
           onClick={() => {
-            saveProfileDetails();
+            saveProfileDetails(username);
           }}
           className={styles.saveBtn}
         >

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./page_mission.module.scss";
 import { toast } from "react-toastify";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import axios from "axios";
 import openNewTab from "../../utils/openNewTab";
+import Link from "next/link";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -87,13 +88,20 @@ function Index({ mission }) {
     }
   }, [status]);
 
+  const [backBtn, setbackBtn] = useState("");
+  useEffect(() => {
+    setbackBtn(localStorage.getItem("mission-callback"));
+  }, []);
+
   return (
     <>
       <Nav isFloating />
       <div className={styles.missionPage}>
-        <h3 className={styles.subtitle}>
-          <img src="/missions/arrow.png" /> Back
-        </h3>
+        <Link href={`/dao/${backBtn}`}>
+          <h3 className={styles.subtitle}>
+            <img src="/missions/arrow.png" /> Back
+          </h3>
+        </Link>
         <div className={styles.missionHead}>
           <img
             className={styles.profileImg}
