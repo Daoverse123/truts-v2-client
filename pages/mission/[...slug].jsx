@@ -210,7 +210,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
     } catch (error) {
       setloading(false);
       console.log("error");
-      toast.error("Please make sure the task is completed!", {
+      toast.error("Please make sure to complete the task and verify again!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

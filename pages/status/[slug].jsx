@@ -129,9 +129,10 @@ const Mission = () => {
         </div>
         <div className={styles.text}>
           <h4 className={styles.desc}>
-            Thank you for submitting! You will earn 100 XP points once your
-            Community get listed on Truts. Complete the remaining (only 10%
-            left) of your Profile to earn some bonus XP points!
+            You`ve Submitted your community! Your XP will be credited once the
+            community gets verified and listed on Truts! Earn Bonus XP points by
+            completing your profile! Your XP points are your gateway to exciting
+            rewards on Truts, more on this soon...
           </h4>
           <button
             onClick={() => {

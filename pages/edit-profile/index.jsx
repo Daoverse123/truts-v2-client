@@ -291,8 +291,8 @@ const Profile = ({
       <div className={styles.mainTitle}>
         <h1>Profile Settings</h1>
         <p>
-          Complete every details on your profile to earn XP points. Total of 100
-          to be earned in this section
+          Complete your profile to earn 100 XP Points! Your XP points will be
+          your gateway to exciting rewards, coming soon...
         </p>
       </div>
       <div className={styles.section}>
@@ -392,7 +392,7 @@ const Profile = ({
             });
           }}
           rows={8}
-          placeholder="Write an amazing bio about yourself....."
+          placeholder="Tell us something interesting about yourself!"
           className={styles.input}
         />
       </div>
@@ -405,7 +405,7 @@ const Profile = ({
           </span>
         </div>
         <p className={styles.subText}>
-          Select (maximum 3) and show your interests to web3 world!
+          Select your top 3 interests in Web3 to showcase to the world!
         </p>
 
         <div className={styles.tagSelector}>
@@ -480,9 +480,8 @@ const Wallets = ({
       <div className={styles.mainTitle}>
         <h1>Wallet Settings</h1>
         <p>
-          Please make sure to connect your primary wallet as it will also serve
-          as your TrutsID and all data on profile would be linked and fetched
-          from it.
+          Your Wallet will also serve as your Truts ID with your Truts On Chain
+          Reputation, so make sure to connect your primary wallet!
         </p>
       </div>
       <div className={styles.walletSection}>
@@ -543,9 +542,8 @@ const Socials = ({ initUserData }) => {
       <div className={styles.mainTitle}>
         <h1>Social Settings</h1>
         <p>
-          Connect your socials to get rewards. Also connecting your socials will
-          help us to show you more data about how you interact with the
-          communities. This will also serve as a web3 Proof of Work
+          Connect Your Socials to earn rewards! Connecting all your socials
+          helps us get you the best experience on Truts and its communities!
         </p>
       </div>
       <div className={styles.socialSection}>
