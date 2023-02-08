@@ -199,7 +199,13 @@ function Profile() {
                   );
                 })
               ) : (
-                <div style={{ opacity: 0.6 }} className={styles.tab}>
+                <div
+                  onClick={() => {
+                    location.href = "/edit-profile";
+                  }}
+                  style={{ opacity: 0.6, cursor: "pointer" }}
+                  className={styles.tab}
+                >
                   {"Add Tags"}
                 </div>
               )}
@@ -225,18 +231,16 @@ function Profile() {
               ) : (
                 <div
                   onClick={() => {
-                    copyToClipBoard("sample address");
+                    location.href = "/edit-profile";
                   }}
-                  id="w1"
-                  data-tip="Copy Address"
                   style={{
                     background: chainIconMap["ethereum"].color,
                     borderColor: chainIconMap["ethereum"].color,
                   }}
                   className={styles.tab}
                 >
-                  <img src={chainIconMap["ethereum"].icon} alt="" />
-                  Wallet Address
+                  {/* <img src={chainIconMap["ethereum"].icon} alt="" /> */}
+                  Connect Wallet
                   <ReactTooltip backgroundColor={"#747c90"} />
                 </div>
               )}
@@ -283,9 +287,7 @@ function Profile() {
             }
           >
             <span>
-              <h1>
-                Please complete your user profile to view your community data
-              </h1>
+              <h1>Complete Your profile to get complete access to Truts</h1>
               <ul>
                 <li>
                   <img
