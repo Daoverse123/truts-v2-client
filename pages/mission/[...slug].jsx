@@ -127,8 +127,9 @@ function Index({ mission }) {
               </div>
               <div className={styles.profilesCompleted}>
                 <img src="/profile.png" alt="" />
-                <img style={{ left: "-7px" }} src="/profile.png" alt="" />
-                <img style={{ left: "-14px" }} src="/profile.png" alt="" />
+                <img style={{ left: "0px" }} src="/profile-old.png" alt="" />
+                <img style={{ left: "-7px" }} src="/profile-old.png" alt="" />
+                <img style={{ left: "-14px" }} src="/profile-old.png" alt="" />
                 <p>+ 123 completed</p>
               </div>
             </div>
