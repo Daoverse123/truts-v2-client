@@ -80,7 +80,7 @@ const ProfileLogin = ({ showWalletConnect, setprofileSignupPrompt }) => {
               Don`t have a web3 wallet? <br></br> You can use your google
               Account to signup/log in
             </p>
-            <span id={"google-login"}></span>
+            <span style={{ marginTop: "10px" }} id={"google-login"}></span>
           </div>
           <div className={styles.screen}>
             <div className={styles.imgBg}>
