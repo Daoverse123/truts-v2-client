@@ -157,7 +157,7 @@ function Profile() {
         <div className={styles.profileHeader + addLoader(!("_id" in userData))}>
           <img
             className={styles.profileImg}
-            src={userData.photo?.secure_url || "/profile.jpg"}
+            src={userData.photo?.secure_url || "/profile-old.png"}
             alt=""
           />
           <div className={styles.data}>
