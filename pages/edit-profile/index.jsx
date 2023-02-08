@@ -494,7 +494,12 @@ const Wallets = ({
             <div className={styles.wallet}>
               <img className={styles.profileName} src="./blue.png" alt="" />
               <p>{miniMizewallet(initUserData.wallets.address)}</p>
-              <img className={styles.option} src="./threedot.png" alt="" />
+              <img
+                style={{ opacity: 0 }}
+                className={styles.option}
+                src="./threedot.png"
+                alt=""
+              />
             </div>
             <button
               onClick={() => {
