@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./compMission.module.scss";
 import Link from "next/link";
+import axios from "axios";
 
 const Tag = ({ src, color, title }) => {
   return (
@@ -26,7 +27,9 @@ const getChipType = () => {
   return defaultChip;
 };
 
-export default function Component({ min, data }) {
+let P_API = process.env.P_API;
+
+export default function Component({ min, data, isCompleted }) {
   let chip = getChipType();
 
   if (!data) {
@@ -47,7 +50,7 @@ export default function Component({ min, data }) {
         </div>
       )}
       <Link href={`/mission/${data._id}`}>
-        <span className={styles.topCon}>
+        <span className={styles.topCon + " " + (isCompleted && styles.blur)}>
           <img
             src={data.community.dao_logo || "/blue.png"}
             alt=""
@@ -70,12 +73,18 @@ export default function Component({ min, data }) {
           </div>
         </span>
       </Link>
-      <div className={styles.xpCon}>
-        <img src="/missions/coin.png" alt="" />
-        <p>{data.communityXP} XP</p>
-        <img src="/missions/save.png" alt="" />
-        <img src="/missions/share.png" alt="" />
-      </div>
+      {!isCompleted ? (
+        <div className={styles.xpCon}>
+          <img src="/missions/coin.png" alt="" />
+          <p>{data.communityXP} XP</p>
+          <img src="/missions/save.png" alt="" />
+          <img src="/missions/share.png" alt="" />
+        </div>
+      ) : (
+        <div className={styles.xpCon + " " + styles.missionCompleted}>
+          <p>Completed</p> <img src="/missions/tick.png" alt="" />
+        </div>
+      )}
     </div>
   );
 }

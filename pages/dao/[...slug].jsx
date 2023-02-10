@@ -32,6 +32,34 @@ import loader from "../../assets/mini-loader.gif";
 const API = process.env.API;
 const P_API = process.env.P_API;
 
+const getMissionStatus = async (data, setmissions) => {
+  console.log(data);
+  let jwt = localStorage.getItem("token");
+  if (!jwt) {
+    setmissions(data);
+    return false;
+  }
+  let res = await Promise.all(
+    data.missions.map((ele) => {
+      return (async () => {
+        let res = await axios.get(`${P_API}/mission/${ele._id}/my-status`, {
+          headers: {
+            Authorization: jwt,
+          },
+        });
+        if (res.status == 200) {
+          return {
+            ...ele,
+            isCompleted: res.data.data.attemptedMission.isCompleted,
+          };
+        }
+        return ele;
+      })();
+    })
+  );
+  setmissions({ missions: res });
+};
+
 function Dao({ dao_data, rid, slug }) {
   const [selected, setSelected] = useState("Reviews");
   //console.log(dao_data);
@@ -48,9 +76,7 @@ function Dao({ dao_data, rid, slug }) {
   const fetchMissions = async () => {
     try {
       let res = await axios.get(`${P_API}/mission?communityID=${dao_data._id}`);
-      setmissions((ele) => {
-        return res.data.data;
-      });
+      await getMissionStatus(res.data.data, setmissions);
     } catch (error) {
       console.log(error);
     }
@@ -610,9 +636,17 @@ function Missions({ missions }) {
   return (
     <div className={styles.content}>
       <section className={styles.missions}>
-        {missions.missions.map((ele, idx) => {
-          return <Mission key={"msn" + idx} min={true} data={ele} />;
-        })}
+        {"missions" in missions &&
+          missions.missions.map((ele, idx) => {
+            return (
+              <Mission
+                key={"msn" + idx}
+                min={true}
+                data={ele}
+                isCompleted={ele.isCompleted}
+              />
+            );
+          })}
       </section>
     </div>
   );

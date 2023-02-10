@@ -80,19 +80,27 @@ function Index() {
   console.log(initUserData);
   console.log(updatedUserData);
 
+  const [showWallet, setshowWallet] = useState(false);
+  const [LoaderVisible, setLoaderVisible] = useState(false);
+
   useEffect(() => {
-    fetchUserDetails((user_data, intrests) => {
-      !user_data.email && signUpGoogle();
-      setinitUserData(user_data);
-      setupdatedUserData({
-        bio: user_data.bio,
-        interests: user_data.tags.map((ele) => ele._id),
-        interestsOptions: intrests,
+    if (!showWallet) {
+      setLoaderVisible(true);
+      fetchUserDetails((user_data, intrests) => {
+        !user_data.email && signUpGoogle();
+        setinitUserData(user_data);
+        setupdatedUserData({
+          bio: user_data.bio,
+          interests: user_data.tags.map((ele) => ele._id),
+          interestsOptions: intrests,
+        });
+        setLoaderVisible(false);
       });
-    });
-  }, []);
+    }
+  }, [showWallet]);
 
   const saveProfileDetails = async (username) => {
+    setLoaderVisible(true);
     if (!initUserData.username) {
       let updateUsername = axios.patch(
         `${P_API}/user/set/username`,
@@ -121,6 +129,7 @@ function Index() {
       alert("error");
     }
     setLoaderVisible(false);
+
     toast.success("Changes saved successfully", {
       position: "top-right",
       autoClose: 5000,
@@ -133,23 +142,9 @@ function Index() {
     });
   };
 
-  let options = [
-    "Profile",
-    "Wallets",
-    "Socials",
-    <button
-      className={styles.exitbtn}
-      onClick={() => {
-        location.href = "/profile";
-      }}
-      key={"btn"}
-    >
-      Exit
-    </button>,
-  ];
+  let options = ["Profile", "Wallets", "Socials"];
   const [selectedPage, setselectedPage] = useState("Profile");
-  const [showWallet, setshowWallet] = useState(false);
-  const [LoaderVisible, setLoaderVisible] = useState(false);
+
   return (
     <>
       {LoaderVisible && <Loader />}
@@ -201,6 +196,16 @@ function Index() {
                 </span>
               );
             })}
+            <span
+              onClick={() => {
+                location.href = "/profile";
+              }}
+              className={styles.option}
+            >
+              <button className={styles.exitbtn} key={"btn"}>
+                Exit
+              </button>
+            </span>
           </div>
           <div className={styles.leftSideNav}>
             {options.map((ele) => {
@@ -226,6 +231,16 @@ function Index() {
                 </span>
               );
             })}
+            <span
+              className={styles.option}
+              onClick={() => {
+                location.href = "/profile";
+              }}
+            >
+              <button className={styles.exitbtn} key={"btn"}>
+                Exit
+              </button>
+            </span>
           </div>
           {selectedPage == options[0] && (
             <Profile
@@ -248,6 +263,19 @@ function Index() {
     </>
   );
 }
+
+const XpCoinComp = ({ value }) => {
+  return (
+    <span className={styles.xp}>
+      {value ? (
+        <img src="./missions/tick.png" alt="" />
+      ) : (
+        <img src="./xpCoin.png" alt="" />
+      )}
+      <p>50</p>
+    </span>
+  );
+};
 
 const Profile = ({
   updatedUserData,
@@ -298,10 +326,7 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Profile Picture</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp value={profileImg} />
         </div>
         <label htmlFor="image-upload" className={styles.profile}>
           <img
@@ -333,10 +358,12 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Username</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp
+            value={
+              (username && usernameValid) ||
+              ("username" in initUserData && initUserData.username)
+            }
+          />
         </div>
         {initUserData.username ? (
           <p className={styles.displayEmail}>{initUserData.username}</p>
@@ -364,10 +391,7 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Email ID</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp value={initUserData.email} />
         </div>
         <span id="google-login"></span>
         {initUserData.email && (
@@ -378,10 +402,8 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Bio</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <p>({updatedUserData.bio.trim().length}/300)</p>
+          <XpCoinComp value={updatedUserData.bio} />
         </div>
         <textarea
           value={updatedUserData.bio}
@@ -399,10 +421,12 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Interest</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp
+            value={
+              "interestsOptions" in updatedUserData &&
+              updatedUserData.interestsOptions.length >= 1
+            }
+          />
         </div>
         <p className={styles.subText}>
           Select your top 3 interests in Web3 to showcase to the world!
@@ -463,6 +487,14 @@ const Profile = ({
           className={styles.saveBtn}
         >
           Save
+        </button>
+        <button
+          onClick={() => {
+            saveProfileDetails(username);
+          }}
+          className={styles.nextBtn}
+        >
+          Next
         </button>
       </span>
     </div>
@@ -554,29 +586,17 @@ const Socials = ({ initUserData }) => {
       <div className={styles.socialSection}>
         <div className={styles.secTitle}>
           <h2>Twitter</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp value={false} />
         </div>
-        <div className={styles.connectDiscord}>
-          <button
-            style={{
-              background: "rgba(29, 155, 240, 0.2)",
-              border: "1px solid #1D9BF0",
-              color: "#1D9BF0",
-            }}
-          >
+        <div className={styles.twitterBtn}>
+          <button>
             <img src="./twitter.png" alt="" />
             Verify Twitter
           </button>
         </div>
         <div className={styles.secTitle}>
           <h2>Discord</h2>
-          <span className={styles.xp}>
-            <img src="./xpCoin.png" alt="" />
-            <p>50</p>
-          </span>
+          <XpCoinComp value={initUserData.discord} />
         </div>
         {initUserData.discord ? (
           <p className={styles.displayEmail}>

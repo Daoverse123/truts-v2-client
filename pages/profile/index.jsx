@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./profile.module.scss";
-import ReactTooltip from "react-tooltip";
 import chainIconMap from "../../components/chainIconMap.json";
 import ContentLoader, { Facebook } from "react-content-loader";
 import addLoader from "../../utils/addLoader";
-
+import Head from "next/head";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 //components
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
@@ -30,7 +30,7 @@ import openNewTab from "../../utils/openNewTab";
 
 let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
-const NavSec = ({ selected, setSelected }) => {
+const NavSec = ({ elements, selected, setSelected }) => {
   //'Contributions'
   // 'Assets'
   return (
@@ -44,7 +44,14 @@ const NavSec = ({ selected, setSelected }) => {
             }}
             key={ele + i}
           >
-            {<p>{ele}</p>}
+            {
+              <p>
+                {ele}{" "}
+                {ele != "Assets" &&
+                  Object.keys(elements).length >= 3 &&
+                  `(${elements[ele.toLowerCase()] || "0"})`}
+              </p>
+            }
           </li>
         );
       })}
@@ -116,41 +123,81 @@ const fetchUserData = async (setter) => {
     })(),
   ]);
 
+  let data = {};
   if (user_data[0].status == 200) {
-    setter((data) => {
-      return { ...data, reviews: user_data[0].data.data.reviews };
-    });
+    data = { ...data, reviews: user_data[0].data.data.reviews };
   }
   if (user_data[1].status == 200) {
-    setter((data) => {
-      return { ...data, daos: user_data[1].data.data.listings };
-    });
+    data = { ...data, daos: user_data[1].data.data.listings };
   }
   if (user_data[2].status == 200) {
-    setter((data) => {
-      return { ...data, missions: user_data[2].data.data.missions };
-    });
+    data = { ...data, missions: user_data[2].data.data.missions };
   }
   if (user_data[3].status == 200) {
-    setter((data) => {
-      return { ...data, xp: user_data[3].data.data };
-    });
+    data = { ...data, xp: user_data[3].data.data };
   }
+
+  setter((state) => {
+    return { ...state, ...data };
+  });
+};
+
+const Loader = () => {
+  return (
+    <div className={styles.loader}>
+      <lottie-player
+        src="https://assets4.lottiefiles.com/packages/lf20_kqpwfbbz.json"
+        background="transparent"
+        speed="1"
+        style={{
+          width: "100%",
+          height: "100%",
+          marginBottom: "30px",
+        }}
+        autoplay
+        loop
+      ></lottie-player>
+    </div>
+  );
 };
 
 function Profile() {
   const [selectedNav, setSelectedNav] = useState("Reviews");
   const [userData, setuserData] = useState({});
   const [token, settoken] = useState(null);
+
   useEffect(() => {
     fetchUserData(setuserData);
     settoken(localStorage.getItem("token"));
   }, []);
 
+  const [elements, setelements] = useState({});
+
+  useEffect(() => {
+    let counts = {};
+    if ("missions" in userData) {
+      counts["missions"] = userData["missions"].length;
+    }
+    if ("reviews" in userData) {
+      counts["reviews"] = userData["reviews"].length;
+    }
+    if ("daos" in userData) {
+      counts["communities"] = userData["daos"].length;
+    }
+    setelements({ ...counts });
+  }, [userData]);
+
   return (
     <>
-      <ReactTooltip backgroundColor={"#747c90"} />
+      <Head>
+        <script
+          defer
+          src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
+        ></script>
+      </Head>
+
       {/* <OnBoardForm /> */}
+
       <Nav isStrech={true} isFloating />
       {/* <ProfileLogin /> */}
       <div className={styles.profilePage}>
@@ -213,11 +260,11 @@ function Profile() {
             <div className={styles.walletTabs}>
               {"wallets" in userData ? (
                 <div
-                  onClick={() => {
+                  id="w"
+                  data-tooltip-content="hello world"
+                  onClick={(e) => {
                     copyToClipBoard(userData.wallets.address);
                   }}
-                  id="w1"
-                  data-tip="Copy Address"
                   style={{
                     background: chainIconMap["ethereum"].color,
                     borderColor: chainIconMap["ethereum"].color,
@@ -226,7 +273,6 @@ function Profile() {
                 >
                   <img src={chainIconMap["ethereum"].icon} alt="" />
                   {minimizeWallet(userData.wallets.address)}
-                  <ReactTooltip backgroundColor={"#747c90"} />
                 </div>
               ) : (
                 <div
@@ -241,7 +287,6 @@ function Profile() {
                 >
                   {/* <img src={chainIconMap["ethereum"].icon} alt="" /> */}
                   Connect Wallet
-                  <ReactTooltip backgroundColor={"#747c90"} />
                 </div>
               )}
             </div>
@@ -263,71 +308,86 @@ function Profile() {
             />
           )}
         </div>
-        <NavSec selected={selectedNav} setSelected={setSelectedNav} />
-
-        {userData.isCompleted ? (
-          <>
-            {selectedNav == "Communities" && "daos" in userData && (
+        <NavSec
+          elements={elements}
+          selected={selectedNav}
+          setSelected={setSelectedNav}
+        />
+        {userData.isCompleted && (
+          <div className={styles.mainContent}>
+            {selectedNav == "Communities" && "daos" in userData ? (
               <Communites_temp {...{ userData }} />
+            ) : (
+              selectedNav == "Communities" && <Loader />
             )}
-            {selectedNav == "Missions" && "missions" in userData && (
+            {selectedNav == "Missions" && "missions" in userData ? (
               <Xp {...{ userData }} />
+            ) : (
+              selectedNav == "Missions" && <Loader />
             )}
-            {selectedNav == "Reviews" && "reviews" in userData && (
+            {selectedNav == "Reviews" && "reviews" in userData ? (
               <Reviews {...{ userData }} />
+            ) : (
+              selectedNav == "Reviews" && <Loader />
             )}
-            {selectedNav == "Assets" && "daos" in userData && (
+            {selectedNav == "Assets" && "daos" in userData ? (
               <TokenNftCon {...{ userData }} />
+            ) : (
+              selectedNav == "Assets" && <Loader />
             )}
-          </>
-        ) : (
-          <div
-            className={
-              styles.completeProfilePrompt + addLoader(!("_id" in userData))
-            }
-          >
-            <span>
-              <h1>Complete Your profile to get complete access to Truts</h1>
-              <ul>
-                <li>
-                  <img
-                    src={
-                      "email" in userData
-                        ? "assets/tick.png"
-                        : "assets/wrong.png"
-                    }
-                    alt=""
-                  />{" "}
-                  Email Id
-                </li>
-                <li>
-                  <img
-                    src={
-                      "wallets" in userData
-                        ? "assets/tick.png"
-                        : "assets/wrong.png"
-                    }
-                    alt=""
-                  />{" "}
-                  Connect Wallet
-                </li>
-                <li>
-                  <img
-                    src={
-                      "discord" in userData
-                        ? "assets/tick.png"
-                        : "assets/wrong.png"
-                    }
-                    alt=""
-                  />{" "}
-                  Connect Discord
-                </li>
-              </ul>
-            </span>
-            <Link href={"/edit-profile"}>
-              <button>Complete Profile</button>
-            </Link>
           </div>
+        )}
+
+        {"isCompleted" in userData && !userData.isCompleted && (
+          <>
+            <div
+              className={
+                styles.completeProfilePrompt + addLoader(!("_id" in userData))
+              }
+            >
+              <span>
+                <h1>Complete Your profile to get complete access to Truts</h1>
+                <ul>
+                  <li>
+                    <img
+                      src={
+                        "email" in userData
+                          ? "assets/tick.png"
+                          : "assets/wrong.png"
+                      }
+                      alt=""
+                    />{" "}
+                    Email Id
+                  </li>
+                  <li>
+                    <img
+                      src={
+                        "wallets" in userData
+                          ? "assets/tick.png"
+                          : "assets/wrong.png"
+                      }
+                      alt=""
+                    />{" "}
+                    Connect Wallet
+                  </li>
+                  <li>
+                    <img
+                      src={
+                        "discord" in userData
+                          ? "assets/tick.png"
+                          : "assets/wrong.png"
+                      }
+                      alt=""
+                    />{" "}
+                    Connect Discord
+                  </li>
+                </ul>
+              </span>
+              <Link href={"/edit-profile"}>
+                <button>Complete Profile</button>
+              </Link>
+            </div>
+          </>
         )}
       </div>
       <Footer />
@@ -464,568 +524,13 @@ const Communites_temp = ({ userData }) => {
   );
 };
 
-const Communities = () => {
-  return (
-    <>
-      <div className={styles.statCards}>
-        <div className={styles.stat}>
-          <h3>Avg Attendence Score</h3>
-          <p>till Date</p>
-          <h1 style={{ color: "#44AC21" }}>82.33</h1>
-        </div>
-        <div className={styles.stat}>
-          <h3>Total No. of Communites</h3>
-          <p>till Date</p>
-          <h1>128</h1>
-        </div>
-        <div style={{ width: "fit-content" }} className={styles.stat}>
-          <h3>Your Most Active Community</h3>
-          <p>Updated 1m ago</p>
-          <h1>Bankless</h1>
-        </div>
-        <div className={styles.stat}>
-          <h3>Dataset XYZ</h3>
-          <p>till Date</p>
-          <h1>82.33</h1>
-        </div>
-      </div>
-
-      <div className={styles.list_communities_desktop}>
-        <h1 className={styles.title}>List of Communities</h1>
-        <span className={styles.tableHead}>
-          <p className={styles.name}>Name</p>
-          <p className={styles.joined}>Joined on</p>
-          <p className={styles.score}>Attendence Score</p>
-          <p className={styles.friends}>Your friends</p>
-        </span>
-        <div className={styles.table}>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-          <span className={styles.entry}>
-            <p className={styles.name}>
-              <img
-                src="https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000"
-                alt=""
-              />
-              Bankless
-            </p>
-            <p className={styles.joined}>Jul 22, 2021</p>
-            <p className={styles.score}>82.33</p>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-10 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span style={{ transform: `translateX(${-10 * 2.5}px)` }}>
-                +4 others
-              </span>
-              <img className={styles.arrow} src={downArrow.src} alt="" />
-            </span>
-          </span>
-        </div>
-      </div>
-      <div className={styles.list_communities_mobile}>
-        <h1 className={styles.title}>List of Communities</h1>
-        <span className={styles.daoListCon}>
-          <div className={styles.daoEntry}>
-            <span className={styles.daoName}>
-              <img src="/grad.jpg" alt="" />
-              <h1>Bankless DAO</h1>
-            </span>
-            <h2>Jul 22, 2021 83.5% Attendence Score</h2>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span
-                className={styles.text}
-                style={{
-                  transform: `translateX(${-4 * 2.5}px)`,
-                  width: "max-content",
-                }}
-              >
-                +4 others
-              </span>
-            </span>
-          </div>
-          <div className={styles.daoEntry}>
-            <span className={styles.daoName}>
-              <img src="/grad.jpg" alt="" />
-              <h1>Bankless DAO</h1>
-            </span>
-            <h2>Jul 22, 2021 83.5% Attendence Score</h2>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span
-                className={styles.text}
-                style={{
-                  transform: `translateX(${-4 * 2.5}px)`,
-                  width: "max-content",
-                }}
-              >
-                +4 others
-              </span>
-            </span>
-          </div>
-          <div className={styles.daoEntry}>
-            <span className={styles.daoName}>
-              <img src="/grad.jpg" alt="" />
-              <h1>Bankless DAO</h1>
-            </span>
-            <h2>Jul 22, 2021 83.5% Attendence Score</h2>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span
-                className={styles.text}
-                style={{
-                  transform: `translateX(${-4 * 2.5}px)`,
-                  width: "max-content",
-                }}
-              >
-                +4 others
-              </span>
-            </span>
-          </div>
-          <div className={styles.daoEntry}>
-            <span className={styles.daoName}>
-              <img src="/grad.jpg" alt="" />
-              <h1>Bankless DAO</h1>
-            </span>
-            <h2>Jul 22, 2021 83.5% Attendence Score</h2>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span
-                className={styles.text}
-                style={{
-                  transform: `translateX(${-4 * 2.5}px)`,
-                  width: "max-content",
-                }}
-              >
-                +4 others
-              </span>
-            </span>
-          </div>
-          <div className={styles.daoEntry}>
-            <span className={styles.daoName}>
-              <img src="/grad.jpg" alt="" />
-              <h1>Bankless DAO</h1>
-            </span>
-            <h2>Jul 22, 2021 83.5% Attendence Score</h2>
-            <span className={styles.friends}>
-              <img className={styles.friendImg} src={Placeholder} alt="" />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 1}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 2}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <img
-                className={styles.friendImg}
-                style={{ transform: `translateX(${-4 * 3}px)` }}
-                src={Placeholder}
-                alt=""
-              />
-              <span
-                className={styles.text}
-                style={{
-                  transform: `translateX(${-4 * 2.5}px)`,
-                  width: "max-content",
-                }}
-              >
-                +4 others
-              </span>
-            </span>
-          </div>
-        </span>
-      </div>
-    </>
-  );
-};
-
 const TokenNftCon = ({ userData }) => {
   const [selectedTab, setselectedTab] = useState("NFTS");
   console.log(selectedTab);
 
   return (
     <>
-      <div className={styles.statCards + " " + styles.appear}>
+      {/* <div className={styles.statCards + " " + styles.appear}>
         <div className={styles.stat}>
           <h3>Value of Assets</h3>
           <p>till Date</p>
@@ -1046,7 +551,7 @@ const TokenNftCon = ({ userData }) => {
           <p>Updated 1m ago</p>
           <h1>46</h1>
         </div>
-      </div>
+      </div> */}
       <section className={styles.tokenNftSec + " " + styles.appear}>
         <div className={styles.tokenSwitch}>
           <button
@@ -1246,172 +751,6 @@ const Tag = ({ src, color, title }) => {
 
 const copyToClipBoard = (txt) => {
   navigator.clipboard.writeText(txt);
-};
-
-const OnBoardForm = () => {
-  return (
-    <div className={styles.onBoardingFlow}>
-      <div className={styles.onBoardingForm}>
-        <div className={styles.progressHeader}>
-          <div className={styles.title}>
-            <h1>Your Profile</h1>
-            <p>Complete every details on your profile to earn XP points</p>
-          </div>
-          <div className={styles.xpCon}>
-            <span className={styles.xpIcon}>
-              <img src="/xpCoin.png" alt="" />
-              <p>100 XP</p>
-            </span>
-            <p>Earned so far</p>
-          </div>
-          <div className={styles.progressBar}>
-            <div className={styles.progressInner}></div>
-          </div>
-        </div>
-        <div className={styles.formContent}>
-          <div className={styles.inputTitle}>
-            <span className={styles.titleSub}>
-              <h1>Your Profile Picture</h1>
-            </span>
-            <span className={styles.iconXp}>
-              <img src="/xpCoin.png" alt="" />
-              <p>50</p>
-            </span>
-          </div>
-          <img className={styles.profilePicture} src="/grad.jpg" alt="" />
-          <div className={styles.inputTitle}>
-            <span className={styles.titleSub}>
-              <h1>TrutsID</h1>
-              <p>Your ENS/Primary Wallet address also serves as Truts ID</p>
-            </span>
-            <span className={styles.iconXp}>
-              <img src="/xpCoin.png" alt="" />
-              <p>50</p>
-            </span>
-          </div>
-          <div className={styles.walletSec}>
-            <span className={styles.walletChip}>
-              <p>xefd....3tf23</p>
-              <img src="/close-icon.png" alt="" />
-            </span>
-            <span className={styles.walletChip}>
-              <p>xefd....3tf23</p>
-              <img src="/close-icon.png" alt="" />
-            </span>
-            <span className={styles.walletChipAdd}>
-              <p>Add more Wallet</p>
-              <img src="/add-icon.png" alt="" />
-            </span>
-          </div>
-          <div className={styles.inputTitle}>
-            <span className={styles.titleSub}>
-              <h1>Bio</h1>
-            </span>
-          </div>
-          <textarea className={styles.bioInput}></textarea>
-          <div className={styles.inputTitle}>
-            <span className={styles.titleSub}>
-              <h1>Your Socials</h1>
-              <p>Connect all your socials to earn XP points</p>
-            </span>
-          </div>
-          <div className={styles.connectSocials}>
-            <div className={styles.socialInput}>
-              <span className={styles.socialInputTitle}>
-                <p>Twitter</p>
-                <img src="/gift.png" alt="" />
-                <p className={styles.xpNum}>50xp</p>
-                <img src="/info.png" alt="" />
-              </span>
-              <span className={styles.walletChip}>
-                <p>xefd....3tf23</p>
-                <img src="/close-icon.png" alt="" />
-              </span>
-            </div>
-          </div>
-          <div className={styles.connectSocials}>
-            <div className={styles.socialInput}>
-              <span className={styles.socialInputTitle}>
-                <p>Discord</p>
-                <img src="/gift.png" alt="" />
-                <p className={styles.xpNum}>50xp</p>
-                <img src="/info.png" alt="" />
-              </span>
-              <span className={styles.walletChip}>
-                <p>xefd....3tf23</p>
-                <img src="/close-icon.png" alt="" />
-              </span>
-            </div>
-          </div>
-          <div className={styles.connectSocials}>
-            <div className={styles.socialInput}>
-              <span className={styles.socialInputTitle}>
-                <p>Email</p>
-                <img src="/gift.png" alt="" />
-                <p className={styles.xpNum}>50xp</p>
-                <img src="/info.png" alt="" />
-              </span>
-              <span className={styles.walletChip}>
-                <p>xefd....3tf23</p>
-                <img src="/close-icon.png" alt="" />
-              </span>
-            </div>
-          </div>
-          <div className={styles.inputTitle}>
-            <span className={styles.titleSub}>
-              <h1>Your Tags</h1>
-              <p>Select tags that describes you</p>
-            </span>
-          </div>
-          <div className={styles.tagsCon}>
-            <div className={styles.selectedChips}>
-              <div className={styles.chip_selected}>
-                <p>Product Designer</p>
-                <img src="/close-icon.png" alt="" />
-              </div>
-              <div className={styles.chip_selected}>
-                <p>Product Designer</p>
-                <img src="/close-icon.png" alt="" />
-              </div>
-              <div className={styles.chip_selected}>
-                <p>Product Designer</p>
-                <img src="/close-icon.png" alt="" />
-              </div>
-            </div>
-            <div className={styles.chipOptions}>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-              <div className={styles.chip}>
-                <p>Product Designer</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export default Profile;

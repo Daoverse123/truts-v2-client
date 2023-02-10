@@ -179,9 +179,26 @@ $mobile: 650px;
         width: 166px;
         height: 41px;
         background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
-        border-radius: 16px;
+
         color: white;
         border: none;
+
+        &:hover {
+            background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+            color: white;
+        }
+    }
+    .nextBtn {
+        margin-left: 15px;
+        border: 1.5px solid rgba(123, 97, 255, 1);
+        color: rgb(83, 55, 226);
+        border-radius: 16px;
+        width: 166px;
+        background-color: transparent;
+        &:hover {
+            background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+            color: white;
+        }
     }
 
     .bottomNav {
@@ -191,6 +208,7 @@ $mobile: 650px;
         .saveBtn {
             margin-left: auto;
         }
+
         @media (max-width: $mobile) {
             width: 100%;
             .saveBtn {
@@ -236,6 +254,12 @@ $mobile: 650px;
         justify-content: space-between;
         width: $secWidth;
         margin-bottom: 0px;
+        align-items: center;
+        p {
+            margin: 0;
+            margin-left: 10px;
+            font-size: 12px;
+        }
         h2 {
             font-weight: 500;
             font-size: 14px;
@@ -482,6 +506,30 @@ $mobile: 650px;
         img {
             margin-right: 9.5px;
             width: 18px;
+        }
+    }
+}
+
+.twitterBtn {
+    @extend .connectDiscord;
+    button {
+        background: rgba(29, 155, 240, 1);
+        color: white;
+        font-weight: 500;
+
+        img {
+            filter: brightness(0) invert(1);
+        }
+
+        &:hover {
+            transition: all 0.3s ease-in;
+            background: rgba(29, 155, 240, 0.2);
+            border: 1px solid #1d9bf0;
+            color: #1d9bf0;
+            img {
+                transition: all 0.3s ease-in;
+                filter: brightness(1);
+            }
         }
     }
 }
