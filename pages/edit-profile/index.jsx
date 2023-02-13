@@ -7,6 +7,7 @@ import axios from "axios";
 import WalletConnect from "../../components/WalletConnect_v3";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
+import Head from "next/head";
 
 let Placeholder = "/profile.jpg";
 
@@ -149,6 +150,14 @@ function Index() {
     <>
       {LoaderVisible && <Loader />}
       <Nav isFloating={true} />
+      <Head>
+        <title>Edit Profile</title>
+        <meta
+          name="description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <WalletConnect
         isLogin={true}
         walletConnectVisible={showWallet}
