@@ -16,6 +16,7 @@ const CATEGORY_LIST = [
   "DAO",
   "Media",
   "Investment",
+  "Ordinals",
   "Service",
   "Grant",
   "Social",
