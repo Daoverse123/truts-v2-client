@@ -402,7 +402,7 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Bio</h2>
-          <p>({updatedUserData.bio.trim().length}/300)</p>
+          <p>({updatedUserData.bio?.trim()?.length}/300)</p>
           <XpCoinComp value={updatedUserData.bio} />
         </div>
         <textarea

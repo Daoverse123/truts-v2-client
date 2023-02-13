@@ -4,7 +4,6 @@ import chainIconMap from "../../components/chainIconMap.json";
 import ContentLoader, { Facebook } from "react-content-loader";
 import addLoader from "../../utils/addLoader";
 import Head from "next/head";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 //components
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
@@ -35,26 +34,29 @@ const NavSec = ({ elements, selected, setSelected }) => {
   // 'Assets'
   return (
     <ul className={styles.navSec}>
-      {["Communities", "Reviews", "Missions", "Assets"].map((ele, i) => {
-        return (
-          <li
-            className={selected == ele ? styles.selected : null}
-            onClick={() => {
-              setSelected(ele);
-            }}
-            key={ele + i}
-          >
-            {
-              <p>
-                {ele}{" "}
-                {ele != "Assets" &&
-                  Object.keys(elements).length >= 3 &&
-                  `(${elements[ele.toLowerCase()] || "0"})`}
-              </p>
-            }
-          </li>
-        );
-      })}
+      {["Communities", "Reviews", "Missions", "Assets", "Referral"].map(
+        (ele, i) => {
+          return (
+            <li
+              className={selected == ele ? styles.selected : null}
+              onClick={() => {
+                setSelected(ele);
+              }}
+              key={ele + i}
+            >
+              {
+                <p>
+                  {ele}{" "}
+                  {ele != "Assets" &&
+                    ele != "Referral" &&
+                    Object.keys(elements).length >= 3 &&
+                    `(${elements[ele.toLowerCase()] || "0"})`}
+                </p>
+              }
+            </li>
+          );
+        }
+      )}
     </ul>
   );
 };
@@ -332,6 +334,11 @@ function Profile() {
             )}
             {selectedNav == "Assets" && "daos" in userData ? (
               <TokenNftCon {...{ userData }} />
+            ) : (
+              selectedNav == "Assets" && <Loader />
+            )}
+            {selectedNav == "Referral" && "daos" in userData ? (
+              <Referral />
             ) : (
               selectedNav == "Assets" && <Loader />
             )}
@@ -733,6 +740,30 @@ const Mission = ({ data }) => {
         <img src="/xpCoin.png" alt="" />
         <p>{data.trutsXP} XP</p>
       </span>
+    </div>
+  );
+};
+
+const Referral = () => {
+  return (
+    <div className={styles.referral}>
+      <div className={styles.linkBox}>
+        <div className={styles.linkInfo}>
+          <img src="/profiles/people.png" alt="" />
+          <h1>My referral link</h1>
+          <p>
+            Share your unique referral link to invite your friends to get access
+            to Truts Profiles and earn 50 XP Points for each referral.{" "}
+          </p>
+        </div>
+        <div className={styles.link}>
+          <p>truts.xyz/?ref=0xc3..A122</p>
+          <img src="/profiles/link.png" alt="" />
+        </div>
+      </div>
+      <div className={styles.stages}>
+        <span></span>
+      </div>
     </div>
   );
 };
