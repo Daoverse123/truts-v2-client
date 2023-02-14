@@ -340,7 +340,7 @@ function Profile() {
             {selectedNav == "Referral" && "daos" in userData ? (
               <Referral />
             ) : (
-              selectedNav == "Assets" && <Loader />
+              selectedNav == "Refferal" && <Loader />
             )}
           </div>
         )}
@@ -762,7 +762,40 @@ const Referral = () => {
         </div>
       </div>
       <div className={styles.stages}>
-        <span></span>
+        <span className={styles.topBar}>
+          <span className={styles.title}>
+            <h1>Copper</h1>
+            <p>Current referral</p>
+          </span>
+          <button className={styles.topRightBtn}>Claim rewards</button>
+        </span>
+        <div className={styles.milestones}>
+          {[1, 2, 3, 4, 5].map((ele) => {
+            return (
+              <span className={styles.stone} key={ele + "m"}>
+                {ele}
+              </span>
+            );
+          })}
+        </div>
+        <div className={styles.stats}>
+          <div className={styles.stat}>
+            <img src="/referral/people-grey.png" alt="" />
+            <h3>Total referrals done</h3>
+            <p>3</p>
+          </div>
+          <div className={styles.stat}>
+            <img src="/referral/graph.png" alt="" />
+            <h3>Current XP Multiplier</h3>
+            <p>3</p>
+          </div>
+          <div className={styles.stat}>
+            <img src="/referral/cup.png" alt="" />
+            <h3>XP Earned</h3>
+            <p>3</p>
+          </div>
+        </div>
+        <button className={styles.bottomBtn}>Claim rewards</button>
       </div>
     </div>
   );
