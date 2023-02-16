@@ -45,7 +45,7 @@ function Index({ type, target }) {
             </span>
           </Link>
         </div> */}{" "}
-          <Mission />
+          {/* <Mission /> */}
           {type == "not-member" && (
             <ErrorState
               message={

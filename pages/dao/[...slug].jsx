@@ -60,6 +60,24 @@ const getMissionStatus = async (data, setmissions) => {
   setmissions({ missions: res });
 };
 
+const fetchReviews = async (id, setter) => {
+  let jwt = localStorage.getItem("token");
+  let url = `${P_API}/public/listing/${id}/reviews`;
+  let headers = {};
+
+  if (jwt) {
+    url = `${P_API}/listing/${id}/reviews`;
+    headers = {
+      headers: {
+        Authorization: jwt,
+      },
+    };
+  }
+
+  let res = await axios.get(url, headers);
+  setter([...res.data.data.reviews]);
+};
+
 function Dao({ dao_data, rid, slug }) {
   const [selected, setSelected] = useState("Reviews");
   //console.log(dao_data);
@@ -73,9 +91,11 @@ function Dao({ dao_data, rid, slug }) {
   let tipReviewInfo = { review_details, setreview_details };
 
   const [missions, setmissions] = useState([]);
+  const [reviews, setreviews] = useState([]);
+
   const fetchMissions = async () => {
     try {
-      let res = await axios.get(`${P_API}/mission?communityID=${dao_data._id}`);
+      let res = await axios.get(`${P_API}/mission?listingID=${dao_data._id}`);
       await getMissionStatus(res.data.data, setmissions);
     } catch (error) {
       console.log(error);
@@ -84,6 +104,7 @@ function Dao({ dao_data, rid, slug }) {
 
   useEffect(() => {
     fetchMissions();
+    fetchReviews(dao_data._id, setreviews);
     localStorage.setItem("mission-callback", slug);
   }, [slug]);
 
@@ -176,7 +197,7 @@ function Dao({ dao_data, rid, slug }) {
                 rid={rid}
                 slug={slug}
                 setreview_details={setreview_details}
-                dao_data={dao_data}
+                reviews={reviews}
                 setwalletConnectVisible={setwalletConnectVisible}
                 settippingFlowVisible={settippingFlowVisible}
                 key={slug}
@@ -306,7 +327,8 @@ const InfoSec = ({ dao_data }) => {
         <Button
           onClick={() => {
             setCookie("target", slug);
-            window.location.href = `${API}/auth/discord`;
+            // window.location.href = `${API}/auth/discord`;
+            window.location.href = `/add-review?id=${dao_data._id}`;
           }}
           type={"secondary"}
           label={"Write a Review"}
@@ -361,7 +383,7 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
 };
 
 const ReviewsSec = ({
-  dao_data,
+  reviews,
   setwalletConnectVisible,
   settippingFlowVisible,
   setreview_details,
@@ -374,13 +396,23 @@ const ReviewsSec = ({
 
   useEffect(() => {
     if (rid) {
-      dao_data.reviews.forEach((element) => {
+      reviews.forEach((element) => {
         if (element._id == rid) {
           setselected(element);
         }
       });
     }
   }, []);
+
+  if (reviews.length == 0) {
+    return (
+      <div className={styles.reviewSec}>
+        <img className={styles.loader} src="/white-loader.gif" alt="" />
+      </div>
+    );
+  }
+
+  console.log(reviews);
 
   return (
     <div className={styles.reviewSec}>
@@ -415,7 +447,7 @@ const ReviewsSec = ({
           />
         )}
         {selectedFilter == "Newest"
-          ? dao_data.reviews
+          ? reviews
               .map((review, idx) => {
                 if (review._id == rid) {
                   //filter selected rid
@@ -432,7 +464,7 @@ const ReviewsSec = ({
                 );
               })
               .reverse()
-          : dao_data.reviews.map((review, idx) => {
+          : reviews.map((review, idx) => {
               if (review._id == rid) {
                 //filter selected rid
                 return null;
@@ -459,72 +491,21 @@ const ReviewComp = ({
   setreview_details,
   selected,
 }) => {
-  let min_public_address =
-    review.public_address.slice(0, 5) +
-    "...." +
-    review.public_address.slice(-3);
+  let name = review.user.name.slice(0, 5) + "...." + review.user.name.slice(-3);
   const [isreadMore, setisreadMore] = useState(false);
-
-  const [thumbs_up_count, setthumbs_up_count] = useState(review.thumbs_up);
-  const [thumbs_down_count, setthumbs_down_count] = useState(
-    review.thumbs_down
-  );
-
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
+  const [voteState, setvoteState] = useState({
+    vote: review.vote,
+    userVote: review.voteState,
+  });
 
-  let isTextLarge = review.review_desc.length >= 400;
+  let isTextLarge = review.comment.length >= 400;
 
   const getReviewDesc = () => {
     if (isTextLarge && !isreadMore) {
-      return review.review_desc.slice(0, 400) + "...";
+      return review.comment.slice(0, 400) + "...";
     }
-    return review.review_desc;
-  };
-
-  const rateReviewHandler = async (rating) => {
-    let wallet_state = JSON.parse(localStorage.getItem("wallet_state"));
-    try {
-      let address = wallet_state.address;
-      setrateReviewLoading(true);
-      let api_res = await axios.post(`${API}/review-v2/rate-review`, {
-        review_id: review._id,
-        address,
-        rating,
-      });
-      if (api_res.status != 200) {
-        setrateReviewLoading(false);
-        return null;
-      }
-
-      let types = { NEW: "new", SWITCH: "switch", DELETE: "delete" };
-      if (api_res.data.type == types.NEW) {
-        //new rating
-        if (api_res.data.rating) {
-          setthumbs_up_count((c) => c + 1);
-        } else {
-          setthumbs_down_count((c) => c + 1);
-        }
-      } else if (api_res.data.type == types.DELETE) {
-        //delete rating
-        if (api_res.data.rating) {
-          setthumbs_up_count((c) => c - 1);
-        } else {
-          setthumbs_down_count((c) => c - 1);
-        }
-      } else if (api_res.data.type == types.SWITCH) {
-        //switch rating
-        if (api_res.data.rating) {
-          setthumbs_up_count((c) => c + 1);
-          setthumbs_down_count((c) => c - 1);
-        } else {
-          setthumbs_down_count((c) => c + 1);
-          setthumbs_up_count((c) => c - 1);
-        }
-      }
-      setrateReviewLoading(false);
-    } catch (error) {
-      setwalletConnectVisible(true);
-    }
+    return review.comment;
   };
 
   const intiateTip = () => {
@@ -542,7 +523,10 @@ const ReviewComp = ({
       return retobj;
     }
 
-    setreview_details({ address: review.public_address, chain: review.chain });
+    setreview_details({
+      address: review.oldData.public_address,
+      chain: review.chain,
+    });
     let wallet_state = JSON.parse(localStorage.getItem("wallet_state"));
     if (wallet_state) {
       console.log("Review chainMap ", review.chain);
@@ -564,6 +548,38 @@ const ReviewComp = ({
     }
   };
 
+  const rateReviewHandler = async (rating) => {
+    setrateReviewLoading(true);
+    let vote = rating;
+    if (
+      voteState.userVote &&
+      "action" in voteState.userVote &&
+      voteState.userVote.action.length > 1
+    ) {
+      vote = "UNVOTE";
+    }
+    let res = await axios.post(
+      `${P_API}/review/${review._id}/vote`,
+      {
+        action: vote,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (res.status == 201 || res.status == 200) {
+      setrateReviewLoading(false);
+
+      setvoteState((vs) => {
+        vs.vote = res.data.data.review.vote;
+        vs.userVote = res.data.data.vote;
+        return { ...vs };
+      });
+    }
+  };
+
   return (
     <>
       <div
@@ -571,16 +587,9 @@ const ReviewComp = ({
         style={selected ? { border: "2px solid #3065f3" } : {}}
       >
         <div className={styles.userInfo}>
-          <span
-            className={styles.profilePic}
-            style={{ background: review.profile_img }}
-            src={
-              "https://pbs.twimg.com/profile_banners/1380589844838055937/1634756837/1500x500"
-            }
-            alt=""
-          />
+          <img className={styles.profilePic} src={"/profile-old.png"} alt="" />
           <span>
-            <p className={styles.address}>{min_public_address}</p>
+            <p className={styles.address}>{name}</p>
             <StarComp size={"s"} rating={review.rating} />
           </span>
         </div>
@@ -599,23 +608,23 @@ const ReviewComp = ({
           <span
             className={styles.iconText}
             onClick={() => {
-              rateReviewHandler(true);
+              rateReviewHandler("UP_VOTE");
             }}
           >
             <img src={rateReviewLoading ? loader.src : thumbs_up.src} alt="" />
-            <p>{thumbs_up_count}</p>
+            <p>{voteState.vote.up}</p>
           </span>
           <span
             className={styles.iconText}
             onClick={() => {
-              rateReviewHandler(false);
+              rateReviewHandler("DOWN_VOTE");
             }}
           >
             <img
               src={rateReviewLoading ? loader.src : thumbs_down.src}
               alt=""
             />
-            <p>{thumbs_down_count}</p>
+            <p>{voteState.vote.down}</p>
           </span>
           {/* <span className={styles.iconText}  >
                         <img src={share.src} alt="" />
@@ -670,22 +679,19 @@ export async function getServerSideProps(ctx) {
   // Fetch data from external API
   if (!slug) return null;
   let res = await fetchData(slug[0]);
+  console.log(res);
   let rid = slug[1] || "";
   // Pass data to the page via props
 
-  let reviews = res.reviews.map((ele) => {
-    return { ...ele, profile_img: newGradient() };
-  });
-
-  return { props: { dao_data: { ...res, reviews }, rid: rid, slug: slug[0] } };
+  return { props: { dao_data: { ...res }, rid: rid, slug: slug[0] } };
 }
 
 const fetchData = async (slug) => {
   console.log("slug :", slug);
   try {
-    const res = await axios.get(`${API}/dao/get-dao-by-slug?slug=${slug}`);
-    if (res.data.status) {
-      return JSON.parse(JSON.stringify(res.data.data));
+    const res = await axios.get(`${P_API}/listing/${slug}`);
+    if (res.status == 200) {
+      return JSON.parse(JSON.stringify(res.data.data.listing));
     } else {
       alert("DAO NOT FOUND");
     }

@@ -99,7 +99,10 @@ const fetchUserData = async (setter) => {
       if (!("discord" in main_user_data)) {
         return { status: 500 };
       }
-      let res = await axios.get(`${P_API}/user/reviews`, option);
+      let res = await axios.get(
+        `${P_API}/user/${main_user_data.wallets.address}/reviews`,
+        option
+      );
       return res;
     })(),
     (async () => {
@@ -123,6 +126,13 @@ const fetchUserData = async (setter) => {
       let res = await axios.get(`${P_API}/user/truts-xp`, option);
       return res;
     })(),
+    (async () => {
+      if (!("discord" in main_user_data)) {
+        return { status: 500 };
+      }
+      let res = await axios.get(`${P_API}/user/referral`, option);
+      return res;
+    })(),
   ]);
 
   let data = {};
@@ -137,6 +147,9 @@ const fetchUserData = async (setter) => {
   }
   if (user_data[3].status == 200) {
     data = { ...data, xp: user_data[3].data.data };
+  }
+  if (user_data[4].status == 200) {
+    data = { ...data, referral: user_data[4].data.data.referral };
   }
 
   setter((state) => {
@@ -337,8 +350,8 @@ function Profile() {
             ) : (
               selectedNav == "Assets" && <Loader />
             )}
-            {selectedNav == "Referral" && "daos" in userData ? (
-              <Referral />
+            {selectedNav == "Referral" && "referral" in userData ? (
+              <Referral {...{ userData }} />
             ) : (
               selectedNav == "Refferal" && <Loader />
             )}
@@ -445,7 +458,8 @@ const Reviews = ({ userData }) => {
 
 const ReviewComp = ({ data, userData }) => {
   let dao_name = data.listing.name;
-  let review = data.content;
+  let image = data.listing.photo.logo.secure_url;
+  let review = data.comment;
   let rating = data.rating;
   return (
     <>
@@ -453,7 +467,7 @@ const ReviewComp = ({ data, userData }) => {
         <div className={styles.userInfo}>
           <img
             className={styles.profilePic}
-            src={userData.photo?.secure_url || "/profile.jpg"}
+            src={image || "/profile.jpg"}
             alt=""
           />
           <span>
@@ -470,11 +484,11 @@ const ReviewComp = ({ data, userData }) => {
         <div className={styles.bottom_nav}>
           <span className={styles.iconText}>
             <img src={thumbs_up.src} alt="" />
-            <p>{5}</p>
+            <p>{data.vote.up}</p>
           </span>
           <span className={styles.iconText}>
             <img src={thumbs_down.src} alt="" />
-            <p>{6}</p>
+            <p>{data.vote.down}</p>
           </span>
           <span className={styles.iconText}>
             <img src={share.src} alt="" />
@@ -744,7 +758,25 @@ const Mission = ({ data }) => {
   );
 };
 
-const Referral = () => {
+let stageColors = [
+  "rgb(212,171,133)",
+  "rgb(255,178,102)",
+  "rgb(217,217,217)",
+  "rgb(255,231,102)",
+  "rgb(255,231,102)",
+];
+
+let tiers = ["COPPER", "BRONZE", "SILVER", "GOLD", "DIAMOND"];
+
+const Referral = ({ userData }) => {
+  let { referral } = userData;
+
+  const [link, setlink] = useState("");
+
+  useEffect(() => {
+    setlink(`${location.origin}/?ref=${userData.wallets.address}`);
+  }, []);
+
   return (
     <div className={styles.referral}>
       <div className={styles.linkBox}>
@@ -757,8 +789,20 @@ const Referral = () => {
           </p>
         </div>
         <div className={styles.link}>
-          <p>truts.xyz/?ref=0xc3..A122</p>
-          <img src="/profiles/link.png" alt="" />
+          <p
+            onClick={() => {
+              navigator.clipboard.writeText(link);
+            }}
+          >
+            {limitCenter(20, 5, link)}
+          </p>
+          <img
+            onClick={() => {
+              navigator.clipboard.writeText(link);
+            }}
+            src="/profiles/link.png"
+            alt=""
+          />
         </div>
       </div>
       <div className={styles.stages}>
@@ -767,13 +811,24 @@ const Referral = () => {
             <h1>Copper</h1>
             <p>Current referral</p>
           </span>
-          <button className={styles.topRightBtn}>Claim rewards</button>
+          {/* <button className={styles.topRightBtn}>Claim rewards</button> */}
         </span>
         <div className={styles.milestones}>
-          {[1, 2, 3, 4, 5].map((ele) => {
+          {tiers.map((ele, idx) => {
             return (
-              <span className={styles.stone} key={ele + "m"}>
-                {ele}
+              <span
+                style={
+                  ele == referral?.tier?.teir
+                    ? {
+                        backgroundColor: stageColors[idx],
+                        color: "white",
+                      }
+                    : {}
+                }
+                className={styles.stone}
+                key={ele + "m"}
+              >
+                {idx + 1}
               </span>
             );
           })}
@@ -782,23 +837,27 @@ const Referral = () => {
           <div className={styles.stat}>
             <img src="/referral/people-grey.png" alt="" />
             <h3>Total referrals done</h3>
-            <p>3</p>
+            <p>{referral.useCount}</p>
           </div>
           <div className={styles.stat}>
             <img src="/referral/graph.png" alt="" />
             <h3>Current XP Multiplier</h3>
-            <p>3</p>
+            <p>{referral.multiplier}</p>
           </div>
           <div className={styles.stat}>
             <img src="/referral/cup.png" alt="" />
             <h3>XP Earned</h3>
-            <p>3</p>
+            <p>{referral.xpEarned}</p>
           </div>
         </div>
-        <button className={styles.bottomBtn}>Claim rewards</button>
+        {/* <button className={styles.bottomBtn}>Claim rewards</button> */}
       </div>
     </div>
   );
+};
+
+let limitCenter = (s, e, name) => {
+  return name.slice(0, s) + "..." + name.slice(-e);
 };
 
 const Tag = ({ src, color, title }) => {

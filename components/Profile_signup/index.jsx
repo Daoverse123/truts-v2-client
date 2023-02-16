@@ -3,7 +3,11 @@ import styles from "./profile_signup.module.scss";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const ProfileLogin = ({ showWalletConnect, setprofileSignupPrompt }) => {
+const ProfileLogin = ({
+  showWalletConnect,
+  setprofileSignupPrompt,
+  referral,
+}) => {
   let P_API = process.env.P_API;
   const router = useRouter();
 
@@ -13,9 +17,19 @@ const ProfileLogin = ({ showWalletConnect, setprofileSignupPrompt }) => {
 
   async function handleCredentialResponse(response) {
     // console.log("Encoded JWT ID token: " + response.credential);
-    let res = await axios.post(`${P_API}/login/google`, {
+
+    let body = {
       token: response.credential,
-    });
+    };
+
+    if (referral && referral.length > 0) {
+      body = {
+        token: response.credential,
+        referral: referral,
+      };
+    }
+
+    let res = await axios.post(`${P_API}/login/google`, body);
     if (res.status == 200) {
       let jwt = res.data.data.token;
       localStorage.setItem("token", `Bearer ${jwt}`);

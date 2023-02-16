@@ -52,11 +52,11 @@ export default function Component({ min, data, isCompleted }) {
       <Link href={`/mission/${data._id}`}>
         <span className={styles.topCon + " " + (isCompleted && styles.blur)}>
           <img
-            src={data.community.dao_logo || "/blue.png"}
+            src={data.listing.photo.logo.secure_url || "/blue.png"}
             alt=""
             className={styles.profileImg}
           />
-          <h2>{limitText(20, data.community.dao_name)}</h2>
+          <h2>{limitText(20, data.listing.name)}</h2>
           <h1>{limitText(20, data.name)}</h1>
           <p>{limitText(55, data.description)}</p>
           <div className={styles.tags}>
@@ -76,7 +76,7 @@ export default function Component({ min, data, isCompleted }) {
       {!isCompleted ? (
         <div className={styles.xpCon}>
           <img src="/missions/coin.png" alt="" />
-          <p>{data.communityXP} XP</p>
+          <p>{data.listingXP} XP</p>
           <img src="/missions/save.png" alt="" />
           <img src="/missions/share.png" alt="" />
         </div>

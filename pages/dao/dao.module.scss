@@ -277,6 +277,12 @@ $PHONE_N: 426;
     flex-direction: column;
     width: 100%;
 
+    .loader {
+        width: 15%;
+        object-fit: contain;
+        margin: 15% auto;
+    }
+
     @media (max-width: $PHONE) {
         width: phone_fluid(375);
         margin: 0 auto;

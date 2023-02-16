@@ -12,7 +12,7 @@ import Head from "next/head";
 let Placeholder = "/profile.jpg";
 
 const P_API = process.env.P_API;
-
+let options = ["Profile", "Wallets", "Socials"];
 const fetchUserDetails = async (setter) => {
   let jwt = localStorage.getItem("token");
   let intrests = await axios.get(`${P_API}/user/intrest-tag`, {
@@ -143,7 +143,6 @@ function Index() {
     });
   };
 
-  let options = ["Profile", "Wallets", "Socials"];
   const [selectedPage, setselectedPage] = useState("Profile");
 
   return (
@@ -258,6 +257,7 @@ function Index() {
                 setupdatedUserData,
                 initUserData,
                 saveProfileDetails,
+                setselectedPage,
               }}
             />
           )}
@@ -291,12 +291,20 @@ const Profile = ({
   setupdatedUserData,
   initUserData,
   saveProfileDetails,
+  setselectedPage,
 }) => {
   const [profileImg, setprofileImg] = useState(null);
   const [username, setusername] = useState("");
-  const [usernameValid, setusernameValid] = useState(false);
+  const [usernameValid, setusernameValid] = useState({
+    valid: false,
+    loading: false,
+  });
 
   const checkUsernameAvailability = async () => {
+    setusernameValid((uv) => {
+      uv.loading = true;
+      return { ...uv };
+    });
     let res = await axios.get(
       `${P_API}/user/availability/username?username=${username}`,
       {
@@ -307,7 +315,11 @@ const Profile = ({
     );
     if (res.status == 200) {
       console.log(res.data.data.available);
-      setusernameValid(res.data.data.available);
+      setusernameValid((uv) => {
+        uv.loading = false;
+        uv.valid = res.data.data.available;
+        return { ...uv };
+      });
     }
   };
 
@@ -386,16 +398,23 @@ const Profile = ({
             style={{ color: usernameValid ? "black" : "red" }}
           />
         )}
-        {usernameValid && username.length > 0 && (
-          <p style={{ color: "green", marginLeft: "5px", fontWeight: "500" }}>
-            {username} is available
-          </p>
+        {usernameValid.loading && (
+          <p className={styles.usernameValidation}>{username} ...</p>
         )}
-        {!usernameValid && username.length > 0 && (
-          <p style={{ color: "red", marginLeft: "5px", fontWeight: "500" }}>
-            {username} is unavailable
-          </p>
-        )}
+        {!usernameValid.loading &&
+          usernameValid.valid &&
+          username.length > 0 && (
+            <p style={{ color: "green" }} className={styles.usernameValidation}>
+              {username} is available
+            </p>
+          )}
+        {!usernameValid.loading &&
+          !usernameValid.valid &&
+          username.length > 0 && (
+            <p style={{ color: "red" }} className={styles.usernameValidation}>
+              {username} is unavailable
+            </p>
+          )}
       </div>
       <div className={styles.section}>
         <div className={styles.secTitle}>
@@ -411,7 +430,7 @@ const Profile = ({
       <div className={styles.section}>
         <div className={styles.secTitle}>
           <h2>Bio</h2>
-          <p>({updatedUserData.bio?.trim()?.length}/300)</p>
+          <p>({updatedUserData.bio?.trim()?.length || 0}/250)</p>
           <XpCoinComp value={updatedUserData.bio} />
         </div>
         <textarea
@@ -425,6 +444,7 @@ const Profile = ({
           rows={8}
           placeholder="Tell us something interesting about yourself!"
           className={styles.input}
+          maxLength="250"
         />
       </div>
       <div className={styles.section}>
@@ -491,7 +511,20 @@ const Profile = ({
       <span className={styles.bottomNav}>
         <button
           onClick={() => {
-            saveProfileDetails(username);
+            if (username.length > 0 && usernameValid.valid) {
+              saveProfileDetails(username);
+            } else {
+              toast.error("Please add a valid Username", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
           }}
           className={styles.saveBtn}
         >
@@ -499,7 +532,7 @@ const Profile = ({
         </button>
         <button
           onClick={() => {
-            saveProfileDetails(username);
+            setselectedPage(options[1]);
           }}
           className={styles.nextBtn}
         >

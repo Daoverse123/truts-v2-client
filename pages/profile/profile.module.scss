@@ -1868,6 +1868,7 @@ $PHONE_N: 450;
             align-items: center;
             justify-content: center;
             padding: 0 20px;
+            cursor: pointer;
             p {
                 font-weight: 500;
                 font-size: 18px;
@@ -1877,6 +1878,12 @@ $PHONE_N: 450;
                 width: 32px;
                 height: 32px;
                 margin-left: 40px;
+                cursor: pointer;
+
+                &:hover {
+                    transition: all 0.1s ease-in-out;
+                    filter: contrast(1%);
+                }
             }
 
             @media (max-width: 370px) {

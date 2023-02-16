@@ -255,9 +255,9 @@
         margin: 0 auto;
     }
 
-    // @media (max-width: 730px) {
-    //     width: 90vw;
-    // }
+    @media (max-width: 730px) {
+        width: 90vh;
+    }
 }
 
 .response {
@@ -271,7 +271,7 @@
     height: 655px;
     margin-top: 25px;
     margin: 0 auto;
-    @media (max-width: 900px) {
+    @media (max-width: 730px) {
         width: 100%;
     }
 
