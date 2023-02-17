@@ -166,7 +166,7 @@ const SuccessStateListDAO = ({ message }) => {
           onClick={() => {
             openNewTab("https://discord.truts.xyz/");
           }}
-          label={"Join Community"}
+          label={"Join Truts Community"}
         />
       </span>
     </div>

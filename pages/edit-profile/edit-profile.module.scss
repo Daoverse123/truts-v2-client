@@ -264,24 +264,7 @@ $mobile: 650px;
             font-weight: 500;
             font-size: 14px;
         }
-        .xp {
-            display: flex;
-            align-items: center;
 
-            img {
-                object-fit: contain;
-                width: 16px;
-                height: 16px;
-            }
-            p {
-                font-size: 14px;
-                line-height: 160%;
-                color: #3065f3;
-                margin: 0;
-                margin-left: 3px;
-                width: min-content;
-            }
-        }
         @media (max-width: $mobile) {
             width: 100%;
             h2 {
@@ -405,6 +388,25 @@ $mobile: 650px;
     }
 }
 
+.xp {
+    display: flex;
+    align-items: center;
+
+    img {
+        object-fit: contain;
+        width: 16px;
+        height: 16px;
+    }
+    p {
+        font-size: 14px;
+        line-height: 160%;
+        color: #3065f3;
+        margin: 0;
+        margin-left: 3px;
+        width: min-content;
+    }
+}
+
 .walletSection {
     display: flex;
     flex-direction: column;
@@ -513,6 +515,18 @@ $mobile: 650px;
         img {
             margin-right: 9.5px;
             width: 18px;
+            filter: brightness(0) invert(1);
+        }
+
+        &:hover {
+            transition: all 0.3s ease-in;
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid rgba(88, 101, 242, 1);
+            color: rgba(88, 101, 242, 1);
+            img {
+                transition: all 0.3s ease-in;
+                filter: brightness(1);
+            }
         }
     }
 }

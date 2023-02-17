@@ -219,6 +219,9 @@ function Hero() {
       setprofileSignupPrompt(true);
       setreferral(ref[1]);
     }
+    if (ref[0] == "signup") {
+      setprofileSignupPrompt(true);
+    }
   }, []);
 
   return (
@@ -263,8 +266,7 @@ function Hero() {
             }}
             className={styles.black_btn}
           >
-            {" "}
-            <img src={binoculars_icon.src} alt="" /> Get Alpha Access
+            <img src={"/referral/people-grey.png"} alt="" /> Login | Sign Up
           </button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />

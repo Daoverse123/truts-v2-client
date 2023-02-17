@@ -9,7 +9,7 @@ import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Head from "next/head";
 
-let Placeholder = "/profile.jpg";
+let Placeholder = "/profile-old.png";
 
 const P_API = process.env.P_API;
 let options = ["Profile", "Wallets", "Socials"];
@@ -166,7 +166,7 @@ function Index() {
         <div className={styles.progressHeader}>
           <span className={styles.titles}>
             <h1 className={styles.title}>
-              Complete your Profile to earn XP Points
+              Complete your Profile to earn XP Points, (0XP)
             </h1>
             <p className={styles.xpCon}>
               {initUserData.completionStatus}% Completed
@@ -321,6 +321,20 @@ const Profile = ({
         return { ...uv };
       });
     }
+    if (username.length < 3) {
+      setusernameValid((uv) => {
+        uv.loading = false;
+        uv.valid = false;
+        return { ...uv };
+      });
+    }
+    if (!/(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username)) {
+      setusernameValid((uv) => {
+        uv.loading = false;
+        uv.valid = false;
+        return { ...uv };
+      });
+    }
   };
 
   useEffect(() => {
@@ -378,7 +392,7 @@ const Profile = ({
       </div>
       <div className={styles.section}>
         <div className={styles.secTitle}>
-          <h2>Username</h2>
+          <h2>Username *</h2>
           <XpCoinComp
             value={
               (username && usernameValid) ||
@@ -387,12 +401,14 @@ const Profile = ({
           />
         </div>
         {initUserData.username ? (
-          <p className={styles.displayEmail}>{initUserData.username}</p>
+          <p className={styles.displayEmail}>@{initUserData.username}</p>
         ) : (
           <input
             value={username}
             onChange={(e) => {
-              setusername(e.target.value);
+              if (e.target.value.length < 25) {
+                setusername(e.target.value.replaceAll(" ", ""));
+              }
             }}
             className={styles.input}
             style={{ color: usernameValid ? "black" : "red" }}
@@ -412,13 +428,15 @@ const Profile = ({
           !usernameValid.valid &&
           username.length > 0 && (
             <p style={{ color: "red" }} className={styles.usernameValidation}>
-              {username} is unavailable
+              {!/(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username)
+                ? `No special characters such as :<>/%#&?@`
+                : `${username} is unavailable`}
             </p>
           )}
       </div>
       <div className={styles.section}>
         <div className={styles.secTitle}>
-          <h2>Email ID</h2>
+          <h2>Email ID *</h2>
           <XpCoinComp value={initUserData.email} />
         </div>
         <span id="google-login"></span>
@@ -531,8 +549,25 @@ const Profile = ({
           Save
         </button>
         <button
-          onClick={() => {
-            setselectedPage(options[1]);
+          onClick={async () => {
+            if (
+              (username.length > 0 && usernameValid.valid) ||
+              ("username" in initUserData && initUserData.username)
+            ) {
+              await saveProfileDetails(username);
+              setselectedPage(options[1]);
+            } else {
+              toast.error("Please add a valid Username", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
           }}
           className={styles.nextBtn}
         >
@@ -549,6 +584,10 @@ const Wallets = ({
   setshowWallet,
   setselectedPage,
 }) => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div className={styles.formContent}>
       <div className={styles.mainTitle}>
@@ -560,13 +599,22 @@ const Wallets = ({
       </div>
       <div className={styles.walletSection}>
         <div className={styles.wTitle}>
-          <h1>List of Wallets</h1>
+          <h1>Your Wallet *</h1>
           {/* <h2>+ Add Wallet</h2> */}
+          <XpCoinComp value={"wallets" in initUserData} />
         </div>
         {"wallets" in initUserData ? (
           <>
             <div className={styles.wallet}>
-              <img className={styles.profileName} src="./blue.png" alt="" />
+              <img
+                className={styles.profileName}
+                src={
+                  (initUserData?.wallets?.chain == "EVM" &&
+                    "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880") ||
+                  "./blue.png"
+                }
+                alt=""
+              />
               <p>{miniMizewallet(initUserData.wallets.address)}</p>
               <img
                 style={{ opacity: 0 }}
@@ -616,6 +664,9 @@ const miniMizewallet = (wt) => {
 };
 
 const Socials = ({ initUserData }) => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <div className={styles.formContent}>
       <div className={styles.mainTitle}>
@@ -626,7 +677,7 @@ const Socials = ({ initUserData }) => {
         </p>
       </div>
       <div className={styles.socialSection}>
-        <div className={styles.secTitle}>
+        {/* <div className={styles.secTitle}>
           <h2>Twitter</h2>
           <XpCoinComp value={false} />
         </div>
@@ -635,9 +686,9 @@ const Socials = ({ initUserData }) => {
             <img src="./twitter.png" alt="" />
             Verify Twitter
           </button>
-        </div>
+        </div> */}
         <div className={styles.secTitle}>
-          <h2>Discord</h2>
+          <h2>Discord *</h2>
           <XpCoinComp value={initUserData.discord} />
         </div>
         {initUserData.discord ? (
@@ -657,7 +708,7 @@ const Socials = ({ initUserData }) => {
                 window.location = process.env.DISCORD_OAUTH_URL;
               }}
             >
-              <img src="./discord.png" alt="" />
+              <img src="./p-discord.png" alt="" />
               Connect Discord
             </button>
           </div>

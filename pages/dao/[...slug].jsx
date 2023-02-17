@@ -194,6 +194,7 @@ function Dao({ dao_data, rid, slug }) {
             <div className={styles.main}>
               <TabletSideBar dao_data={dao_data} />
               <ReviewsSec
+                dao_id={dao_data._id}
                 rid={rid}
                 slug={slug}
                 setreview_details={setreview_details}
@@ -389,6 +390,7 @@ const ReviewsSec = ({
   setreview_details,
   slug,
   rid,
+  dao_id,
 }) => {
   const [selectedFilter, setselectedFilter] = useState("Newest");
 
@@ -425,7 +427,8 @@ const ReviewsSec = ({
         <Button
           onClick={() => {
             setCookie("target", slug);
-            window.location.href = `${API}/auth/discord`;
+            // window.location.href = `${API}/auth/discord`;
+            window.location.href = `/add-review?id=${dao_id}`;
           }}
           label={"Write a Review"}
           type={"secondary"}

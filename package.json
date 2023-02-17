@@ -12,9 +12,7 @@
         "@solana/spl-token": "^0.3.4",
         "@solana/web3.js": "^1.59.1",
         "@tanstack/react-query": "^4.2.3",
-        "add": "^2.0.6",
         "alchemy-sdk": "^2.2.5",
-        "auth0-js": "^9.20.0",
         "axios": "^0.27.2",
         "bs58": "^5.0.0",
         "confetti-js": "^0.0.18",
@@ -24,7 +22,6 @@
         "near-api-js": "^1.1.0",
         "next": "12.1.6",
         "nextjs-progressbar": "^0.0.14",
-        "rc-tooltip": "^6.0.1",
         "react": "18.1.0",
         "react-content-loader": "^6.2.0",
         "react-dom": "18.1.0",
@@ -34,10 +31,7 @@
         "react-tooltip": "^5.0.0",
         "remove-duplicates-from-an-array-of-object": "^1.0.5",
         "sass": "^1.52.1",
-        "smooth-scrollbar": "^8.7.4",
-        "string-similarity": "^4.0.4",
-        "wagmi": "^0.6.4",
-        "yarn": "^1.22.19"
+        "wagmi": "^0.6.4"
     },
     "devDependencies": {
         "eslint": "8.16.0",

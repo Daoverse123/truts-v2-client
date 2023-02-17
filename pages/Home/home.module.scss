@@ -1028,7 +1028,9 @@ $PHONE_N: 425;
     img {
         margin-right: 10px;
         width: 24px;
-        filter: invert(100%);
+        filter: brightness(0) invert(100%);
+        margin-bottom: 3px;
+        transform: scale(1.2);
     }
 }
 

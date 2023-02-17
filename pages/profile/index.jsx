@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./profile.module.scss";
 import chainIconMap from "../../components/chainIconMap.json";
-import ContentLoader, { Facebook } from "react-content-loader";
 import addLoader from "../../utils/addLoader";
 import Head from "next/head";
-import { Tooltip } from "react-tooltip";
 
 //components
 import Nav from "../../components/Nav";
@@ -12,18 +10,14 @@ import Footer from "../../components/Footer";
 import DAOCard from "../../components/DAOCard";
 
 //assets
-import discord_icon from "../../assets/icons/twitter_white.svg";
-import twitter_icon from "../../assets/icons/discord_white.svg";
-import downArrow from "../../assets/icons/down_arrow.svg";
+
 import eth_icon from "../../assets/icons/eth-icon.png";
 import gradient_star_filled from "../../assets/icons/star_gradient.svg";
 import gradient_star_blank from "../../assets/icons/star_gradient_blank.svg";
-import down_arrow from "../../assets/icons/down_arrow.svg";
 import thumbs_up from "../../assets/icons/thumbs_up.svg";
 import thumbs_down from "../../assets/icons/thumbs_down.svg";
 import share from "../../assets/icons/share_icon.svg";
 import tip from "../../assets/icons/tip_icon.svg";
-import loader from "../../assets/mini-loader.gif";
 import twitter_blue from "../../assets/icons/twitter_icon_blue.png";
 import axios from "axios";
 import Link from "next/link";
@@ -88,76 +82,81 @@ const fetchUserData = async (setter) => {
       Authorization: window.localStorage.getItem("token"),
     },
   };
+  try {
+    let user_res = await axios.get(`${P_API}/user`, option);
+    let main_user_data = user_res.data.data.user;
+    if (user_res.status == 200) {
+      setter(main_user_data);
+      main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
+    } else {
+      alert("Auth error");
+      location.href = "/?signup=true";
+    }
 
-  let user_res = await axios.get(`${P_API}/user`, option);
-  let main_user_data = user_res.data.data.user;
-  if (user_res.status == 200) {
-    setter(main_user_data);
-    main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
-  } else {
-    alert("Auth error");
-  }
-  let user_data = await Promise.all([
-    (async () => {
-      if (!("discord" in main_user_data)) {
-        return { status: 500 };
-      }
-      let res = await axios.get(
-        `${P_API}/user/${main_user_data.wallets.address}/reviews`,
-        option
-      );
-      return res;
-    })(),
-    (async () => {
-      if (!("discord" in main_user_data)) {
-        return { status: 500 };
-      }
-      let res = await axios.get(`${P_API}/user/guilds`, option);
-      return res;
-    })(),
-    (async () => {
-      if (!("discord" in main_user_data)) {
-        return { status: 500 };
-      }
-      let res = await axios.get(`${P_API}/user/completed-mission`, option);
-      return res;
-    })(),
-    (async () => {
-      if (!("discord" in main_user_data)) {
-        return { status: 500 };
-      }
-      let res = await axios.get(`${P_API}/user/truts-xp`, option);
-      return res;
-    })(),
-    (async () => {
-      if (!("discord" in main_user_data)) {
-        return { status: 500 };
-      }
-      let res = await axios.get(`${P_API}/user/referral`, option);
-      return res;
-    })(),
-  ]);
+    let user_data = await Promise.all([
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(
+          `${P_API}/user/${main_user_data.wallets.address}/reviews`,
+          option
+        );
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(`${P_API}/user/guilds`, option);
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(`${P_API}/user/completed-mission`, option);
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(`${P_API}/user/truts-xp`, option);
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(`${P_API}/user/referral`, option);
+        return res;
+      })(),
+    ]);
 
-  let data = {};
-  if (user_data[0].status == 200) {
-    data = { ...data, reviews: user_data[0].data.data.reviews };
-  }
-  if (user_data[1].status == 200) {
-    data = { ...data, daos: user_data[1].data.data.listings };
-  }
-  if (user_data[2].status == 200) {
-    data = { ...data, missions: user_data[2].data.data.missions };
-  }
-  if (user_data[3].status == 200) {
-    data = { ...data, xp: user_data[3].data.data };
-  }
-  if (user_data[4].status == 200) {
-    data = { ...data, referral: user_data[4].data.data.referral };
-  }
+    let data = {};
+    if (user_data[0].status == 200) {
+      data = { ...data, reviews: user_data[0].data.data.reviews };
+    }
+    if (user_data[1].status == 200) {
+      data = { ...data, daos: user_data[1].data.data.listings };
+    }
+    if (user_data[2].status == 200) {
+      data = { ...data, missions: user_data[2].data.data.missions };
+    }
+    if (user_data[3].status == 200) {
+      data = { ...data, xp: user_data[3].data.data };
+    }
+    if (user_data[4].status == 200) {
+      data = { ...data, referral: user_data[4].data.data.referral };
+    }
 
-  setter((state) => {
-    return { ...state, ...data };
-  });
+    setter((state) => {
+      return { ...state, ...data };
+    });
+  } catch (error) {
+    location.href = "/?signup=true";
+  }
 };
 
 const Loader = () => {
@@ -230,7 +229,7 @@ function Profile() {
               <span className={styles.xpLevel}>
                 <span className={styles.levelCount}>
                   <h3>Level {userData.xp.level.currentLevel}</h3>
-                  <p>{userData.xp.level.xpForNextLevel} to next XP</p>
+                  <p>{userData.xp.level.xpForNextLevel} to next Level</p>
                 </span>
                 <div className={styles.progressBard}>
                   <span
@@ -813,7 +812,7 @@ const Referral = ({ userData }) => {
         <span className={styles.topBar}>
           <span className={styles.title}>
             <h1>Copper</h1>
-            <p>Current referral</p>
+            <p>Current referral Rank</p>
           </span>
           {/* <button className={styles.topRightBtn}>Claim rewards</button> */}
         </span>
