@@ -4,6 +4,8 @@ import chainIconMap from "../../components/chainIconMap.json";
 import ContentLoader, { Facebook } from "react-content-loader";
 import addLoader from "../../utils/addLoader";
 import Head from "next/head";
+import { Tooltip } from "react-tooltip";
+
 //components
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
@@ -26,6 +28,7 @@ import twitter_blue from "../../assets/icons/twitter_icon_blue.png";
 import axios from "axios";
 import Link from "next/link";
 import openNewTab from "../../utils/openNewTab";
+import { toast } from "react-toastify";
 
 let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
@@ -275,8 +278,6 @@ function Profile() {
             <div className={styles.walletTabs}>
               {"wallets" in userData ? (
                 <div
-                  id="w"
-                  data-tooltip-content="hello world"
                   onClick={(e) => {
                     copyToClipBoard(userData.wallets.address);
                   }}
@@ -308,8 +309,8 @@ function Profile() {
           </div>
 
           <div className={styles.socialIcon}>
-            <img src={twitter_icon.src} alt="" />
-            <img src={discord_icon.src} alt="" />
+            {/* <img src={twitter_icon.src} alt="" /> */}
+            {/* <img src={discord_icon.src} alt="" /> */}
           </div>
 
           {token && (
@@ -788,21 +789,24 @@ const Referral = ({ userData }) => {
             to Truts Profiles and earn 50 XP Points for each referral.{" "}
           </p>
         </div>
-        <div className={styles.link}>
-          <p
-            onClick={() => {
-              navigator.clipboard.writeText(link);
-            }}
-          >
-            {limitCenter(20, 5, link)}
-          </p>
-          <img
-            onClick={() => {
-              navigator.clipboard.writeText(link);
-            }}
-            src="/profiles/link.png"
-            alt=""
-          />
+        <div
+          onClick={() => {
+            navigator.clipboard.writeText(link);
+            toast.success("Link Copied", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }}
+          className={styles.link}
+        >
+          <p>{limitCenter(20, 5, link)}</p>
+          <img src="/profiles/link.png" alt="" />
         </div>
       </div>
       <div className={styles.stages}>

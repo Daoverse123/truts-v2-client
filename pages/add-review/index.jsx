@@ -50,7 +50,7 @@ function AddReview({ id, slug }) {
   const [pageState, setpageState] = useState(status.READY);
 
   const postReview = async () => {
-    if (tc) {
+    if (!tc) {
       return alert("Please check the terms and conditions");
     } else if (reviewForm.rating == 0) {
       return alert("Rate your experience cannot be empty");
