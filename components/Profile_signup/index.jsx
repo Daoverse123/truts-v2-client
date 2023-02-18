@@ -33,7 +33,7 @@ const ProfileLogin = ({
     if (res.status == 200) {
       let jwt = res.data.data.token;
       localStorage.setItem("token", `Bearer ${jwt}`);
-      router.push("/profile");
+      router.push("/profile/private");
     } else {
       alert("SignUp failed Please try Again");
     }

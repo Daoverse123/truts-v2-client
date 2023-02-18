@@ -79,7 +79,7 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
       });
       saveWallet();
     } else {
-      window.location = "/profile";
+      window.location = "/profile/private";
     }
   } else {
     return alert("Auth error");

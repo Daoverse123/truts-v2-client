@@ -149,7 +149,7 @@ const ProfileDropDown = ({ user }) => {
   return (
     <span className={styles.profileDropDown}>
       <div className={styles.dd_menu}>
-        <Link href="/profile">
+        <Link href="/profile/private">
           <div className={styles.addressBar}>
             <img
               className={styles.pixel_icon}

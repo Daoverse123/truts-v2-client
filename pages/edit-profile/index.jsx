@@ -206,7 +206,7 @@ function Index() {
             })}
             <span
               onClick={() => {
-                location.href = "/profile";
+                location.href = "/profile/private";
               }}
               className={styles.option}
             >
@@ -242,7 +242,7 @@ function Index() {
             <span
               className={styles.option}
               onClick={() => {
-                location.href = "/profile";
+                location.href = "/profile/private";
               }}
             >
               <button className={styles.exitbtn} key={"btn"}>

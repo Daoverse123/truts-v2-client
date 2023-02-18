@@ -221,6 +221,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
         progress: undefined,
         theme: "colored",
       });
+      startTask();
     }
   };
 

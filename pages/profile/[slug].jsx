@@ -23,37 +23,43 @@ import axios from "axios";
 import Link from "next/link";
 import openNewTab from "../../utils/openNewTab";
 import { toast } from "react-toastify";
+import { Tooltip } from "react-tooltip";
 
 let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
-const NavSec = ({ elements, selected, setSelected }) => {
+const NavSec = ({ elements, selected, setSelected, privateProfile }) => {
   //'Contributions'
   // 'Assets'
+
+  let tabs = ["Communities", "Reviews", "Missions", "Assets"];
+
+  if (privateProfile) {
+    tabs.push("Referral");
+  }
+
   return (
     <ul className={styles.navSec}>
-      {["Communities", "Reviews", "Missions", "Assets", "Referral"].map(
-        (ele, i) => {
-          return (
-            <li
-              className={selected == ele ? styles.selected : null}
-              onClick={() => {
-                setSelected(ele);
-              }}
-              key={ele + i}
-            >
-              {
-                <p>
-                  {ele}{" "}
-                  {ele != "Assets" &&
-                    ele != "Referral" &&
-                    Object.keys(elements).length >= 3 &&
-                    `(${elements[ele.toLowerCase()] || "0"})`}
-                </p>
-              }
-            </li>
-          );
-        }
-      )}
+      {tabs.map((ele, i) => {
+        return (
+          <li
+            className={selected == ele ? styles.selected : null}
+            onClick={() => {
+              setSelected(ele);
+            }}
+            key={ele + i}
+          >
+            {
+              <p>
+                {ele}{" "}
+                {ele != "Assets" &&
+                  ele != "Referral" &&
+                  Object.keys(elements).length >= 3 &&
+                  `(${elements[ele.toLowerCase()] || "0"})`}
+              </p>
+            }
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -63,8 +69,8 @@ const P_API = process.env.P_API;
 const fetchWalletAssets = async (data, setter) => {
   let key = data.wallets.address;
   let [tokenData, nftData] = await Promise.all([
-    axios.get(`api/get-chain-assets?key=${key}&type=token`),
-    axios.get(`api/get-chain-assets?key=${key}&type=nft`),
+    axios.get(`/api/get-chain-assets?key=${key}&type=token`),
+    axios.get(`/api/get-chain-assets?key=${key}&type=nft`),
   ]);
   console.log(nftData);
   setter((data) => {
@@ -159,6 +165,86 @@ const fetchUserData = async (setter) => {
   }
 };
 
+const fetchPublicUserData = async (setter, slug) => {
+  let option = {
+    headers: {},
+  };
+  try {
+    let user_res = await axios.get(`${P_API}/public/user/${slug}`, option);
+    let main_user_data = user_res.data.data.user;
+    if (user_res.status == 200) {
+      setter(main_user_data);
+      main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
+    } else {
+      alert("Auth error");
+      location.href = "/?signup=true";
+    }
+
+    let user_data = await Promise.all([
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(
+          `${P_API}/public/user/${main_user_data.wallets.address}/reviews`,
+          option
+        );
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(
+          `${P_API}/public/user/${slug}/guilds`,
+          option
+        );
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(
+          `${P_API}/public/user/${slug}/completed-mission`,
+          option
+        );
+        return res;
+      })(),
+      (async () => {
+        if (!("discord" in main_user_data)) {
+          return { status: 500 };
+        }
+        let res = await axios.get(
+          `${P_API}/public/user/${slug}/truts-xp`,
+          option
+        );
+        return res;
+      })(),
+    ]);
+
+    let data = {};
+    if (user_data[0].status == 200) {
+      data = { ...data, reviews: user_data[0].data.data.reviews };
+    }
+    if (user_data[1].status == 200) {
+      data = { ...data, daos: user_data[1].data.data.listings };
+    }
+    if (user_data[2].status == 200) {
+      data = { ...data, missions: user_data[2].data.data.missions };
+    }
+    if (user_data[3].status == 200) {
+      data = { ...data, xp: user_data[3].data.data };
+    }
+
+    setter((state) => {
+      return { ...state, ...data };
+    });
+  } catch (error) {
+    location.href = "/?signup=true";
+  }
+};
+
 const Loader = () => {
   return (
     <div className={styles.loader}>
@@ -178,13 +264,20 @@ const Loader = () => {
   );
 };
 
-function Profile() {
+function Profile({ slug }) {
   const [selectedNav, setSelectedNav] = useState("Reviews");
   const [userData, setuserData] = useState({});
   const [token, settoken] = useState(null);
+  const [privateProfile, setprivateProfile] = useState(false);
 
   useEffect(() => {
-    fetchUserData(setuserData);
+    if (localStorage.getItem("token") && slug == "private") {
+      fetchUserData(setuserData);
+      setprivateProfile(true);
+    } else if (slug.length > 1) {
+      fetchPublicUserData(setuserData, slug);
+    }
+
     settoken(localStorage.getItem("token"));
   }, []);
 
@@ -276,19 +369,21 @@ function Profile() {
             </div>
             <div className={styles.walletTabs}>
               {"wallets" in userData ? (
-                <div
-                  onClick={(e) => {
-                    copyToClipBoard(userData.wallets.address);
-                  }}
-                  style={{
-                    background: chainIconMap["ethereum"].color,
-                    borderColor: chainIconMap["ethereum"].color,
-                  }}
-                  className={styles.tab}
-                >
-                  <img src={chainIconMap["ethereum"].icon} alt="" />
-                  {minimizeWallet(userData.wallets.address)}
-                </div>
+                <TooltipCustom init={"Copy Address"} post={"Copied !"}>
+                  <div
+                    onClick={(e) => {
+                      copyToClipBoard(userData.wallets.address);
+                    }}
+                    style={{
+                      background: chainIconMap["ethereum"].color,
+                      borderColor: chainIconMap["ethereum"].color,
+                    }}
+                    className={styles.tab}
+                  >
+                    <img src={chainIconMap["ethereum"].icon} alt="" />
+                    {minimizeWallet(userData.wallets.address)}
+                  </div>
+                </TooltipCustom>
               ) : (
                 <div
                   onClick={() => {
@@ -327,6 +422,7 @@ function Profile() {
           elements={elements}
           selected={selectedNav}
           setSelected={setSelectedNav}
+          privateProfile={privateProfile}
         />
         {userData.isCompleted && (
           <div className={styles.mainContent}>
@@ -658,13 +754,13 @@ const Tokens = ({ userData }) => {
         />
         <span className={styles.topLine}>
           <span className={styles.tokenName}>
-            {limit(10, data.symbol)} <p>{limit(10, data.name)}</p>
+            {limit(10, data.symbol)} <p></p>
           </span>
-          <h3>$1,238</h3>
+          <h3></h3>
         </span>
         <span className={styles.bottomLine}>
-          <p>$36,500</p>
-          <p>0.05</p>
+          <p>{limit(10, data.name)}</p>
+          <p></p>
         </span>
       </div>
     );
@@ -788,24 +884,17 @@ const Referral = ({ userData }) => {
             to Truts Profiles and earn 50 XP Points for each referral.{" "}
           </p>
         </div>
-        <div
-          onClick={() => {
-            navigator.clipboard.writeText(link);
-            toast.success("Link Copied", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }}
-          className={styles.link}
-        >
+        <div className={styles.link}>
           <p>{limitCenter(20, 5, link)}</p>
-          <img src="/profiles/link.png" alt="" />
+          <TooltipCustom init={"Copy Link"} post={"Copied !"}>
+            <img
+              onClick={() => {
+                navigator.clipboard.writeText(link);
+              }}
+              src="/profiles/link.png"
+              alt=""
+            />
+          </TooltipCustom>
         </div>
       </div>
       <div className={styles.stages}>
@@ -877,6 +966,41 @@ const Tag = ({ src, color, title }) => {
 
 const copyToClipBoard = (txt) => {
   navigator.clipboard.writeText(txt);
+};
+
+//SSR DATA DAO PAGE
+export async function getServerSideProps(ctx) {
+  console.log(ctx.query);
+  let { slug } = ctx.query;
+  // Fetch data from external API
+
+  return { props: { slug: slug } };
+}
+
+const TooltipCustom = ({ init, post, children }) => {
+  const [clicked, setclicked] = useState(false);
+
+  return (
+    <div
+      onMouseLeave={() => {
+        setclicked(false);
+      }}
+      className={styles.customToolTip}
+      onClick={() => {
+        setclicked(true);
+      }}
+    >
+      <div
+        style={
+          clicked ? { background: "rgba(68, 172, 33, 1)", color: "white" } : {}
+        }
+        className={styles.content}
+      >
+        {clicked ? post : init}
+      </div>
+      {children}
+    </div>
+  );
 };
 
 export default Profile;
