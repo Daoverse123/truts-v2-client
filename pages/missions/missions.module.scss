@@ -1,0 +1,105 @@
+.missions {
+    display: flex;
+    padding-top: 164px;
+}
+
+.sideNav {
+    display: flex;
+    flex-direction: column;
+    width: 298px;
+    margin-right: 35px;
+    margin-left: 40px;
+    height: max-content;
+
+    .title {
+        font-weight: 700;
+        font-size: 42px;
+    }
+}
+
+.option {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    cursor: pointer;
+    padding-right: 10px;
+    p {
+        font-size: 18px;
+        font-weight: 500;
+    }
+    img {
+        width: 15px;
+        object-fit: contain;
+    }
+}
+
+.divider {
+    display: flex;
+    width: 100%;
+    min-height: 1px;
+    background-color: rgba(202, 205, 213, 1);
+}
+
+.typesOption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    p {
+        font-weight: 400;
+        font-size: 16px;
+        margin: 0;
+    }
+    img {
+        height: 15px;
+        width: 15px;
+        filter: invert(10%);
+    }
+    input {
+        width: 15px;
+        margin: 0;
+        accent-color: rgb(30, 48, 209);
+        cursor: pointer;
+    }
+}
+
+.sortComp {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 10px;
+    .option {
+        margin-bottom: -10px;
+    }
+    .divider {
+        margin-top: 10px;
+    }
+}
+
+.mainContent {
+    width: 100%;
+    margin-top: 30px;
+    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(313px, max-content));
+    grid-template-rows: repeat(auto-fill, minmax(274px, max-content));
+    justify-content: center;
+}
+
+.titleMain {
+    @extend .title;
+    margin: 0 auto;
+    display: none;
+}
+
+@media (max-width: "700px") {
+    .sideNav {
+        display: none;
+    }
+    .missions {
+        flex-direction: column;
+    }
+    .titleMain {
+        display: flex;
+    }
+}
