@@ -908,20 +908,22 @@ const Referral = ({ userData }) => {
         <div className={styles.milestones}>
           {tiers.map((ele, idx) => {
             return (
-              <span
-                style={
-                  ele == referral?.tier?.teir
-                    ? {
-                        backgroundColor: stageColors[idx],
-                        color: "white",
-                      }
-                    : {}
-                }
-                className={styles.stone}
-                key={ele + "m"}
-              >
-                {idx + 1}
-              </span>
+              <TooltipReferral data={ele} key={ele + "mt"}>
+                <span
+                  style={
+                    ele == referral?.tier?.teir
+                      ? {
+                          backgroundColor: stageColors[idx],
+                          color: "white",
+                        }
+                      : {}
+                  }
+                  className={styles.stone}
+                  key={ele + "m"}
+                >
+                  {idx + 1}
+                </span>
+              </TooltipReferral>
             );
           })}
         </div>
@@ -997,6 +999,30 @@ const TooltipCustom = ({ init, post, children }) => {
         className={styles.content}
       >
         {clicked ? post : init}
+      </div>
+      {children}
+    </div>
+  );
+};
+
+const TooltipReferral = ({ data, children }) => {
+  const teirs = {
+    COPPER: { multiplier: 1.0, useCountForNextTeir: 5 },
+    BRONZE: { multiplier: 1.1, useCountForNextTeir: 15 },
+    SILVER: { multiplier: 1.3, useCountForNextTeir: 30 },
+    GOLD: { multiplier: 1.5, useCountForNextTeir: 50 },
+    DIAMOND: { multiplier: 1.7, useCountForNextTeir: 0 },
+  };
+  return (
+    <div className={styles.customToolTipReferral}>
+      <div className={styles.content}>
+        <span className={styles.titles}>
+          <h1>{`${data.toLowerCase()} tier`} </h1>
+          <p>{teirs[data].multiplier}x Multiplier</p>
+        </span>
+        <p className={styles.desc}>
+          Referrals to advance to next tier: {teirs[data].useCountForNextTeir}
+        </p>
       </div>
       {children}
     </div>
