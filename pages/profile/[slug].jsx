@@ -479,8 +479,8 @@ function Profile({ slug }) {
                     <img
                       src={
                         "email" in userData
-                          ? "assets/tick.png"
-                          : "assets/wrong.png"
+                          ? "/assets/tick.png"
+                          : "/assets/wrong.png"
                       }
                       alt=""
                     />{" "}
@@ -490,8 +490,8 @@ function Profile({ slug }) {
                     <img
                       src={
                         "wallets" in userData
-                          ? "assets/tick.png"
-                          : "assets/wrong.png"
+                          ? "/assets/tick.png"
+                          : "/assets/wrong.png"
                       }
                       alt=""
                     />{" "}
@@ -501,8 +501,8 @@ function Profile({ slug }) {
                     <img
                       src={
                         "discord" in userData
-                          ? "assets/tick.png"
-                          : "assets/wrong.png"
+                          ? "/assets/tick.png"
+                          : "/assets/wrong.png"
                       }
                       alt=""
                     />{" "}
@@ -725,11 +725,11 @@ const Nfts = ({ userData }) => {
         />
         <div className={styles.info}>
           <h3>{limit(25, data.title)}</h3>
-          <p>Last Price</p>
-          <span className={styles.price}>
+          {/* <p>Last Price</p> */}
+          {/* <span className={styles.price}>
             <img src={eth_icon.src} alt="" />
             <h4>10.01</h4>
-          </span>
+          </span> */}
         </div>
       </div>
     );

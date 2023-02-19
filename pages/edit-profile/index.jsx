@@ -166,7 +166,7 @@ function Index() {
         <div className={styles.progressHeader}>
           <span className={styles.titles}>
             <h1 className={styles.title}>
-              Complete your Profile to earn XP Points, (0XP)
+              Complete your Profile to earn XP Points
             </h1>
             <p className={styles.xpCon}>
               {initUserData.completionStatus}% Completed
@@ -531,7 +531,10 @@ const Profile = ({
       <span className={styles.bottomNav}>
         <button
           onClick={() => {
-            if (username.length > 0 && usernameValid.valid) {
+            if (
+              "username" in initUserData ||
+              (username.length > 0 && usernameValid.valid)
+            ) {
               saveProfileDetails(username);
             } else {
               toast.error("Please add a valid Username", {
