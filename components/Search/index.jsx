@@ -48,12 +48,7 @@ export default function Search({ className }) {
         ],
       },
     };
-    let res = await axios.get(`https://search.truts.xyz/daos/_search`, {
-      params: {
-        source: JSON.stringify(query),
-        source_content_type: "application/json",
-      },
-    });
+    let res = await axios.post(`https://search.truts.xyz/daos/_search`, query);
 
     console.log(res);
 

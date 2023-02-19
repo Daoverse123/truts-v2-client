@@ -99,7 +99,7 @@ const fetchUserData = async (setter) => {
     } else {
       alert("Auth error");
       console.log(error);
-      //location.href = "/?signup=true";
+      location.href = "/?signup=true";
     }
 
     let user_data = await Promise.all([
@@ -168,7 +168,7 @@ const fetchUserData = async (setter) => {
     });
   } catch (error) {
     console.log(error);
-    //location.href = "/?signup=true";
+    location.href = "/?signup=true";
   }
 };
 
@@ -187,7 +187,7 @@ const fetchPublicUserData = async (setter, slug) => {
     } else {
       alert("Auth error");
       console.log(error);
-      //location.href = "/?signup=true";
+      location.href = "/?signup=true";
     }
 
     let user_data = await Promise.all([
@@ -252,7 +252,7 @@ const fetchPublicUserData = async (setter, slug) => {
     });
   } catch (error) {
     console.log(error);
-    //location.href = "/?signup=true";
+    location.href = "/?signup=true";
   }
 };
 
