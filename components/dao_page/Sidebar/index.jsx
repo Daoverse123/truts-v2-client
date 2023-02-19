@@ -45,37 +45,15 @@ const Sidebar = ({ dao_data }) => {
     "Incentives for Members": "great_incentives",
   };
 
-  const getAverageRating = (key) => {
-    let avg = 50;
-    let sum = 0;
-    let list = dao_data?.reviews;
-    if (list?.length > 0) {
-      list.forEach((ele) => {
-        sum = sum + ele[key];
-      });
-      avg = Math.ceil(sum / list.length);
-    }
-    return avg;
-  };
-
-  let DialComp = ({ label }) => {
-    const [range, setrange] = useState(0);
-
-    useEffect(() => {
-      setrange((parseFloat(50) / 10) * 2 * 100);
-    }, []);
-
+  let DialComp = ({ label, range }) => {
     return (
       <div className={styles.dialCon}>
         <p className={styles.label}>{label}</p>
         <span className={styles.barCon}>
           <span className={styles.bar}>
-            <div
-              style={{ width: `${getAverageRating(key_label_map[label])}%` }}
-              className={styles.range}
-            ></div>
+            <div style={{ width: `${range}%` }} className={styles.range}></div>
           </span>
-          <p>{getAverageRating(key_label_map[label]) / 10}</p>
+          <p>{`${range}` / 10}</p>
         </span>
       </div>
     );
@@ -162,16 +140,41 @@ const Sidebar = ({ dao_data }) => {
         </span>
       </span>
       <div className={styles.dialSec}>
-        <DialComp label={"Community Vibes"} />
-        <DialComp label={"Onboarding Experience"} />
-        <DialComp label={"Organizational Structure"} />
-        <DialComp label={"Incentives for Members"} />
-        <DialComp label={"Having a Voice"} />
-        <DialComp label={"Recommendation to a friend"} />
+        <DialComp
+          label={"Community Vibes"}
+          range={Math.ceil(dao_data.review_meta["resonate_vibes_rate"])}
+        />
+        <DialComp
+          label={"Onboarding Experience"}
+          range={Math.ceil(dao_data.review_meta["onboarding_exp"])}
+        />
+        <DialComp
+          label={"Organizational Structure"}
+          range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+        />
+        <DialComp
+          label={"Incentives for Members"}
+          range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+        />
+        <DialComp
+          label={"Having a Voice"}
+          range={Math.ceil(dao_data.review_meta["opinions_matter"])}
+        />
+        <DialComp
+          label={"Recommendation to a friend"}
+          range={Math.ceil(dao_data.review_meta["friend_recommend"])}
+        />
       </div>
     </div>
   );
 };
+
+// "friend_recommend": 85,
+// "great_incentives": 84.51612903225806,
+// "great_org_structure": 83.29032258064517,
+// "onboarding_exp": 84.35483870967742,
+// "opinions_matter": 81.7741935483871,
+// "resonate_vibes_rate": 87.03225806451613
 
 const textLimiter = (name) => {
   if (name.length > 30) {
