@@ -315,25 +315,27 @@ const Profile = ({
     );
     if (res.status == 200) {
       console.log(res.data.data.available);
-      setusernameValid((uv) => {
-        uv.loading = false;
-        uv.valid = res.data.data.available;
-        return { ...uv };
-      });
-    }
-    if (username.length < 3) {
-      setusernameValid((uv) => {
-        uv.loading = false;
-        uv.valid = false;
-        return { ...uv };
-      });
-    }
-    if (!/(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username)) {
-      setusernameValid((uv) => {
-        uv.loading = false;
-        uv.valid = false;
-        return { ...uv };
-      });
+      if (username.length < 3) {
+        setusernameValid((uv) => {
+          uv.loading = false;
+          uv.valid = false;
+          return { ...uv };
+        });
+      } else if (
+        !/(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username)
+      ) {
+        setusernameValid((uv) => {
+          uv.loading = false;
+          uv.valid = false;
+          return { ...uv };
+        });
+      } else {
+        setusernameValid((uv) => {
+          uv.loading = false;
+          uv.valid = res.data.data.available;
+          return { ...uv };
+        });
+      }
     }
   };
 
