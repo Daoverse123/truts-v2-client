@@ -45,15 +45,13 @@ $PHONE_N: 426;
     top: 125px;
     .socials {
         display: grid;
-        grid-template-rows: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 30% 30% 30%;
+        grid-template-rows: 1fr 1fr 1fr;
         grid-template-areas:
-            "a b"
-            "c c"
-            "d d"
-            ;
+            "a a a"
+            "b c d";
         padding-bottom: 16px;
-        grid-column-gap: 24px;
+        grid-column-gap: 14px;
         grid-row-gap: 16px;
         border-bottom: 1px solid rgba(224, 224, 224, 1);
         button {
@@ -63,19 +61,21 @@ $PHONE_N: 426;
             justify-content: center;
             align-items: center;
             border-radius: 16px;
-            padding: 14px;
+            padding: 14px 0;
             column-gap: 8px;
-            font-weight: 400;
+            font-weight: 500;
             font-size: 13px;
-            width: 144.5px;
+            width: fit-content;
+            min-width: 95px;
             height: 47px;
+            transition: all 0.25s ease-in-out;
             img {
+                transition: all 0.25s ease-in-out;
                 filter: invert(100%);
                 height: 20px;
             }
 
             &:hover {
-                transition: all 0.5s ease-in-out;
                 background-color: rgb(202, 202, 202);
             }
         }
@@ -85,15 +85,49 @@ $PHONE_N: 426;
         }
 
         .twitter_soc {
+            font-weight: 500;
             &:hover {
-                transition: all 0.5s ease-in-out;
                 background-color: rgb(29, 155, 240);
+                color: white;
+                img {
+                    filter: invert(0);
+                }
             }
         }
         .discord_soc {
+            font-weight: 500;
             &:hover {
-                transition: all 0.5s ease-in-out;
+                transition: all 0.25s ease-in-out;
                 background-color: #5865f2;
+                color: white;
+                img {
+                    filter: invert(0);
+                }
+            }
+        }
+        .web_soc {
+            &:hover {
+                transition: all 0.25s ease-in-out;
+                background-color: #9e78e3;
+                color: white;
+                img {
+                    filter: invert(0);
+                }
+            }
+        }
+
+        .partner {
+            transition: all 0.2s ease-in-out;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            &:hover {
+                background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+            }
+
+            &:focus {
+                outline: thick double #1248d9;
             }
         }
     }
@@ -117,10 +151,11 @@ $PHONE_N: 426;
         width: laptop_to_tablet_fluid(313);
 
         .socials {
-            grid-column-gap: laptop_to_tablet_fluid(15);
+            grid-column-gap: laptop_to_tablet_fluid(14);
             grid-row-gap: laptop_to_tablet_fluid(16);
             button {
-                width: laptop_to_tablet_fluid(129);
+                width: fit-content;
+                min-width: laptop_to_tablet_fluid(95);
             }
             .long_btn {
                 width: laptop_to_tablet_fluid(282);

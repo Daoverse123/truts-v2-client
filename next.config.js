@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 let LOCALHOST = 'http://localhost:5000'
-let AWS = 'https://7cjecbsr4a.us-west-2.awsapprunner.com'
+// let AWS = 'https://7cjecbsr4a.us-west-2.awsapprunner.com'
 let TEST_SERVER = 'https://rf2rcgt6ax.us-west-2.awsapprunner.com'
+let AWS = 'https://u4dfjfmyjp.us-west-2.awsapprunner.com'
 
 
 const nextConfig = {

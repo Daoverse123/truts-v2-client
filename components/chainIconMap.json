@@ -149,5 +149,25 @@
         "ticker": "SUI",
         "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/20947.png",
         "color": "#7AC1F2"
+    },
+    "shardeum": {
+        "ticker": "SHM",
+        "icon": "https://assets.coingecko.com/coins/images/27937/small/shm.png?1666515519",
+        "color": "#808080"
+    },
+    "okc": {
+        "ticker": "OKT",
+        "icon": "https://s2.coinmarketcap.com/static/img/coins/64x64/8267.png",
+        "color": "rgb(190,202,221)"
+    },
+    "chain-agnostic": {
+        "ticker": "Chain Agnostic",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/GNOME_Web_logo_40.png",
+        "color": "#48C9B0"
+    },
+    "multi-chain": {
+        "ticker": "Multi Chain",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/GNOME_Web_logo_40.png",
+        "color": "#48C9B0"
     }
 }

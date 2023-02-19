@@ -77,32 +77,39 @@ const TabletSideBar = ({ dao_data }) => {
 
     return (
         <div className={styles.tabletSideBar}>
-            <div className={styles.btn_row}>
-                <button onClick={() => {
-                    openNewTab(dao_data.twitter_link)
-                }} className={styles.soc_btn} style={{ background: '#1DA1F2' }}>
-                    <img src={twitter_white.src} alt="" />
-                    {numFormatter(dao_data?.twitter_followers)}
-                </button>
-                {dao_data.dao_category.includes('Investors') ?
+            <span className={styles.partnerRow}>
+                <div className={styles.btn_row}>
                     <button onClick={() => {
-                        openNewTab(`mailto:${dao_data?.email}`)
-                    }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
-                        <img style={{ margin: "unset", filter: "invert(100%)" }} src={'/email.png'} alt="" />
-                        {/* {numFormatter(dao_data?.discord_members)} */}
+                        openNewTab(dao_data.twitter_link)
+                    }} className={styles.soc_btn} style={{ background: '#1DA1F2' }}>
+                        <img src={twitter_white.src} alt="" />
+                        {numFormatter(dao_data?.twitter_followers)}
                     </button>
-                    : <button onClick={() => {
-                        openNewTab(dao_data.discord_link)
-                    }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
-                        <img src={discord_white.src} alt="" />
-                        {numFormatter(dao_data?.discord_members)}
-                    </button>}
+                    {dao_data.dao_category.includes('Investors') ?
+                        <button onClick={() => {
+                            openNewTab(`mailto:${dao_data?.email}`)
+                        }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
+                            <img style={{ margin: "unset", filter: "invert(100%)" }} src={'/email.png'} alt="" />
+                            {/* {numFormatter(dao_data?.discord_members)} */}
+                        </button>
+                        : <button onClick={() => {
+                            openNewTab(dao_data.discord_link)
+                        }} className={styles.soc_btn} style={{ background: '#4962FE' }}>
+                            <img src={discord_white.src} alt="" />
+                            {numFormatter(dao_data?.discord_members)}
+                        </button>}
+                    <button onClick={() => {
+                        openNewTab(dao_data.website_link)
+                    }} className={styles.soc_btn} style={{ background: '#121212' }}>
+                        <img style={{ marginRight: '0' }} src={globe_white.src} alt="" />
+                    </button>
+                </div>
                 <button onClick={() => {
-                    openNewTab(dao_data.website_link)
-                }} className={styles.soc_btn} style={{ background: '#121212' }}>
-                    <img style={{ marginRight: '0' }} src={globe_white.src} alt="" />
+                    openNewTab('/partner.html')
+                }} className={styles.partnerBtn}>
+                    🤝 Partner with Us
                 </button>
-            </div>
+            </span>
             <div className={styles.tablet_dial_sec}>
                 <div className={styles.chain_row}>
                     <p>Chain</p>
