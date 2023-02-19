@@ -77,7 +77,8 @@ export default function Component({ min, data, isCompleted }) {
         <div className={styles.xpCon}>
           <img src="/missions/coin.png" alt="" />
           <p>{data.listingXP} XP</p>
-          <img src="/missions/save.png" alt="" />
+          {/* <img src="/missions/save.png" alt="" /> */}
+
           <img src="/missions/share.png" alt="" />
         </div>
       ) : (
@@ -94,3 +95,29 @@ function limitText(count, text) {
   let snippedText = text.substring(0, count);
   return snippedText + "...";
 }
+
+const TooltipCustom = ({ init, post, children }) => {
+  const [clicked, setclicked] = useState(false);
+
+  return (
+    <div
+      onMouseLeave={() => {
+        setclicked(false);
+      }}
+      className={styles.customToolTip}
+      onClick={() => {
+        setclicked(true);
+      }}
+    >
+      <div
+        style={
+          clicked ? { background: "rgba(68, 172, 33, 1)", color: "white" } : {}
+        }
+        className={styles.content}
+      >
+        {clicked ? post : init}
+      </div>
+      {children}
+    </div>
+  );
+};

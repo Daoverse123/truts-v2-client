@@ -841,7 +841,7 @@ const Mission = ({ data }) => {
       }}
     >
       <div className={styles.content}>
-        <p className={styles.daoName}>{data.community.name}</p>
+        <p className={styles.daoName}>{data.listing.name}</p>
         <h2 className={styles.missionName}>{data.name}</h2>
         <div className={styles.tags}>
           {data.tags.map((tg) => {

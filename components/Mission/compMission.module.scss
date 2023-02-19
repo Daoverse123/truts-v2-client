@@ -145,3 +145,34 @@
         margin-left: 3px;
     }
 }
+
+.customToolTip {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    .content {
+        display: none;
+        opacity: 0;
+        position: absolute;
+        width: max-content;
+        height: fit-content;
+        padding: 5px 10px;
+        bottom: 120%;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+        background: #eeeff2;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.137);
+        font-size: 12px;
+        font-weight: 500;
+        transition: all 0.25s ease-in-out;
+    }
+
+    &:hover {
+        .content {
+            display: flex;
+            opacity: 1;
+        }
+    }
+}
