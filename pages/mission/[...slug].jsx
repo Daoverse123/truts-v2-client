@@ -68,7 +68,7 @@ function Index({ mission }) {
         },
       });
       if (res.status == 200) {
-        location.href = "/status/mission";
+        location.href = `/status/mission?xp=${mission.listingXP}`;
       }
     } catch (error) {}
   };

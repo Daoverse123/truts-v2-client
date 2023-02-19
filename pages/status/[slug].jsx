@@ -10,7 +10,7 @@ import Button from "../../components/Button";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 
-function Index({ type, target }) {
+function Index({ type, target, xp }) {
   console.log(type);
 
   return (
@@ -36,16 +36,16 @@ function Index({ type, target }) {
         </Head>
         <Nav />
         <div style={{ margin: "0" }} className={styles.mainCon}>
-          {/* <div className={styles.breadCrum}>
-          <img src={left_arrow.src} alt="" />
-          <Link href={`/`}>
-            <span>
-              <p>Add review for</p>
-              <h3>{"Test"}</h3>
-            </span>
-          </Link>
-        </div> */}{" "}
-          {/* <Mission /> */}
+          <div className={styles.breadCrum}>
+            {/* <img src={left_arrow.src} alt="" /> */}
+            {/* <Link href={`/`}>
+              <span>
+                <p>Add review for</p>
+                <h3>{"Test"}</h3>
+              </span>
+            </Link> */}
+          </div>{" "}
+          {type == "mission" && <Mission xp={xp} />}
           {type == "not-member" && (
             <ErrorState
               message={
@@ -86,11 +86,13 @@ function Index({ type, target }) {
 }
 
 export async function getServerSideProps(ctx) {
-  let { slug: type } = ctx.query;
+  let { slug: type, xp } = ctx.query;
+  console.log(ctx);
   let target = ctx.req.cookies["target"];
   return {
     props: {
       type,
+      xp: xp || "",
       target: target || "",
     },
   };
@@ -98,7 +100,7 @@ export async function getServerSideProps(ctx) {
 
 //Thank you for submitting the application to list your Community. Now sit back and relax. If we need more information, we will reach out to you. Otherwise, you are all set and you will see your DAO listed in a day or two :)
 
-const Mission = () => {
+const Mission = ({ xp }) => {
   useEffect(() => {
     const confettiSettings = {
       target: "my-canvas",
@@ -124,7 +126,7 @@ const Mission = () => {
 
         <div className={styles.xp}>
           <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" />
-          <h1>300</h1>
+          <h1>{xp}</h1>
           <img className={styles.xpText} src="/xp-text.png" alt="" />
         </div>
         <div className={styles.text}>
