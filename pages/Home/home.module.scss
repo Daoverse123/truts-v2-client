@@ -429,7 +429,7 @@ $PHONE_N: 425;
     overflow-x: hidden;
     width: min(90vw, 1300px);
     justify-content: center;
-    z-index: 1000;
+    z-index: 100;
     .scrollEnd {
         margin-bottom: 9px;
         height: 30px;
@@ -1028,7 +1028,9 @@ $PHONE_N: 425;
     img {
         margin-right: 10px;
         width: 24px;
-        filter: invert(100%);
+        filter: brightness(0) invert(100%);
+        margin-bottom: 3px;
+        transform: scale(1.2);
     }
 }
 

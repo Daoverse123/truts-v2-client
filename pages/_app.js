@@ -1,7 +1,10 @@
 import '../styles/globals.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NextNProgress from "nextjs-progressbar";
 import Script from 'next/script';
 import { publicProvider } from 'wagmi/providers/public'
+import 'react-tooltip/dist/react-tooltip.css'
 import {
   WagmiConfig,
   createClient,
@@ -45,6 +48,19 @@ let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 
 function MyApp({ Component, pageProps }) {
   return <WagmiConfig client={client}>
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={true}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
+    {/* Same as */}
     <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
     <Script id='script' strategy="lazyOnload">
       {`

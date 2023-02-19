@@ -168,7 +168,7 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(117, 117, 117, 0.856);
             opacity: 1;
-            z-index: 2222;
+            z-index: 300;
         }
         input::-moz-range-thumb {
             -webkit-appearance: none;
@@ -181,7 +181,7 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(117, 117, 117, 0.856);
             opacity: 1;
-            z-index: 2222;
+            z-index: 300;
         }
 
         .sliderBar {
@@ -255,9 +255,9 @@
         margin: 0 auto;
     }
 
-    @media (max-width: 730px) {
-        width: 90vh;
-    }
+    // @media (max-width: 730px) {
+    //     width: 90vw;
+    // }
 }
 
 .response {
@@ -271,7 +271,7 @@
     height: 655px;
     margin-top: 25px;
     margin: 0 auto;
-    @media (max-width: 730px) {
+    @media (max-width: 900px) {
         width: 100%;
     }
 

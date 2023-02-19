@@ -1,8 +1,8 @@
-
 .mainCon {
     margin-top: 130px;
     margin-left: 0;
     margin-bottom: 178px;
+    width: 100%;
 }
 
 .statusPage {
@@ -14,8 +14,8 @@
     background: #f7f7f7;
     justify-content: center;
     align-items: center;
-    
-    .breadCrum{
+
+    .breadCrum {
         width: auto;
         margin-bottom: 15px;
     }
@@ -24,7 +24,6 @@
         margin: 0 auto;
     }
 }
-
 
 .response {
     display: flex;
@@ -51,6 +50,132 @@
             font-weight: 400;
             font-size: 20px;
             margin-bottom: 40px;
+        }
+    }
+}
+
+.missionSuccess {
+    display: flex;
+    max-width: 1000px;
+    width: 90%;
+    max-height: 763px;
+    min-height: 600px;
+    height: 60vh;
+    background-color: white;
+    margin: 15vh auto;
+    border-radius: 32px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    canvas {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h3 {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 160%;
+            margin: 0;
+        }
+        .subText {
+            font-size: 16px;
+            line-height: 160%;
+            text-align: center;
+            color: #83a3f8;
+            margin: 0;
+        }
+
+        .desc {
+            text-align: center;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 160%;
+            width: 80%;
+        }
+        .topText {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            top: 80px;
+        }
+
+        .text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            bottom: 100px;
+            z-index: 999;
+
+            button {
+                background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+                border-radius: 16px;
+                border: none;
+                color: white;
+                font-weight: 500;
+                padding: 15px 30px;
+                cursor: pointer;
+
+                &:hover {
+                    background: linear-gradient(90deg, #2b007a 0%, #3065f3 100%);
+                }
+            }
+        }
+
+        @media (max-width: 600px) {
+            position: absolute;
+            transform: scale(0.75);
+        }
+        @media (max-width: 380px) {
+            position: absolute;
+            transform: scale(0.55);
+        }
+    }
+
+    .xp {
+        display: flex;
+        height: min-content;
+        position: relative;
+        //outline: 1px solid red;
+        // * {
+        //     outline: 1px solid red;
+        // }
+        .goldStack {
+            width: 185px;
+            height: min-content;
+            object-fit: contain;
+            margin-top: 40px;
+            z-index: 100;
+        }
+        h1 {
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 800;
+            font-size: 120px;
+            line-height: 130%;
+            position: relative;
+            right: 7%;
+            padding-bottom: 30px;
+        }
+        .xpText {
+            position: relative;
+            right: 12%;
+            object-fit: contain;
+            height: min-content;
+            margin: auto 0;
         }
     }
 }
