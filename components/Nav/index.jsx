@@ -271,7 +271,7 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
     };
     let res = await axios.post(`https://search.truts.xyz/daos/_search`, query);
 
-    console.log(res);
+    console.log(res, "x");
 
     let data = res.data.hits.hits.map((ele) => {
       return ele._source;
