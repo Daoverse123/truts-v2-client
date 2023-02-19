@@ -494,7 +494,11 @@ const ReviewComp = ({
   setreview_details,
   selected,
 }) => {
-  let name = review.user.name.slice(0, 5) + "...." + review.user.name.slice(-3);
+  let name = "anon";
+  try {
+    name = review.user.name.slice(0, 5) + "...." + review.user.name.slice(-3);
+  } catch (error) {}
+
   const [isreadMore, setisreadMore] = useState(false);
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
   const [voteState, setvoteState] = useState({
