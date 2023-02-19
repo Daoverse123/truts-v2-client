@@ -646,6 +646,10 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
               />
               <p>Filters</p>
             </span>
+
+            <h1 className={styles.sideBarTitle}>Communities</h1>
+
+
             <SortComp state={state} dispatch={dispatch} />
             {Object.keys(sideNavTabs).map((ele, i) => {
               return (
@@ -812,7 +816,6 @@ const getDynamicLoad = async (
   ];
   setdaoList_ssr(arrayUniqueByKey);
 
-  // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
   // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
 
   const generateCatCount = (LIST, key, setter) => {
