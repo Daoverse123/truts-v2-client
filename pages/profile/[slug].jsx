@@ -93,10 +93,13 @@ const fetchUserData = async (setter) => {
     let main_user_data = user_res.data.data.user;
     if (user_res.status == 200) {
       setter(main_user_data);
-      main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
+      main_user_data.isCompleted &&
+        "wallets" in main_user_data &&
+        fetchWalletAssets(main_user_data, setter);
     } else {
       alert("Auth error");
-      location.href = "/?signup=true";
+      console.log(error);
+      //location.href = "/?signup=true";
     }
 
     let user_data = await Promise.all([
@@ -105,7 +108,7 @@ const fetchUserData = async (setter) => {
           return { status: 500 };
         }
         let res = await axios.get(
-          `${P_API}/user/${main_user_data.wallets.address}/reviews`,
+          `${P_API}/user/${main_user_data.username}/reviews`,
           option
         );
         return res;
@@ -135,6 +138,9 @@ const fetchUserData = async (setter) => {
         if (!("discord" in main_user_data)) {
           return { status: 500 };
         }
+        if (!("wallets" in main_user_data)) {
+          return { status: 200 };
+        }
         let res = await axios.get(`${P_API}/user/referral`, option);
         return res;
       })(),
@@ -154,14 +160,15 @@ const fetchUserData = async (setter) => {
       data = { ...data, xp: user_data[3].data.data };
     }
     if (user_data[4].status == 200) {
-      data = { ...data, referral: user_data[4].data.data.referral };
+      data = { ...data, referral: user_data[4]?.data?.data?.referral };
     }
 
     setter((state) => {
       return { ...state, ...data };
     });
   } catch (error) {
-    location.href = "/?signup=true";
+    console.log(error);
+    //location.href = "/?signup=true";
   }
 };
 
@@ -174,10 +181,13 @@ const fetchPublicUserData = async (setter, slug) => {
     let main_user_data = user_res.data.data.user;
     if (user_res.status == 200) {
       setter(main_user_data);
-      main_user_data.isCompleted && fetchWalletAssets(main_user_data, setter);
+      main_user_data.isCompleted &&
+        "wallets" in main_user_data &&
+        fetchWalletAssets(main_user_data, setter);
     } else {
       alert("Auth error");
-      location.href = "/?signup=true";
+      console.log(error);
+      //location.href = "/?signup=true";
     }
 
     let user_data = await Promise.all([
@@ -186,7 +196,7 @@ const fetchPublicUserData = async (setter, slug) => {
           return { status: 500 };
         }
         let res = await axios.get(
-          `${P_API}/public/user/${main_user_data.wallets.address}/reviews`,
+          `${P_API}/public/user/${main_user_data.username}/reviews`,
           option
         );
         return res;
@@ -241,7 +251,8 @@ const fetchPublicUserData = async (setter, slug) => {
       return { ...state, ...data };
     });
   } catch (error) {
-    location.href = "/?signup=true";
+    console.log(error);
+    //location.href = "/?signup=true";
   }
 };
 

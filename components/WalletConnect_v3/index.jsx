@@ -253,7 +253,7 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
         };
         setwalletState(state_obj);
         localStorage.setItem("wallet_state", JSON.stringify(state_obj));
-        window.updateNav();
+        //window.updateNav();
         closePopUp();
       }
     } catch (error) {
@@ -267,7 +267,7 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
           };
           setwalletState(state_obj);
           localStorage.setItem("wallet_state", JSON.stringify(state_obj));
-          window.updateNav();
+          //window.updateNav();
           closePopUp();
         }
       }
@@ -348,7 +348,7 @@ const Solana_wallets = ({ setwalletState, closePopUp }) => {
                 })
               );
 
-              window.updateNav();
+              //window.updateNav();
               closePopUp();
             }
           }
@@ -433,7 +433,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
                 status: "connected",
               })
             );
-            window.updateNav();
+            //window.updateNav();
           }
 
           closePopUp();
