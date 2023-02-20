@@ -276,8 +276,13 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
   const fetchData = async (term) => {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
-    let res = await axios.get(`${API}/search/${term}`);
-    res.data.length > 0 && setSuggestiondata([...res.data]);
+    let res = await axios.get(`https://search.truts.xyz/search?query=${term}`);
+
+    let data = res.data.hits.hits.map((ele) => {
+      return ele._source;
+    });
+
+    data.length > 0 && setSuggestiondata([...data]);
   };
 
   let fetchSearchTerm = useCallback(

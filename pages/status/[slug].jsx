@@ -138,7 +138,7 @@ const Mission = ({ xp }) => {
               window.history.go(-2);
             }}
           >
-            Explore Truts
+            Explore Missions
           </button>
         </div>
       </div>

@@ -29,9 +29,16 @@ let STATUS = {
   DISABLED: "disabled",
 };
 
+const fetchCompleted = async (id, setter) => {
+  let res = await axios.get(`${P_API}/mission/${id}/completed-by`);
+  if (res.status == 200) {
+    setter(res.data.data.completedBy);
+  }
+};
+
 function Index({ mission }) {
   const [status, setstatus] = useState(null);
-
+  const [completed, setcompleted] = useState(null);
   let fetchTaskStatus = async () => {
     try {
       let res = await axios.get(`${P_API}/mission/${mission._id}/my-status`, {
@@ -40,14 +47,19 @@ function Index({ mission }) {
         },
       });
       setstatus(res.data.data);
+      fetchCompleted(mission._id, setcompleted);
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     fetchTaskStatus();
   }, []);
+
+  console.log(completed);
 
   let getTaskStatus = (id) => {
     try {
@@ -143,13 +155,26 @@ function Index({ mission }) {
                   );
                 })}
               </div>
-              {/* <div className={styles.profilesCompleted}>
-                <img src="/profile.png" alt="" />
-                <img style={{ left: "0px" }} src="/profile-old.png" alt="" />
-                <img style={{ left: "-7px" }} src="/profile-old.png" alt="" />
-                <img style={{ left: "-14px" }} src="/profile-old.png" alt="" />
-                <p>+ 123 completed xx</p>
-              </div> */}
+              <div className={styles.profilesCompleted}>
+                {completed &&
+                  completed.map((ele, idx) => {
+                    if (idx > 5) {
+                      return null;
+                    }
+                    return (
+                      <img
+                        style={{ left: `${idx * -6}px` }}
+                        key={idx}
+                        src={ele.user.photo.secure_url}
+                        alt=""
+                      />
+                    );
+                  })}
+
+                {completed && completed.length > 0 && (
+                  <p>+ {completed.length} Completed</p>
+                )}
+              </div>
             </div>
           </div>
           <span className={styles.xp}>

@@ -137,8 +137,7 @@ function AddReview({ id, slug }) {
             </Link>
             <Link href={`./dao/${slug}`}>
               <span>
-                <p>Add review for</p>
-                <h3>{slug}</h3>
+                <p>Back</p>
               </span>
             </Link>
           </div>

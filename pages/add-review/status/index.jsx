@@ -42,8 +42,8 @@ function index({ type, slug }) {
                 window.history.go(-2);
               }}
             >
-              <p>Add review for</p>
-              <h3>{slug}</h3>
+              <p>Return</p>
+              <h3>Back</h3>
             </span>
           </div>
           {type == "success" && <SuccessState />}

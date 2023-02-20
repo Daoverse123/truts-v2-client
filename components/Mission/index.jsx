@@ -30,8 +30,21 @@ const getChipType = () => {
 
 let P_API = process.env.P_API;
 
+const fetchCompleted = async (id, setter) => {
+  let res = await axios.get(`${P_API}/mission/${id}/completed-by`);
+  if (res.status == 200) {
+    setter(res.data.data.completedBy);
+  }
+};
+
 export default function Component({ min, data, isCompleted }) {
   let chip = getChipType();
+
+  const [completed, setcompleted] = useState(null);
+
+  useEffect(() => {
+    fetchCompleted(data._id, setcompleted);
+  }, []);
 
   if (!data) {
     return null;
@@ -50,6 +63,26 @@ export default function Component({ min, data, isCompleted }) {
           <p>3 days left</p>
         </div>
       )}
+      <div className={styles.profilesCompleted}>
+        {completed &&
+          completed.map((ele, idx) => {
+            if (idx > 5) {
+              return null;
+            }
+            return (
+              <img
+                style={{ left: `${idx * -6}px` }}
+                key={idx}
+                src={ele.user.photo.secure_url}
+                alt=""
+              />
+            );
+          })}
+
+        {completed && completed.length > 0 && (
+          <p>+ {completed.length} Completed</p>
+        )}
+      </div>
       <Link href={`/mission/${data._id}`}>
         <span className={styles.topCon + " " + (isCompleted && styles.blur)}>
           <img

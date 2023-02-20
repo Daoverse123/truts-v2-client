@@ -176,3 +176,26 @@
         }
     }
 }
+
+.profilesCompleted {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    margin-left: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    img {
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        position: relative;
+    }
+    p {
+        margin: 0;
+        padding: 0;
+        font-weight: 400;
+        font-size: 13.75px;
+        margin-left: -5px !important;
+    }
+}
