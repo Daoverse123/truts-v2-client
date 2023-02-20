@@ -277,7 +277,7 @@ function Hero() {
           ) : (
             <button
               onClick={() => {
-                setprofileSignupPrompt(true);
+                location.href = "/missions";
                 // openNewTab('/early-alpha.html');
               }}
               className={styles.black_btn}
