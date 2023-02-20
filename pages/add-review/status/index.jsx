@@ -81,12 +81,21 @@ const SuccessState = () => {
           Thank you for reviewing with us. Join Truts discord community to get
           exclusive rewards and opportunities.
         </p>
-        <Button
-          onClick={() => {
-            openNewTab("https://discord.truts.xyz/");
-          }}
-          label={"Join Truts Community"}
-        />
+        <div className={styles.btnNav}>
+          <Button
+            type={"secondary"}
+            onClick={() => {
+              openNewTab("https://discord.truts.xyz/");
+            }}
+            label={"Join Truts Community"}
+          />
+          <Button
+            onClick={() => {
+              window.history.go(-2);
+            }}
+            label={"Go back to missions"}
+          />
+        </div>
       </span>
     </div>
   );

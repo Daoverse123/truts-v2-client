@@ -660,21 +660,43 @@ const ReviewComp = ({
 };
 
 function Missions({ missions }) {
+  console.log(missions);
   return (
     <div className={styles.content}>
-      <section className={styles.missions}>
-        {"missions" in missions &&
-          missions.missions.map((ele, idx) => {
-            return (
-              <Mission
-                key={"msn" + idx}
-                min={true}
-                data={ele}
-                isCompleted={ele.isCompleted}
-              />
-            );
-          })}
-      </section>
+      <div className={styles.stack}>
+        {"missions" in missions && missions.missions.length > 0 && (
+          <section className={styles.missions}>
+            {missions.missions.map((ele, idx) => {
+              return (
+                <Mission
+                  key={"msn" + idx}
+                  min={true}
+                  data={ele}
+                  isCompleted={ele.isCompleted}
+                />
+              );
+            })}
+          </section>
+        )}
+        {"missions" in missions && missions.missions.length == 0 && (
+          <div className={styles.banner}>
+            <div className={styles.content}>
+              <h1>
+                <img src="/logo.svg" alt="" />
+                Missions
+              </h1>
+              <p>
+                Are you a community owner? Engage the community by launching
+                missions. Click the button below to get started.
+              </p>
+              <button>
+                <img src="/missions/btn-img.svg" alt="" />
+                Launch Missions
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

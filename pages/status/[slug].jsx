@@ -135,7 +135,7 @@ const Mission = ({ xp }) => {
           </h4>
           <button
             onClick={() => {
-              history.go(-2);
+              window.history.go(-2);
             }}
           >
             Explore Truts

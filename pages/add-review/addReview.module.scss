@@ -292,3 +292,12 @@
         }
     }
 }
+
+.btnNav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
