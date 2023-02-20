@@ -328,6 +328,32 @@ function Profile({ slug }) {
           defer
           src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"
         ></script>
+
+        <title>Truts</title>
+        <meta
+          name="description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <link rel="icon" href="/favicon.png" />
+
+        <meta property="og:url" content="https://www.truts.xyz" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Truts" />
+        <meta
+          property="og:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta property="og:image" content="/favicon.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="truts.xyz" />
+        <meta property="twitter:url" content="https://www.truts.xyz" />
+        <meta name="twitter:title" content="Truts" />
+        <meta
+          name="twitter:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta name="twitter:image" content="/favicon.png" />
       </Head>
 
       {/* <OnBoardForm /> */}
@@ -610,26 +636,28 @@ const ReviewComp = ({ data, userData }) => {
                     className={styles.showmore}>
                     {(isreadMore) ? "show less" : "read more"}
                 </p>} */}
-        <div className={styles.bottom_nav}>
-          <span className={styles.iconText}>
-            {/* <img src={thumbs_up.src} alt="" /> */}
-            <p>Upvotes </p>
-            <p>: {data.vote.up}</p>
-          </span>
-          <span className={styles.iconText}>
-            {/* <img src={thumbs_down.src} alt="" /> */}
-            <p>Downvotes </p>
-            <p>: {data.vote.down}</p>
-          </span>
-          {/* <span className={styles.iconText}>
+        {false && (
+          <div className={styles.bottom_nav}>
+            <span className={styles.iconText}>
+              {/* <img src={thumbs_up.src} alt="" /> */}
+              <p>Upvotes </p>
+              <p>: {data.vote.up}</p>
+            </span>
+            <span className={styles.iconText}>
+              {/* <img src={thumbs_down.src} alt="" /> */}
+              <p>Downvotes </p>
+              <p>: {data.vote.down}</p>
+            </span>
+            {/* <span className={styles.iconText}>
             <img src={share.src} alt="" />
             <p>share</p>
           </span> */}
-          {/* <span className={styles.iconText}>
+            {/* <span className={styles.iconText}>
             <img src={tip.src} alt="" />
             <p>$400</p>
           </span> */}
-        </div>
+          </div>
+        )}
         <span className={styles.divider} />
       </div>
     </>

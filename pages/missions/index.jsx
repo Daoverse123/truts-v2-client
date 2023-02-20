@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Nav from "../../components/Nav";
 import Mission from "../../components/Mission";
 import axios from "axios";
+import Head from "next/head";
 
 const SortComp = ({ state, dispatch }) => {
   return (
@@ -29,6 +30,33 @@ let P_API = process.env.P_API;
 const Missions = ({ data }) => {
   return (
     <>
+      <Head>
+        <title>Truts</title>
+        <meta
+          name="description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <link rel="icon" href="/favicon.png" />
+
+        <meta property="og:url" content="https://www.truts.xyz" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Truts" />
+        <meta
+          property="og:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta property="og:image" content="/favicon.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="truts.xyz" />
+        <meta property="twitter:url" content="https://www.truts.xyz" />
+        <meta name="twitter:title" content="Truts" />
+        <meta
+          name="twitter:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta name="twitter:image" content="/favicon.png" />
+      </Head>
       <Nav isFloating />
       <div className={styles.missions}>
         <div className={styles.sideNav}>
