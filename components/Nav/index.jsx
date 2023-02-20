@@ -172,6 +172,7 @@ const ProfileDropDown = ({ user }) => {
           <li
             onClick={() => {
               localStorage.removeItem("token");
+              localStorage.removeItem("user-server");
               location.href = "/?signup=true";
             }}
             className={styles.power_btn}
@@ -242,6 +243,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
               type={"secondary"}
               onClick={() => {
                 localStorage.removeItem("token");
+                localStorage.removeItem("user-server");
                 location.href = "/?signup=true";
               }}
               label={"Log Out"}
