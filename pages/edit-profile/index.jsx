@@ -284,7 +284,7 @@ const XpCoinComp = ({ value }) => {
       ) : (
         <img src="./xpCoin.png" alt="" />
       )}
-      <p>50</p>
+      <p>500</p>
     </span>
   );
 };

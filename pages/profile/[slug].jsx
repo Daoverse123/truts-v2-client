@@ -380,7 +380,8 @@ function Profile({ slug }) {
 
                   <p>
                     {userData.xp.level.xpForNextLevel}/
-                    {levelsMap[userData.xp.level.currentLevel].xpForNextLevel}
+                    {parseInt(userData.xp.level.xpForNextLevel) +
+                      parseInt(userData.xp.totalTrutsXP)}
                   </p>
                 </span>
                 <div className={styles.progressBard}>

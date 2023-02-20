@@ -151,7 +151,7 @@ function Index({ mission }) {
           <span className={styles.xp}>
             <p>Rewards</p>
             <span className={styles.xpCount}>
-              <img src="/missions/coin.png" alt="" />
+              <img src="/missions/coin.svg" alt="" />
               <h1>{mission.listingXP} XP</h1>
             </span>
           </span>
