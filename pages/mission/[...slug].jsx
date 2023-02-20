@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import axios from "axios";
 import openNewTab from "../../utils/openNewTab";
 import Link from "next/link";
+import ToolTip from "../../components/ToolTip";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -97,11 +98,24 @@ function Index({ mission }) {
     <>
       <Nav isFloating />
       <div className={styles.missionPage}>
-        <Link href={`/dao/${backBtn}`}>
-          <h3 className={styles.subtitle}>
-            <img src="/missions/arrow.png" /> Back
-          </h3>
-        </Link>
+        <h3 className={styles.subtitle}>
+          <Link href={`/dao/${backBtn}`}>
+            <span className={styles.back}>
+              <img src="/missions/arrow.png" /> Back
+            </span>
+          </Link>
+          <ToolTip
+            init={"Copy Mission Link"}
+            post={"Mission Link Copied !"}
+            copyLink={`https://truts.xyz/mission/${mission._id}`}
+            bottom={true}
+          >
+            <span className={styles.share}>
+              Share <img src="/missions/sharesvg.svg" />
+            </span>
+          </ToolTip>
+        </h3>
+
         <div className={styles.missionHead}>
           <img
             className={styles.profileImg}

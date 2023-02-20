@@ -259,6 +259,22 @@ $mobile: 800px;
     display: flex;
     align-items: center;
 
+    .back {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+        cursor: pointer;
+    }
+
+    .share {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        img {
+            margin-left: 5px;
+        }
+    }
+
     @media (max-width: $tablet) {
         width: 95%;
     }

@@ -398,19 +398,21 @@ $PHONE_N: 426;
         align-items: center;
         p {
             margin: 0;
+            color: black;
         }
 
         .address {
             font-weight: 500;
             font-size: 16px;
             margin-bottom: 8px;
-
+            color: black;
             span {
                 font-weight: 500;
                 font-size: 10px;
                 margin-left: 5px;
                 padding-left: 5px;
                 border-left: 1px solid blue;
+                color: black;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;

@@ -20,6 +20,12 @@
         font-size: 12px;
         font-weight: 500;
         transition: all 0.25s ease-in-out;
+        z-index: 1000;
+    }
+
+    .bottom {
+        transform-origin: bottom;
+        transform: translateY(250%) translateX(-50%);
     }
 
     &:hover {
