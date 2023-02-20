@@ -282,7 +282,7 @@ const XpCoinComp = ({ value }) => {
       {value ? (
         <img src="./missions/tick.png" alt="" />
       ) : (
-        <img src="./xpCoin.png" alt="" />
+        <img src="./xpCoin.svg" alt="" />
       )}
       <p>500</p>
     </span>

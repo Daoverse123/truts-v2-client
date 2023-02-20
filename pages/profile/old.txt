@@ -10,7 +10,7 @@ const OnBoardForm = () => {
                     </div>
                     <div className={styles.xpCon}>
                         <span className={styles.xpIcon}>
-                            <img src="/xpCoin.png" alt="" />
+                            <img src="/xpCoin.svg" alt="" />
                             <p>100 XP</p>
                         </span>
                         <p>Earned so far</p>
@@ -25,7 +25,7 @@ const OnBoardForm = () => {
                             <h1>Your Profile Picture</h1>
                         </span>
                         <span className={styles.iconXp}>
-                            <img src="/xpCoin.png" alt="" />
+                            <img src="/xpCoin.svg" alt="" />
                             <p>50</p>
                         </span>
                     </div>
@@ -36,7 +36,7 @@ const OnBoardForm = () => {
                             <p>Your ENS/Primary Wallet address also serves as Truts ID</p>
                         </span>
                         <span className={styles.iconXp}>
-                            <img src="/xpCoin.png" alt="" />
+                            <img src="/xpCoin.svg" alt="" />
                             <p>50</p>
                         </span>
                     </div>

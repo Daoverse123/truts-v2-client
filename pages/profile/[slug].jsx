@@ -911,7 +911,7 @@ const Mission = ({ data }) => {
         <p className={styles.missionDesc}>{limit(90, data.description)}</p>
       </div>
       <span className={styles.xpCount}>
-        <img src="/xpCoin.png" alt="" />
+        <img src="/xpCoin.svg" alt="" />
         <p>{data.trutsXP} XP</p>
       </span>
     </div>
