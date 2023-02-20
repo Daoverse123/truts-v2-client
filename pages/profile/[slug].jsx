@@ -379,7 +379,7 @@ function Profile({ slug }) {
                   </h3>
 
                   <p>
-                    {userData.xp.level.currentLevel}/
+                    {userData.xp.level.totalTrutsXP}/
                     {parseInt(userData.xp.level.xpForNextLevel) +
                       parseInt(userData.xp.totalTrutsXP)}
                   </p>
