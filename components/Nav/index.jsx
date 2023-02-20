@@ -103,7 +103,7 @@ export default function Component({ isFloating, isStrech }) {
               // connect wallet
               <a href={"/?signup=true"}>
                 <li>
-                  <img alt="" src={wallet_icon.src} />
+                  <img alt="" src={"/svg/nav-soc.svg"} />
                 </li>
               </a>
             )}
