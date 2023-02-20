@@ -73,9 +73,23 @@ const fetchReviews = async (id, setter) => {
       },
     };
   }
-
-  let res = await axios.get(url, headers);
-  setter([...res.data.data.reviews]);
+  try {
+    let res = await axios.get(url, headers);
+    if (res.status == 200) {
+      setter((ele) => {
+        ele = { reviews: [...res.data.data.reviews], loading: false };
+        return { ...ele };
+      });
+    }
+  } catch (error) {
+    let res = await axios.get(`${P_API}/public/listing/${id}/reviews`);
+    if (res.status == 200) {
+      setter((ele) => {
+        ele = { reviews: [...res.data.data.reviews], loading: false };
+        return { ...ele };
+      });
+    }
+  }
 };
 
 function Dao({ dao_data, rid, slug }) {
@@ -91,7 +105,7 @@ function Dao({ dao_data, rid, slug }) {
   let tipReviewInfo = { review_details, setreview_details };
 
   const [missions, setmissions] = useState([]);
-  const [reviews, setreviews] = useState([]);
+  const [reviews, setreviews] = useState({ reviews: [], loading: true });
 
   const fetchMissions = async () => {
     try {
@@ -406,7 +420,7 @@ const ReviewsSec = ({
     }
   }, []);
 
-  if (reviews.length == 0) {
+  if (reviews.loading) {
     return (
       <div className={styles.reviewSec}>
         <img className={styles.loader} src="/white-loader.gif" alt="" />
@@ -414,7 +428,24 @@ const ReviewsSec = ({
     );
   }
 
-  console.log(reviews);
+  if (!reviews.loading && reviews.reviews.length <= 0) {
+    return (
+      <div className={styles.banner}>
+        <div className={styles.content}>
+          <h1>Be the First to Review</h1>
+          <p>Review this Community to earn Truts XP</p>
+          <button
+            onClick={() => {
+              location.href = "/launch-missions.html";
+            }}
+          >
+            {/* <img src="/missions/btn-img.svg" alt="" /> */}
+            Add Review
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.reviewSec}>
@@ -450,7 +481,7 @@ const ReviewsSec = ({
           />
         )}
         {selectedFilter == "Newest"
-          ? reviews
+          ? reviews.reviews
               .map((review, idx) => {
                 if (review._id == rid) {
                   //filter selected rid

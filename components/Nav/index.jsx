@@ -45,14 +45,18 @@ export default function Component({ isFloating, isStrech }) {
           Authorization: window.localStorage.getItem("token"),
         },
       };
-
-      let user_res = await axios.get(`${P_API}/user`, option);
-      setuser(user_res.data.data.user);
-      if (user_res.data.data.user) {
-        localStorage.setItem(
-          "user-server",
-          JSON.stringify(user_res.data.data.user)
-        );
+      try {
+        let user_res = await axios.get(`${P_API}/user`, option);
+        setuser(user_res.data.data.user);
+        if (user_res.data.data.user) {
+          localStorage.setItem(
+            "user-server",
+            JSON.stringify(user_res.data.data.user)
+          );
+        }
+      } catch (error) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user-server");
       }
     }
   };
@@ -100,7 +104,7 @@ export default function Component({ isFloating, isStrech }) {
                 <img
                   className={styles.pixel_icon}
                   alt=""
-                  src={pixel_icon.src}
+                  src={user.photo?.secure_url || pixel_icon.src}
                 />
 
                 <ProfileDropDown user={user} />
