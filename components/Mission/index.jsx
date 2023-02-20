@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./compMission.module.scss";
 import Link from "next/link";
 import axios from "axios";
+import Tooltip from "../../components/ToolTip";
 
 const Tag = ({ src, color, title }) => {
   return (
@@ -78,8 +79,13 @@ export default function Component({ min, data, isCompleted }) {
           <img src="/missions/coin.png" alt="" />
           <p>{data.listingXP} XP</p>
           {/* <img src="/missions/save.png" alt="" /> */}
-
-          <img src="/missions/share.png" alt="" />
+          <Tooltip
+            init={"Copy Mission Link"}
+            post={"Mission Link Copied !"}
+            copyLink={`https://truts.xyz/mission/${data._id}`}
+          >
+            <img src="/missions/share.png" alt="" />
+          </Tooltip>
         </div>
       ) : (
         <div className={styles.xpCon + " " + styles.missionCompleted}>
@@ -95,29 +101,3 @@ function limitText(count, text) {
   let snippedText = text.substring(0, count);
   return snippedText + "...";
 }
-
-const TooltipCustom = ({ init, post, children }) => {
-  const [clicked, setclicked] = useState(false);
-
-  return (
-    <div
-      onMouseLeave={() => {
-        setclicked(false);
-      }}
-      className={styles.customToolTip}
-      onClick={() => {
-        setclicked(true);
-      }}
-    >
-      <div
-        style={
-          clicked ? { background: "rgba(68, 172, 33, 1)", color: "white" } : {}
-        }
-        className={styles.content}
-      >
-        {clicked ? post : init}
-      </div>
-      {children}
-    </div>
-  );
-};
