@@ -99,11 +99,15 @@ function Index({ mission }) {
       <Nav isFloating />
       <div className={styles.missionPage}>
         <h3 className={styles.subtitle}>
-          <Link href={`/dao/${backBtn}`}>
-            <span className={styles.back}>
-              <img src="/missions/arrow.png" /> Back
-            </span>
-          </Link>
+          <span
+            onClick={() => {
+              window.history.go(-1);
+            }}
+            className={styles.back}
+          >
+            <img src="/missions/arrow.png" /> Back
+          </span>
+
           <ToolTip
             init={"Copy Mission Link"}
             post={"Mission Link Copied !"}
