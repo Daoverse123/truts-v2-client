@@ -436,7 +436,7 @@ const ReviewsSec = ({
           <p>Review this Community to earn Truts XP</p>
           <button
             onClick={() => {
-              location.href = "/launch-missions.html";
+              window.location.href = `/add-review?id=${dao_id}`;
             }}
           >
             {/* <img src="/missions/btn-img.svg" alt="" /> */}

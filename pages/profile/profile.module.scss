@@ -682,8 +682,12 @@ $PHONE_N: 450;
     flex-direction: column;
     width: 1080px;
     row-gap: 16px;
-    margin-top: 30px;
+    // margin-top: 30px;
     margin-bottom: 150px;
+
+    .ifo {
+        color: gray;
+    }
 
     @media (max-width: $LAPTOP) and (min-width: $PHONE) {
         width: laptop_to_tablet_fluid(1030);
@@ -2171,4 +2175,9 @@ $PHONE_N: 450;
             opacity: 1;
         }
     }
+}
+
+.infoBar {
+    display: flex;
+    width: 100%;
 }

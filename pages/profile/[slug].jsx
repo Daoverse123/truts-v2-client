@@ -298,11 +298,11 @@ function Profile({ slug }) {
     if (localStorage.getItem("token") && slug == "private") {
       fetchUserData(setuserData);
       setprivateProfile(true);
+
+      settoken(localStorage.getItem("token"));
     } else if (slug.length > 1) {
       fetchPublicUserData(setuserData, slug);
     }
-
-    settoken(localStorage.getItem("token"));
   }, []);
 
   const [elements, setelements] = useState({});
@@ -484,6 +484,7 @@ function Profile({ slug }) {
           setSelected={setSelectedNav}
           privateProfile={privateProfile}
         />
+
         {userData.isCompleted && (
           <div className={styles.mainContent}>
             {selectedNav == "Communities" && "daos" in userData ? (
@@ -601,6 +602,7 @@ const Reviews = ({ userData }) => {
                 </div>
             </div> */}
       <div key={"x"} className={styles.reviewCon + " " + styles.appear}>
+        {/* <p className={styles.ifo}>Reviews on Communities as a Member</p> */}
         {"reviews" in userData &&
           userData.reviews.map((ele, idx) => {
             return (
