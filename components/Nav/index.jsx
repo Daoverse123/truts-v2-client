@@ -128,8 +128,7 @@ export default function Component({ isFloating, isStrech }) {
         </div>
         {TabletNavOpen && (
           <TabletNav
-            walletConnectVisible={walletConnectVisible}
-            setwalletConnectVisible={setwalletConnectVisible}
+            user={user}
             TabletNavOpen={TabletNavOpen}
             setTabletNavOpen={setTabletNavOpen}
           />
@@ -179,18 +178,32 @@ const ProfileDropDown = ({ user }) => {
   );
 };
 
-const TabletNav = ({
-  TabletNavOpen,
-  setTabletNavOpen,
-  walletConnectVisible,
-  setwalletConnectVisible,
-}) => {
+const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
   return (
     <div className={styles.tablet_nav}>
       <div className={styles.blankSpace}></div>
       <div className={styles.menu}>
         <div className={styles.top_bar}>
-          <img className={styles.main_logo} src={logo.src} alt="" />
+          {/* <img className={styles.main_logo} src={logo.src} alt="" /> */}
+          <div className={styles.profileState}>
+            <div
+              className={styles.addressBar}
+              onClick={() => {
+                localStorage.removeItem("token");
+                location.href = "/?signup=true";
+              }}
+            >
+              <img
+                className={styles.pixel_icon}
+                alt=""
+                src={user.photo?.secure_url || pixel_icon.src}
+              />
+              <span className={styles.address_chain}>
+                <h2>{limit(9, user.name)}</h2>
+                <p>@{user.username}</p>
+              </span>
+            </div>
+          </div>
           <img
             onClick={() => {
               setTabletNavOpen(false);
@@ -216,10 +229,12 @@ const TabletNav = ({
         </ul>
         <div className={styles.btn_wrapper}>
           <Button
+            type={"secondary"}
             onClick={() => {
-              setwalletConnectVisible(true);
+              localStorage.removeItem("token");
+              location.href = "/?signup=true";
             }}
-            label={"Connect wallet"}
+            label={"Log Out"}
           />
         </div>
       </div>
@@ -269,9 +284,14 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
         ],
       },
     };
-    let res = await axios.post(`https://search.truts.xyz/daos/_search`, query);
+    let res = await axios.get(`https://search.truts.xyz/daos/_search`, {
+      params: {
+        source: JSON.stringify(query),
+        source_content_type: "application/json",
+      },
+    });
 
-    console.log(res, "x");
+    console.log(res);
 
     let data = res.data.hits.hits.map((ele) => {
       return ele._source;
