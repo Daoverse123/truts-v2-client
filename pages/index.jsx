@@ -223,7 +223,7 @@ function Hero() {
       setprofileSignupPrompt(true);
     }
 
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("token") && localStorage.getItem("user-server")) {
       setisLoggedIn(true);
     }
   }, []);

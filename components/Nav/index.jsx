@@ -48,6 +48,12 @@ export default function Component({ isFloating, isStrech }) {
 
       let user_res = await axios.get(`${P_API}/user`, option);
       setuser(user_res.data.data.user);
+      if (user_res.data.data.user) {
+        localStorage.setItem(
+          "user-server",
+          JSON.stringify(user_res.data.data.user)
+        );
+      }
     }
   };
 
