@@ -689,7 +689,11 @@ function Missions({ missions }) {
                 Are you a community owner? Engage the community by launching
                 missions. Click the button below to get started.
               </p>
-              <button>
+              <button
+                onClick={() => {
+                  location.href = "/launch-missions.html";
+                }}
+              >
                 <img src="/missions/btn-img.svg" alt="" />
                 Launch Missions
               </button>
