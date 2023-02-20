@@ -87,7 +87,6 @@ $tablet: 860px;
 
         @media (max-width: $tablet) {
             flex-direction: column;
-            row-gap: 5vh;
             .right {
                 border-right: 0;
             }

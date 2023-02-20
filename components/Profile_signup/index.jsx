@@ -91,12 +91,19 @@ const ProfileLogin = ({
               />
             </div>
             <p>
-              Don`t have a web3 wallet? <br></br> You can use your google
-              Account to signup/log in
+              Don`t have a web3 wallet? <br></br> You can use your Google
+              account to signup/log in
             </p>
             <span style={{ marginTop: "10px" }} id={"google-login"}></span>
           </div>
-          <div className={styles.screen}>
+          <div
+            style={{
+              paddingTop: "2.5vh",
+              marginTop: "2.5vh",
+              borderTop: "1px solid #d3d3d3",
+            }}
+            className={styles.screen}
+          >
             <div className={styles.imgBg}>
               <img src="/assets/wallet-black.svg" alt="" />
             </div>
