@@ -612,21 +612,23 @@ const ReviewComp = ({ data, userData }) => {
                 </p>} */}
         <div className={styles.bottom_nav}>
           <span className={styles.iconText}>
-            <img src={thumbs_up.src} alt="" />
-            <p>{data.vote.up}</p>
+            {/* <img src={thumbs_up.src} alt="" /> */}
+            <p>Upvotes </p>
+            <p>: {data.vote.up}</p>
           </span>
           <span className={styles.iconText}>
-            <img src={thumbs_down.src} alt="" />
-            <p>{data.vote.down}</p>
+            {/* <img src={thumbs_down.src} alt="" /> */}
+            <p>Downvotes </p>
+            <p>: {data.vote.down}</p>
           </span>
-          <span className={styles.iconText}>
+          {/* <span className={styles.iconText}>
             <img src={share.src} alt="" />
             <p>share</p>
-          </span>
-          <span className={styles.iconText}>
+          </span> */}
+          {/* <span className={styles.iconText}>
             <img src={tip.src} alt="" />
-            {/* <p>$400</p> */}
-          </span>
+            <p>$400</p>
+          </span> */}
         </div>
         <span className={styles.divider} />
       </div>

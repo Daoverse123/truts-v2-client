@@ -743,6 +743,7 @@ $PHONE_N: 450;
 
     .bottom_nav {
         display: flex;
+
         span {
             cursor: pointer;
         }
@@ -754,6 +755,10 @@ $PHONE_N: 450;
             img {
                 margin-right: 4.5px;
                 height: 16.46px;
+            }
+            p {
+                color: gray;
+                font-size: 14px;
             }
         }
     }
