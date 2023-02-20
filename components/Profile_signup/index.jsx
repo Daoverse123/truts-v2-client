@@ -71,14 +71,14 @@ const ProfileLogin = ({
               .querySelector(`.${styles.profileLoginPage}`)
               .classList.add("close");
           }}
-          src="/close-icon.png"
+          src="/svg/close.svg"
           className={styles.closeIcon}
         />
         <div className={styles.messageCon}>
           <h3>Let’s start by</h3>
           <h1>Login/Sign up</h1>
           <p>
-            Sign Login/Sign up with either email or wallet to start your web3
+            Sign Login/Sign up with either email or wallet to start your Web3
             journey with Truts and earn some XPs!
           </p>
         </div>

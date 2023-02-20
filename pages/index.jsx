@@ -266,7 +266,8 @@ function Hero() {
             }}
             className={styles.black_btn}
           >
-            <img src={"/referral/people-grey.png"} alt="" /> Sign up/Login
+            <img src={"/svg/profile.svg"} alt="" />
+            Login/Sign up
           </button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
