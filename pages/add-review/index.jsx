@@ -216,8 +216,8 @@ function AddReview({ id, slug }) {
                 />
                 <p>
                   I confirm this review is about my own genuine experience. I am
-                  eligible to leave this review, and have not been offered any
-                  incentive or payment to leave a review for this company.
+                  eligible to post this review, and have not been offered any
+                  incentive or payment to post a review for this company.
                 </p>
               </div>
               <Button

@@ -84,6 +84,8 @@ function Index() {
   const [showWallet, setshowWallet] = useState(false);
   const [LoaderVisible, setLoaderVisible] = useState(false);
 
+  const [updateCounter, setupdateCounter] = useState(0);
+
   useEffect(() => {
     if (!showWallet) {
       setLoaderVisible(true);
@@ -98,7 +100,7 @@ function Index() {
         setLoaderVisible(false);
       });
     }
-  }, [showWallet]);
+  }, [showWallet, updateCounter]);
 
   const saveProfileDetails = async (username) => {
     setLoaderVisible(true);
@@ -129,6 +131,7 @@ function Index() {
     } else {
       alert("error");
     }
+    setupdateCounter((ele) => ele + 1);
     setLoaderVisible(false);
 
     toast.success("Changes saved successfully", {
@@ -155,7 +158,7 @@ function Index() {
           name="description"
           content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <WalletConnect
         isLogin={true}
@@ -347,7 +350,11 @@ const Profile = ({
 
   useEffect(() => {
     try {
-      setprofileImg(initUserData.photo.secure_url);
+      setprofileImg(
+        initUserData.photo.secure_url +
+          "?cache=" +
+          `${JSON.stringify(initUserData)}`
+      );
     } catch (error) {}
   }, [initUserData]);
 

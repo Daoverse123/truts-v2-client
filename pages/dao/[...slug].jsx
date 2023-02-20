@@ -494,11 +494,6 @@ const ReviewComp = ({
   setreview_details,
   selected,
 }) => {
-  let name = "anon";
-  try {
-    name = review.user.name.slice(0, 5) + "...." + review.user.name.slice(-3);
-  } catch (error) {}
-
   const [isreadMore, setisreadMore] = useState(false);
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
   const [voteState, setvoteState] = useState({
@@ -587,6 +582,15 @@ const ReviewComp = ({
     }
   };
 
+  let userInfo = {
+    name: review.user.name || "Anon",
+    username: review.user.username || null,
+  };
+
+  if (userInfo.name.length > 15) {
+    userInfo.name = userInfo.name.slice(0, 15) + "...";
+  }
+
   return (
     <>
       <div
@@ -596,7 +600,14 @@ const ReviewComp = ({
         <div className={styles.userInfo}>
           <img className={styles.profilePic} src={"/profile-old.png"} alt="" />
           <span>
-            <p className={styles.address}>{name}</p>
+            {userInfo.username ? (
+              <p className={styles.address}>
+                {userInfo.name}
+                <span>@{userInfo.username}</span>
+              </p>
+            ) : (
+              <p className={styles.address}>{userInfo.name}</p>
+            )}
             <StarComp size={"s"} rating={review.rating} />
           </span>
         </div>

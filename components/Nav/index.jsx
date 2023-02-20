@@ -85,8 +85,8 @@ export default function Component({ isFloating, isStrech }) {
             <Link href={"/discover"}>
               <li>Discover Communities</li>
             </Link>
-            <Link href={"https://www.academy.truts.xyz/"}>
-              <li>Truts Academy</li>
+            <Link href={"https://truts.xyz/missions"}>
+              <li>Missions</li>
             </Link>
             {user ? (
               // wallet connected
@@ -226,8 +226,8 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
           <Link href={"/discover"}>
             <li>Discover Communities</li>
           </Link>
-          <Link href={"https://www.academy.truts.xyz/"}>
-            <li>Truts Academy</li>
+          <Link href={"https://truts.xyz/missions"}>
+            <li>Missions</li>
           </Link>
         </ul>
         <div className={styles.btn_wrapper}>

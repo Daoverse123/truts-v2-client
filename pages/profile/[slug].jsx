@@ -25,6 +25,19 @@ import openNewTab from "../../utils/openNewTab";
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
 
+const levelsMap = [
+  { xpForNextLevel: 0 },
+  { xpForNextLevel: 500 },
+  { xpForNextLevel: 1500 },
+  { xpForNextLevel: 3000 },
+  { xpForNextLevel: 5000 },
+  { xpForNextLevel: 7000 },
+  { xpForNextLevel: 9000 },
+  { xpForNextLevel: 12000 },
+  { xpForNextLevel: 15000 },
+  { xpForNextLevel: 20000 },
+];
+
 let Placeholder =
   "https://img.seadn.io/files/4a4061fa04f7ba8d41286bcc2ba22e76.png?fit=max&w=1000";
 const NavSec = ({ elements, selected, setSelected, privateProfile }) => {
@@ -332,8 +345,17 @@ function Profile({ slug }) {
             {"xp" in userData && (
               <span className={styles.xpLevel}>
                 <span className={styles.levelCount}>
-                  <h3>Level {userData.xp.level.currentLevel}</h3>
-                  <p>{userData.xp.level.xpForNextLevel} to next Level</p>
+                  <h3>
+                    <span style={{ color: "black" }}>
+                      Level {userData.xp.level.currentLevel}{" "}
+                    </span>
+                    - {userData.xp.totalTrutsXP} XP
+                  </h3>
+
+                  <p>
+                    {userData.xp.level.xpForNextLevel}/
+                    {levelsMap[userData.xp.level.currentLevel].xpForNextLevel}
+                  </p>
                 </span>
                 <div className={styles.progressBard}>
                   <span
@@ -889,10 +911,10 @@ const Referral = ({ userData }) => {
       <div className={styles.linkBox}>
         <div className={styles.linkInfo}>
           <img src="/profiles/people.png" alt="" />
-          <h1>My referral link</h1>
+          <h1>My Referral link</h1>
           <p>
             Share your unique referral link to invite your friends to get access
-            to Truts Profiles and earn 50 XP Points for each referral.{" "}
+            to Truts and earn 500 XP Points for each referral.{" "}
           </p>
         </div>
         <div className={styles.link}>
@@ -912,7 +934,7 @@ const Referral = ({ userData }) => {
         <span className={styles.topBar}>
           <span className={styles.title}>
             <h1>Copper</h1>
-            <p>Current referral Rank</p>
+            <p>Current Referral Rank</p>
           </span>
           {/* <button className={styles.topRightBtn}>Claim rewards</button> */}
         </span>

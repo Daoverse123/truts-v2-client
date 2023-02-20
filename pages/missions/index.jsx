@@ -40,18 +40,6 @@ const Missions = ({ data }) => {
           {data.missions.map((ele, idx) => {
             return <Mission data={ele} key={idx + "m"} />;
           })}
-          {data.missions.map((ele, idx) => {
-            return <Mission data={ele} key={idx + "m"} />;
-          })}
-          {data.missions.map((ele, idx) => {
-            return <Mission data={ele} key={idx + "m"} />;
-          })}
-          {data.missions.map((ele, idx) => {
-            return <Mission data={ele} key={idx + "m"} />;
-          })}
-          {data.missions.map((ele, idx) => {
-            return <Mission data={ele} key={idx + "m"} />;
-          })}
         </div>
       </div>
     </>
