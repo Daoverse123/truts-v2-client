@@ -96,14 +96,7 @@ const ProfileLogin = ({
             </p>
             <span style={{ marginTop: "10px" }} id={"google-login"}></span>
           </div>
-          <div
-            style={{
-              paddingTop: "2.5vh",
-              marginTop: "2.5vh",
-              borderTop: "1px solid #d3d3d3",
-            }}
-            className={styles.screen}
-          >
+          <div className={styles.screen + " " + styles.wallet}>
             <div className={styles.imgBg}>
               <img src="/assets/wallet-black.svg" alt="" />
             </div>
