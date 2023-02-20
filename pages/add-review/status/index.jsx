@@ -36,12 +36,15 @@ function index({ type, slug }) {
         <div style={{ margin: "0" }} className={styles.mainCon}>
           <div className={styles.breadCrum}>
             <img src={left_arrow.src} alt="" />
-            <Link href={`/dao/${slug}`}>
-              <span>
-                <p>Add review for</p>
-                <h3>{slug}</h3>
-              </span>
-            </Link>
+
+            <span
+              onClick={() => {
+                window.history.go(-2);
+              }}
+            >
+              <p>Add review for</p>
+              <h3>{slug}</h3>
+            </span>
           </div>
           {type == "success" && <SuccessState />}
           {type == "error" && <ErrorState slug={slug} />}

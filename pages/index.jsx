@@ -266,7 +266,7 @@ function Hero() {
             }}
             className={styles.black_btn}
           >
-            <img src={"/referral/people-grey.png"} alt="" /> Login | Sign Up
+            <img src={"/referral/people-grey.png"} alt="" /> Sign up/Login
           </button>
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />

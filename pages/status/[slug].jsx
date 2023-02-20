@@ -11,8 +11,6 @@ import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 
 function Index({ type, target, xp }) {
-  console.log(type);
-
   return (
     <>
       <div className={styles.statusPage}>
@@ -137,11 +135,7 @@ const Mission = ({ xp }) => {
           </h4>
           <button
             onClick={() => {
-              let slug = localStorage.getItem("mission-callback");
-              if (slug) {
-                return (location.href = `/dao/${slug}`);
-              }
-              location.href = `/`;
+              history.go(-2);
             }}
           >
             Explore Truts
@@ -188,9 +182,13 @@ const ErrorState = ({ slug, message }) => {
       ></lottie-player>
       <span className={styles.message}>
         <p>{message}</p>
-        <Link href={`/dao/${slug}`}>
-          <Button label={"Try Again"} />
-        </Link>
+
+        <Button
+          onClick={() => {
+            window.history.go(-2);
+          }}
+          label={"Try Again"}
+        />
       </span>
     </div>
   );
