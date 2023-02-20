@@ -76,7 +76,7 @@ export default function Component({ min, data, isCompleted }) {
       </Link>
       {!isCompleted ? (
         <div className={styles.xpCon}>
-          <img src="/missions/coin.png" alt="" />
+          <img src="/missions/coin.svg" alt="" />
           <p>{data.listingXP} XP</p>
           {/* <img src="/missions/save.png" alt="" /> */}
           <Tooltip

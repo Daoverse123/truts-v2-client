@@ -144,7 +144,7 @@ function Index({ mission }) {
                 <img style={{ left: "0px" }} src="/profile-old.png" alt="" />
                 <img style={{ left: "-7px" }} src="/profile-old.png" alt="" />
                 <img style={{ left: "-14px" }} src="/profile-old.png" alt="" />
-                <p>+ 123 completed</p>
+                <p>+ 123 completed xx</p>
               </div> */}
             </div>
           </div>
