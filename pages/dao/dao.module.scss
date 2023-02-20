@@ -510,7 +510,7 @@ $PHONE_N: 426;
 .banner {
     display: flex;
     width: 100%;
-    margin-top: 30px;
+
     height: 210px;
     min-height: min-content;
     background: #ffffff;
@@ -520,6 +520,20 @@ $PHONE_N: 426;
     background-repeat: no-repeat;
     flex-direction: column;
     padding: 28px 32px;
+    margin-top: 30px;
+
+    @media (max-width: 550px) {
+        height: 179px;
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
+    @media (max-width: 420px) {
+        height: 200px;
+        width: 95%;
+        margin: 0 auto;
+        margin-top: 30px;
+    }
 
     .content {
         display: flex;
@@ -565,14 +579,24 @@ $PHONE_N: 426;
             margin-top: 20px;
             img {
                 margin-right: 8px;
+                width: 21.1px;
             }
         }
 
         @media (max-width: 550px) {
-            .content {
-                p {
-                    font-size: 12.2571px;
+            h1 {
+                font-size: 20.4235px;
+                img {
+                    height: 34px;
                 }
+            }
+            p {
+                font-size: 12.2571px;
+            }
+            button {
+                width: 139px;
+                height: 34px;
+                font-size: 10px;
             }
         }
     }

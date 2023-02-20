@@ -678,7 +678,7 @@ function Missions({ missions }) {
             })}
           </section>
         )}
-        {"missions" in missions && missions.missions.length == 0 && (
+        {"missions" in missions && (
           <div className={styles.banner}>
             <div className={styles.content}>
               <h1>
