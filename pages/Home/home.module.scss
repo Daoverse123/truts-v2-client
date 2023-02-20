@@ -1025,12 +1025,16 @@ $PHONE_N: 425;
     justify-content: center;
     cursor: pointer;
     margin-top: 40px;
+    transition: all 0.15s ease-in-out;
     img {
         margin-right: 10px;
         width: 24px;
         filter: brightness(0) invert(100%);
         margin-bottom: 3px;
         transform: scale(1.2);
+    }
+    &:hover {
+        box-shadow: 0 0 30px rgba(0, 89, 255, 0.514);
     }
 }
 

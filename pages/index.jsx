@@ -212,7 +212,7 @@ function Hero() {
   const [profileSignupPrompt, setprofileSignupPrompt] = useState(false);
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
   const [referral, setreferral] = useState(undefined);
-
+  const [isLoggedIn, setisLoggedIn] = useState(false);
   useEffect(() => {
     let ref = location.search.replaceAll("?", "").split("=");
     if (ref[0] == "ref") {
@@ -221,6 +221,10 @@ function Hero() {
     }
     if (ref[0] == "signup") {
       setprofileSignupPrompt(true);
+    }
+
+    if (localStorage.getItem("token")) {
+      setisLoggedIn(true);
     }
   }, []);
 
@@ -259,16 +263,29 @@ function Hero() {
             <span className={styles.gradientText}>Truts</span>
           </h1>
           <h2>Discover, join, contribute and earn.</h2>
-          <button
-            onClick={() => {
-              setprofileSignupPrompt(true);
-              // openNewTab('/early-alpha.html');
-            }}
-            className={styles.black_btn}
-          >
-            <img src={"/svg/profile.svg"} alt="" />
-            Login/Sign up
-          </button>
+          {!isLoggedIn ? (
+            <button
+              onClick={() => {
+                setprofileSignupPrompt(true);
+                // openNewTab('/early-alpha.html');
+              }}
+              className={styles.black_btn}
+            >
+              <img src={"/svg/profile.svg"} alt="" />
+              Login/Sign up
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setprofileSignupPrompt(true);
+                // openNewTab('/early-alpha.html');
+              }}
+              className={styles.black_btn}
+            >
+              <img src={"/svg/rocket.svg"} alt="" />
+              Explore Missions
+            </button>
+          )}
         </span>
         <img src={heroImg.src} alt="" className={styles.heroImg} />
         <div className={styles.heroStat}>
