@@ -184,26 +184,29 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
       <div className={styles.blankSpace}></div>
       <div className={styles.menu}>
         <div className={styles.top_bar}>
-          {/* <img className={styles.main_logo} src={logo.src} alt="" /> */}
-          <div className={styles.profileState}>
-            <div
-              className={styles.addressBar}
-              onClick={() => {
-                localStorage.removeItem("token");
-                location.href = "/?signup=true";
-              }}
-            >
-              <img
-                className={styles.pixel_icon}
-                alt=""
-                src={user.photo?.secure_url || pixel_icon.src}
-              />
-              <span className={styles.address_chain}>
-                <h2>{limit(9, user.name)}</h2>
-                <p>@{user.username}</p>
-              </span>
+          {user ? (
+            <div className={styles.profileState}>
+              <div
+                className={styles.addressBar}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  location.href = "/?signup=true";
+                }}
+              >
+                <img
+                  className={styles.pixel_icon}
+                  alt=""
+                  src={user.photo?.secure_url || pixel_icon.src}
+                />
+                <span className={styles.address_chain}>
+                  <h2>{limit(9, user.name)}</h2>
+                  <p>@{user.username}</p>
+                </span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <img className={styles.main_logo} src={logo.src} alt="" />
+          )}
           <img
             onClick={() => {
               setTabletNavOpen(false);
@@ -228,14 +231,23 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
           </Link>
         </ul>
         <div className={styles.btn_wrapper}>
-          <Button
-            type={"secondary"}
-            onClick={() => {
-              localStorage.removeItem("token");
-              location.href = "/?signup=true";
-            }}
-            label={"Log Out"}
-          />
+          {user ? (
+            <Button
+              type={"secondary"}
+              onClick={() => {
+                localStorage.removeItem("token");
+                location.href = "/?signup=true";
+              }}
+              label={"Log Out"}
+            />
+          ) : (
+            <Button
+              onClick={() => {
+                location.href = "/?signup=true";
+              }}
+              label={"Sign up/Login"}
+            />
+          )}
         </div>
       </div>
     </div>
