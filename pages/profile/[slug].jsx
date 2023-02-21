@@ -540,7 +540,7 @@ function Profile({ slug }) {
                     />{" "}
                     Email Id
                   </li>
-                  <li>
+                  {/* <li>
                     <img
                       src={
                         "wallets" in userData
@@ -550,7 +550,7 @@ function Profile({ slug }) {
                       alt=""
                     />{" "}
                     Connect Wallet
-                  </li>
+                  </li> */}
                   <li>
                     <img
                       src={
