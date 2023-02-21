@@ -3,6 +3,7 @@ import styles from "./compMission.module.scss";
 import Link from "next/link";
 import axios from "axios";
 import Tooltip from "../../components/ToolTip";
+import countBasedLength from "../../utils/countBasedLength";
 
 const Tag = ({ src, color, title }) => {
   return (
@@ -80,7 +81,11 @@ export default function Component({ min, data, isCompleted }) {
           })}
 
         {completed && completed.length > 0 && (
-          <p style={{ marginLeft: `-${completed.length * 4}px` }}>
+          <p
+            style={{
+              marginLeft: countBasedLength(completed.length),
+            }}
+          >
             + {completed.length} Completed
           </p>
         )}

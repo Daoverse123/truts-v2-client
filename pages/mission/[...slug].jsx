@@ -7,6 +7,7 @@ import axios from "axios";
 import openNewTab from "../../utils/openNewTab";
 import Link from "next/link";
 import ToolTip from "../../components/ToolTip";
+import countBasedLength from "../../utils/countBasedLength";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -172,7 +173,7 @@ function Index({ mission }) {
                   })}
 
                 {completed && completed.length > 0 && (
-                  <p style={{ marginLeft: `-${completed.length * 4}px` }}>
+                  <p style={{ marginLeft: countBasedLength(completed.length) }}>
                     + {completed.length} Completed
                   </p>
                 )}
