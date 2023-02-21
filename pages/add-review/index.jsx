@@ -131,15 +131,17 @@ function AddReview({ id, slug }) {
         </Head>
         <Nav />
         <div className={styles.mainCon}>
-          <div className={styles.breadCrum}>
-            <Link href={`./dao/${slug}`}>
-              <img src={left_arrow.src} alt="" />
-            </Link>
-            <Link href={`./dao/${slug}`}>
-              <span>
-                <p>Back</p>
-              </span>
-            </Link>
+          <div
+            className={styles.breadCrum}
+            onClick={() => {
+              window.history.go(-1);
+            }}
+          >
+            <img src={left_arrow.src} alt="" />
+
+            <span>
+              <h3>Back</h3>
+            </span>
           </div>
 
           {pageState == status.LOADING && <LoadingState />}
@@ -160,7 +162,7 @@ function AddReview({ id, slug }) {
                       return { ...rf };
                     });
                   }}
-                  placeholder="This is where you will write your review. Explain what happened, and leave out offensive words. Keep your feedback honest, helpful and constructive."
+                  placeholder="Please be mindful of your words when reviewing. Be honest, helpful and provide constructive criticism"
                   className={styles.desc_input}
                   name=""
                   id=""
