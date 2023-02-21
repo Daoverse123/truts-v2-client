@@ -51,11 +51,11 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
 
     signature = await signMessage(message, chain);
 
-    let chainENUM = () => {
-      if ("Ethereum") {
+    let chainENUM = (ele) => {
+      if ("Ethereum" == ele) {
         return "EVM";
       }
-      if ("Solana") {
+      if ("Solana" == ele) {
         return "SOL";
       }
     };

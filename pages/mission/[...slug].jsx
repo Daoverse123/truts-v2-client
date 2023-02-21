@@ -172,7 +172,9 @@ function Index({ mission }) {
                   })}
 
                 {completed && completed.length > 0 && (
-                  <p>+ {completed.length} Completed</p>
+                  <p style={{ marginLeft: `-${completed.length * 4}px` }}>
+                    + {completed.length} Completed
+                  </p>
                 )}
               </div>
             </div>
