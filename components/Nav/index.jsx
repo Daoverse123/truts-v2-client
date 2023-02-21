@@ -200,7 +200,6 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
               <div
                 className={styles.addressBar}
                 onClick={() => {
-                  localStorage.removeItem("token");
                   location.href = "/profile/private";
                 }}
               >
