@@ -627,8 +627,8 @@ const Reviews = ({ userData }) => {
 
       <div key={"x"} className={styles.reviewCon + " " + styles.appear}>
         <p className={styles.info}>
-          🛈 Your web3 communities all listed in one place. Explore, engage and
-          earn with your communities on Truts
+          {/* 🛈 Your web3 communities all listed in one place. Explore, engage and
+          earn with your communities on Truts */}
         </p>
         {/* <p className={styles.ifo}>Reviews on Communities as a Member</p> */}
         {"reviews" in userData &&
@@ -715,22 +715,28 @@ const StarComp = ({ rating, size }) => {
 
 const Communites_temp = ({ userData }) => {
   return (
-    <div className={styles.communities_list + " " + styles.appear}>
-      {userData.daos.map((ele, idx) => {
-        let data = {
-          dao_name: ele?.name,
-          twitter_link: ele?.twitter.link,
-          twitter_followers: ele?.twitter.count,
-          discord_link: ele?.discord.link,
-          discord_members: ele?.discord.count,
-          average_rating: ele?.ratings.average,
-          review_count: ele?.ratings.count,
-          slug: ele.slug,
-          dao_cover: ele?.image.cover.url,
-          website_link: ele?.website,
-        };
-        return <DAOCard key={"d" + idx} data={data} />;
-      })}
+    <div className={styles.reviewWrapper}>
+      <p className={styles.info}>
+        🛈 Your web3 communities all listed in one place. Explore, engage and
+        earn with your communities on Truts
+      </p>
+      <div className={styles.communities_list + " " + styles.appear}>
+        {userData.daos.map((ele, idx) => {
+          let data = {
+            dao_name: ele?.name,
+            twitter_link: ele?.twitter.link,
+            twitter_followers: ele?.twitter.count,
+            discord_link: ele?.discord.link,
+            discord_members: ele?.discord.count,
+            average_rating: ele?.ratings.average,
+            review_count: ele?.ratings.count,
+            slug: ele.slug,
+            dao_cover: ele?.image.cover.url,
+            website_link: ele?.website,
+          };
+          return <DAOCard key={"d" + idx} data={data} />;
+        })}
+      </div>
     </div>
   );
 };

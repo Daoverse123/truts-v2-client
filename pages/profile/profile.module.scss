@@ -1679,14 +1679,22 @@ $PHONE_N: 450;
     }
 }
 
-.communities_list {
+.reviewWrapper {
     display: flex;
+    flex-direction: column;
     max-width: 1080px;
     width: 95%;
+}
+
+.communities_list {
+    display: flex;
+
+    width: 100%;
     flex-wrap: wrap;
     margin: 50px 0;
     justify-content: center;
     gap: 25px 35px;
+    margin-top: 25px;
 
     @media (min-width: 1440px) {
         gap: 50px 70px;
@@ -2188,11 +2196,15 @@ $PHONE_N: 450;
     margin-bottom: 0;
     color: gray;
 
+    @media (max-width: 1440px) {
+        text-align: center;
+    }
+
     @media (max-width: 840px) {
         font-size: 10px;
     }
     @media (max-width: 450px) {
-        font-size: 14px;
+        font-size: 12px;
         width: 90%;
         text-align: center;
     }
