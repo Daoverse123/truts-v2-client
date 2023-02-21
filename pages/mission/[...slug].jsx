@@ -202,6 +202,14 @@ function Index({ mission }) {
                 );
               })}
             </div>
+            <button
+              onClick={() => {
+                location.href = "/?signup=true";
+              }}
+              className={styles.mainBtnDisabled}
+            >
+              Login/Sign-up to Complete the Mission
+            </button>
           </>
         )}
 
