@@ -1116,16 +1116,21 @@ const TooltipCustom = ({ init, post, children }) => {
 
 const TooltipReferral = ({ data, children }) => {
   const teirs = {
-    COPPER: { multiplier: 1.0, useCountForNextTeir: 5 },
-    BRONZE: { multiplier: 1.1, useCountForNextTeir: 15 },
-    SILVER: { multiplier: 1.3, useCountForNextTeir: 30 },
-    GOLD: { multiplier: 1.5, useCountForNextTeir: 50 },
-    DIAMOND: { multiplier: 1.7, useCountForNextTeir: 0 },
+    COPPER: { multiplier: 1.0, useCountForNextTeir: 5, pos: "right" },
+    BRONZE: { multiplier: 1.1, useCountForNextTeir: 15, pos: "right" },
+    SILVER: { multiplier: 1.3, useCountForNextTeir: 30, pos: "left" },
+    GOLD: { multiplier: 1.5, useCountForNextTeir: 50, pos: "left" },
+    DIAMOND: { multiplier: 1.7, useCountForNextTeir: 0, pos: "left" },
   };
   return (
     <div className={styles.customToolTipReferral}>
-      <div className={styles.content}>
-        <span className={styles.titles}>
+      <div
+        style={
+          teirs[data].pos == "right" ? {} : { transform: "translateX(-85%)" }
+        }
+        className={styles.content}
+      >
+        <span className={styles.titles} onChange={() => {}}>
           <h1>{`${data.toLowerCase()} tier`} </h1>
           <p>{teirs[data].multiplier}x Multiplier</p>
         </span>
