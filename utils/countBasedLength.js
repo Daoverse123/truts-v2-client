@@ -6,7 +6,10 @@ const countBasedLength = (ln) => {
         return `-${6 * 0.4}px`;
     }
     if (ln == 3) {
-        return `-${6 * 0.5}px`;
+        return `-${6 * 1.5}px`;
+    }
+    if (ln == 4) {
+        return `-${6 * 1.7}px`;
     }
     if (ln > 6) {
         return `-${6 * 4.5}px`;
