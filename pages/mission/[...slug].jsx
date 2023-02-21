@@ -185,6 +185,26 @@ function Index({ mission }) {
             </span>
           </span>
         </div>
+        {!status && (
+          <>
+            <h3 className={styles.subtitle}>Tasks to Perform</h3>
+            <div className={styles.tasksCon}>
+              {mission.tasks.map((tsk, idx) => {
+                return (
+                  <ShowTask
+                    key={"tsk" + idx}
+                    no={idx + 1}
+                    data={tsk}
+                    status={getTaskStatus(tsk._id)}
+                    mission_id={mission._id}
+                    refreshMissionStatus={fetchTaskStatus}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+
         {status && (
           <>
             <h3 className={styles.subtitle}>Tasks to Perform</h3>
@@ -218,6 +238,21 @@ function Index({ mission }) {
       </div>
       <Footer />
     </>
+  );
+}
+
+function ShowTask({ no, data, mission_id }) {
+  let taskStatus = styles.taskDisabled;
+  const [loading, setloading] = useState(false);
+
+  return (
+    <div className={styles.task + " " + taskStatus}>
+      <span className={styles.count}>{no}</span>
+      <div className={styles.textCont}>
+        <h1>{data.name}</h1>
+        <p>{limitText(100, data.description)}</p>
+      </div>
+    </div>
   );
 }
 
