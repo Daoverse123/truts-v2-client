@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import Router, { useRouter } from "next/router";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+const bs58 = require("bs58");
 
 import { Buffer } from "buffer";
 import * as nearAPI from "near-api-js";
@@ -109,7 +110,8 @@ const solSign = async (msgs) => {
     const signedMessage = await provider.signMessage(encodedMessage, "utf8");
     return bs58.encode(signedMessage.signature);
   } catch (error) {
-    alert("Auth error");
+    console.log(error);
+    alert("Auth error in signing");
   }
 };
 
@@ -142,13 +144,6 @@ export default function WalletConnect({
     }
   }, []);
 
-  const closePopUp = async () => {
-    let wallet = JSON.parse(localStorage.getItem("wallet_state"));
-    walletAuth(isLogin, wallet, signMessage, () => {
-      setwalletConnectVisible(false);
-    });
-  };
-
   const signMessage = async (message, chain) => {
     if (chain == "Ethereum") {
       let sig = await signMessageAsync({ message });
@@ -158,6 +153,13 @@ export default function WalletConnect({
       let sig = await solSign({ message });
       return sig;
     }
+  };
+
+  const closePopUp = async () => {
+    let wallet = JSON.parse(localStorage.getItem("wallet_state"));
+    walletAuth(isLogin, wallet, signMessage, () => {
+      setwalletConnectVisible(false);
+    });
   };
 
   const isSelectedChain = (chain) => {

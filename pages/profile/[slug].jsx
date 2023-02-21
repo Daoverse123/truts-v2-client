@@ -439,12 +439,31 @@ function Profile({ slug }) {
                       copyToClipBoard(userData.wallets.address);
                     }}
                     style={{
-                      background: chainIconMap["ethereum"].color,
-                      borderColor: chainIconMap["ethereum"].color,
+                      background:
+                        chainIconMap[
+                          userData.wallets.chain == "SOL"
+                            ? "solana"
+                            : "ethereum"
+                        ].color,
+                      borderColor:
+                        chainIconMap[
+                          userData.wallets.chain == "SOL"
+                            ? "solana"
+                            : "ethereum"
+                        ].color,
                     }}
                     className={styles.tab}
                   >
-                    <img src={chainIconMap["ethereum"].icon} alt="" />
+                    <img
+                      src={
+                        chainIconMap[
+                          userData.wallets.chain == "SOL"
+                            ? "solana"
+                            : "ethereum"
+                        ].icon
+                      }
+                      alt=""
+                    />
                     {minimizeWallet(userData.wallets.address)}
                   </div>
                 </TooltipCustom>
