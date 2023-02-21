@@ -319,6 +319,10 @@ function Profile({ slug }) {
       counts["communities"] = userData["daos"].length;
     }
     setelements({ ...counts });
+
+    if ("wallets" in userData) {
+      setprivateProfile(true);
+    }
   }, [userData]);
 
   return (
