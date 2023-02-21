@@ -69,6 +69,7 @@ $PHONE_N: 450;
         width: 200px;
         height: 200px;
         margin-left: 40px;
+        background-size: cover;
         @media (max-width: $LAPTOP) and (min-width: $PHONE) {
             width: laptop_to_tablet_fluid(200);
             height: laptop_to_tablet_fluid(200);
