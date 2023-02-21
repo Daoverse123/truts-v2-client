@@ -12,7 +12,7 @@ import Head from "next/head";
 let Placeholder = "/profile-old.png";
 
 const P_API = process.env.P_API;
-let options = ["Profile", "Wallets", "Socials"];
+let options = ["Profile", "Socials", "Wallets"];
 const fetchUserDetails = async (setter) => {
   let jwt = localStorage.getItem("token");
   let intrests = await axios.get(`${P_API}/user/intrest-tag`, {
@@ -264,12 +264,12 @@ function Index() {
               }}
             />
           )}
-          {selectedPage == options[1] && (
+          {selectedPage == options[2] && (
             <Wallets
               {...{ showWallet, setshowWallet, initUserData, setselectedPage }}
             />
           )}
-          {selectedPage == options[2] && <Socials {...{ initUserData }} />}
+          {selectedPage == options[1] && <Socials {...{ initUserData }} />}
         </div>
       </div>
     </>
@@ -605,13 +605,13 @@ const Wallets = ({
       <div className={styles.mainTitle}>
         <h1>Wallet Settings</h1>
         <p>
-          Your Wallet will also serve as your Truts ID with your Truts On Chain
-          Reputation, so make sure to connect your primary wallet!
+          Connect your wallet from your desktop, and seamlessly use your profile
+          on mobile without any wallet connect hassle!
         </p>
       </div>
       <div className={styles.walletSection}>
         <div className={styles.wTitle}>
-          <h1>Your Wallet *</h1>
+          <h1>Your Wallet</h1>
           {/* <h2>+ Add Wallet</h2> */}
           <XpCoinComp value={"wallets" in initUserData} />
         </div>
