@@ -116,6 +116,10 @@ const fetchUserData = async (setter) => {
       location.href = "/?signup=true";
     }
 
+    if (!main_user_data.isCompleted) {
+      return 0;
+    }
+
     let user_data = await Promise.all([
       (async () => {
         if (!("discord" in main_user_data)) {
@@ -558,17 +562,17 @@ function Profile({ slug }) {
                     />{" "}
                     Email Id
                   </li>
-                  {/* <li>
+                  <li>
                     <img
                       src={
-                        "wallets" in userData
+                        "username" in userData
                           ? "/assets/tick.png"
                           : "/assets/wrong.png"
                       }
                       alt=""
                     />{" "}
-                    Connect Wallet
-                  </li> */}
+                    Username
+                  </li>
                   <li>
                     <img
                       src={
