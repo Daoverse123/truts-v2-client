@@ -55,6 +55,7 @@ const NavSec = ({ elements, selected, setSelected, privateProfile }) => {
       {tabs.map((ele, i) => {
         return (
           <li
+            id={"tab-" + ele}
             className={selected == ele ? styles.selected : null}
             onClick={() => {
               setSelected(ele);
@@ -319,10 +320,6 @@ function Profile({ slug }) {
       counts["communities"] = userData["daos"].length;
     }
     setelements({ ...counts });
-
-    if ("wallets" in userData) {
-      setprivateProfile(true);
-    }
   }, [userData]);
 
   return (
@@ -970,8 +967,20 @@ const Referral = ({ userData }) => {
   const [link, setlink] = useState("");
 
   useEffect(() => {
-    setlink(`${location.origin}/?ref=${userData.wallets.address}`);
+    try {
+      setlink(`${location.origin}/?ref=${userData.wallets.address}`);
+    } catch (error) {}
   }, []);
+
+  if (!referral) {
+    return (
+      <div className={styles.referral}>
+        <p className={styles.info}>
+          ⚠️ Please Connect your Wallet to enable Referral !
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.referral}>
