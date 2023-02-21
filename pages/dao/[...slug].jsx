@@ -622,6 +622,12 @@ const ReviewComp = ({
     userInfo.name = userInfo.name.slice(0, 15) + "...";
   }
 
+  let profile_img = "/profile-old.png";
+
+  if (review?.user?.photo?.secure_url) {
+    profile_img = review?.user?.photo?.secure_url;
+  }
+
   return (
     <>
       <div
@@ -629,7 +635,7 @@ const ReviewComp = ({
         style={selected ? { border: "2px solid #3065f3" } : {}}
       >
         <div className={styles.userInfo}>
-          <img className={styles.profilePic} src={"/profile-old.png"} alt="" />
+          <img className={styles.profilePic} src={profile_img} alt="" />
           <span>
             {userInfo.username ? (
               <p className={styles.address}>
