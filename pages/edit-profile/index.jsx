@@ -621,9 +621,9 @@ const Wallets = ({
               <img
                 className={styles.profileName}
                 src={
-                  (initUserData?.wallets?.chain == "EVM" &&
-                    "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880") ||
-                  "./blue.png"
+                  initUserData?.wallets?.chain == "SOL"
+                    ? "https://assets.coingecko.com/coins/images/4128/small/solana.png?1640133422"
+                    : "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
                 }
                 alt=""
               />
