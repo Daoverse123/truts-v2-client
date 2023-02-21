@@ -605,7 +605,12 @@ const Reviews = ({ userData }) => {
                     <h1>XYZ</h1>
                 </div>
             </div> */}
+
       <div key={"x"} className={styles.reviewCon + " " + styles.appear}>
+        <p className={styles.info}>
+          🛈 Your web3 communities all listed in one place. Explore, engage and
+          earn with your communities on Truts
+        </p>
         {/* <p className={styles.ifo}>Reviews on Communities as a Member</p> */}
         {"reviews" in userData &&
           userData.reviews.map((ele, idx) => {

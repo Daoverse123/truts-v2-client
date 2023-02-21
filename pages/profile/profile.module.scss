@@ -2182,3 +2182,18 @@ $PHONE_N: 450;
     display: flex;
     width: 100%;
 }
+
+.info {
+    margin-left: 10px;
+    margin-bottom: 0;
+    color: gray;
+
+    @media (max-width: 840px) {
+        font-size: 10px;
+    }
+    @media (max-width: 450px) {
+        font-size: 14px;
+        width: 90%;
+        text-align: center;
+    }
+}
