@@ -204,66 +204,68 @@ const fetchPublicUserData = async (setter, slug) => {
       location.href = "/?signup=true";
     }
 
-    let user_data = await Promise.all([
-      (async () => {
-        if (!("discord" in main_user_data)) {
-          return { status: 500 };
-        }
-        let res = await axios.get(
-          `${P_API}/public/user/${main_user_data.username}/reviews`,
-          option
-        );
-        return res;
-      })(),
-      (async () => {
-        if (!("discord" in main_user_data)) {
-          return { status: 500 };
-        }
-        let res = await axios.get(
-          `${P_API}/public/user/${slug}/guilds`,
-          option
-        );
-        return res;
-      })(),
-      (async () => {
-        if (!("discord" in main_user_data)) {
-          return { status: 500 };
-        }
-        let res = await axios.get(
-          `${P_API}/public/user/${slug}/completed-mission`,
-          option
-        );
-        return res;
-      })(),
-      (async () => {
-        if (!("discord" in main_user_data)) {
-          return { status: 500 };
-        }
-        let res = await axios.get(
-          `${P_API}/public/user/${slug}/truts-xp`,
-          option
-        );
-        return res;
-      })(),
-    ]);
+    if (main_user_data.isCompleted) {
+      let user_data = await Promise.all([
+        (async () => {
+          if (!("discord" in main_user_data)) {
+            return { status: 500 };
+          }
+          let res = await axios.get(
+            `${P_API}/public/user/${main_user_data.username}/reviews`,
+            option
+          );
+          return res;
+        })(),
+        (async () => {
+          if (!("discord" in main_user_data)) {
+            return { status: 500 };
+          }
+          let res = await axios.get(
+            `${P_API}/public/user/${slug}/guilds`,
+            option
+          );
+          return res;
+        })(),
+        (async () => {
+          if (!("discord" in main_user_data)) {
+            return { status: 500 };
+          }
+          let res = await axios.get(
+            `${P_API}/public/user/${slug}/completed-mission`,
+            option
+          );
+          return res;
+        })(),
+        (async () => {
+          if (!("discord" in main_user_data)) {
+            return { status: 500 };
+          }
+          let res = await axios.get(
+            `${P_API}/public/user/${slug}/truts-xp`,
+            option
+          );
+          return res;
+        })(),
+      ]);
 
-    let data = {};
-    if (user_data[0].status == 200) {
-      data = { ...data, reviews: user_data[0].data.data.reviews };
-    }
-    if (user_data[1].status == 200) {
-      data = { ...data, daos: user_data[1].data.data.listings };
-    }
-    if (user_data[2].status == 200) {
-      data = { ...data, missions: user_data[2].data.data.missions };
-    }
-    if (user_data[3].status == 200) {
-      data = { ...data, xp: user_data[3].data.data };
-    }
+      let data = {};
+      if (user_data[0].status == 200) {
+        data = { ...data, reviews: user_data[0].data.data.reviews };
+      }
+      if (user_data[1].status == 200) {
+        data = { ...data, daos: user_data[1].data.data.listings };
+      }
+      if (user_data[2].status == 200) {
+        data = { ...data, missions: user_data[2].data.data.missions };
+      }
+      if (user_data[3].status == 200) {
+        data = { ...data, xp: user_data[3].data.data };
+      }
 
-    setter((state) => {
-      return { ...state, ...data };
-    });
+      setter((state) => {
+        return { ...state, ...data };
+      });
+    }
   } catch (error) {
     console.log(error);
     location.href = "/?signup=true";

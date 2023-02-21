@@ -142,7 +142,7 @@ const addDecimal = (num) => {
   if (!num) return "0.0";
   let str = `${num}`;
   if (str.length > 1) {
-    return str;
+    return Math.round(num * 10) / 10;
   } else {
     return str + ".0";
   }
