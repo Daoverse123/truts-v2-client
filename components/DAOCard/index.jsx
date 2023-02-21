@@ -15,6 +15,7 @@ export default function DAOCard({ data }) {
   if (name.length > 20) {
     name = data.dao_name.slice(0, 20) + "...";
   }
+
   // h 114 w 313
   return (
     <Link href={`/dao/${data.slug}`}>
@@ -45,7 +46,7 @@ export default function DAOCard({ data }) {
           </span>
           <div className={styles.review_stats}>
             <div className={styles.ratingBox}>
-              <span>{addDecimal(Math.ceil(data.average_rating))}</span>
+              <span>{addDecimal(data.average_rating)}</span>
               <img src={star.src} alt="" />
             </div>
             <span className={styles.review_count}>
