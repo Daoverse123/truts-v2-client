@@ -150,6 +150,47 @@ function Index() {
 
   const [selectedPage, setselectedPage] = useState("Profile");
 
+  useEffect(() => {
+    let searchParams = location.search;
+    if (searchParams) {
+      let split = searchParams.split("=");
+      let pages = {
+        profile: "Profile",
+        social: "Socials",
+        wallets: "Wallets",
+      };
+
+      if (split[0] == "?page") {
+        setselectedPage(pages[split[1]]);
+      }
+
+      if (location.hash == "#twitter-success") {
+        toast.success("Twitter Connected successfully !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      if (location.hash == "#twitter-fail") {
+        toast.error("Twitter Connection Failed !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
+  }, []);
+
   return (
     <>
       {LoaderVisible && <Loader />}
@@ -717,20 +758,20 @@ const Socials = ({ initUserData }) => {
             </button>
           </div>
         )}
-        <div className={styles.secTitle}>
+        {/* <div className={styles.secTitle}>
           <h2>Twitter</h2>
           <XpCoinComp value={false} />
-        </div>
-        <div className={styles.twitterBtn}>
+        </div> */}
+        {/* <div className={styles.twitterBtn}>
           <button
             onClick={() => {
-              // location.href = twitter_auth_aur;
+              location.href = twitter_auth_aur;
             }}
           >
             <img src="./twitter.png" alt="" />
             Verify Twitter
           </button>
-        </div>
+        </div> */}
       </div>
       {/* <button onClick={() => {
                 axios.get(`${P_API}/user/guilds`, {

@@ -44,17 +44,17 @@ $PHONE_N: 425;
         opacity: 0.5;
     }
     @media (max-width: 467px) {
-       width: 12px;
-       height: 12px;
-       right: 10px;
-       top: 10px;
+        width: 12px;
+        height: 12px;
+        right: 10px;
+        top: 10px;
     }
 }
 
 .menu_con {
     display: flex;
     flex-direction: column;
-    width: 467px;
+    width: 550px;
     min-height: max-content;
     background-color: white;
     border-radius: 16px;
@@ -73,12 +73,14 @@ $PHONE_N: 425;
     width: fit-content;
     justify-content: center;
     align-items: center;
-    height: 43px;
+    min-height: 43px;
+    height: fit-content;
     background: #eeeff2;
     border-radius: 12px;
     margin: 23.5px auto 0 auto;
     padding: 4px;
     cursor: pointer;
+    flex-wrap: wrap;
 }
 
 .chainBtn {

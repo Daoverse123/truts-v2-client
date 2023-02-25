@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import Router, { useRouter } from "next/router";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import * as fcl from "@onflow/fcl";
 const bs58 = require("bs58");
 
 import { Buffer } from "buffer";
@@ -25,6 +26,17 @@ import { toast } from "react-toastify";
 //     chain: "Ethereum",
 //     status: "connected"
 // }
+
+fcl.config({
+  "flow.network": "testnet",
+  "accessNode.api": "https://rest-testnet.onflow.org",
+  "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+  "discovery.authn.endpoint":
+    "https://fcl-discovery.onflow.org/api/testnet/authn",
+  "app.detail.title": "Truts Platform",
+  "app.detail.icon": "https://placekitten.com/g/200/200",
+  // "fcl.accountProof.resolver": AccountProofDataResolver
+});
 
 let P_API = process.env.P_API;
 const walletAuth = async (login, walletState, signMessage, saveWallet) => {
@@ -115,6 +127,16 @@ const solSign = async (msgs) => {
   }
 };
 
+const FlowSign = async () => {
+  const MSG = Buffer.from("Please sign the message").toString("hex");
+  try {
+    console.log(await fcl.currentUser.signUserMessage(MSG));
+    return await fcl.currentUser.signUserMessage(MSG);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default function WalletConnect({
   isLogin,
   walletConnectVisible,
@@ -151,6 +173,10 @@ export default function WalletConnect({
     }
     if (chain == "Solana") {
       let sig = await solSign({ message });
+      return sig;
+    }
+    if (chain == "Flow") {
+      let sig = await FlowSign({ message });
       return sig;
     }
   };
@@ -212,6 +238,12 @@ export default function WalletConnect({
         )}
         {selectedChain == "Near" && (
           <Near_wallets
+            setwalletState={setwalletState}
+            closePopUp={closePopUp}
+          />
+        )}
+        {selectedChain == "Flow" && (
+          <Flow_wallets
             setwalletState={setwalletState}
             closePopUp={closePopUp}
           />
@@ -298,6 +330,50 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
           />
         );
       })}
+    </div>
+  );
+};
+
+const Flow_wallets = ({ setwalletState, closePopUp }) => {
+  const connectFlowWallet = async () => {
+    console.log("Connect waller flow");
+    await fcl.authenticate();
+    const currentUser = await fcl.currentUser.snapshot();
+    console.log("The Current User", currentUser);
+  };
+
+  const disconnetWallet = () => {
+    fcl.unauthenticate();
+  };
+
+  return (
+    <div className={styles.list}>
+      <Wallet
+        onClick={async () => {
+          //disconnetWallet();
+          let res = await connectFlowWallet();
+          if (res.addr.length > 5) {
+            setwalletState({
+              address: res.addr,
+              chain: "Flow",
+              status: "connected",
+            });
+            localStorage.setItem(
+              "wallet_state",
+              JSON.stringify({
+                address: res.add,
+                chain: "Flow",
+                status: "connected",
+              })
+            );
+
+            //window.updateNav();
+            closePopUp();
+          }
+        }}
+        icon={walletIconMap["Flow"] || other_wallet.src}
+        name={"Flow"}
+      />
     </div>
   );
 };
@@ -459,7 +535,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
   );
 };
 
-const Chains = ["Ethereum", "Solana", "Near"];
+const Chains = ["Ethereum", "Solana", "Near", "Flow"];
 
 const walletIconMap = {
   MetaMask: metamask.src,
@@ -467,10 +543,12 @@ const walletIconMap = {
   WalletConnect: wallet_connect.src,
   Phantom: phantom_icon.src,
   Near: near_icon.src,
+  Flow: "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776",
 };
 
 const chainIconMap = {
   Ethereum: eth_icon.src,
   Solana: sol_icon.src,
   Near: near_icon.src,
+  Flow: "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776",
 };

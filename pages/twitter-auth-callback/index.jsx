@@ -16,13 +16,13 @@ const sendCode = async (code) => {
     if (res.status == 200) {
       console.log(res.data.data);
       // window.location = localStorage.getItem('redirect_pre_discord');
-      window.location = "/profile/edit-profile";
+      window.location = "/edit-profile?page=social#twitter-success";
     } else {
       alert("auth failed Please try again");
     }
   } catch (error) {
     alert("auth failed Please try again");
-    window.location = "/profile/edit-profile";
+    window.location = "/edit-profile?page=social#twitter-failed";
   }
 };
 
