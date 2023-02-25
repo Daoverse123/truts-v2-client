@@ -4,17 +4,25 @@ import axios from "axios";
 let P_API = process.env.P_API;
 
 const sendCode = async (code) => {
-  let res = await axios.get(`${P_API}/connect/twitter/callback?code=${code}`, {
-    headers: {
-      Authorization: localStorage.getItem("token"),
-    },
-  });
-  if (res.status == 200) {
-    console.log(res.data.data);
-    // window.location = localStorage.getItem('redirect_pre_discord');
-    window.location = "/profile/private";
-  } else {
+  try {
+    let res = await axios.get(
+      `${P_API}/connect/twitter/callback?code=${code}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (res.status == 200) {
+      console.log(res.data.data);
+      // window.location = localStorage.getItem('redirect_pre_discord');
+      window.location = "/profile/edit-profile";
+    } else {
+      alert("auth failed Please try again");
+    }
+  } catch (error) {
     alert("auth failed Please try again");
+    window.location = "/profile/edit-profile";
   }
 };
 

@@ -724,7 +724,7 @@ const Socials = ({ initUserData }) => {
         <div className={styles.twitterBtn}>
           <button
             onClick={() => {
-              location.href = twitter_auth_aur;
+              // location.href = twitter_auth_aur;
             }}
           >
             <img src="./twitter.png" alt="" />
