@@ -535,7 +535,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
   );
 };
 
-const Chains = ["Ethereum", "Solana", "Near", "Flow"];
+const Chains = ["Ethereum", "Solana", "Near"];
 
 const walletIconMap = {
   MetaMask: metamask.src,
