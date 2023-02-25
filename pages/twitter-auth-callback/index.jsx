@@ -4,7 +4,6 @@ import axios from "axios";
 let P_API = process.env.P_API;
 
 const sendCode = async (code) => {
-  alert(code);
   let res = await axios.get(`${P_API}/connect/twitter/callback?code=${code}`, {
     headers: {
       Authorization: localStorage.getItem("token"),
