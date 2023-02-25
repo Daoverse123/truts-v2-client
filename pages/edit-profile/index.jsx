@@ -758,11 +758,11 @@ const Socials = ({ initUserData }) => {
             </button>
           </div>
         )}
-        {/* <div className={styles.secTitle}>
+        <div className={styles.secTitle}>
           <h2>Twitter</h2>
           <XpCoinComp value={false} />
-        </div> */}
-        {/* <div className={styles.twitterBtn}>
+        </div>
+        <div className={styles.twitterBtn}>
           <button
             onClick={() => {
               location.href = twitter_auth_aur;
@@ -771,7 +771,7 @@ const Socials = ({ initUserData }) => {
             <img src="./twitter.png" alt="" />
             Verify Twitter
           </button>
-        </div> */}
+        </div>
       </div>
       {/* <button onClick={() => {
                 axios.get(`${P_API}/user/guilds`, {
