@@ -760,7 +760,7 @@ const Socials = ({ initUserData }) => {
         )}
         <div className={styles.secTitle}>
           <h2>Twitter</h2>
-          <XpCoinComp value={false} />
+          <XpCoinComp value={initUserData.twitter} />
         </div>
         {initUserData.twitter ? (
           <p className={styles.displayEmail}>
