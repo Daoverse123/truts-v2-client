@@ -9,6 +9,7 @@ import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Head from "next/head";
 import authorizeTwitterURI from "../../utils/twitter-url";
+import isValidUsername from "is-valid-username";
 
 let Placeholder = "/profile-old.png";
 let twitter_auth_aur = authorizeTwitterURI();
@@ -351,6 +352,13 @@ const Profile = ({
       uv.loading = true;
       return { ...uv };
     });
+    if (!isValidUsername(username)) {
+      return setusernameValid((uv) => {
+        uv.loading = false;
+        uv.valid = false;
+        return { ...uv };
+      });
+    }
     let res = await axios.get(
       `${P_API}/user/availability/username?username=${username}`,
       {
@@ -362,14 +370,6 @@ const Profile = ({
     if (res.status == 200) {
       console.log(res.data.data.available);
       if (username.length < 3) {
-        setusernameValid((uv) => {
-          uv.loading = false;
-          uv.valid = false;
-          return { ...uv };
-        });
-      } else if (
-        !/(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/.test(username)
-      ) {
         setusernameValid((uv) => {
           uv.loading = false;
           uv.valid = false;
@@ -459,7 +459,7 @@ const Profile = ({
             value={username}
             onChange={(e) => {
               if (e.target.value.length < 25) {
-                setusername(e.target.value.replaceAll(" ", ""));
+                setusername(e.target.value.replaceAll(" ", "").toLowerCase());
               }
             }}
             className={styles.input}
