@@ -368,7 +368,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
   //     console.log('Sender is installed!');
   // }
   const [accessKey, setAccessKey] = useState("");
-  const { connect, keyStores, WalletConnection } = nearAPI;
+  const { connect, keyStores, WalletConnection, Signer } = nearAPI;
   //mainet added
   const myKeyStore = new keyStores.BrowserLocalStorageKeyStore();
   const connectionConfig = {
@@ -388,15 +388,27 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
     // create wallet connection
     walletConnection = new WalletConnection(nearConnection);
     // const walletConnection = new WalletConnection(nearConnection);
+    // walletConnection.signOut();
     if (!walletConnection.isSignedIn()) {
       let AccessKey = walletConnection.requestSignIn(
         "example-contract.testnet", // contract requesting access
         "Truts App", // optional title
-        "http://YOUR-URL.com/success", // optional redirect URL on success
+        `${window.location.href}/?signup=true`, // optional redirect URL on success
         "http://YOUR-URL.com/failure" // optional redirect URL on failure
       );
       setAccessKey(AccessKey);
       console.log(AccessKey);
+    } else {
+      const nearConnection = await connect(connectionConfig);
+
+      // create wallet connection
+      walletConnection = new WalletConnection(nearConnection);
+      const walletAccountId = walletConnection.getAccountId();
+      alert(walletAccountId);
+      let signer = new Signer();
+      alert("");
+      console.log(signer.getPublicKey());
+      signer.signMessage("123", walletAccountId, "default");
     }
   };
 
@@ -447,7 +459,7 @@ const Near_wallets = ({ setwalletState, closePopUp }) => {
   );
 };
 
-const Chains = ["Ethereum", "Solana"];
+const Chains = ["Ethereum", "Solana", "Near"];
 
 const walletIconMap = {
   MetaMask: metamask.src,

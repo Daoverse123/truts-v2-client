@@ -8,8 +8,10 @@ import WalletConnect from "../../components/WalletConnect_v3";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import authorizeTwitterURI from "../../utils/twitter-url";
 
 let Placeholder = "/profile-old.png";
+let twitter_auth_aur = authorizeTwitterURI();
 
 const P_API = process.env.P_API;
 let options = ["Profile", "Socials", "Wallets"];
@@ -689,16 +691,6 @@ const Socials = ({ initUserData }) => {
         </p>
       </div>
       <div className={styles.socialSection}>
-        {/* <div className={styles.secTitle}>
-          <h2>Twitter</h2>
-          <XpCoinComp value={false} />
-        </div>
-        <div className={styles.twitterBtn}>
-          <button>
-            <img src="./twitter.png" alt="" />
-            Verify Twitter
-          </button>
-        </div> */}
         <div className={styles.secTitle}>
           <h2>Discord *</h2>
           <XpCoinComp value={initUserData.discord} />
@@ -725,6 +717,20 @@ const Socials = ({ initUserData }) => {
             </button>
           </div>
         )}
+        <div className={styles.secTitle}>
+          <h2>Twitter</h2>
+          <XpCoinComp value={false} />
+        </div>
+        <div className={styles.twitterBtn}>
+          <button
+            onClick={() => {
+              location.href = twitter_auth_aur;
+            }}
+          >
+            <img src="./twitter.png" alt="" />
+            Verify Twitter
+          </button>
+        </div>
       </div>
       {/* <button onClick={() => {
                 axios.get(`${P_API}/user/guilds`, {
