@@ -763,7 +763,9 @@ const Socials = ({ initUserData }) => {
           <XpCoinComp value={false} />
         </div>
         {initUserData.twitter ? (
-          <p className={styles.displayEmail}>{initUserData.twitter.username}</p>
+          <p className={styles.displayEmail}>
+            @{initUserData.twitter.username}
+          </p>
         ) : (
           <div className={styles.twitterBtn}>
             <button
