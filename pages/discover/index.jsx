@@ -359,85 +359,114 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
   console.log(state);
 
   return (
-    <div className={styles.discoverPage}>
-      <Nav isFloating />
-      <h1 className={styles.title}>Our Wall of Communities</h1>
-      <div className={styles.mainCon}>
-        {filtersVisible && (
-          <div className={styles.sideNav}>
-            <span className={styles.mobileFilterHeadder}>
-              <img
-                onClick={() => {
-                  setfiltersVisible(false);
-                }}
-                src={close_btn.src}
-                alt=""
-              />
-              <p>Filters</p>
-            </span>
-            <h1 className={styles.sideBarTitle}>Communities</h1>
-            <SortComp state={state} dispatch={dispatch} />
-            {Object.keys(sideNavTabs).map((ele, i) => {
-              return (
-                <>
-                  <span
-                    onClick={() => {
-                      setcollapseState((sc) => {
-                        sc[i] = !sc[i];
-                        return { ...sc };
-                      });
-                    }}
-                    className={styles.option}
-                    key={i + "sd"}
-                  >
-                    <p>{ele}</p>
-                    <img src={downArrow.src} alt="" />
-                  </span>
-                  <GetSection
-                    catCount={catCount}
-                    chainCount={chainCount}
-                    key={i + "gsd"}
-                    state={state}
-                    dispatch={dispatch}
-                    label={ele}
-                    idx={i}
-                    collapseState={collapseState}
-                  />
-                  <span key={i + "dv"} className={styles.divider} />
-                </>
-              );
-            })}
-          </div>
-        )}
-        <div className={styles.gallery}>
-          <div key={JSON.stringify(state)} className={styles.daoList}>
-            {filteredDaoList
-              .map((ele, idx) => {
-                return <DAOCard key={idx + "_" + ele.dao_name} data={ele} />;
-              })
-              .slice(0, galleryLimit)}
-          </div>
-          {galleryLimit < filteredDaoList.length + 1 && (
-            <Button
-              onClick={() => {
-                setgalleryLimit(galleryLimit + 15);
-              }}
-              label={"show more"}
-            />
+    <>
+      <Head>
+        <title>Truts | Discover</title>
+        <meta
+          name="description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <link rel="icon" href="/favicon.png" />
+
+        <meta property="og:url" content="https://www.truts.xyz" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Truts" />
+        <meta
+          property="og:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta property="og:image" content="/favicon.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="truts.xyz" />
+        <meta property="twitter:url" content="https://www.truts.xyz" />
+        <meta name="twitter:title" content="Truts" />
+        <meta
+          name="twitter:description"
+          content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
+        />
+        <meta name="twitter:image" content="/favicon.png" />
+      </Head>
+      <div className={styles.discoverPage}>
+        <Nav isFloating />
+        <h1 className={styles.title}>Our Wall of Communities</h1>
+        <div className={styles.mainCon}>
+          {filtersVisible && (
+            <div className={styles.sideNav}>
+              <span className={styles.mobileFilterHeadder}>
+                <img
+                  onClick={() => {
+                    setfiltersVisible(false);
+                  }}
+                  src={close_btn.src}
+                  alt=""
+                />
+                <p>Filters</p>
+              </span>
+              <h1 className={styles.sideBarTitle}>Communities</h1>
+              <SortComp state={state} dispatch={dispatch} />
+              {Object.keys(sideNavTabs).map((ele, i) => {
+                return (
+                  <>
+                    <span
+                      onClick={() => {
+                        setcollapseState((sc) => {
+                          sc[i] = !sc[i];
+                          return { ...sc };
+                        });
+                      }}
+                      className={styles.option}
+                      key={i + "sd"}
+                    >
+                      <p>{ele}</p>
+                      <img src={downArrow.src} alt="" />
+                    </span>
+                    <GetSection
+                      catCount={catCount}
+                      chainCount={chainCount}
+                      key={i + "gsd"}
+                      state={state}
+                      dispatch={dispatch}
+                      label={ele}
+                      idx={i}
+                      collapseState={collapseState}
+                    />
+                    <span key={i + "dv"} className={styles.divider} />
+                  </>
+                );
+              })}
+            </div>
           )}
+          <div className={styles.gallery}>
+            <div key={JSON.stringify(state)} className={styles.daoList}>
+              {filteredDaoList
+                .map((ele, idx) => {
+                  return <DAOCard key={idx + "_" + ele.dao_name} data={ele} />;
+                })
+                .slice(0, galleryLimit)}
+            </div>
+            {galleryLimit < filteredDaoList.length + 1 && (
+              <Button
+                onClick={() => {
+                  setgalleryLimit(galleryLimit + 15);
+                }}
+                label={"show more"}
+              />
+            )}
+          </div>
+        </div>
+
+        <div className={styles.mobileFilterNav}>
+          <button
+            onClick={() => {
+              setfiltersVisible(true);
+            }}
+          >
+            Filters
+          </button>
         </div>
       </div>
-
-      <div className={styles.mobileFilterNav}>
-        <button
-          onClick={() => {
-            setfiltersVisible(true);
-          }}
-        >
-          Filters
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 
