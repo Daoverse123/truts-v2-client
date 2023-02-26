@@ -294,11 +294,11 @@ function Hero() {
             <p>Communities Listed</p>
           </div>
           <div className={styles.stat}>
-            <h3>750+</h3>
+            <h3>1000+</h3>
             <p>Reviews Posted</p>
           </div>
           <div className={styles.stat}>
-            <h3>1000+</h3>
+            <h3>1200+</h3>
             <p>Contributors Onboarded</p>
           </div>
         </div>
