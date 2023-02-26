@@ -8,6 +8,7 @@ import openNewTab from "../../utils/openNewTab";
 import Link from "next/link";
 import ToolTip from "../../components/ToolTip";
 import countBasedLength from "../../utils/countBasedLength";
+import Head from "next/head";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -109,6 +110,24 @@ function Index({ mission }) {
 
   return (
     <>
+      <Head>
+        <title>{mission.name}</title>
+        <meta name="description" content={mission.description} />
+        <link rel="icon" href="/favicon.png" />
+
+        <meta property="og:url" content="https://www.truts.xyz" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Truts" />
+        <meta property="og:description" content={mission.description} />
+        <meta property="og:image" content="/favicon.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="truts.xyz" />
+        <meta property="twitter:url" content="https://www.truts.xyz" />
+        <meta name="twitter:title" content="Truts" />
+        <meta name="twitter:description" content={mission.description} />
+        <meta name="twitter:image" content="/favicon.png" />
+      </Head>
       <Nav isFloating />
       <div className={styles.missionPage}>
         <h3 className={styles.subtitle}>
