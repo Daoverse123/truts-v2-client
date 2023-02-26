@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import Head from "next/head";
 import authorizeTwitterURI from "../../utils/twitter-url";
 import isValidUsername from "is-valid-username";
-
+import chainIconMap from "../../components/chainIconMap.json";
 let Placeholder = "/profile-old.png";
 let twitter_auth_aur = authorizeTwitterURI();
 
@@ -633,6 +633,16 @@ const Profile = ({
   );
 };
 
+let getChain = (chain) => {
+  if (chain == "SOL") {
+    return "solana";
+  }
+  if (chain == "NEAR") {
+    return "near";
+  }
+  return "ethereum";
+};
+
 const Wallets = ({
   initUserData,
   showWallet,
@@ -663,11 +673,7 @@ const Wallets = ({
             <div className={styles.wallet}>
               <img
                 className={styles.profileName}
-                src={
-                  initUserData?.wallets?.chain == "SOL"
-                    ? "https://assets.coingecko.com/coins/images/4128/small/solana.png?1640133422"
-                    : "https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880"
-                }
+                src={chainIconMap[getChain(initUserData?.wallets?.chain)].icon}
                 alt=""
               />
               <p>{miniMizewallet(initUserData.wallets.address)}</p>

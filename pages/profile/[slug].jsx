@@ -24,6 +24,7 @@ import Link from "next/link";
 import openNewTab from "../../utils/openNewTab";
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
+import { chain } from "wagmi";
 
 const levelsMap = [
   { xpForNextLevel: 0 },
@@ -328,6 +329,16 @@ function Profile({ slug }) {
     setelements({ ...counts });
   }, [userData]);
 
+  let getChain = (chain) => {
+    if (chain == "SOL") {
+      return "solana";
+    }
+    if (chain == "NEAR") {
+      return "near";
+    }
+    return "ethereum";
+  };
+
   return (
     <>
       <Head>
@@ -443,28 +454,14 @@ function Profile({ slug }) {
                     }}
                     style={{
                       background:
-                        chainIconMap[
-                          userData.wallets.chain == "SOL"
-                            ? "solana"
-                            : "ethereum"
-                        ].color,
+                        chainIconMap[getChain(userData.wallets.chain)].color,
                       borderColor:
-                        chainIconMap[
-                          userData.wallets.chain == "SOL"
-                            ? "solana"
-                            : "ethereum"
-                        ].color,
+                        chainIconMap[getChain(userData.wallets.chain)].color,
                     }}
                     className={styles.tab}
                   >
                     <img
-                      src={
-                        chainIconMap[
-                          userData.wallets.chain == "SOL"
-                            ? "solana"
-                            : "ethereum"
-                        ].icon
-                      }
+                      src={chainIconMap[getChain(userData.wallets.chain)].icon}
                       alt=""
                     />
                     {minimizeWallet(userData.wallets.address)}

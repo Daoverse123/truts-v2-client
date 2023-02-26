@@ -70,6 +70,7 @@ const connect_near = async (login) => {
           progress: undefined,
           theme: "light",
         });
+        window.location = "/profile/private";
       } else {
         window.location = "/profile/private";
       }
