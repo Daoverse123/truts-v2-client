@@ -356,6 +356,9 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
 
 export const getServerSideProps = async (ctx) => {
   let mission_id = ctx.query.slug[0];
+  if (mission_id == "daoplanet") {
+    mission_id = "63fa5f2467a56d9329d84b3a";
+  }
   let res = await axios.get(`${P_API}/mission/${mission_id}`);
   return {
     props: {
