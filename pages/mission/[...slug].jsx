@@ -84,11 +84,11 @@ function Index({ mission }) {
       });
       if (res.status == 200) {
         try {
-          let chain = userData?.wallets?.chain;
           let userData = localStorage.getItem("user-server");
           if (userData) {
             userData = JSON.parse(userData);
           }
+          let chain = userData?.wallets?.chain;
           if (location.href.includes("daoplanet") && chain == "NEAR") {
             location.href = "https://shard.dog/DAODenverIsNEAR";
           } else {
