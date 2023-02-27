@@ -83,9 +83,18 @@ function Index({ mission }) {
         },
       });
       if (res.status == 200) {
-        if (location.href.includes("daoplanet")) {
-          location.href = "https://shard.dog/DAODenverIsNEAR";
-        } else {
+        try {
+          let chain = userData?.wallets?.chain;
+          let userData = localStorage.getItem("user-server");
+          if (userData) {
+            userData = JSON.parse(userData);
+          }
+          if (location.href.includes("daoplanet") && chain == "NEAR") {
+            location.href = "https://shard.dog/DAODenverIsNEAR";
+          } else {
+            location.href = `/status/mission?xp=${mission.listingXP}`;
+          }
+        } catch (error) {
           location.href = `/status/mission?xp=${mission.listingXP}`;
         }
       }
