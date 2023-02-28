@@ -1012,7 +1012,7 @@ const Referral = ({ userData }) => {
       <div className={styles.stages}>
         <span className={styles.topBar}>
           <span className={styles.title}>
-            <h1>Copper</h1>
+            <h1>{referral?.tier?.teir.toLowerCase()}</h1>
             <p>Current Referral Rank</p>
           </span>
           {/* <button className={styles.topRightBtn}>Claim rewards</button> */}
