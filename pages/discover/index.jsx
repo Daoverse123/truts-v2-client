@@ -98,6 +98,7 @@ let chainMap = {
   Sei: "sei",
   Syscoin: "syscoin",
   Tezos: "tezos",
+  Flow: "flow",
 };
 
 let initialState = {
