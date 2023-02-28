@@ -92,13 +92,13 @@ let chainMap = {
   Cardano: "cardano",
   Cosmos: "cosmos",
   Ethereum: "ethereum",
+  Flow: "flow",
   Near: "near",
   Polygon: "polygon-pos",
   Solana: "solana",
   Sei: "sei",
   Syscoin: "syscoin",
   Tezos: "tezos",
-  Flow: "flow",
 };
 
 let initialState = {
@@ -597,7 +597,7 @@ const SortComp = ({ state, dispatch }) => {
         />
       </span>
       <span className={styles.typesOption}>
-        <p>Ratings: Low to Hign</p>
+        <p>Ratings: Low to High</p>
         <input
           checked={state["sort by"] == "LH"}
           type={"checkbox"}
