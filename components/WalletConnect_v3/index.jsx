@@ -133,7 +133,6 @@ const solSign = async (msgs) => {
 const FlowSign = async () => {
   const MSG = Buffer.from("Please sign the message").toString("hex");
   try {
-    console.log(await fcl.currentUser.signUserMessage(MSG));
     return await fcl.currentUser.signUserMessage(MSG);
   } catch (error) {
     console.log(error);
