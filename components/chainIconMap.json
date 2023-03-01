@@ -36,7 +36,8 @@
     },
     "flow": {
         "ticker": "FLOW",
-        "icon": "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776"
+        "icon": "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776",
+        "color": "#ccffee"
     },
     "energi": {
         "ticker": "NRG",

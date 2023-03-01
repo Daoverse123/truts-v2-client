@@ -71,6 +71,9 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
       if ("Solana" == ele) {
         return "SOL";
       }
+      if ("Flow" == ele) {
+        return "FLOW";
+      }
     };
 
     let auth_res = await axios.post(`${P_API}/login/wallet/verify`, {
@@ -341,6 +344,7 @@ const Flow_wallets = ({ setwalletState, closePopUp }) => {
     await fcl.authenticate();
     const currentUser = await fcl.currentUser.snapshot();
     console.log("The Current User", currentUser);
+    return currentUser;
   };
 
   const disconnetWallet = () => {
@@ -353,6 +357,7 @@ const Flow_wallets = ({ setwalletState, closePopUp }) => {
         onClick={async () => {
           //disconnetWallet();
           let res = await connectFlowWallet();
+          console.log(res);
           if (res.addr.length > 5) {
             setwalletState({
               address: res.addr,
@@ -362,7 +367,7 @@ const Flow_wallets = ({ setwalletState, closePopUp }) => {
             localStorage.setItem(
               "wallet_state",
               JSON.stringify({
-                address: res.add,
+                address: res.addr,
                 chain: "Flow",
                 status: "connected",
               })
@@ -527,7 +532,7 @@ const Near_wallets = ({ setwalletState, isLogin }) => {
   );
 };
 
-const Chains = ["Ethereum", "Solana", "Near"];
+const Chains = ["Ethereum", "Solana", "Near", "Flow"];
 
 const walletIconMap = {
   MetaMask: metamask.src,

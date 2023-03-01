@@ -640,6 +640,9 @@ let getChain = (chain) => {
   if (chain == "NEAR") {
     return "near";
   }
+  if (chain == "FLOW") {
+    return "flow";
+  }
   return "ethereum";
 };
 

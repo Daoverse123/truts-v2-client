@@ -336,6 +336,9 @@ function Profile({ slug }) {
     if (chain == "NEAR") {
       return "near";
     }
+    if (chain == "FLOW") {
+      return "flow";
+    }
     return "ethereum";
   };
 
