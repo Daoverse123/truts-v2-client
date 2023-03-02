@@ -129,7 +129,7 @@ const Mission = ({ xp }) => {
         </div>
         <div className={styles.text}>
           <h4 className={styles.desc}>
-            Congratulations! You`ve earned {xp} Xp by completing the Mission!
+            Congratulations! You`ve earned {xp} XP by completing the Mission!
             Your XP points are your gateway to exciting rewards on Truts, More
             on this soon...
           </h4>
