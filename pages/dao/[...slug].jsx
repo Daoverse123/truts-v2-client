@@ -266,26 +266,21 @@ function Dao({ dao_data, rid, slug }) {
 const NavSec = ({ selected, setSelected }) => {
   return (
     <ul className={styles.navSec}>
-      {[
-        "Reviews",
-        "Missions",
-        "Insights",
-        "Ecosystem",
-        "Leaderboard",
-        "Members",
-      ].map((ele, i) => {
-        return (
-          <li
-            className={selected == ele ? styles.selected : {}}
-            onClick={() => {
-              setSelected(ele);
-            }}
-            key={ele + i}
-          >
-            {ele}
-          </li>
-        );
-      })}
+      {["Reviews", "Missions", "Insights", "Ecosystem", "Members"].map(
+        (ele, i) => {
+          return (
+            <li
+              className={selected == ele ? styles.selected : {}}
+              onClick={() => {
+                setSelected(ele);
+              }}
+              key={ele + i}
+            >
+              {ele}
+            </li>
+          );
+        }
+      )}
     </ul>
   );
 };
