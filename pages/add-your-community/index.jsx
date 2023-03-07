@@ -53,10 +53,10 @@ const CATEGORY_LIST = [
 
 const CHAIN_LIST_MAP = {
   "Multi Chain": "multi-chain",
+  Aptos: "aptos",
   Arbitrum: "arbitrum-one",
   Avalanche: "avalanche",
   "Binance Smart Chain": "binance-smart-chain",
-  Aptos: "aptos",
   Cardano: "cardano",
   Ethereum: "ethereum",
   Near: "near",
