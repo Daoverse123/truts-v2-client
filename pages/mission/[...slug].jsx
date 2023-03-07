@@ -39,6 +39,8 @@ const fetchCompleted = async (id, setter) => {
 };
 
 function Index({ mission }) {
+  console.log(mission);
+
   const [status, setstatus] = useState(null);
   const [completed, setcompleted] = useState(null);
   let fetchTaskStatus = async () => {
@@ -54,8 +56,6 @@ function Index({ mission }) {
       console.log(error);
     }
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     fetchTaskStatus();
@@ -224,18 +224,20 @@ function Index({ mission }) {
           <>
             <h3 className={styles.subtitle}>Tasks to Perform</h3>
             <div className={styles.tasksCon}>
-              {mission.tasks.map((tsk, idx) => {
-                return (
-                  <ShowTask
-                    key={"tsk" + idx}
-                    no={idx + 1}
-                    data={tsk}
-                    status={getTaskStatus(tsk._id)}
-                    mission_id={mission._id}
-                    refreshMissionStatus={fetchTaskStatus}
-                  />
-                );
-              })}
+              {mission.tasks
+                .sort((a, b) => a.stepNum - b.stepNum)
+                .map((tsk, idx) => {
+                  return (
+                    <ShowTask
+                      key={"tsk" + idx}
+                      no={idx + 1}
+                      data={tsk}
+                      status={getTaskStatus(tsk._id)}
+                      mission_id={mission._id}
+                      refreshMissionStatus={fetchTaskStatus}
+                    />
+                  );
+                })}
             </div>
             <button
               onClick={() => {
@@ -252,18 +254,20 @@ function Index({ mission }) {
           <>
             <h3 className={styles.subtitle}>Tasks to Perform</h3>
             <div className={styles.tasksCon}>
-              {mission.tasks.map((tsk, idx) => {
-                return (
-                  <Task
-                    key={"tsk" + idx}
-                    no={idx + 1}
-                    data={tsk}
-                    status={getTaskStatus(tsk._id)}
-                    mission_id={mission._id}
-                    refreshMissionStatus={fetchTaskStatus}
-                  />
-                );
-              })}
+              {mission.tasks
+                .sort((a, b) => a.stepNum - b.stepNum)
+                .map((tsk, idx) => {
+                  return (
+                    <Task
+                      key={"tsk" + idx}
+                      no={idx + 1}
+                      data={tsk}
+                      status={getTaskStatus(tsk._id)}
+                      mission_id={mission._id}
+                      refreshMissionStatus={fetchTaskStatus}
+                    />
+                  );
+                })}
             </div>
             {claimReady && !status.attemptedMission.isCompleted ? (
               <button onClick={claimMission} className={styles.mainBtnClaim}>
@@ -391,6 +395,7 @@ export const getServerSideProps = async (ctx) => {
   if (mission_id == "daoplanet") {
     mission_id = "63fa5f2467a56d9329d84b3a";
   }
+
   let res = await axios.get(`${P_API}/mission/${mission_id}`);
   return {
     props: {

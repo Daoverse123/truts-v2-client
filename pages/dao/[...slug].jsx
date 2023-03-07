@@ -242,6 +242,11 @@ function Dao({ dao_data, rid, slug }) {
             />
           </div>
         )}
+        {selected == "Leaderboard" && (
+          <div className={styles.content}>
+            <Leaderboard />
+          </div>
+        )}
         {selected == "Members" && (
           <div className={styles.content}>
             <img
@@ -261,21 +266,26 @@ function Dao({ dao_data, rid, slug }) {
 const NavSec = ({ selected, setSelected }) => {
   return (
     <ul className={styles.navSec}>
-      {["Reviews", "Missions", "Insights", "Ecosystem", "Members"].map(
-        (ele, i) => {
-          return (
-            <li
-              className={selected == ele ? styles.selected : {}}
-              onClick={() => {
-                setSelected(ele);
-              }}
-              key={ele + i}
-            >
-              {ele}
-            </li>
-          );
-        }
-      )}
+      {[
+        "Reviews",
+        "Missions",
+        "Insights",
+        "Ecosystem",
+        "Leaderboard",
+        "Members",
+      ].map((ele, i) => {
+        return (
+          <li
+            className={selected == ele ? styles.selected : {}}
+            onClick={() => {
+              setSelected(ele);
+            }}
+            key={ele + i}
+          >
+            {ele}
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -394,6 +404,67 @@ const Filter = ({ selectedFilter, setselectedFilter }) => {
         </li>
       </ul>
     </span>
+  );
+};
+
+let entryColor = {
+  1: {
+    bg: "url('/leaderboard/gold.svg')",
+    grad: "linear-gradient(90deg, rgba(225, 171, 75, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+  },
+  2: {
+    bg: "url('/leaderboard/silver.svg')",
+    grad: "linear-gradient(90deg, rgba(181, 181, 181, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+  },
+  3: {
+    bg: "url('/leaderboard/bronze.svg')",
+    grad: "linear-gradient(90deg, rgba(181, 100, 77, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+  },
+};
+
+const Entry = ({ idx }) => {
+  return (
+    <span
+      className={styles.boardEntry}
+      style={{
+        background: entryColor[idx]?.grad,
+      }}
+    >
+      <div className={styles.boardEntryCon}>
+        <span
+          style={{
+            background: entryColor[idx]?.bg || "url('/leaderboard/rest.svg')",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+          className={styles.count}
+        >
+          {idx}
+        </span>
+        <img className={styles.userProfile} src="/blue.png" alt="" />
+        <span className={styles.userDetails}>
+          <h2>random user 1 </h2>
+          <p>2 mins ago</p>
+        </span>
+        <div className={styles.xp}>
+          <h3>30 XP</h3>
+          <img src="/xpCoin.svg" alt="" />
+        </div>
+      </div>
+    </span>
+  );
+};
+
+const Leaderboard = () => {
+  return (
+    <div className={styles.leaderboard}>
+      <h1 className={styles.title}>Community Contributors</h1>
+      <div className={styles.board}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele) => {
+          return <Entry key={ele + "ent"} idx={ele} />;
+        })}
+      </div>
+    </div>
   );
 };
 

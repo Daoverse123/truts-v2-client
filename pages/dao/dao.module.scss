@@ -601,3 +601,92 @@ $PHONE_N: 426;
         }
     }
 }
+
+.leaderboard {
+    display: flex;
+    width: 100%;
+    background: white;
+    border-radius: 16px;
+    margin-top: 46px;
+    padding: 31px 49px;
+    flex-direction: column;
+
+    .title {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .board {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
+
+    .boardEntry {
+        display: flex;
+        width: 979.2px;
+        height: 102px;
+
+        /* New Drop Shadow */
+
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 14px;
+    }
+
+    .boardEntryCon {
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        width: 100%;
+
+        .count {
+            display: flex;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background-repeat: no-repeat;
+        }
+
+        .userProfile {
+            display: flex;
+            width: 62px;
+            height: 62px;
+            margin-left: 25.6px;
+            margin-right: 24.3px;
+        }
+
+        .userDetails {
+            display: flex;
+            flex-direction: column;
+            h2,
+            p {
+                margin: 0;
+                padding: 0;
+            }
+            h2 {
+                font-size: 20px;
+                font-weight: 600;
+            }
+            p {
+                color: #747c90;
+            }
+        }
+
+        .xp {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            h3 {
+                font-size: 20px;
+            }
+            img {
+                width: 22.94px;
+                height: 22.94px;
+                margin-left: 5px;
+            }
+        }
+    }
+}
