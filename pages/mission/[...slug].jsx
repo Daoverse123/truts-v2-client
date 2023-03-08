@@ -165,60 +165,66 @@ function Index({ mission }) {
           </ToolTip>
         </h3>
 
-        <div className={styles.missionHead}>
-          <img
-            className={styles.profileImg}
-            src={mission.listing.dao_logo || "/blue.png"}
-            alt=""
-          />
-          <div className={styles.content}>
-            <h2 className={styles.sub}>{mission.listing.dao_name}</h2>
-            <h1 className={styles.title}>{limitText(40, mission.name)}</h1>
-            <p className={styles.desc}>{limitText(120, mission.description)}</p>
-            <div className={styles.bottomNav}>
-              <div className={styles.tags}>
-                {mission.tags.map((tgs, idx) => {
-                  return (
-                    <Tag
-                      key={"tgs" + idx}
-                      src={"/missions/bounty.png"}
-                      color={"rgb(203, 56, 240)"}
-                      title={tgs.name}
-                    />
-                  );
-                })}
-              </div>
-              <div className={styles.profilesCompleted}>
-                {completed &&
-                  completed.map((ele, idx) => {
-                    if (idx > 5) {
-                      return null;
-                    }
+        <div className={styles.bg}>
+          <div className={styles.missionHead}>
+            <img
+              className={styles.profileImg}
+              src={mission.listing.dao_logo || "/blue.png"}
+              alt=""
+            />
+            <div className={styles.content}>
+              <h2 className={styles.sub}>{mission.listing.dao_name}</h2>
+              <h1 className={styles.title}>{limitText(40, mission.name)}</h1>
+              <p className={styles.desc}>
+                {limitText(120, mission.description)}
+              </p>
+              <div className={styles.bottomNav}>
+                <div className={styles.tags}>
+                  {mission.tags.map((tgs, idx) => {
                     return (
-                      <img
-                        style={{ left: `${idx * -6}px` }}
-                        key={idx}
-                        src={ele.user.photo.secure_url}
-                        alt=""
+                      <Tag
+                        key={"tgs" + idx}
+                        src={"/missions/bounty.png"}
+                        color={"rgb(203, 56, 240)"}
+                        title={tgs.name}
                       />
                     );
                   })}
+                </div>
+                <div className={styles.profilesCompleted}>
+                  {completed &&
+                    completed.map((ele, idx) => {
+                      if (idx > 5) {
+                        return null;
+                      }
+                      return (
+                        <img
+                          style={{ left: `${idx * -6}px` }}
+                          key={idx}
+                          src={ele.user.photo.secure_url}
+                          alt=""
+                        />
+                      );
+                    })}
 
-                {completed && completed.length > 0 && (
-                  <p style={{ marginLeft: countBasedLength(completed.length) }}>
-                    + {completed.length} Completed
-                  </p>
-                )}
+                  {completed && completed.length > 0 && (
+                    <p
+                      style={{ marginLeft: countBasedLength(completed.length) }}
+                    >
+                      + {completed.length} Completed
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <span className={styles.xp}>
-            <p>Rewards</p>
-            <span className={styles.xpCount}>
-              <img src="/missions/coin.svg" alt="" />
-              <h1>{mission.listingXP} XP</h1>
+            <span className={styles.xp}>
+              <p>Rewards</p>
+              <span className={styles.xpCount}>
+                <img src="/missions/coin.svg" alt="" />
+                <h1>{mission.listingXP} XP</h1>
+              </span>
             </span>
-          </span>
+          </div>
         </div>
         {!status && (
           <>

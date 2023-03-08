@@ -809,17 +809,13 @@ export async function getServerSideProps(ctx) {
   //console.log(ctx.query);
   let { slug } = ctx.query;
   // Fetch data from external API
-  ctx.res.setHeader("Location", `/community/${slug}`);
-  ctx.res.statusCode = 302;
-  ctx.res.end();
-  return { props: {} };
-  // if (!slug) return null;
-  // let res = await fetchData(slug[0]);
-  // console.log(res);
-  // let rid = slug[1] || "";
-  // // Pass data to the page via props
+  if (!slug) return null;
+  let res = await fetchData(slug[0]);
+  console.log(res);
+  let rid = slug[1] || "";
+  // Pass data to the page via props
 
-  // return { props: { dao_data: { ...res }, rid: rid, slug: slug[0] } };
+  return { props: { dao_data: { ...res }, rid: rid, slug: slug[0] } };
 }
 
 const fetchData = async (slug) => {

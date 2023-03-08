@@ -22,11 +22,16 @@ $TABLET_N: 768;
     border-radius: 16px;
     animation: appear 0.5s ease-in-out forwards;
 
-
     @media (max-width: $DESKTOP) and (min-width: $LAPTOP) {
         min-width: desktop_to_laptop_fluid(313);
         width: desktop_to_laptop_fluid(313);
         border-radius: desktop_to_laptop_fluid(16);
+    }
+
+    outline: 1.25px solid #3064f300;
+    &:hover {
+        transition: all 0.25s ease-in-out;
+        outline: 1.25px solid #3065f3;
     }
 }
 
@@ -157,7 +162,6 @@ $TABLET_N: 768;
         }
     }
 }
-
 
 @keyframes appear {
     0% {

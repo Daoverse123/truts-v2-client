@@ -19,34 +19,52 @@ $mobile: 800px;
     // }
 }
 
-.missionHead {
+.bg {
     margin-top: 16px;
     display: flex;
     width: 1080px;
     height: 229px;
-    background-color: white;
+    background: url("/missions/imggrad.png");
+    background-repeat: no-repeat;
+    background-position: right;
     border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    background: rgb(255, 255, 255);
-    padding: 33px 48px;
-    background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 1) 75%,
-        rgba(0, 81, 255, 0.274) 100%
-    );
+    background-color: white;
     &::after {
         content: "";
         display: flex;
         width: 100%;
         height: 100%;
         position: absolute;
-        background: url("/missions/imggrad.png");
-        background-repeat: no-repeat;
-        background-position: right;
-        opacity: 0.13;
+
+        // opacity: 0.13;
     }
+}
+
+.missionHead {
+    display: flex;
+    width: 1080px;
+    height: 229px;
+
+    position: relative;
+    overflow: hidden;
+    padding: 33px 48px;
+    // background: linear-gradient(
+    //     90deg,
+    //     rgba(255, 255, 255, 1) 0%,
+    //     rgba(255, 255, 255, 1) 75%,
+    //     rgba(0, 81, 255, 0.274) 100%
+    // );
+    // &::after {
+    //     content: "";
+    //     display: flex;
+    //     width: 100%;
+    //     height: 100%;
+    //     position: absolute;
+    //     background: url("/missions/imggrad.png");
+    //     background-repeat: no-repeat;
+    //     background-position: right;
+    //     // opacity: 0.13;
+    // }
 
     @media (max-width: $tablet) {
         width: 95%;

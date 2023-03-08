@@ -38,6 +38,7 @@ const nextConfig = {
         destination: 'https://tally.so/r/3j81En',
         permanent: true,
       },
+
     ]
   },
 }
