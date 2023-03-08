@@ -334,7 +334,7 @@ const SearchSuggestionEntry = ({ data }) => {
   };
 
   return (
-    <Link href={`/dao/${data.slug}`}>
+    <Link href={`/community/${data.slug}`}>
       <div className={styles.searchSuggestionEntry}>
         <div className={styles.daoIcon}>
           <img src={data.dao_logo} alt="" />

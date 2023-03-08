@@ -116,7 +116,7 @@ const Sidebar = ({ dao_data }) => {
         <button
           onClick={() => {
             navigator.clipboard.writeText(
-              `https://www.truts.xyz/dao/${dao_data.slug}`
+              `https://www.truts.xyz/community/${dao_data.slug}`
             );
             document.querySelector("#copy_2").src = "/copy_after.png";
           }}

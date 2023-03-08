@@ -18,7 +18,7 @@ export default function DAOCard({ data }) {
 
   // h 114 w 313
   return (
-    <Link href={`/dao/${data.slug}`}>
+    <Link href={`/community/${data.slug}`}>
       <div className={styles.card}>
         {data.dao_name.length > 20 && (
           <ReactTooltip backgroundColor={"#747c90"} />
