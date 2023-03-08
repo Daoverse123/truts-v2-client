@@ -122,7 +122,7 @@ const Sidebar = ({ dao_data }) => {
           }}
           className={styles.long_btn}
         >
-          trust.xyz/dao/{dao_data.slug}
+          truts.xyz/community/{dao_data.slug}
           <img
             id="copy_2"
             style={{ filter: "invert(0 )" }}
