@@ -13,22 +13,19 @@ $mobile: 800px;
     @media (max-width: $mobile) {
         padding-top: 60px;
     }
-
-    // * {
-    //     background-color: rgba(255, 0, 0, 0.281);
-    // }
 }
 
 .bg {
     margin-top: 16px;
     display: flex;
-    width: 1080px;
-    height: 229px;
+    width: fit-content;
+    height: fit-content;
     background: url("/missions/imggrad.png");
     background-repeat: no-repeat;
     background-position: right;
     border-radius: 16px;
     background-color: white;
+    position: relative;
     &::after {
         content: "";
         display: flex;
