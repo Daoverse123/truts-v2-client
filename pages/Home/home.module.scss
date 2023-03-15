@@ -835,67 +835,64 @@ $PHONE_N: 425;
 // RECENT REVIEWS SECTION
 .recentReview {
     display: flex;
-    min-width: 377px;
+    min-width: 374px;
     height: 254px;
     background: #ffffff;
-    border: 1px solid #e0e0e0;
     border-radius: 16px;
     padding: 24px;
-    padding-top: 8px;
     flex-direction: column;
     position: relative;
 
-    .review_text {
-        font-weight: 400;
-        font-size: 13px;
-        margin-bottom: 24px;
-        position: relative;
-        font-style: italic;
-        font-weight: 400;
-        font-size: 13px;
-        &::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            margin-top: 5px;
-            position: absolute;
-            width: 30px;
-            height: 28px;
-            opacity: 0.15;
-            background-size: cover;
-            background-image: url("../../assets//icons/quote_commas.svg");
-            background-repeat: no-repeat;
-        }
-    }
-    .profile {
+    .user {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        column-gap: 16px;
-        margin-top: auto;
-    }
-    .profile_img {
-        display: flex;
-        width: 56px;
-        height: 56px;
-        background-color: #3065f3;
-        border-radius: 100%;
-    }
-    .info {
-        display: flex;
-        flex-direction: column;
+        align-items: center;
+
         h1 {
-            font-weight: 500;
-            font-size: 16px;
+            font-size: 12px;
             margin: 0;
-            margin-bottom: 8px;
+            margin-bottom: 2px;
         }
         p {
-            font-weight: 400;
-            font-size: 16px;
+            font-size: 8px;
             margin: 0;
-            margin-bottom: 8px;
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            margin-right: 9px;
+        }
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+        h1 {
+            font-weight: 600;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+    }
+
+    .desc {
+        p {
+            font-style: italic;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 16px;
+
+            img {
+                opacity: 0.1;
+                width: 26px;
+                height: 26px;
+                margin-right: 10px;
+            }
         }
     }
 }

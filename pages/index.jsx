@@ -25,6 +25,8 @@ import bronze_medal from "../assets/icons/bronze_medal.svg";
 import blank_medal from "../assets/icons/blank_medal.png";
 import starFilled from "../assets/icons/star_filled.svg";
 import starBlank from "../assets/icons/star_blank.svg";
+import gradstarFilled from "../assets/icons/star_filled_gradient.svg";
+import gradstarBlank from "../assets/icons/star_blank_gradient.svg";
 import web_w from "../assets/icons/web_white.svg";
 import twitter_w from "../assets/icons/twitter_white.svg";
 import discord_w from "../assets/icons/discord_white.svg";
@@ -444,6 +446,20 @@ let StarRating = ({ rating, showCount, color, count }) => {
   );
 };
 
+let GradStarRating = ({ rating, showCount, color, count }) => {
+  return (
+    <div className={styles.starRating}>
+      <span className={styles.stars}>
+        {[1, 2, 3, 4, 5].map((ele) => {
+          let starSrc = ele <= rating ? gradstarFilled.src : gradstarBlank.src;
+          return <img alt="" key={"s" + ele} src={starSrc} />;
+        })}
+      </span>
+      {showCount && <p className={styles.rating_count}>({count})</p>}
+    </div>
+  );
+};
+
 let Entry = ({ idx, data }) => {
   let medal_src;
   switch (idx) {
@@ -620,20 +636,31 @@ function RecentReview({ text, address, daoName, rating, i }) {
 
   return (
     <div className={styles.recentReview}>
-      <div className={styles.profile}>
-        <span
-          style={{ background: gradArray[i] }}
-          className={styles.profile_img}
-        ></span>
-        <span className={styles.info}>
+      <div className={styles.user}>
+        <img src="/blue.png" alt="" />
+        <span>
           <h1>{address}</h1>
-          <p>{daoName}</p>
+          <p>@{address}</p>
         </span>
-        <StarRating rating={rating} color={"black"} />
       </div>
-      <p className={styles.review_text}>{text.slice(0, 300)}...</p>
+      <span className={styles.rating}>
+        <h1>{daoName}</h1>
+        <GradStarRating rating={rating} />
+      </span>
+      <div className={styles.desc}>
+        <p>
+          <img src="/quotes.svg" alt="" />
+          {limitText(280, text)}
+        </p>
+      </div>
     </div>
   );
+}
+
+function limitText(count, text) {
+  if (text.length < count) return text;
+  let snippedText = text.substring(0, count);
+  return snippedText + "...";
 }
 
 function RecentReviewsSection() {
