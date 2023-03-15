@@ -845,26 +845,33 @@ $PHONE_N: 425;
     flex-direction: column;
     position: relative;
 
-    &::after {
-        content: "";
-        margin-top: 5px;
-        position: absolute;
-        width: 30px;
-        height: 28px;
-        opacity: 0.15;
-        background-size: cover;
-        background-image: url("../../assets//icons/quote_commas.svg");
-        background-repeat: no-repeat;
-    }
-
     .review_text {
         font-weight: 400;
         font-size: 13px;
         margin-bottom: 24px;
+        position: relative;
+        font-style: italic;
+        font-weight: 400;
+        font-size: 13px;
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-top: 5px;
+            position: absolute;
+            width: 30px;
+            height: 28px;
+            opacity: 0.15;
+            background-size: cover;
+            background-image: url("../../assets//icons/quote_commas.svg");
+            background-repeat: no-repeat;
+        }
     }
     .profile {
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
         column-gap: 16px;
         margin-top: auto;
     }

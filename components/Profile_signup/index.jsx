@@ -3,6 +3,8 @@ import styles from "./profile_signup.module.scss";
 import axios from "axios";
 import { useRouter } from "next/router";
 
+//changes
+
 const ProfileLogin = ({
   showWalletConnect,
   setprofileSignupPrompt,
@@ -78,8 +80,8 @@ const ProfileLogin = ({
           <h3>Let’s start by</h3>
           <h1>Login/Sign up</h1>
           <p>
-            Login/Sign up with either email or wallet to start your Web3
-            journey with Truts and earn some XPs!
+            Login/Sign up with either email or wallet to start your Web3 journey
+            with Truts and earn some XPs!
           </p>
         </div>
         <div className={styles.colScreens}>

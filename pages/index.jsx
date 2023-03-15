@@ -620,7 +620,6 @@ function RecentReview({ text, address, daoName, rating, i }) {
 
   return (
     <div className={styles.recentReview}>
-      <p className={styles.review_text}>{text.slice(0, 300)}...</p>
       <div className={styles.profile}>
         <span
           style={{ background: gradArray[i] }}
@@ -629,9 +628,10 @@ function RecentReview({ text, address, daoName, rating, i }) {
         <span className={styles.info}>
           <h1>{address}</h1>
           <p>{daoName}</p>
-          <StarRating rating={rating} color={"black"} />
         </span>
+        <StarRating rating={rating} color={"black"} />
       </div>
+      <p className={styles.review_text}>{text.slice(0, 300)}...</p>
     </div>
   );
 }
