@@ -98,6 +98,7 @@ let chainMap = {
   Solana: "solana",
   Sei: "sei",
   Syscoin: "syscoin",
+  Telos: "telos",
   Tezos: "tezos",
 };
 

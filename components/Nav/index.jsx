@@ -55,6 +55,7 @@ export default function Component({ isFloating, isStrech }) {
           );
         }
       } catch (error) {
+        console.log(error);
         localStorage.removeItem("token");
         localStorage.removeItem("user-server");
       }

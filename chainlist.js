@@ -36,5 +36,6 @@
     'aurora',
     'thor',
     'ronin',
-    'aptos'
+    'aptos',
+    'telos'
 ]

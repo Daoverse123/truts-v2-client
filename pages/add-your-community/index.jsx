@@ -64,6 +64,7 @@ const CHAIN_LIST_MAP = {
   Solana: "solana",
   Tezos: "tezos",
   Sui: "sui",
+  Telos: "telos",
   Bitcoin: "bitcoin",
   OKC: "okc",
 };
