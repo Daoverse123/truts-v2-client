@@ -685,7 +685,15 @@ const ReviewComp = ({
         className={styles.reviewComp}
         style={selected ? { border: "2px solid #3065f3" } : {}}
       >
-        <div className={styles.userInfo}>
+        <div
+          style={{ cursor: "pointer" }}
+          className={styles.userInfo}
+          onClick={() => {
+            if (userInfo.username) {
+              openNewTab(`/profile/${userInfo.username}`);
+            }
+          }}
+        >
           <img className={styles.profilePic} src={profile_img} alt="" />
           <span>
             {userInfo.username ? (

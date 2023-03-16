@@ -685,13 +685,20 @@ const ReviewComp = ({
         className={styles.reviewComp}
         style={selected ? { border: "2px solid #3065f3" } : {}}
       >
-        <div className={styles.userInfo}>
+        <div
+          className={styles.userInfo}
+          onClick={() => {
+            if (userInfo.username) {
+              openNewTab(`/profle/${userInfo.username}`);
+            }
+          }}
+        >
           <img className={styles.profilePic} src={profile_img} alt="" />
           <span>
             {userInfo.username ? (
               <p className={styles.address}>
                 {userInfo.name}
-                <span>@{userInfo.username}</span>
+                <span>@@@{userInfo.username}</span>
               </p>
             ) : (
               <p className={styles.address}>{userInfo.name}</p>
