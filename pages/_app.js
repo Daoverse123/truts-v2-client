@@ -14,7 +14,7 @@ import {
 } from 'wagmi';
 
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { ReactQueryDevtools } from 'react-query-devtools'
+
 
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
