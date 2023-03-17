@@ -7,6 +7,8 @@
     padding: 31px 49px;
     flex-direction: column;
 
+    animation: appear 0.25s ease-in-out;
+
     @media (max-width: "650px") {
         padding: 31px 21px;
     }
@@ -278,5 +280,26 @@ $PHONE: 425px;
         p {
             font-size: 8px;
         }
+    }
+}
+
+.loader {
+    display: flex;
+    width: 100%;
+    height: 50vh;
+    align-items: center;
+    justify-content: center;
+    img {
+        height: 25%;
+        object-fit: contain;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }

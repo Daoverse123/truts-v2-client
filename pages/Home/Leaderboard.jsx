@@ -122,16 +122,9 @@ const CommunityEntry = ({ idx, data }) => {
         <div className={styles.socials}>
           <img
             style={{ cursor: "pointer" }}
-            onClick={() => {
+            onClick={(e) => {
               openNewTab(data.discord_link);
-            }}
-            src={discordIcon.src}
-            alt=""
-          />
-          <img
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              openNewTab(data.twitter_link);
+              e.stopPropagation();
             }}
             src={twitterIcon.src}
             alt=""
@@ -139,7 +132,17 @@ const CommunityEntry = ({ idx, data }) => {
           <img
             style={{ cursor: "pointer" }}
             onClick={() => {
+              openNewTab(data.twitter_link);
+              e.stopPropagation();
+            }}
+            src={discordIcon.src}
+            alt=""
+          />
+          <img
+            style={{ cursor: "pointer" }}
+            onClick={() => {
               openNewTab(data.website_link);
+              e.stopPropagation();
             }}
             src={webIcon.src}
             alt=""
@@ -172,7 +175,11 @@ const Leaderboard = () => {
   });
 
   if (!(community.isSuccess && users.isSuccess)) {
-    return <h1>loading</h1>;
+    return (
+      <span className={styles.loader}>
+        <img src="/white-loader.gif" alt="" />
+      </span>
+    );
   }
 
   console.log(users.data.leaderboard);
