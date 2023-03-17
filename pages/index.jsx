@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 import Profile_signup from "./../components/Profile_signup";
 import WalletConnectProfile from "../components/WalletConnect_v3";
+import Leaderboard from "./Home/Leaderboard";
 
 // ASSETS
 import searchIcon from "../assets/icons/search_white.svg";
@@ -82,10 +83,9 @@ const CATEGORY_LIST = [
 ];
 
 // MAIN COMPONENT
-export default function Home({ daoList_ssr, leaderboard_ssr }) {
+export default function Home({ daoList_ssr }) {
   //data states
   const [daoList, setdaoList] = useState(daoList_ssr);
-  const [leaderboard, setleaderboard] = useState(leaderboard_ssr);
 
   useEffect(() => {
     getDynamicCategoryDaoList(setdaoList);
@@ -125,8 +125,7 @@ export default function Home({ daoList_ssr, leaderboard_ssr }) {
       <main className={styles.main}>
         {/* <StatCards /> */}
         <CommunitiesWall daoList={daoList} />
-        <Leaderboard data={leaderboard} />
-        <Leaderboard_mobile data={leaderboard} />
+        <Leaderboard />
       </main>
       <RecentReviewsSection />
       <Footer />
@@ -137,9 +136,9 @@ export default function Home({ daoList_ssr, leaderboard_ssr }) {
 //SSR DATA HOME PAGE
 export async function getServerSideProps(ctx) {
   // Fetch data from external API
-  let res = await Promise.all([getDaolistAPI(), getLeaderboard()]);
+  let res = await Promise.all([getDaolistAPI()]);
   // Pass data to the page via props
-  return { props: { daoList_ssr: res[0], leaderboard_ssr: res[1] } };
+  return { props: { daoList_ssr: res[0] } };
 }
 
 // API CALLS
@@ -459,167 +458,6 @@ let GradStarRating = ({ rating, showCount, color, count }) => {
     </div>
   );
 };
-
-let Entry = ({ idx, data }) => {
-  let medal_src;
-  switch (idx) {
-    case 1: {
-      medal_src = gold_medal.src;
-      break;
-    }
-    case 2: {
-      medal_src = silver_medal.src;
-      break;
-    }
-    case 3: {
-      medal_src = bronze_medal.src;
-      break;
-    }
-    default: {
-      medal_src = blank_medal.src;
-    }
-  }
-
-  return (
-    <>
-      <ul className={styles.entry}>
-        <li className={styles.c1}>
-          <span>#{idx}</span>
-          <img className={styles.medal} src={medal_src} alt="" />
-        </li>
-        <li className={styles.c2}>{data.dao_name}</li>
-        <li className={styles.c3}>
-          <StarRating
-            count={data.review_count}
-            rating={data.average_rating}
-            showCount={true}
-          />
-        </li>
-        <li className={styles.c4}>
-          <img
-            src={twitter_w.src}
-            alt=""
-            onClick={() => {
-              data.twitter_link && openNewTab(data.twitter_link);
-            }}
-          />
-          <img
-            src={discord_w.src}
-            alt=""
-            onClick={() => {
-              data.website_link && openNewTab(data.discord_link);
-            }}
-          />
-          <img
-            src={web_w.src}
-            alt=""
-            onClick={() => {
-              data.website_link && openNewTab(data.website_link);
-            }}
-          />
-        </li>
-      </ul>
-      <span className={styles.divider} />
-    </>
-  );
-};
-
-function Leaderboard({ data }) {
-  return (
-    <div className={styles.leaderboard}>
-      <h1 className={styles.leaderboard_title}>Community Leaderboard</h1>
-      <ul className={styles.tableHead}>
-        <li className={styles.th1}>Position</li>
-        <li className={styles.th2}>Name of the DAO</li>
-        <li className={styles.th3}>Ratings</li>
-        <li className={styles.th4}>Socials</li>
-      </ul>
-      <div className={styles.leaderboard_entries}>
-        {data.map((ele, idx) => {
-          return <Entry key={idx + "l"} idx={idx + 1} data={ele} />;
-        })}
-      </div>
-    </div>
-  );
-}
-
-// MOBILE LEADERBOARD
-
-function Leaderboard_mobile_entry({ idx, data }) {
-  let medal_src;
-  switch (idx) {
-    case 1: {
-      medal_src = gold_medal.src;
-      break;
-    }
-    case 2: {
-      medal_src = silver_medal.src;
-      break;
-    }
-    case 3: {
-      medal_src = bronze_medal.src;
-      break;
-    }
-    default: {
-      medal_src = blank_medal.src;
-    }
-  }
-  return (
-    <div className={styles.mobile_leaderboard_entry}>
-      <span className={styles.medal}>
-        <img src={medal_src} alt="" />
-      </span>
-      <span>
-        <h1>{data.dao_name}</h1>
-        <StarRating color={"white"} rating={data.average_rating} />
-      </span>
-      <div className={styles.socialIcons}>
-        <img
-          src={twitter_w.src}
-          alt=""
-          onClick={() => {
-            data.twitter_link && openNewTab(data.twitter_link);
-          }}
-        />
-        <img
-          src={discord_w.src}
-          alt=""
-          onClick={() => {
-            data.website_link && openNewTab(data.discord_link);
-          }}
-        />
-        <img
-          src={web_w.src}
-          alt=""
-          onClick={() => {
-            data.website_link && openNewTab(data.website_link);
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-function Leaderboard_mobile({ data }) {
-  return (
-    <div className={styles.mobile_leaderboard_con}>
-      <h1 className={styles.sec_title}>Community Leaderboard</h1>
-      <div className={styles.leaderboard_list}>
-        {data
-          .map((ele, idx) => {
-            return (
-              <Leaderboard_mobile_entry
-                data={ele}
-                key={"ml" + idx}
-                idx={idx + 1}
-              />
-            );
-          })
-          .slice(0, 5)}
-      </div>
-    </div>
-  );
-}
 
 // RECENT REVIEWS
 

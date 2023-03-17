@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "../dao/dao.module.scss";
+import styles from "./dao.module.scss";
 import Footer from "../../components/Footer";
 import Head from "next/head";
 import axios from "axios";
@@ -28,6 +28,7 @@ import thumbs_down from "../../assets/icons/thumbs_down.svg";
 import share from "../../assets/icons/share_icon.svg";
 import tip from "../../assets/icons/tip_icon.svg";
 import loader from "../../assets/mini-loader.gif";
+import { useQuery } from "react-query";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -234,7 +235,7 @@ function Dao({ dao_data, rid, slug }) {
         )}
         {selected == "Leaderboard" && (
           <div className={styles.content}>
-            <Leaderboard />
+            <Leaderboard listingId={dao_data.id} />
           </div>
         )}
         {selected == "Members" && (
@@ -251,21 +252,26 @@ function Dao({ dao_data, rid, slug }) {
 const NavSec = ({ selected, setSelected }) => {
   return (
     <ul className={styles.navSec}>
-      {["Reviews", "Missions", "Insights", "Ecosystem", "Members"].map(
-        (ele, i) => {
-          return (
-            <li
-              className={selected == ele ? styles.selected : {}}
-              onClick={() => {
-                setSelected(ele);
-              }}
-              key={ele + i}
-            >
-              {ele}
-            </li>
-          );
-        }
-      )}
+      {[
+        "Reviews",
+        "Missions",
+        "Insights",
+        "Ecosystem",
+        "Members",
+        "Leaderboard",
+      ].map((ele, i) => {
+        return (
+          <li
+            className={selected == ele ? styles.selected : {}}
+            onClick={() => {
+              setSelected(ele);
+            }}
+            key={ele + i}
+          >
+            {ele}
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -402,7 +408,7 @@ let entryColor = {
   },
 };
 
-const Entry = ({ idx }) => {
+const Entry = ({ idx, data }) => {
   return (
     <span
       className={styles.boardEntry}
@@ -421,13 +427,18 @@ const Entry = ({ idx }) => {
         >
           {idx}
         </span>
-        <img className={styles.userProfile} src="/blue.png" alt="" />
+        <img
+          className={styles.userProfile}
+          style={{ borderRadius: "100%", background: "white" }}
+          src={data.user.photo.secure_url}
+          alt=""
+        />
         <span className={styles.userDetails}>
-          <h2>random user 1 </h2>
-          <p>2 mins ago</p>
+          <h2>{data.user.name}</h2>
+          <p>@{data.user.username}</p>
         </span>
         <div className={styles.xp}>
-          <h3>30 XP</h3>
+          <h3>{data.totalListingXP} XP</h3>
           <img src="/xpCoin.svg" alt="" />
         </div>
       </div>
@@ -435,13 +446,58 @@ const Entry = ({ idx }) => {
   );
 };
 
-const Leaderboard = () => {
+const Leaderboard = ({ listingId }) => {
+  let queryRes = useQuery({
+    queryKey: ["leaderboard", listingId],
+    queryFn: async (key) => {
+      console.log(key);
+      return await axios.get(
+        `${P_API}/public/listing/${key.queryKey[1]}/leaderboard`
+      );
+    },
+  });
+
+  if (!queryRes.isSuccess) {
+    return (
+      <div className={styles.reviewSec}>
+        <img className={styles.loader} src="/white-loader.gif" alt="" />
+      </div>
+    );
+  }
+
+  let { count, leaderboard } = queryRes.data.data.data;
+
+  if (count == 0) {
+    return (
+      <div className={styles.banner}>
+        <div className={styles.content}>
+          <h1>
+            <img src="/logo.svg" alt="" />
+            Leaderboard
+          </h1>
+          <p>
+            Are you a community owner? Engage the community by launching
+            missions. Click the button below to get started.
+          </p>
+          <button
+            onClick={() => {
+              location.href = "/launch-missions.html";
+            }}
+          >
+            <img src="/missions/btn-img.svg" alt="" />
+            Launch Missions
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.leaderboard}>
       <h1 className={styles.title}>Community Contributors</h1>
       <div className={styles.board}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ele) => {
-          return <Entry key={ele + "ent"} idx={ele} />;
+        {leaderboard.map((ele, idx) => {
+          return <Entry key={ele + "ent"} data={ele} idx={idx + 1} />;
         })}
       </div>
     </div>

@@ -13,6 +13,8 @@ import {
   chain
 } from 'wagmi';
 
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { ReactQueryDevtools } from 'react-query-devtools'
 
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
@@ -46,6 +48,8 @@ export const client = createClient({
 
 let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }) {
   return <WagmiConfig client={client}>
     <ToastContainer
@@ -74,7 +78,10 @@ function MyApp({ Component, pageProps }) {
     </Script>
     <Script src="https://accounts.google.com/gsi/client" strategy={'beforeInteractive'}></Script>
     <NextNProgress color="#2e68f5" />
-    <Component {...pageProps} />
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   </WagmiConfig>
 }
 
