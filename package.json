@@ -33,7 +33,6 @@
         "react-content-loader": "^6.2.0",
         "react-dom": "18.1.0",
         "react-query": "^3.39.2",
-        "react-query-devtools": "^2.6.3",
         "react-responsive": "^9.0.0-beta.10",
         "react-toastify": "^9.1.1",
         "react-tooltip": "^5.0.0",
