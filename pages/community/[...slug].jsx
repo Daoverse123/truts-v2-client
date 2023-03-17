@@ -414,6 +414,10 @@ const Entry = ({ idx, data }) => {
       className={styles.boardEntry}
       style={{
         background: entryColor[idx]?.grad,
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        openNewTab(`/profile/${data.user.username}`);
       }}
     >
       <div className={styles.boardEntryCon}>
