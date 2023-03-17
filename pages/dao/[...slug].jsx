@@ -418,7 +418,7 @@ const Entry = ({ idx }) => {
       <div className={styles.boardEntryCon}>
         <span
           style={{
-            background: entryColor[idx]?.bg || "url('/leaderboard/rest.svg')",
+            background: entryColor[idx]?.bg || "",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
           }}

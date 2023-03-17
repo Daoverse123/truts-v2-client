@@ -397,14 +397,17 @@ let entryColor = {
   1: {
     bg: "url('/leaderboard/gold.svg')",
     grad: "linear-gradient(90deg, rgba(225, 171, 75, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+    color: "#E1AB4B",
   },
   2: {
     bg: "url('/leaderboard/silver.svg')",
     grad: "linear-gradient(90deg, rgba(181, 181, 181, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+    color: "#B5B5B5",
   },
   3: {
     bg: "url('/leaderboard/bronze.svg')",
     grad: "linear-gradient(90deg, rgba(181, 100, 77, 0.2) 1.94%, rgba(255, 255, 255, 0.2) 33.28%)",
+    color: "#B5644D",
   },
 };
 
@@ -420,6 +423,10 @@ const Entry = ({ idx, data }) => {
         openNewTab(`/profile/${data.user.username}`);
       }}
     >
+      <span
+        style={{ background: entryColor[idx]?.color || "transparent" }}
+        className={styles.leftStick}
+      ></span>
       <div className={styles.boardEntryCon}>
         <span
           style={{
