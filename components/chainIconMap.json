@@ -170,5 +170,10 @@
         "ticker": "Multi Chain",
         "icon": "https://upload.wikimedia.org/wikipedia/commons/f/f8/GNOME_Web_logo_40.png",
         "color": "#48C9B0"
+    },
+    "telos": {
+        "ticker": "TLOS",
+        "icon": "https://assets.coingecko.com/coins/images/7588/small/TLOS_200.png?1629277084",
+        "color": "#CF9FFF"
     }
 }
