@@ -134,6 +134,18 @@
     background-color: rgba(202, 205, 213, 1);
 }
 
+.loading {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    img {
+        width: 8vw;
+        height: 8vw;
+    }
+}
+
 .gallery {
     display: flex;
     width: max-content;
@@ -141,6 +153,7 @@
     align-items: center;
     .daoList {
         justify-content: center;
+
         display: flex;
         flex-wrap: wrap;
         gap: 16px;

@@ -17,6 +17,8 @@ import downArrow from "../../assets/icons/down_arrow.svg";
 import star_blank_gradient from "../../assets/icons/star_blank_gradient.svg";
 import star_filled_gradient from "../../assets/icons/star_filled_gradient.svg";
 import close_btn from "../../assets/icons/close_icon.svg";
+import { useQuery } from "react-query";
+import { create } from "zustand";
 
 let sideNavTabs = {
   Categories: "",
@@ -29,44 +31,6 @@ let sideNavTabs = {
 // CONSTANTS
 const API = process.env.API;
 //const CATEGORY_LIST = ['All', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Legal', `NEAR Ecosystem`]
-const CATEGORY_LIST = [
-  "DAO",
-  "Media",
-  "Investors",
-  "Service",
-  "Grant",
-  "Social",
-  "DAO tool",
-  "Defi",
-  "CeFi",
-  "TradeFi",
-  "BlockFi",
-  "Lending",
-  "Yield aggregator",
-  "Stablecoin",
-  "NFT",
-  "Metaverse",
-  "Art",
-  "Music",
-  "NFT marketplace",
-  "Utilities",
-  "Analytics",
-  "Payment",
-  "Oracle",
-  "Games",
-  "Infrastructure",
-  "Wallet",
-  "Indexer",
-  "Storage",
-  "Identity",
-  "Exchange",
-  "Community",
-  "Guild",
-  "Marketing tool",
-  "Public Good",
-  "Education",
-  "Investment",
-];
 
 let discordFollowers = {
   "0 to 5K": { min: 0, max: 5000 },
@@ -84,118 +48,106 @@ let twitterFollowers = {
   "100K+": { min: 50000, max: Infinity },
 };
 
-let chainMap = {
-  All: "all",
-  Avalanche: "avalanche",
-  Arbitrum: "arbitrum-one",
-  "Binance Smart Chain": "binance-smart-chain",
-  Cardano: "cardano",
-  Cosmos: "cosmos",
-  Ethereum: "ethereum",
-  Flow: "flow",
-  Near: "near",
-  Polygon: "polygon-pos",
-  Solana: "solana",
-  Sei: "sei",
-  Syscoin: "syscoin",
-  Telos: "telos",
-  Tezos: "tezos",
-};
-
-let initialState = {
-  "sort by": "HL",
-  "Types of Communities": ["All"],
-  "Network Chains": ["All"],
-  "Discord Members": { min: 0, max: 0 },
-  "Twitter Followers": { min: 0, max: 0 },
-  Ratings: [0, 1, 2, 3, 4, 5],
-};
-
-let actionTypes = {
-  COMMUNITY: "COMMUNITY",
-  CHAIN: "CHAIN",
-  DISCORD: "DISCORD",
-  TWITTER: "TWITTER",
-  RATING: "RATING",
-  SORT: "SORT",
-};
-
-let checkboxManager = (inputLabel, action, state) => {
-  if (action.payload.label == "All") {
-    state[inputLabel] = ["All"];
-    return { ...state };
-  }
-  if (action.payload.type == true) {
-    state[inputLabel] = state[inputLabel].filter((ele) => !(ele == `All`));
-    state[inputLabel] = [
-      ...new Set([...state[inputLabel], action.payload.label]),
-    ];
-    return { ...state };
-  }
-  if (action.payload.type == false) {
-    let index = state[inputLabel].indexOf(action.payload.label);
-    state[inputLabel] = state[inputLabel].filter(
-      (ele) => !(ele == action.payload.label)
-    );
-    if (state[inputLabel].length == 0) {
-      state[inputLabel] = ["All"];
+const filterStore = create((set) => ({
+  chains: [],
+  categories: [],
+  rating: [],
+  twitter_followers: undefined,
+  discord_members: undefined,
+  rating_sort: -1,
+  pageMultiplier: 1,
+  loadMore: () => {
+    set((state) => {
+      state.pageMultiplier = state.pageMultiplier + 1;
       return { ...state };
-    }
-    return { ...state };
-  }
-  return { ...state };
-};
-
-let checkboxManagerRating = (inputLabel, action, state) => {
-  if (action.payload.type == true) {
-    state[inputLabel] = [
-      ...new Set([...state[inputLabel], action.payload.label]),
-    ];
-    return { ...state };
-  }
-  if (action.payload.type == false) {
-    let index = state[inputLabel].indexOf(action.payload.label);
-    state[inputLabel] = state[inputLabel].filter(
-      (ele) => !(ele == action.payload.label)
-    );
-    if (state[inputLabel].length == 0) {
-      state[inputLabel] = [1, 2, 3, 4, 5];
+    });
+  },
+  setRatingSort: (data) => {
+    set((state) => {
+      state.rating_sort = data;
       return { ...state };
-    }
-    return { ...state };
-  }
-  return { ...state };
-};
-
-let reducer = (state, action) => {
-  console.log(action);
-  switch (action.type) {
-    case "COMMUNITY":
-      return checkboxManager("Types of Communities", action, state);
-    case "CHAIN":
-      return checkboxManager("Network Chains", action, state);
-    case "DISCORD":
-      state["Discord Members"].min = action.payload.min;
-      state["Discord Members"].max = action.payload.max;
+    });
+  },
+  addChain: (data) => {
+    set((state) => {
+      state.chains = [...state.chains, data];
       return { ...state };
-    case "TWITTER":
-      state["Twitter Followers"].min = action.payload.min;
-      state["Twitter Followers"].max = action.payload.max;
+    });
+  },
+  removeChain: (data) => {
+    set((state) => {
+      if (data == "all") {
+        state.chains = [];
+        return { ...state };
+      }
+      state.chains = state.chains.filter((ele) => ele != data);
       return { ...state };
-    case "RATING":
-      return checkboxManagerRating("Ratings", action, state);
-    case "SORT":
-      state["sort by"] = action.payload;
+    });
+  },
+  addCategories: (data) => {
+    set((state) => {
+      state.categories = [...state.categories, data];
       return { ...state };
-    default:
-      return state;
-  }
-};
+    });
+  },
+  removeCategories: (data) => {
+    set((state) => {
+      if (data == "all") {
+        state.categories = [];
+        return { ...state };
+      }
+      state.categories = state.categories.filter((ele) => ele != data);
+      return { ...state };
+    });
+  },
+  addtwitter: (data) => {
+    set((state) => {
+      state.twitter_followers = data;
+      return { ...state };
+    });
+  },
+  removetwitter: (data) => {
+    set((state) => {
+      state.twitter_followers = undefined;
+      return { ...state };
+    });
+  },
+  addDiscord: (data) => {
+    set((state) => {
+      state.discord_members = data;
+      return { ...state };
+    });
+  },
+  removeDiscord: (data) => {
+    set((state) => {
+      state.discord_members = undefined;
+      return { ...state };
+    });
+  },
+  addRating: (data) => {
+    set((state) => {
+      state.rating = [...state.rating, data];
+      return { ...state };
+    });
+  },
+  removeRating: (data) => {
+    set((state) => {
+      if (data == "all") {
+        state.rating = [];
+        return { ...state };
+      }
+      state.rating = state.rating.filter((ele) => ele != data);
+      return { ...state };
+    });
+  },
+}));
 
-function Discover({ daoList_ssr_init, paginationConfig }) {
-  console.log(paginationConfig);
+function Discover({ chainList, categoriesList }) {
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
 
-  const [daoList_ssr, setdaoList_ssr] = useState(daoList_ssr_init);
+  const [filtersVisible, setfiltersVisible] = useState(false);
+
+  const router = useRouter();
 
   const [collapseState, setcollapseState] = useState({
     0: false,
@@ -205,160 +157,84 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
     4: false,
   });
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  let {
+    rating_sort,
+    chains,
+    categories,
+    twitter_followers,
+    discord_members,
+    rating,
+    pageMultiplier,
+    loadMore,
+  } = filterStore();
 
-  const [galleryLimit, setgalleryLimit] = useState(33);
+  let queryRes = useQuery({
+    queryKey: [
+      "list",
+      chains,
+      categories,
+      twitter_followers,
+      discord_members,
+      rating_sort,
+      pageMultiplier,
+    ],
+    queryFn: async (data) => {
+      let chains = data.queryKey[1];
+      let categories = data.queryKey[2];
+      let twitter_followers = data.queryKey[3];
+      let discord_members = data.queryKey[4];
+      let rating_sort = data.queryKey[5];
+      let pageMultiplier = data.queryKey[6];
 
-  const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
-
-  const [filtersVisible, setfiltersVisible] = useState(false);
-
-  const [catCount, setcatCount] = useState({});
-
-  const [chainCount, setchainCount] = useState({});
-
-  const router = useRouter();
-
-  useEffect(() => {
-    setfiltersVisible(!isMobile);
-  }, [isMobile]);
-
-  useEffect(() => {
-    getDynamicLoad(
-      daoList_ssr,
-      setdaoList_ssr,
-      paginationConfig,
-      setcatCount,
-      setchainCount
-    );
-    let query = router.query;
-    if (Object.keys(query)[0] == "category") {
-      dispatch({
-        type: actionTypes.COMMUNITY,
-        payload: { label: query["category"], type: true },
-      });
-    }
-    if (Object.keys(query)[0] == "chain") {
-      dispatch({
-        type: actionTypes.CHAIN,
-        payload: { label: inverse(chainMap)[query["chain"]], type: true },
-      });
-    }
-  }, []);
-
-  console.log(daoList_ssr.length);
-
-  const filteredList = (daos) => {
-    //filter by Types of Communities
-    let filterByCommunities = (daos) => {
-      if (state["Types of Communities"].includes("All")) {
-        return daos;
-      }
-      return daos.filter((ele) => {
-        let true_cond = false;
-        ele.dao_category.forEach((cat) => {
-          if (state["Types of Communities"].includes(cat)) {
-            console.log("++");
-            true_cond = true;
-          }
-        });
-        if (true_cond) {
-          return true;
-        }
-        return false;
-      });
-    };
-
-    //twitter/discord limiting
-    const tdRangeLimit = (daos) => {
-      //discord member count limit (0,0) show all
-
-      let filterMethod = (daos, state_type, key_name) => {
-        if (state[state_type].min == 0 && state[state_type].max == 0) {
-          return daos;
-        }
-
-        return daos.filter((ele) => {
-          if (
-            ele[key_name] <= state[state_type].max &&
-            ele[key_name] >= state[state_type].min
-          ) {
-            return true;
-          }
-          return false;
-        });
+      let params = {
+        limit: 150 * pageMultiplier,
+        sort: `{ "review_count": -1 ,"average_rating" : ${rating_sort} }`,
       };
 
-      let d_filtered_daos = filterMethod(
-        daos,
-        "Discord Members",
-        "discord_members"
-      );
-
-      return filterMethod(
-        d_filtered_daos,
-        "Twitter Followers",
-        "twitter_followers"
-      );
-    };
-
-    // star rating filter
-    let starFilter = (daos) => {
-      return daos.filter((ele) => {
-        if (state["Ratings"].includes(Math.ceil(ele.average_rating))) {
-          return true;
+      let filter = {};
+      if (categories.length > 0) {
+        filter.dao_category = categories;
+      }
+      if (chains.length > 0) {
+        filter.chain = chains;
+      }
+      if (twitter_followers) {
+        let range = {};
+        let { min, max } = twitterFollowers[twitter_followers];
+        if (max != Infinity) {
+          range.lte = max;
         }
-        return false;
+        range.gte = min;
+        filter.twitter_followers = range;
+      }
+      if (discord_members) {
+        let range = {};
+        let { min, max } = discordFollowers[discord_members];
+        if (max != Infinity) {
+          range.lte = max;
+        }
+        range.gte = min;
+        filter.discord_members = range;
+      }
+
+      if (Object.keys(filter).length > 0) {
+        params.filter = JSON.stringify(filter);
+      }
+
+      console.log(params, chains, categories);
+
+      let res = await axios.get(`${process.env.P_API}/listings`, {
+        params,
       });
-    };
+      return res.data.data;
+    },
+  });
 
-    //chain filter
-    let chainFilter = (daos) => {
-      if (state["Network Chains"].includes("All")) {
-        return daos;
-      }
-      return daos.filter((ele) => {
-        let true_condition = false;
-        state["Network Chains"].forEach((chain) => {
-          if (ele.chain.includes(chainMap[chain])) {
-            true_condition = true;
-          }
-        });
-        return true_condition;
-      });
-    };
+  console.log(queryRes);
 
-    //sorting
-    let sort_by_rating = (daos) => {
-      if (state["sort by"] == "HL") {
-        let sorted_daos = daos.sort(
-          (a, b) => b.average_rating - a.average_rating
-        );
-        if (sorted_daos.length > 0) {
-          return sorted_daos;
-        }
-      }
-      if (state["sort by"] == "LH") {
-        let sorted_daos = daos.sort(
-          (a, b) => a.average_rating - b.average_rating
-        );
-        if (sorted_daos.length > 0) {
-          return sorted_daos;
-        }
-      }
-      return daos;
-    };
-
-    return sort_by_rating(
-      starFilter(tdRangeLimit(filterByCommunities(chainFilter(daos))))
-    ).sort((a, b) => {
-      return b.review_count - a.review_count;
-    });
-  };
-
-  let filteredDaoList = filteredList(daoList_ssr);
-
-  console.log(state);
+  let data = useEffect(() => {
+    setfiltersVisible(!isMobile);
+  }, [isMobile]);
 
   return (
     <>
@@ -406,7 +282,7 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                 <p>Filters</p>
               </span>
               <h1 className={styles.sideBarTitle}>Communities</h1>
-              <SortComp state={state} dispatch={dispatch} />
+              <SortComp />
               {Object.keys(sideNavTabs).map((ele, i) => {
                 return (
                   <>
@@ -424,11 +300,9 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
                       <img src={downArrow.src} alt="" />
                     </span>
                     <GetSection
-                      catCount={catCount}
-                      chainCount={chainCount}
+                      {...{ chainList }}
+                      {...{ categoriesList }}
                       key={i + "gsd"}
-                      state={state}
-                      dispatch={dispatch}
                       label={ele}
                       idx={i}
                       collapseState={collapseState}
@@ -439,18 +313,34 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
               })}
             </div>
           )}
+          {!queryRes.isSuccess && (
+            <span className={styles.loading}>
+              <img src="/loading.gif" alt="" />
+            </span>
+          )}
           <div className={styles.gallery}>
-            <div key={JSON.stringify(state)} className={styles.daoList}>
-              {filteredDaoList
-                .map((ele, idx) => {
-                  return <DAOCard key={idx + "_" + ele.dao_name} data={ele} />;
-                })
-                .slice(0, galleryLimit)}
+            <div className={styles.daoList}>
+              {queryRes.isSuccess &&
+                queryRes.data.result
+                  .filter((ft) => {
+                    if (rating.length == 0) {
+                      return true;
+                    }
+                    let averageRating = Math.ceil(ft.average_rating);
+                    if (rating.includes(averageRating)) {
+                      return true;
+                    }
+                    return false;
+                  })
+                  .map((ele, idx) => {
+                    return <DAOCard data={ele} key={"card" + idx} />;
+                  })}
             </div>
-            {galleryLimit < filteredDaoList.length + 1 && (
+
+            {queryRes.isSuccess && (
               <Button
                 onClick={() => {
-                  setgalleryLimit(galleryLimit + 15);
+                  loadMore();
                 }}
                 label={"show more"}
               />
@@ -459,127 +349,30 @@ function Discover({ daoList_ssr_init, paginationConfig }) {
         </div>
 
         <div className={styles.mobileFilterNav}>
-          <button
-            onClick={() => {
-              setfiltersVisible(true);
-            }}
-          >
-            Filters
-          </button>
+          <button>Filters</button>
         </div>
       </div>
     </>
   );
 }
 
-//SSR DATA Discover PAGE
 export async function getServerSideProps(ctx) {
-  // Fetch data from external API
-  let { res, paginationConfig } = await getDaolistAPI();
+  let res = await Promise.all([
+    axios.get(`${process.env.P_API}/listings/categories`),
+    axios.get(`${process.env.P_API}/listings/chains`),
+  ]);
 
-  // Pass data to the page via props
   return {
-    props: { daoList_ssr_init: res, paginationConfig: paginationConfig },
+    props: {
+      categoriesList: res[0].data.data.result,
+      chainList: res[1].data.data.result,
+    },
   };
 }
 
-// API CALLS
-
-//get list of daos
-const getDaolistAPI = async () => {
-  //gets initial 20 doas
-  let url = `${API}/dao/get-dao-list?limit=100&page=1`;
-  let res = await axios.get(url);
-  console.log(res);
-  return {
-    res: res.data.results,
-    paginationConfig: { lastPage: res.data.lastPage, limit: res.data.limit },
-  };
-};
-
-//dynamic load all the daos
-const getDynamicLoad = async (
-  daoList_ssr,
-  setdaoList_ssr,
-  paginationConfig,
-  setcatCount,
-  setchainCount
-) => {
-  //gets initial 20 doas
-  let daoList_ssr_current = daoList_ssr;
-  let { lastPage, limit } = paginationConfig;
-
-  let requestArray = [];
-
-  for (let i = 1 + 1; i <= lastPage; i++) {
-    let url = `${API}/dao/get-dao-list?limit=${limit}&page=${i}`;
-    let apiRequest = axios.get(url);
-    requestArray.push(apiRequest);
-  }
-
-  let allPagesRes = await Promise.all(requestArray);
-  let daoList_ssr_final;
-  if (allPagesRes[lastPage - 2].status == 200) {
-    daoList_ssr_final = [...daoList_ssr_current];
-    allPagesRes.forEach((ele) => {
-      daoList_ssr_final = [...daoList_ssr_final, ...ele.data.results];
-    });
-  }
-  const key = "slug";
-  const arrayUniqueByKey = [
-    ...new Map(daoList_ssr_final.map((item) => [item[key], item])).values(),
-  ];
-  setdaoList_ssr(arrayUniqueByKey);
-
-  arrayUniqueByKey = daoList_ssr_final;
-
-  // const arrayUniqueByKey = removeDuplicates(daoList_ssr_final, 'slug');
-
-  const generateCatCount = (LIST, key, setter) => {
-    let catCount = {};
-    LIST.forEach((ele) => {
-      catCount[ele] = 0;
-    });
-
-    LIST.forEach((ele) => {
-      arrayUniqueByKey.forEach((alx) => {
-        if (alx[key].includes(ele)) {
-          console.log(ele);
-          catCount[ele] = catCount[ele] + 1;
-        }
-      });
-    });
-    setter(catCount);
-  };
-
-  const generateChainCount = (LIST, key, setter) => {
-    let catCount = {};
-    LIST.forEach((ele) => {
-      catCount[ele] = 0;
-    });
-
-    LIST.forEach((ele) => {
-      arrayUniqueByKey.forEach((alx) => {
-        if (alx[key].includes(chainMap[ele])) {
-          console.log(ele);
-          catCount[ele] = catCount[ele] + 1;
-        }
-      });
-    });
-    setter(catCount);
-  };
-
-  //staging build new
-
-  generateCatCount(CATEGORY_LIST, "dao_category", setcatCount);
-
-  generateChainCount(Object.keys(chainMap), "chain", setchainCount);
-
-  console.log(daoList_ssr_final.length);
-};
-
 //push .. .
-const SortComp = ({ state, dispatch }) => {
+const SortComp = () => {
+  let { setRatingSort, rating_sort } = filterStore();
   return (
     <span className={styles.sortComp}>
       <span className={styles.option}>
@@ -588,11 +381,11 @@ const SortComp = ({ state, dispatch }) => {
       <span className={styles.typesOption}>
         <p>Ratings: High to Low</p>
         <input
-          checked={state["sort by"] == "HL"}
           type={"checkbox"}
+          checked={rating_sort == -1}
           onClick={(e) => {
             if (e.target.checked) {
-              dispatch({ type: actionTypes.SORT, payload: "HL" });
+              setRatingSort(-1);
             }
           }}
         />
@@ -600,11 +393,11 @@ const SortComp = ({ state, dispatch }) => {
       <span className={styles.typesOption}>
         <p>Ratings: Low to High</p>
         <input
-          checked={state["sort by"] == "LH"}
           type={"checkbox"}
+          checked={rating_sort == 1}
           onClick={(e) => {
             if (e.target.checked) {
-              dispatch({ type: actionTypes.SORT, payload: "LH" });
+              setRatingSort(1);
             }
           }}
         />
@@ -622,6 +415,8 @@ const GetSection = ({
   dispatch,
   catCount,
   chainCount,
+  chainList,
+  categoriesList,
 }) => {
   if (label == Object.keys(sideNavTabs)[0] && collapseState[0]) {
     return (
@@ -629,84 +424,64 @@ const GetSection = ({
         state={state}
         dispatch={dispatch}
         catCount={catCount}
+        {...{ categoriesList }}
       />
     );
   }
   if (label == Object.keys(sideNavTabs)[1] && collapseState[1]) {
     return (
       <NetworkChains
-        visible={collapseState[1]}
+        visible={true}
         state={state}
         dispatch={dispatch}
         chainCount={chainCount}
+        {...{ chainList }}
       />
     );
   }
   if (label == Object.keys(sideNavTabs)[2] && collapseState[2]) {
-    return (
-      <RatingComp
-        visible={collapseState[4]}
-        state={state}
-        dispatch={dispatch}
-      />
-    );
+    return <RatingComp visible={true} state={state} dispatch={dispatch} />;
   }
   if (label == Object.keys(sideNavTabs)[3] && collapseState[3]) {
-    return (
-      <DiscordMembers
-        visible={collapseState[1]}
-        state={state}
-        dispatch={dispatch}
-      />
-    );
+    return <DiscordMembers visible={true} state={state} dispatch={dispatch} />;
   }
   if (label == Object.keys(sideNavTabs)[4] && collapseState[4]) {
     return (
-      <TwitterFollowers
-        visible={collapseState[1]}
-        state={state}
-        dispatch={dispatch}
-      />
+      <TwitterFollowers visible={true} state={state} dispatch={dispatch} />
     );
   } else {
     return <></>;
   }
 };
 
-const TypesOfCommunities = ({ state, dispatch, catCount }) => {
-  console.log(catCount);
+const TypesOfCommunities = ({ categoriesList }) => {
+  let { addCategories, removeCategories, categories } = filterStore();
+
   return (
     <div className={styles.typesOfCommunities}>
       <p
         className={styles.reset}
         onClick={() => {
-          dispatch({
-            type: actionTypes.COMMUNITY,
-            payload: { label: "All", type: true },
-          });
+          removeCategories("all");
         }}
       >
         Reset
       </p>
-      {CATEGORY_LIST.map((ele, i) => {
+      {categoriesList.map((ele, i) => {
         return (
           <span key={i + ele} className={styles.typesOption}>
-            {catCount[ele] || catCount[ele] == 0 ? (
-              <p>
-                {ele} {`(${catCount[ele]})`}
-              </p>
-            ) : (
-              <p>
-                {ele} {<img src="/mini-loader.gif" />}
-              </p>
-            )}
+            <p>
+              {ele.category}
+              {` (${ele.count})`}
+            </p>
             <input
-              checked={state["Types of Communities"].includes(ele)}
+              checked={categories.includes(ele.category)}
               onChange={(e) => {
-                dispatch({
-                  type: actionTypes.COMMUNITY,
-                  payload: { label: ele, type: e.target.checked },
-                });
+                if (e.target.checked) {
+                  addCategories(ele.category);
+                } else {
+                  removeCategories(ele.category);
+                }
               }}
               type={"checkbox"}
             />
@@ -717,13 +492,15 @@ const TypesOfCommunities = ({ state, dispatch, catCount }) => {
   );
 };
 
-const TwitterFollowers = ({ state, dispatch }) => {
+const TwitterFollowers = () => {
+  let { addtwitter, removetwitter, twitter_followers } = filterStore();
+
   return (
     <div className={styles.typesOfCommunities}>
       <p
         className={styles.reset}
         onClick={() => {
-          dispatch({ type: actionTypes.TWITTER, payload: { min: 0, max: 0 } });
+          removetwitter("all");
         }}
       >
         Reset
@@ -733,15 +510,13 @@ const TwitterFollowers = ({ state, dispatch }) => {
           <span key={i + ele} className={styles.typesOption}>
             <p>{ele}</p>
             <input
-              checked={
-                state["Twitter Followers"].min == twitterFollowers[ele].min &&
-                state["Twitter Followers"].max == twitterFollowers[ele].max
-              }
+              checked={ele == twitter_followers}
               onChange={(e) => {
-                dispatch({
-                  type: actionTypes.TWITTER,
-                  payload: twitterFollowers[ele],
-                });
+                if (e.target.checked) {
+                  addtwitter(ele);
+                } else {
+                  removetwitter(ele);
+                }
               }}
               type={"checkbox"}
             />
@@ -752,13 +527,15 @@ const TwitterFollowers = ({ state, dispatch }) => {
   );
 };
 
-const DiscordMembers = ({ state, dispatch }) => {
+const DiscordMembers = () => {
+  let { addDiscord, removeDiscord, discord_members } = filterStore();
+
   return (
     <div className={styles.typesOfCommunities}>
       <p
         className={styles.reset}
         onClick={() => {
-          dispatch({ type: actionTypes.DISCORD, payload: { min: 0, max: 0 } });
+          removeDiscord("all");
         }}
       >
         Reset
@@ -768,15 +545,13 @@ const DiscordMembers = ({ state, dispatch }) => {
           <span key={i + ele} className={styles.typesOption}>
             <p>{ele}</p>
             <input
-              checked={
-                state["Discord Members"].min == discordFollowers[ele].min &&
-                state["Discord Members"].max == discordFollowers[ele].max
-              }
+              checked={ele == discord_members}
               onChange={(e) => {
-                dispatch({
-                  type: actionTypes.DISCORD,
-                  payload: discordFollowers[ele],
-                });
+                if (e.target.checked) {
+                  addDiscord(ele);
+                } else {
+                  removeDiscord(ele);
+                }
               }}
               type={"checkbox"}
             />
@@ -787,40 +562,36 @@ const DiscordMembers = ({ state, dispatch }) => {
   );
 };
 
-const NetworkChains = ({ state, dispatch, chainCount }) => {
+const NetworkChains = ({ chainList }) => {
+  let { addChain, removeChain, chains } = filterStore();
+
   return (
     <div className={styles.typesOfCommunities}>
       <p
         className={styles.reset}
         onClick={() => {
-          dispatch({
-            type: actionTypes.CHAIN,
-            payload: { label: "All", type: true },
-          });
+          removeChain("all");
         }}
       >
         Reset
       </p>
-      {Object.keys(chainMap).map((ele, i) => {
+      {chainList.map((ele, i) => {
         return (
           <span key={i + ele} className={styles.typesOption}>
             {/* <p>{ele}</p> */}
-            {chainCount[ele] || chainCount[ele] == 0 ? (
-              <p>
-                {ele} {ele != "All" && `(${chainCount[ele]})`}
-              </p>
-            ) : (
-              <p>
-                {ele} {<img src="/mini-loader.gif" />}
-              </p>
-            )}
+
+            <p>
+              {ele.chain} {`(${ele.count})`}
+            </p>
+
             <input
-              checked={state["Network Chains"].includes(ele)}
+              checked={chains.includes(ele.chain)}
               onChange={(e) => {
-                dispatch({
-                  type: actionTypes.CHAIN,
-                  payload: { label: ele, type: e.target.checked },
-                });
+                if (e.target.checked) {
+                  addChain(ele.chain);
+                } else {
+                  removeChain(ele.chain);
+                }
               }}
               type={"checkbox"}
             />
@@ -831,7 +602,11 @@ const NetworkChains = ({ state, dispatch, chainCount }) => {
   );
 };
 
-const RatingComp = ({ state, dispatch }) => {
+const RatingComp = ({ state }) => {
+  let { rating, addRating, removeRating } = filterStore();
+
+  console.log(rating);
+
   const StarComp = ({ count }) => {
     return (
       <span className={styles.starComp}>
@@ -843,13 +618,14 @@ const RatingComp = ({ state, dispatch }) => {
           }
         })}
         <input
-          checked={state["Ratings"].includes(count)}
+          checked={rating.includes(count)}
           type={"checkbox"}
           onChange={(e) => {
-            dispatch({
-              type: actionTypes.RATING,
-              payload: { label: count, type: e.target.checked },
-            });
+            if (e.target.checked) {
+              addRating(count);
+            } else {
+              removeRating(count);
+            }
           }}
         />
       </span>
@@ -865,59 +641,68 @@ const RatingComp = ({ state, dispatch }) => {
   );
 };
 
-const SliderComp = ({ label, min, max, state, dispatch }) => {
-  const [sliderValue, setsliderValue] = useState({ min, max });
-
-  useEffect(() => {
-    if (!document.getElementById("my-slider" + label)) {
-      return "";
-    }
-    const mySlider = new DoubleSlider(
-      document.getElementById("my-slider" + label)
-    );
-    mySlider.addEventListener("slider:input", () => {
-      const { min, max } = mySlider.value;
-      setsliderValue({ min, max });
-    });
-    mySlider.addEventListener("slider:change", () => {
-      const { min, max } = mySlider.value;
-      if (label == "Discord Members") {
-        dispatch({ type: actionTypes.DISCORD, payload: { min, max } });
-      }
-      if (label == "Twitter Followers") {
-        dispatch({ type: actionTypes.TWITTER, payload: { min, max } });
-      }
-    });
-  }, []);
-
-  return (
-    <span className={styles.sliderComp}>
-      <div
-        id={"my-slider" + label}
-        className={styles.sliderBar}
-        data-min={min}
-        data-max={max}
-        data-range={max}
-      ></div>
-      <span className={styles.values}>
-        <p>0</p>
-        <h1>
-          {sliderValue.min}
-          {`-`}
-          {sliderValue.max}
-        </h1>
-        <p>50000</p>
-      </span>
-    </span>
-  );
-};
-
-function inverse(obj) {
-  var retobj = {};
-  for (var key in obj) {
-    retobj[obj[key]] = key;
-  }
-  return retobj;
-}
-
 export default Discover;
+
+// const CATEGORY_LIST = [
+//   "DAO",
+//   "Media",
+//   "Investors",
+//   "Service",
+//   "Grant",
+//   "Social",
+//   "DAO tool",
+//   "Defi",
+//   "CeFi",
+//   "TradeFi",
+//   "BlockFi",
+//   "Lending",
+//   "Yield aggregator",
+//   "Stablecoin",
+//   "NFT",
+//   "Metaverse",
+//   "Art",
+//   "Music",
+//   "NFT marketplace",
+//   "Utilities",
+//   "Analytics",
+//   "Payment",
+//   "Oracle",
+//   "Games",
+//   "Infrastructure",
+//   "Wallet",
+//   "Indexer",
+//   "Storage",
+//   "Identity",
+//   "Exchange",
+//   "Community",
+//   "Guild",
+//   "Marketing tool",
+//   "Public Good",
+//   "Education",
+//   "Investment",
+//   "Tools",
+//   "Protocol",
+//   "Product",
+//   "Investors",
+//   "Collector",
+//   "DApps",
+//   "Node Providers",
+// ];
+
+// let chainMap = {
+//   All: "all",
+//   Avalanche: "avalanche",
+//   Arbitrum: "arbitrum-one",
+//   "Binance Smart Chain": "binance-smart-chain",
+//   Cardano: "cardano",
+//   Cosmos: "cosmos",
+//   Ethereum: "ethereum",
+//   Flow: "flow",
+//   Near: "near",
+//   Polygon: "polygon-pos",
+//   Solana: "solana",
+//   Sei: "sei",
+//   Syscoin: "syscoin",
+//   Telos: "telos",
+//   Tezos: "tezos",
+// };
