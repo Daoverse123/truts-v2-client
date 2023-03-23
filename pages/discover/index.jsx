@@ -581,7 +581,7 @@ const NetworkChains = ({ chainList }) => {
             {/* <p>{ele}</p> */}
 
             <p>
-              {ele.chain} {`(${ele.count})`}
+              {chainMapCheck(ele.chain)} {`(${ele.count})`}
             </p>
 
             <input
@@ -689,20 +689,37 @@ export default Discover;
 //   "Node Providers",
 // ];
 
-// let chainMap = {
-//   All: "all",
-//   Avalanche: "avalanche",
-//   Arbitrum: "arbitrum-one",
-//   "Binance Smart Chain": "binance-smart-chain",
-//   Cardano: "cardano",
-//   Cosmos: "cosmos",
-//   Ethereum: "ethereum",
-//   Flow: "flow",
-//   Near: "near",
-//   Polygon: "polygon-pos",
-//   Solana: "solana",
-//   Sei: "sei",
-//   Syscoin: "syscoin",
-//   Telos: "telos",
-//   Tezos: "tezos",
-// };
+let chainMap = {
+  all: "All",
+  avalanche: "Avalanche",
+  "arbitrum-one": "Arbitrum",
+  "binance-smart-chain": "Binance Smart Chain",
+  cardano: "Cardano",
+  cosmos: "Cosmos",
+  ethereum: "Ethereum",
+  flow: "Flow",
+  near: "Near",
+  "polygon-pos": "Polygon",
+  solana: "Solana",
+  sei: "Sei",
+  syscoin: "Syscoin",
+  telos: "Telos",
+  tezos: "Tezos",
+  "harmony-shard-0": "Harmony",
+  "optimistic-ethereum": "Optimism",
+  "metis-andromeda": "Metis",
+};
+
+const chainMapCheck = (chain) => {
+  try {
+    if (Object.keys(chainMap).includes(chain)) {
+      let name = chainMap[chain];
+      return name;
+    }
+    return capitalizeFirstLetter(chain);
+  } catch (error) {}
+  return capitalizeFirstLetter(chain);
+};
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
