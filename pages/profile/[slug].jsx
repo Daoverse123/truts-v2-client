@@ -700,10 +700,18 @@ const ReviewComp = ({ data, userData }) => {
   let image = data.listing.photo.logo.secure_url;
   let review = data.comment;
   let rating = data.rating;
+  let slug = data.listing.slug;
+  console.log(data.listing);
   return (
     <>
       <div className={styles.reviewComp}>
-        <div className={styles.userInfo}>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            openNewTab(`/community/${slug}`);
+          }}
+          className={styles.userInfo}
+        >
           <img
             className={styles.profilePic}
             src={image || "/profile.jpg"}
