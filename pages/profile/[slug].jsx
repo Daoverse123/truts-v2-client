@@ -449,9 +449,10 @@ function Profile({ slug }) {
               )}
               {"discord" in userData && (
                 <div
-                  key={"twitter"}
+                  key={"discord"}
                   className={styles.socialIcons}
                   onClick={() => {
+                    console.log(userData);
                     openNewTab(
                       `https://discordapp.com/users/${userData.discord.id}`
                     );
