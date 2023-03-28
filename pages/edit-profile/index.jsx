@@ -11,6 +11,14 @@ import Head from "next/head";
 import authorizeTwitterURI from "../../utils/twitter-url";
 import isValidUsername from "is-valid-username";
 import chainIconMap from "../../components/chainIconMap.json";
+import {
+  useMutation,
+  useQuery,
+  invalidateQueries,
+  refetchQueries,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 let Placeholder = "/profile-old.png";
 let twitter_auth_aur = authorizeTwitterURI();
 
@@ -788,6 +796,7 @@ const Socials = ({ initUserData }) => {
           </div>
         )}
       </div>
+      <ExtraSocials />
       {/* <button onClick={() => {
                 axios.get(`${P_API}/user/guilds`, {
                     headers: {
@@ -799,4 +808,197 @@ const Socials = ({ initUserData }) => {
   );
 };
 
+//["FACEBOOK", "GITHUB", "INSTAGRAM", "MEDIUM", "REDDIT", "DRIBBBLE"]
+
 export default Index;
+
+const ExtraSocials = () => {
+  let Socials = () => {
+    const [state, setstate] = useState({
+      FACEBOOK: "",
+      GITHUB: "",
+      INSTAGRAM: "",
+      MEDIUM: "",
+      REDDIT: "",
+      DRIBBBLE: "",
+    });
+
+    const [statePlaceHolder, setstatePlaceHolder] = useState({
+      FACEBOOK: "",
+      GITHUB: "",
+      INSTAGRAM: "",
+      MEDIUM: "",
+      REDDIT: "",
+      DRIBBBLE: "",
+    });
+
+    let queryClient = useQueryClient();
+
+    let socialUpdate = useMutation({
+      mutationKey: ["social-update"],
+      mutationFn: async (data) => {
+        let res = await axios.post(`${process.env.P_API}/user/socials`, data, {
+          headers: {
+            Authorization: window.localStorage.getItem("token"),
+          },
+        });
+        return res.data.data;
+      },
+      onSuccess: () => {
+        queryClient.refetchQueries({ queryKey: ["socials-init"] });
+      },
+    });
+
+    let socialRemove = useMutation({
+      mutationKey: ["social-remove"],
+      mutationFn: async (data) => {
+        let res = await axios.delete(`${process.env.P_API}/user/socials`, {
+          headers: {
+            Authorization: window.localStorage.getItem("token"),
+          },
+          data,
+        });
+        return res.data.data;
+      },
+      onSuccess: () => {
+        setstate({
+          FACEBOOK: "",
+          GITHUB: "",
+          INSTAGRAM: "",
+          MEDIUM: "",
+          REDDIT: "",
+          DRIBBBLE: "",
+        });
+        setstatePlaceHolder({
+          FACEBOOK: "",
+          GITHUB: "",
+          INSTAGRAM: "",
+          MEDIUM: "",
+          REDDIT: "",
+          DRIBBBLE: "",
+        });
+        queryClient.refetchQueries({ queryKey: ["socials-init"] });
+      },
+    });
+
+    let socials = useQuery({
+      queryKey: ["socials-init"],
+      queryFn: async () => {
+        let res = await axios.get(`${P_API}/user`, {
+          headers: {
+            Authorization: window.localStorage.getItem("token"),
+          },
+        });
+        return res.data.data;
+      },
+    });
+
+    if (!socials.isSuccess) {
+      return <h1>loading</h1>;
+    }
+
+    let init_socials = {};
+    try {
+      socials.data.user.socials.forEach((element) => {
+        init_socials[`${element.platform}`] = element.link;
+      });
+    } catch (error) {
+      init_socials = {};
+    }
+
+    const getEditOptions = (ele) => {
+      if (init_socials[ele]) {
+        return (
+          <span>
+            <button
+              type="button"
+              onClick={() => {
+                queryClient.setQueryData(["socials-init"], (old_data) => {
+                  let socials = old_data.user.socials;
+                  setstatePlaceHolder((st) => {
+                    st[ele] = init_socials[ele];
+                    return { ...st };
+                  });
+                  socials = socials.filter((elm) => elm.platform != ele);
+                  old_data.user.socials = [...socials];
+                  return { ...old_data, remove: ele };
+                });
+              }}
+              className={styles.socialNavBtn}
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              style={{ color: "red" }}
+              className={styles.socialNavBtn}
+              onClick={() => {
+                socialRemove.mutate({
+                  platform: ele,
+                });
+              }}
+            >
+              Remove
+            </button>
+          </span>
+        );
+      }
+      if (state[ele]) {
+        return (
+          <button type={"submit"} className={styles.socialNavBtn}>
+            Save
+          </button>
+        );
+      }
+    };
+
+    return [
+      "FACEBOOK",
+      "GITHUB",
+      "INSTAGRAM",
+      "MEDIUM",
+      "REDDIT",
+      "DRIBBBLE",
+    ].map((ele) => {
+      return (
+        <form
+          key={ele}
+          onSubmit={(e) => {
+            e.preventDefault();
+            socialUpdate.mutate({
+              platform: ele,
+              link: state[ele],
+            });
+          }}
+        >
+          <div className={styles.section}>
+            <div className={styles.wTitle}>
+              <h1 style={{ textTransform: "capitalize" }}>
+                {ele.toLowerCase()}
+              </h1>
+              {getEditOptions(ele)}
+            </div>
+            {Object.keys(init_socials).includes(ele) ? (
+              <p className={styles.displayEmail}>{init_socials[ele]}</p>
+            ) : (
+              <input
+                value={state[ele]}
+                placeholder={statePlaceHolder[ele] || "https://......"}
+                onChange={(e) => {
+                  setstate((st) => {
+                    st[ele] = e.target.value;
+                    return { ...st };
+                  });
+                }}
+                type={"url"}
+                className={styles.input}
+              />
+            )}
+          </div>
+        </form>
+      );
+    });
+  };
+
+  return <Socials />;
+};

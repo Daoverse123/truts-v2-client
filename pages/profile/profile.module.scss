@@ -45,12 +45,14 @@ $PHONE_N: 450;
     justify-content: center;
     position: relative;
     width: 1080px;
-    height: 311px;
+    min-height: 311px;
+    height: max-content;
     margin-top: 144px;
 
     @media (max-width: $LAPTOP) and (min-width: $PHONE) {
         width: laptop_to_tablet_fluid(1030);
-        height: laptop_to_tablet_fluid(311);
+        min-height: laptop_to_tablet_fluid(311);
+        height: max-content;
         margin-top: laptop_to_tablet_fluid(144);
     }
 
@@ -123,7 +125,7 @@ $PHONE_N: 450;
 
     .tabs {
         display: flex;
-
+        align-items: center;
         column-gap: 16px;
         padding-bottom: 10px;
         padding-left: 5px;
@@ -146,6 +148,15 @@ $PHONE_N: 450;
                 font-size: laptop_to_tablet_fluid(12);
                 border-radius: laptop_to_tablet_fluid(8);
                 padding: laptop_to_tablet_fluid(7.5);
+            }
+        }
+
+        .socialIcons {
+            img {
+                width: 20px;
+                height: 20px;
+                object-fit: contain;
+                cursor: pointer;
             }
         }
     }

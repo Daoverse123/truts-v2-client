@@ -302,6 +302,8 @@ function Profile({ slug }) {
   const [token, settoken] = useState(null);
   const [privateProfile, setprivateProfile] = useState(false);
 
+  console.log(userData);
+
   useEffect(() => {
     if (localStorage.getItem("token") && slug == "private") {
       fetchUserData(setuserData);
@@ -427,6 +429,59 @@ function Profile({ slug }) {
                 Write a amazing bio introducing yourself.....
               </p>
             )}
+            <div className={styles.tabs}>
+              {"twitter" in userData && (
+                <div
+                  key={"twitter"}
+                  className={styles.socialIcons}
+                  onClick={() => {
+                    openNewTab(
+                      `https://twitter.com/${userData.twitter.username}`
+                    );
+                  }}
+                >
+                  <img src={`/socials/TWITTER.png`} alt="" />
+                </div>
+              )}
+              {"discord" in userData && (
+                <div
+                  key={"twitter"}
+                  className={styles.socialIcons}
+                  onClick={() => {
+                    openNewTab(
+                      `https://discordapp.com/users/${userData.discord.id}`
+                    );
+                  }}
+                >
+                  <img src={`/socials/Discord.png`} alt="" />
+                </div>
+              )}
+              {"socials" in userData && userData.socials.length > 0 ? (
+                userData.socials.map((tgs) => {
+                  return (
+                    <div
+                      key={"id" + tgs?.platform}
+                      className={styles.socialIcons}
+                      onClick={() => {
+                        openNewTab(tgs?.link);
+                      }}
+                    >
+                      <img src={`/socials/${tgs?.platform}.png`} alt="" />
+                    </div>
+                  );
+                })
+              ) : (
+                <div
+                  onClick={() => {
+                    location.href = "/edit-profile";
+                  }}
+                  style={{ opacity: 0.6, cursor: "pointer" }}
+                  className={styles.tab}
+                >
+                  {"Add Tags"}
+                </div>
+              )}
+            </div>
             <div className={styles.tabs}>
               {"tags" in userData && userData.tags.length > 0 ? (
                 userData.tags.map((tgs) => {

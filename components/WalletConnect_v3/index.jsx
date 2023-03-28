@@ -15,7 +15,7 @@ import wallet_connect from "../../assets/icons/wallet-connect.svg";
 import coinbase_wallet from "../../assets/icons/coinbase-icon.png";
 import close_icon from "../../assets/icons/close_icon.svg";
 import other_wallet from "../../assets/icons/other-wallet.png";
-import phantom_icon from "../../assets/icons/phantom.avif";
+import phantom_icon from "../../assets/icons/phantom.png";
 import near_icon from "../../assets/icons/near_chain_icon.png";
 import axios from "axios";
 
