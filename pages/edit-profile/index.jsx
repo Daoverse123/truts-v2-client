@@ -979,7 +979,10 @@ const ExtraSocials = () => {
               {getEditOptions(ele)}
             </div>
             {Object.keys(init_socials).includes(ele) ? (
-              <p className={styles.displayEmail}>{init_socials[ele]}</p>
+              <span className={styles.value}>
+                <img src={`/socials/${ele}.png`} alt="" />
+                <p className={styles.displayEmail}>{init_socials[ele]}</p>
+              </span>
             ) : (
               <input
                 value={state[ele]}

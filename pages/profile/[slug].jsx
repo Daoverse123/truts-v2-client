@@ -416,12 +416,16 @@ function Profile({ slug }) {
                 </div>
               </span>
             )}
-            <h1 className={styles.name}>
-              {userData.name ||
-                ("wallets" in userData
-                  ? minimizeWallet(userData.wallets.address)
-                  : "Username")}
-            </h1>
+            <span className={styles.username}>
+              <h1 className={styles.name}>
+                {userData.name ||
+                  ("wallets" in userData
+                    ? minimizeWallet(userData.wallets.address)
+                    : "Username")}
+              </h1>
+              <span className={styles.divider}>|</span>
+              <h3>@{userData.username}</h3>
+            </span>
             {userData.bio ? (
               <p className={styles.bio}>{userData.bio}</p>
             ) : (
@@ -453,10 +457,11 @@ function Profile({ slug }) {
                     );
                   }}
                 >
-                  <img src={`/socials/Discord.png`} alt="" />
+                  <img src={`/socials/DISCORD.png`} alt="" />
                 </div>
               )}
-              {"socials" in userData && userData.socials.length > 0 ? (
+              {"socials" in userData &&
+                userData.socials.length > 0 &&
                 userData.socials.map((tgs) => {
                   return (
                     <div
@@ -469,18 +474,7 @@ function Profile({ slug }) {
                       <img src={`/socials/${tgs?.platform}.png`} alt="" />
                     </div>
                   );
-                })
-              ) : (
-                <div
-                  onClick={() => {
-                    location.href = "/edit-profile";
-                  }}
-                  style={{ opacity: 0.6, cursor: "pointer" }}
-                  className={styles.tab}
-                >
-                  {"Add Tags"}
-                </div>
-              )}
+                })}
             </div>
             <div className={styles.tabs}>
               {"tags" in userData && userData.tags.length > 0 ? (
