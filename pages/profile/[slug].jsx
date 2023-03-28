@@ -701,7 +701,7 @@ const ReviewComp = ({ data, userData }) => {
   let review = data.comment;
   let rating = data.rating;
   let slug = data.listing.slug;
-  console.log(data.listing);
+
   return (
     <>
       <div className={styles.reviewComp}>
