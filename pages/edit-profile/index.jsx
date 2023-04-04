@@ -731,6 +731,7 @@ const Wallets = ({
                 let wallet = walletsObjs[ele];
                 return (
                   <div
+                    key={"ele" + ele}
                     className={styles.walletFrame}
                     style={{ cursor: "pointer" }}
                   >
@@ -769,6 +770,7 @@ const Wallets = ({
 
               return (
                 <div
+                  key={"elx" + ele}
                   className={styles.walletFrame}
                   style={{ cursor: "pointer" }}
                 >
