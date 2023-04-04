@@ -51,7 +51,7 @@ let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
-  return (<QueryClientProvider client={queryClient}>
+  return (<QueryClientProvider client={queryClient} contextSharing={true}>
     <WagmiConfig client={client}>
       <ToastContainer
         position="top-right"
