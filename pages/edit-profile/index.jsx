@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import Nav from "../../components/Nav";
 import Button from "../../components/Button";
 import axios from "axios";
-import WalletConnect from "../../components/WalletConnect_v3";
+import WalletConnect from "../../components/WalletConnect_editprofile";
+import WalletConnect_change from "../../components/WalletConnect_editprofile_change";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Head from "next/head";
@@ -93,9 +94,25 @@ function Index() {
   console.log(updatedUserData);
 
   const [showWallet, setshowWallet] = useState(false);
+  const [showWalletChange, setshowWalletChange] = useState(false);
+  const [particularChain, setparticularChain] = useState("");
+  const [particularChainChange, setparticularChainChange] = useState("");
+
   const [LoaderVisible, setLoaderVisible] = useState(false);
 
   const [updateCounter, setupdateCounter] = useState(0);
+
+  useEffect(() => {
+    if (particularChain) {
+      setshowWallet(true);
+    }
+  }, [particularChain]);
+
+  useEffect(() => {
+    if (particularChainChange) {
+      setshowWalletChange(true);
+    }
+  }, [particularChainChange]);
 
   useEffect(() => {
     if (!showWallet) {
@@ -216,6 +233,15 @@ function Index() {
         isLogin={true}
         walletConnectVisible={showWallet}
         setwalletConnectVisible={setshowWallet}
+        particularChain={particularChain}
+        setupdateCounter={setupdateCounter}
+      />
+      <WalletConnect_change
+        isLogin={true}
+        walletConnectVisible={showWalletChange}
+        setwalletConnectVisible={setshowWalletChange}
+        particularChain={particularChainChange}
+        setupdateCounter={setupdateCounter}
       />
       <div className={styles.editProfile}>
         <div className={styles.progressHeader}>
@@ -318,7 +344,15 @@ function Index() {
           )}
           {selectedPage == options[2] && (
             <Wallets
-              {...{ showWallet, setshowWallet, initUserData, setselectedPage }}
+              {...{
+                setparticularChain,
+                setparticularChainChange,
+                showWallet,
+                setshowWallet,
+                initUserData,
+                setselectedPage,
+                setupdateCounter,
+              }}
             />
           )}
           {selectedPage == options[1] && <Socials {...{ initUserData }} />}
@@ -659,10 +693,21 @@ const Wallets = ({
   showWallet,
   setshowWallet,
   setselectedPage,
+  setparticularChain,
+  setparticularChainChange,
+  setupdateCounter,
 }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  let walletsObjs = {};
+
+  initUserData.wallets.forEach((wt) => {
+    walletsObjs[`${wt.chain}`] = wt;
+  });
+
+  console.log(walletsObjs);
 
   return (
     <div className={styles.formContent}>
@@ -675,26 +720,79 @@ const Wallets = ({
       </div>
       <div className={styles.walletSection}>
         <div className={styles.wTitle}>
-          <h1>Your Wallet</h1>
+          <h1>List of Wallets</h1>
           {/* <h2>+ Add Wallet</h2> */}
           <XpCoinComp value={"wallets" in initUserData} />
         </div>
         {"wallets" in initUserData ? (
           <>
-            <div className={styles.wallet}>
-              <img
-                className={styles.profileName}
-                src={chainIconMap[getChain(initUserData?.wallets?.chain)].icon}
-                alt=""
-              />
-              <p>{miniMizewallet(initUserData.wallets.address)}</p>
-              <img
-                style={{ opacity: 0 }}
-                className={styles.option}
-                src="./threedot.png"
-                alt=""
-              />
-            </div>
+            {["EVM", "SOL", "NEAR", "FLOW"].map((ele) => {
+              if (walletsObjs[ele]) {
+                let wallet = walletsObjs[ele];
+                return (
+                  <div
+                    className={styles.walletFrame}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className={styles.wallet}>
+                      <img
+                        className={styles.profileName}
+                        src={chainIconMap[getChain(ele)].icon}
+                        alt=""
+                      />
+                      <span className={styles.walletName}>
+                        <p>{miniMizewallet(wallet.address)}</p>
+                        {wallet.isPrimary && (
+                          <img
+                            className={styles.option}
+                            src="./crown.png"
+                            alt=""
+                          />
+                        )}
+                      </span>
+                      <WalletSetting
+                        wallet={wallet}
+                        setparticularChain={setparticularChain}
+                        setparticularChainChange={setparticularChainChange}
+                        setupdateCounter={setupdateCounter}
+                      >
+                        <img
+                          className={styles.option}
+                          src="./threedot.png"
+                          alt=""
+                        />
+                      </WalletSetting>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  className={styles.walletFrame}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className={styles.wallet}>
+                    <img
+                      className={styles.profileName}
+                      src={chainIconMap[getChain(ele)].icon}
+                      alt=""
+                    />
+                    <p>{ele}</p>
+
+                    <p
+                      onClick={() => {
+                        setparticularChain(ele);
+                      }}
+                      className={styles.addWallet}
+                    >
+                      + Add Wallet
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
             <button
               onClick={() => {
                 setselectedPage("Socials");
@@ -727,6 +825,104 @@ const Wallets = ({
                 </div> */}
         {/* <button className={styles.saveBtn}>Save</button> */}
       </div>
+    </div>
+  );
+};
+
+let WalletSetting = ({
+  children,
+  wallet,
+  setparticularChain,
+  setparticularChainChange,
+  setupdateCounter,
+}) => {
+  return (
+    <div className={styles.walletSetting}>
+      <span className={styles.menu}>
+        {!wallet.isPrimary && (
+          <span
+            className={styles.option}
+            onClick={async () => {
+              let options = {
+                headers: {
+                  Authorization: localStorage.getItem("token"),
+                },
+              };
+              let res = await axios.patch(
+                `${process.env.P_API}/user/wallet/primary`,
+                {
+                  address: wallet.address,
+                },
+                options
+              );
+              if (res.status == 200) {
+                console.log(res);
+                toast.success("Primary Wallet Saved", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+                setupdateCounter((ele) => ele + 1);
+              } else {
+                alert("Req failed");
+              }
+            }}
+          >
+            <img src="/crown.png" alt="" />
+            <p>Set as Primary</p>
+          </span>
+        )}
+        <span
+          className={styles.option}
+          onClick={() => {
+            setparticularChainChange(wallet.chain);
+          }}
+        >
+          <img src="/change.png" alt="" />
+          <p>Change Wallet</p>
+        </span>
+        {!wallet.isPrimary && (
+          <span
+            className={styles.option}
+            onClick={async () => {
+              let options = {
+                headers: {
+                  Authorization: localStorage.getItem("token"),
+                },
+              };
+              let res = await axios.delete(
+                `${process.env.P_API}/user/wallet/${wallet.address}`,
+                options
+              );
+              if (res.status == 200) {
+                console.log(res);
+                toast.success("Changes saved successfully", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+                setupdateCounter((ele) => ele + 1);
+              } else {
+                alert("Req failed");
+              }
+            }}
+          >
+            <img src="/remove.png" alt="" />
+            <p>Remove Wallet</p>
+          </span>
+        )}
+      </span>
+      {children}
     </div>
   );
 };

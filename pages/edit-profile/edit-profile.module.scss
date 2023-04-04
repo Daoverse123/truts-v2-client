@@ -457,6 +457,8 @@ $mobile: 650px;
     width: 100%;
     align-items: center;
     margin-bottom: 19px;
+
+    //outline: 1px solid rebeccapurple;
     p {
         font-weight: 600;
         font-size: 14px;
@@ -470,6 +472,27 @@ $mobile: 650px;
     .option {
         width: 22px;
         height: 22px;
+    }
+
+    .addWallet {
+        text-align: right;
+        font-weight: 400;
+        color: #1248d9;
+        margin-left: auto;
+    }
+}
+
+.walletName {
+    display: flex;
+    width: min-content;
+    margin-right: auto;
+    p {
+        width: min-content;
+    }
+    img {
+        margin-left: 10px;
+        width: 15.5px;
+        object-fit: contain;
     }
 }
 
@@ -609,5 +632,57 @@ $mobile: 650px;
     }
     p {
         margin: 0;
+    }
+}
+
+.walletSetting {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+
+    .menu {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        display: none;
+        width: 110px;
+        height: max-content;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0px 6px 7px -2px rgba(0, 0, 0, 0.219);
+        border-radius: 4px;
+        top: 70%;
+        right: 50%;
+        justify-content: space-evenly;
+        padding: 5px 0;
+
+        .option {
+            display: flex;
+            width: max-content;
+            column-gap: 5px;
+            padding: 5px 5px;
+            align-items: center;
+            width: 100%;
+
+            p {
+                width: max-content;
+                font-weight: 400;
+                font-size: 10px;
+            }
+
+            img {
+                width: 14px;
+                object-fit: contain;
+            }
+
+            &:hover {
+                background-color: rgba(201, 201, 201, 0.238);
+            }
+        }
+    }
+
+    &:hover {
+        .menu {
+            display: flex;
+        }
     }
 }

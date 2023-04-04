@@ -82,7 +82,7 @@ const NavSec = ({ elements, selected, setSelected, privateProfile }) => {
 const P_API = process.env.P_API;
 
 const fetchWalletAssets = async (data, setter) => {
-  let key = data.wallets.address;
+  let key = data.address;
   let [tokenData, nftData] = await Promise.all([
     axios.get(`/api/get-chain-assets?key=${key}&type=token`),
     axios.get(`/api/get-chain-assets?key=${key}&type=nft`),
@@ -107,10 +107,16 @@ const fetchUserData = async (setter) => {
     let user_res = await axios.get(`${P_API}/user`, option);
     let main_user_data = user_res.data.data.user;
     if (user_res.status == 200) {
+      main_user_data.primary = main_user_data.wallets.filter((ele) => {
+        if (ele.isPrimary) {
+          return true;
+        }
+        return false;
+      })[0];
       setter(main_user_data);
       main_user_data.isCompleted &&
         "wallets" in main_user_data &&
-        fetchWalletAssets(main_user_data, setter);
+        fetchWalletAssets(main_user_data.primary, setter);
     } else {
       alert("Auth error");
       console.log(error);
@@ -420,7 +426,7 @@ function Profile({ slug }) {
               <h1 className={styles.name}>
                 {userData.name ||
                   ("wallets" in userData
-                    ? minimizeWallet(userData.wallets.address)
+                    ? minimizeWallet(userData.primary.address)
                     : "Username")}
               </h1>
               <span className={styles.divider}>|</span>
@@ -500,26 +506,35 @@ function Profile({ slug }) {
             </div>
             <div className={styles.walletTabs}>
               {"wallets" in userData ? (
-                <TooltipCustom init={"Copy Address"} post={"Copied !"}>
-                  <div
-                    onClick={(e) => {
-                      copyToClipBoard(userData.wallets.address);
-                    }}
-                    style={{
-                      background:
-                        chainIconMap[getChain(userData.wallets.chain)].color,
-                      borderColor:
-                        chainIconMap[getChain(userData.wallets.chain)].color,
-                    }}
-                    className={styles.tab}
-                  >
-                    <img
-                      src={chainIconMap[getChain(userData.wallets.chain)].icon}
-                      alt=""
-                    />
-                    {minimizeWallet(userData.wallets.address)}
-                  </div>
-                </TooltipCustom>
+                <>
+                  {userData.wallets.map((ele) => {
+                    return (
+                      <TooltipCustom
+                        key={ele.address}
+                        init={"Copy Address"}
+                        post={"Copied !"}
+                      >
+                        <div
+                          onClick={(e) => {
+                            copyToClipBoard(ele.address);
+                          }}
+                          style={{
+                            background: chainIconMap[getChain(ele.chain)].color,
+                            borderColor:
+                              chainIconMap[getChain(ele.chain)].color,
+                          }}
+                          className={styles.tab}
+                        >
+                          <img
+                            src={chainIconMap[getChain(ele.chain)].icon}
+                            alt=""
+                          />
+                          {minimizeWallet(ele.address)}
+                        </div>
+                      </TooltipCustom>
+                    );
+                  })}
+                </>
               ) : (
                 <div
                   onClick={() => {

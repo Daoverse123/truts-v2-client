@@ -38,8 +38,44 @@ fcl.config({
   // "fcl.accountProof.resolver": AccountProofDataResolver
 });
 
+let chainENUM = (ele) => {
+  if ("Ethereum" == ele) {
+    return "EVM";
+  }
+  if ("Solana" == ele) {
+    return "SOL";
+  }
+  if ("Flow" == ele) {
+    return "FLOW";
+  }
+  if ("Near" == ele) {
+    return "NEAR";
+  }
+};
+
+let revChainENUM = (ele) => {
+  if ("EVM" == ele) {
+    return "Ethereum";
+  }
+  if ("SOL" == ele) {
+    return "Solana";
+  }
+  if ("FLOW" == ele) {
+    return "Flow";
+  }
+  if ("NEAR" == ele) {
+    return "Near";
+  }
+};
+
 let P_API = process.env.P_API;
-const walletAuth = async (login, walletState, signMessage, saveWallet) => {
+const walletAuth = async (
+  login,
+  walletState,
+  signMessage,
+  saveWallet,
+  setupdateCounter
+) => {
   //step 1 fetch nonce
   console.log(walletState);
   let options = {};
@@ -51,10 +87,10 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
       },
     };
   }
-  let res_nonce = await axios.get(
-    `${P_API}/login/wallet?address=${walletState.address}&chain=${chainENUM(
-      walletState.chain
-    )}`,
+
+  let res_nonce = await axios.patch(
+    `${P_API}/user/wallet/change`,
+    { address: walletState.address, chain: chainENUM(walletState.chain) },
     options
   );
   if (res_nonce.status == 200) {
@@ -66,14 +102,18 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
 
     signature = await signMessage(message, chain);
 
-    let auth_res = await axios.post(`${P_API}/login/wallet/verify`, {
-      public_key,
-      signature,
-      chain: chainENUM(chain),
-    });
-    localStorage.setItem("token", `Bearer ${auth_res.data.data.token}`);
+    let auth_res = await axios.post(
+      `${P_API}/user/wallet/verify-change`,
+      {
+        public_key,
+        signature,
+        chain: chainENUM(chain),
+      },
+      options
+    );
+    //localStorage.setItem("token", `Bearer ${auth_res.data.data.token}`);
     if (login) {
-      toast.success("Wallet connected successfully", {
+      toast.success("Wallet Updated successfully", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -87,6 +127,7 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
     } else {
       window.location = "/profile/private";
     }
+    setupdateCounter((ele) => ele + 1);
   } else {
     return alert("Auth error");
   }
@@ -133,6 +174,8 @@ export default function WalletConnect({
   isLogin,
   walletConnectVisible,
   setwalletConnectVisible,
+  particularChain,
+  setupdateCounter,
 }) {
   const [walletState, setwalletState] = useState(null);
   const [selectedChain, setselectedChain] = useState("Ethereum");
@@ -146,6 +189,12 @@ export default function WalletConnect({
       setwalletState(JSON.parse(wallet_state));
     }
   }, []);
+
+  useEffect(() => {
+    if (particularChain) {
+      setselectedChain(revChainENUM(particularChain));
+    }
+  }, [particularChain]);
 
   useEffect(() => {
     let query = window.location.search;
@@ -175,9 +224,15 @@ export default function WalletConnect({
 
   const closePopUp = async () => {
     let wallet = JSON.parse(localStorage.getItem("wallet_state"));
-    walletAuth(isLogin, wallet, signMessage, () => {
-      setwalletConnectVisible(false);
-    });
+    walletAuth(
+      isLogin,
+      wallet,
+      signMessage,
+      () => {
+        setwalletConnectVisible(false);
+      },
+      setupdateCounter
+    );
   };
 
   const isSelectedChain = (chain) => {
@@ -187,6 +242,12 @@ export default function WalletConnect({
       return null;
     }
   };
+
+  let ChainsList = Chains;
+
+  if (particularChain) {
+    ChainsList = [revChainENUM(particularChain)];
+  }
 
   if (!walletConnectVisible) return <></>;
   return (
@@ -201,7 +262,7 @@ export default function WalletConnect({
           alt=""
         />
         <div className={styles.chainBar}>
-          {Chains.map((ele) => {
+          {ChainsList.map((ele) => {
             return (
               <div
                 onClick={() => {
@@ -537,16 +598,4 @@ const chainIconMap = {
   Solana: sol_icon.src,
   Near: near_icon.src,
   Flow: "https://assets.coingecko.com/coins/images/13446/small/5f6294c0c7a8cda55cb1c936_Flow_Wordmark.png?1631696776",
-};
-
-let chainENUM = (ele) => {
-  if ("Ethereum" == ele) {
-    return "EVM";
-  }
-  if ("Solana" == ele) {
-    return "SOL";
-  }
-  if ("Flow" == ele) {
-    return "FLOW";
-  }
 };
