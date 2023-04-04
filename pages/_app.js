@@ -51,23 +51,24 @@ let GOOGLE_ANALYTICS_ID = 'G-DGWXPLZZMM'
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
-  return <WagmiConfig client={client}>
-    <ToastContainer
-      position="top-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={true}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
-    {/* Same as */}
-    <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
-    <Script id='script' strategy="lazyOnload">
-      {`
+  return (<QueryClientProvider client={queryClient}>
+    <WagmiConfig client={client}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <Script strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`} />
+      <Script id='script' strategy="lazyOnload">
+        {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
@@ -75,14 +76,15 @@ function MyApp({ Component, pageProps }) {
         page_path: window.location.pathname,
         });
     `}
-    </Script>
-    <Script src="https://accounts.google.com/gsi/client" strategy={'beforeInteractive'}></Script>
-    <NextNProgress color="#2e68f5" />
-    <QueryClientProvider client={queryClient}>
+      </Script>
+      <Script src="https://accounts.google.com/gsi/client" strategy={'beforeInteractive'}></Script>
+      <NextNProgress color="#2e68f5" />
+
       <Component {...pageProps} />
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-    </QueryClientProvider>
-  </WagmiConfig>
+
+    </WagmiConfig>
+  </QueryClientProvider>)
 }
 
 export default MyApp
