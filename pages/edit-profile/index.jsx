@@ -18,7 +18,7 @@ import {
   invalidateQueries,
   refetchQueries,
   useQueryClient,
-} from "@tanstack/react-query";
+} from "react-query";
 
 let Placeholder = "/profile-old.png";
 let twitter_auth_aur = authorizeTwitterURI();
