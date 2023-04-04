@@ -1047,7 +1047,7 @@ const Referral = ({ userData }) => {
 
   useEffect(() => {
     try {
-      setlink(`${location.origin}/?ref=${userData.wallets.address}`);
+      setlink(`${location.origin}/?ref=${referral?.code}`);
     } catch (error) {}
   }, []);
 
