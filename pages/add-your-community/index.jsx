@@ -67,6 +67,7 @@ const CHAIN_LIST_MAP = {
   Telos: "telos",
   Bitcoin: "bitcoin",
   OKC: "okc",
+  Mantle: "mantle",
 };
 let categoriesWithId = CATEGORY_LIST.map((name, id) => {
   return { id, name };
