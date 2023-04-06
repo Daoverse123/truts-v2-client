@@ -4,6 +4,7 @@ import Nav from "../../components/Nav";
 import Mission from "../../components/Mission";
 import axios from "axios";
 import Head from "next/head";
+import { useQuery } from "react-query";
 
 const SortComp = ({ state, dispatch }) => {
   return (
@@ -28,6 +29,26 @@ const SortComp = ({ state, dispatch }) => {
 let P_API = process.env.P_API;
 
 const Missions = ({ data }) => {
+  let completedMissions = useQuery({
+    queryKey: ["completed-missions"],
+    queryFn: async () => {
+      let option = {
+        headers: {
+          Authorization: window.localStorage.getItem("token"),
+        },
+      };
+      let res = await axios.get(`${P_API}/user/completed-mission`, option);
+
+      return res.data.data.missions;
+    },
+  });
+
+  const rearrangeMissions = (list) => {
+    let completed = list.filter((ele) => ele.completed);
+    let notCompleted = list.filter((ele) => !ele.completed);
+    return [...notCompleted, ...completed];
+  };
+
   return (
     <>
       <Head>
@@ -65,8 +86,25 @@ const Missions = ({ data }) => {
         </div>
         <h1 className={styles.titleMain}>Missions</h1>
         <div className={styles.mainContent}>
-          {data.missions.map((ele, idx) => {
-            return <Mission data={ele} key={idx + "m"} />;
+          {rearrangeMissions(
+            data.missions.map((ft) => {
+              if (completedMissions.isSuccess) {
+                let elm = completedMissions.data.find((ms) => {
+                  return ms._id == ft._id;
+                });
+
+                if (elm) {
+                  ft.completed = true;
+                  return ft;
+                }
+              }
+
+              return ft;
+            })
+          ).map((ele, idx) => {
+            return (
+              <Mission isCompleted={ele.completed} data={ele} key={idx + "m"} />
+            );
           })}
         </div>
       </div>
