@@ -703,7 +703,7 @@ const Wallets = ({
 
   let walletsObjs = {};
 
-  initUserData.wallets.forEach((wt) => {
+  initUserData.wallets?.forEach((wt) => {
     walletsObjs[`${wt.chain}`] = wt;
   });
 
