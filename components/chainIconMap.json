@@ -175,5 +175,10 @@
         "ticker": "TLOS",
         "icon": "https://assets.coingecko.com/coins/images/7588/small/TLOS_200.png?1629277084",
         "color": "#CF9FFF"
+    },
+    "mantle": {
+        "ticker": "MANTLE",
+        "icon": "https://pbs.twimg.com/profile_images/1597775748580134914/bLhE1aY1_400x400.jpg",
+        "color": "#CF9FFF"
     }
 }
