@@ -107,12 +107,13 @@ const fetchUserData = async (setter) => {
     let user_res = await axios.get(`${P_API}/user`, option);
     let main_user_data = user_res.data.data.user;
     if (user_res.status == 200) {
-      main_user_data.primary = main_user_data.wallets.filter((ele) => {
-        if (ele.isPrimary) {
-          return true;
-        }
-        return false;
-      })[0];
+      "wallets" in main_user_data &&
+        (main_user_data.primary = main_user_data.wallets.filter((ele) => {
+          if (ele.isPrimary) {
+            return true;
+          }
+          return false;
+        })[0]);
       setter(main_user_data);
       main_user_data.isCompleted &&
         "wallets" in main_user_data &&
