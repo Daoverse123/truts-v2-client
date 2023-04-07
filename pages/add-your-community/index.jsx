@@ -49,6 +49,7 @@ const CATEGORY_LIST = [
   "Marketing Tool",
   "Public Good",
   "Education",
+  "Chain",
 ];
 
 const CHAIN_LIST_MAP = {
