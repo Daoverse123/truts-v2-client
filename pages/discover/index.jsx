@@ -142,7 +142,7 @@ const filterStore = create((set) => ({
   },
 }));
 
-function Discover({ chainList, categoriesList }) {
+function Discover({ chainList, categoriesList, selected_chain }) {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
 
   const [filtersVisible, setfiltersVisible] = useState(false);
@@ -166,7 +166,14 @@ function Discover({ chainList, categoriesList }) {
     rating,
     pageMultiplier,
     loadMore,
+    addChain,
   } = filterStore();
+
+  useEffect(() => {
+    if (selected_chain) {
+      addChain(selected_chain);
+    }
+  }, []);
 
   let queryRes = useQuery({
     queryKey: [
@@ -362,10 +369,17 @@ export async function getServerSideProps(ctx) {
     axios.get(`${process.env.P_API}/listings/chains`),
   ]);
 
+  let selected_chain = undefined;
+
+  if (ctx?.query?.chain) {
+    selected_chain = ctx?.query?.chain;
+  }
+
   return {
     props: {
       categoriesList: res[0].data.data.result,
       chainList: res[1].data.data.result,
+      selected_chain,
     },
   };
 }

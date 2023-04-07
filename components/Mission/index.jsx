@@ -64,7 +64,7 @@ export default function Component({ min, data, isCompleted }) {
           <p>3 days left</p>
         </div>
       )}
-      <div className={styles.profilesCompleted}>
+      <div key={data.name} className={styles.profilesCompleted}>
         {completed &&
           completed.map((ele, idx) => {
             if (idx > 5) {
@@ -73,7 +73,7 @@ export default function Component({ min, data, isCompleted }) {
             return (
               <img
                 style={{ left: `${idx * -6}px` }}
-                key={idx}
+                key={idx + data.name}
                 src={ele.user.photo.secure_url}
                 alt=""
               />
