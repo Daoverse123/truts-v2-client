@@ -40,7 +40,7 @@ const checkMode = (mode, redirect) => {
   }
 
   if (mode == "DISCORD_ACCOUNT") {
-    location = process.env.DISCORD_OAUTH_URL;
+    location.href = process.env.DISCORD_OAUTH_URL;
   }
 
   if (mode == "EVM_WALLET") {
