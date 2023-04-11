@@ -522,3 +522,27 @@ $mobile: 800px;
         opacity: 1;
     }
 }
+
+.missingDependency {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    position: relative;
+
+    @media (max-width: 800px) {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    button {
+        min-width: 203px;
+        margin-left: auto;
+    }
+    p {
+        width: 203px;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 12px !important;
+        color: #ff3236;
+    }
+}

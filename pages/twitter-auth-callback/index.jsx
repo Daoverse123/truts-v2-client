@@ -16,6 +16,16 @@ const sendCode = async (code) => {
     if (res.status == 200) {
       console.log(res.data.data);
       // window.location = localStorage.getItem('redirect_pre_discord');
+
+      let redirect = localStorage.getItem("d-redirect");
+      if (redirect) {
+        redirect = decodeURIComponent(redirect)
+          .replaceAll(`"`, "")
+          .replace("/", "");
+        localStorage.removeItem("d-redirect");
+        return (location.href = redirect);
+      }
+
       window.location = "/edit-profile?page=social#twitter-success";
     } else {
       alert("auth failed Please try again");
@@ -39,7 +49,6 @@ function Callback({ query }) {
 //SSR DATA HOME PAGE
 export async function getServerSideProps(ctx) {
   let query = ctx.query;
-  axios;
 
   return {
     props: {

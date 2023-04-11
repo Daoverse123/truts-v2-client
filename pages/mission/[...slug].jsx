@@ -9,6 +9,8 @@ import Link from "next/link";
 import ToolTip from "../../components/ToolTip";
 import countBasedLength from "../../utils/countBasedLength";
 import Head from "next/head";
+import { useQuery } from "react-query";
+import WalletConnect from "../../components/WalletConnect_mission_overlay";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -142,6 +144,7 @@ function Index({ mission }) {
         <meta name="twitter:image" content="/favicon.png" />
       </Head>
       <Nav isFloating />
+
       <div className={styles.missionPage}>
         <h3 className={styles.subtitle}>
           <span
@@ -201,7 +204,7 @@ function Index({ mission }) {
                         <img
                           style={{ left: `${idx * -6}px` }}
                           key={idx}
-                          src={ele.user.photo.secure_url}
+                          src={ele.user?.photo?.secure_url}
                           alt=""
                         />
                       );
@@ -356,18 +359,92 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
     }
   };
 
-  return (
-    <div className={styles.task + " " + taskStatus}>
-      <span className={styles.count}>{no}</span>
-      <div className={styles.textCont}>
-        <h1>{data.name}</h1>
-        <p>{limitText(100, data.description)}</p>
-      </div>
-      {status == STATUS.COMPLETED ? (
+  let dependency = useQuery({
+    queryKey: ["dependency", mission_id, data._id],
+    queryFn: async (query) => {
+      let m_id = query.queryKey[1];
+      let t_id = query.queryKey[2];
+      try {
+        let res = await axios.get(
+          `${process.env.P_API}/mission/${m_id}/task-dependency-check/${t_id}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        return res.data.data;
+      } catch (er) {
+        console.log(er);
+        throw er;
+      }
+    },
+  });
+
+  const [walletConnectVisible, setwalletConnectVisible] = useState(false);
+
+  const NavStatus = () => {
+    //wait
+    if (!dependency.isSuccess) {
+      return <>load</>;
+    }
+
+    //Completed task
+    if (status == STATUS.COMPLETED) {
+      return (
         <button>
           Verified <img src="/missions/tick.png" alt="" />
         </button>
-      ) : (
+      );
+    }
+
+    //Missing dependency
+    if (!dependency.data.dependencyStatus[0].satisfied) {
+      return (
+        <>
+          <WalletConnect
+            isLogin={true}
+            walletConnectVisible={walletConnectVisible}
+            setwalletConnectVisible={setwalletConnectVisible}
+            particularChain={
+              dependency.data.dependencyStatus[0].dependency.split("_")[0]
+            }
+            setupdateCounter={(c) => {
+              location.reload();
+            }}
+          />
+          <span className={styles.missingDependency}>
+            <button
+              onClick={() => {
+                let dc = dependency.data.dependencyStatus[0].dependency;
+                if (dc == "EVM_WALLET" || dc == "SOL_WALLET") {
+                  return setwalletConnectVisible(true);
+                }
+                let url = encodeURIComponent(`${location.pathname}`);
+                location.href =
+                  `/connect/${dependency.data.dependencyStatus[0].dependency}/` +
+                  url;
+              }}
+            >
+              {
+                dependencyMap[dependency.data.dependencyStatus[0].dependency]
+                  .btn
+              }
+            </button>
+            <p>
+              {
+                dependencyMap[dependency.data.dependencyStatus[0].dependency]
+                  .msg
+              }
+            </p>
+          </span>
+        </>
+      );
+    }
+
+    //Loading task
+    if (loading) {
+      return (
         <span className={styles.taskNav}>
           <button
             className={styles.startBtn}
@@ -377,24 +454,66 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
           >
             Start
           </button>
-          {!loading ? (
-            <button
-              onClick={() => {
-                verifyTask();
-              }}
-            >
-              Verify
-            </button>
-          ) : (
-            <button>
-              Verify <img src="/white-loader.gif" alt="" />
-            </button>
-          )}
+          <button>
+            Verify <img src="/white-loader.gif" alt="" />
+          </button>
         </span>
-      )}
+      );
+    }
+
+    return (
+      <>
+        <span className={styles.taskNav}>
+          <button
+            className={styles.startBtn}
+            onClick={() => {
+              startTask();
+            }}
+          >
+            Start
+          </button>
+          <button
+            onClick={() => {
+              verifyTask();
+            }}
+          >
+            Verify
+          </button>
+        </span>
+      </>
+    );
+  };
+
+  return (
+    <div className={styles.task + " " + taskStatus}>
+      <span className={styles.count}>{no}</span>
+      <div className={styles.textCont}>
+        <h1>{data.name}</h1>
+        <p>{limitText(100, data.description)}</p>
+      </div>
+      <NavStatus />
     </div>
   );
 }
+
+let dependencyMap = {
+  DISCORD_ACCOUNT: {
+    msg: "*Connect your Discord account to unlock this task*",
+    btn: "Connect Discord",
+  },
+  TWITTER_ACCOUNT: {
+    msg: "*Connect your Twitter account to unlock this task*",
+    btn: "Connect Twitter",
+  },
+  EVM_WALLET: {
+    msg: "*Connect your EVM wallet to unlock this task*",
+    btn: "Connect EVM wallet",
+  },
+  SOL_WALLET: {
+    msg: "*Connect your Solana wallet to unlock this task*",
+    btn: "Connect SOL wallet",
+  },
+};
 
 export const getServerSideProps = async (ctx) => {
   let mission_id = ctx.query.slug[0];

@@ -379,7 +379,7 @@ export async function getServerSideProps(ctx) {
     props: {
       categoriesList: res[0].data.data.result,
       chainList: res[1].data.data.result,
-      selected_chain,
+      selected_chain: selected_chain || "",
     },
   };
 }

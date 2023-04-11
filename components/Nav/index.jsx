@@ -96,7 +96,7 @@ export default function Component({ isFloating, isStrech }) {
             <Link href={"/discover"}>
               <li>Discover Communities</li>
             </Link>
-            <Link href={"https://truts.xyz/missions"}>
+            <Link href={"/missions"}>
               <li>Missions</li>
             </Link>
             {user ? (

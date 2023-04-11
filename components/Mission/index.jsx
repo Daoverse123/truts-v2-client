@@ -74,7 +74,7 @@ export default function Component({ min, data, isCompleted }) {
               <img
                 style={{ left: `${idx * -6}px` }}
                 key={idx + data.name}
-                src={ele.user.photo.secure_url}
+                src={ele.user?.photo?.secure_url}
                 alt=""
               />
             );
@@ -93,7 +93,7 @@ export default function Component({ min, data, isCompleted }) {
       <Link href={`/mission/${data._id}`}>
         <span className={styles.topCon + " " + (isCompleted && styles.blur)}>
           <img
-            src={data.listing.photo.logo.secure_url || "/blue.png"}
+            src={data.listing?.photo?.logo?.secure_url || "/blue.png"}
             alt=""
             className={styles.profileImg}
           />
