@@ -13,10 +13,11 @@ const sendCode = async (code) => {
     console.log(res.data.data);
     let redirect = localStorage.getItem("d-redirect");
     if (redirect) {
-      redirect = decodeURIComponent(redirect).replaceAll(`"`, "");
+      redirect = decodeURIComponent(redirect).replaceAll(`"`, ``);
       alert(redirect);
-      localStorage.removeItem("d-redirect");
-      return (location.href = redirect);
+      console.log(redirect);
+      // localStorage.removeItem("d-redirect");
+      // return (location.href = redirect);
     }
 
     // window.location = localStorage.getItem('redirect_pre_discord');
