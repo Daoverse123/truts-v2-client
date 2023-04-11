@@ -398,7 +398,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
       );
     }
 
-    //Missing dependency
+    //Missing dependency live
     if (!dependency.data.dependencyStatus[0].satisfied) {
       return (
         <>
