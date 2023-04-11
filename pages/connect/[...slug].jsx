@@ -9,7 +9,7 @@ let twitter_auth_uri = authorizeTwitterURI();
 function Connect({ mode, redirect }) {
   useEffect(() => {
     if (redirect) {
-      localStorage.setItem("d-redirect", JSON.stringify(redirect));
+      localStorage.setItem("d-redirect", redirect);
     }
     console.log(redirect);
     checkMode(mode, redirect);

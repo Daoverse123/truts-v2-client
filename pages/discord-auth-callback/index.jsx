@@ -15,14 +15,13 @@ const sendCode = async (code) => {
     if (redirect) {
       console.log(redirect);
       redirect = decodeURIComponent(redirect).replaceAll(`"`, ``);
-      alert(redirect);
       console.log(redirect);
-      // localStorage.removeItem("d-redirect");
-      // return (location.href = redirect);
+      localStorage.removeItem("d-redirect");
+      return (location.href = redirect);
     }
 
-    // window.location = localStorage.getItem('redirect_pre_discord');
-    // window.location = "/profile/private";
+    window.location = localStorage.getItem("redirect_pre_discord");
+    window.location = "/profile/private";
   } else {
     alert("auth failed Please try again");
   }
