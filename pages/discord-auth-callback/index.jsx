@@ -13,9 +13,7 @@ const sendCode = async (code) => {
     console.log(res.data.data);
     let redirect = localStorage.getItem("d-redirect");
     if (redirect) {
-      redirect = decodeURIComponent(redirect)
-        .replaceAll(`"`, "")
-        .replace("/", "");
+      redirect = decodeURIComponent(redirect).replaceAll(`"`, "");
       localStorage.removeItem("d-redirect");
       return (location.href = redirect);
     }

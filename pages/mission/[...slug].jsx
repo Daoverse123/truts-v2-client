@@ -420,7 +420,9 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
                 if (dc == "EVM_WALLET" || dc == "SOL_WALLET") {
                   return setwalletConnectVisible(true);
                 }
-                let url = encodeURIComponent(`${location.pathname}`);
+                let url = encodeURIComponent(
+                  `${location.pathname.replace("/", "")}`
+                );
                 location.href =
                   `/connect/${dependency.data.dependencyStatus[0].dependency}/` +
                   url;
