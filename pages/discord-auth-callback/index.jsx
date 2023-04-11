@@ -13,6 +13,7 @@ const sendCode = async (code) => {
     console.log(res.data.data);
     let redirect = localStorage.getItem("d-redirect");
     if (redirect) {
+      console.log(redirect);
       redirect = decodeURIComponent(redirect).replaceAll(`"`, ``);
       alert(redirect);
       console.log(redirect);
