@@ -24,7 +24,7 @@ const sendCode = async (code) => {
         return (location.href = redirect);
       }
 
-      window.location = "/edit-profile?page=social#twitter-success";
+      // window.location = "/edit-profile?page=social#twitter-success";
     } else {
       alert("auth failed Please try again");
     }
