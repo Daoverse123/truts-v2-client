@@ -423,7 +423,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
                 let url = encodeURIComponent(
                   `${location.pathname.replace("/", "")}`
                 );
-                href =
+                let href =
                   `/connect/${dependency.data.dependencyStatus[0].dependency}/` +
                   url;
 
