@@ -229,9 +229,16 @@ function Index({ mission }) {
             </span>
           </div>
         </div>
+
         {!status && (
           <>
             <h3 className={styles.subtitle}>Tasks to Perform</h3>
+
+            <div className={styles.signUp}>
+              <p>Sign in or Sign up to access the Missions.</p>
+              <button>Login/Sign Up</button>
+            </div>
+
             <div className={styles.tasksCon}>
               {mission.tasks
                 .sort((a, b) => a.stepNum - b.stepNum)
