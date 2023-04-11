@@ -103,7 +103,11 @@ const Missions = ({ data }) => {
             })
           ).map((ele, idx) => {
             return (
-              <Mission isCompleted={ele.completed} data={ele} key={idx + "m"} />
+              <Mission
+                isCompleted={ele.completed}
+                data={ele}
+                key={idx + "m" + ele.name}
+              />
             );
           })}
         </div>
