@@ -41,7 +41,7 @@ const checkMode = (mode, redirect) => {
   }
 
   if (mode == "DISCORD_ACCOUNT") {
-    // location.href = process.env.DISCORD_OAUTH_URL;
+    location.href = process.env.DISCORD_OAUTH_URL;
   }
 
   if (mode == "EVM_WALLET") {
@@ -58,7 +58,7 @@ export async function getServerSideProps(ctx) {
   return {
     props: {
       mode: mode || "",
-      redirect: redirect || "",
+      redirect: redirect + "/" + ctx.query.slug[2] || "",
     },
   };
 }
