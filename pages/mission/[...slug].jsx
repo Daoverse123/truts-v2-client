@@ -236,7 +236,13 @@ function Index({ mission }) {
 
             <div className={styles.signUp}>
               <p>Sign in or Sign up to access the Missions.</p>
-              <button>Login/Sign Up</button>
+              <button
+                onClick={() => {
+                  location.href = "/?signup=true";
+                }}
+              >
+                Login/Sign Up
+              </button>
             </div>
 
             <div className={styles.tasksCon}>
