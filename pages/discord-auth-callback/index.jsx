@@ -19,7 +19,7 @@ const sendCode = async (code) => {
     }
 
     // window.location = localStorage.getItem('redirect_pre_discord');
-    window.location = "/profile/private";
+    // window.location = "/profile/private";
   } else {
     alert("auth failed Please try again");
   }
