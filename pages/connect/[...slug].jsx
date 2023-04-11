@@ -11,6 +11,7 @@ function Connect({ mode, redirect }) {
     if (redirect) {
       localStorage.setItem("d-redirect", JSON.stringify(redirect));
     }
+    console.log(redirect);
     checkMode(mode, redirect);
   }, []);
 
@@ -40,7 +41,7 @@ const checkMode = (mode, redirect) => {
   }
 
   if (mode == "DISCORD_ACCOUNT") {
-    location.href = process.env.DISCORD_OAUTH_URL;
+    // location.href = process.env.DISCORD_OAUTH_URL;
   }
 
   if (mode == "EVM_WALLET") {
