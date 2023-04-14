@@ -38,7 +38,9 @@ function AddReview({ id, slug }) {
       if (dependency.status == 200) {
         let status_data = dependency.data.data.user;
         if (!status_data.discord) {
-          let url = encodeURIComponent(`${location.pathname.replace("/", "")}`);
+          let url = encodeURIComponent(
+            `${location.pathname.replace("/", "") + location.search}`
+          );
           location.href = `/connect/DISCORD_ACCOUNT?redirect=${url}`;
         }
       }
