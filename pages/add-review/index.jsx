@@ -26,6 +26,22 @@ function AddReview({ id, slug }) {
   const fetchUser = async () => {
     let token = localStorage.getItem("token");
     if (token) {
+      let dependency = await axios.get(
+        `${process.env.P_API}/user/profile/status`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      if (dependency.status == 200) {
+        let status_data = dependency.data.data.user;
+        if (!status_data.discord) {
+          let url = encodeURIComponent(`${location.pathname.replace("/", "")}`);
+          location.href = `/connect/DISCORD_ACCOUNT/${url}`;
+        }
+      }
     } else {
       alert("Please Log-in before reviewing");
       location.href = "/?signup=true";
