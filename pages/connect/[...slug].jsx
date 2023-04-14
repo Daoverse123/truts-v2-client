@@ -52,9 +52,9 @@ const checkMode = (mode, redirect) => {
 };
 
 export async function getServerSideProps(ctx) {
+  console.log(ctx);
   let mode = ctx.query.slug[0];
-  let redirect = ctx.query.slug[1] + "/" + ctx.query.slug[2];
-  console.log(redirect);
+  let redirect = ctx.query.redirect;
   return {
     props: {
       mode: mode || "",

@@ -437,7 +437,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
                   `${location.pathname.replace("/", "")}`
                 );
 
-                location.href = `/connect/${dependency.data.dependencyStatus[0].dependency}/${url}`;
+                location.href = `/connect/${dependency.data.dependencyStatus[0].dependency}?redirect=${url}`;
               }}
             >
               {
