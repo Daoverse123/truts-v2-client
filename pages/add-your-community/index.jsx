@@ -12,45 +12,45 @@ import WalletConnect from "../../components/WalletConnect";
 
 //assets
 import closeIcon from "../../assets/icons/close_icon.svg";
-const CATEGORY_LIST = [
-  "DAO",
-  "Media",
-  "Investment",
-  "Ordinals",
-  "Service",
-  "Grant",
-  "Social",
-  "DAO Tool",
-  "Defi",
-  "CeFi",
-  "TradeFi",
-  "BlockFi",
-  "Lending",
-  "Yield Aggregator",
-  "Stablecoin",
-  "NFT",
-  "Metaverse",
-  "Art",
-  "Music",
-  "NFT Marketplace",
-  "Utilities",
-  "Analytics",
-  "Payment",
-  "Oracle",
-  "Games",
-  "Infrastructure",
-  "Wallet",
-  "Indexer",
-  "Storage",
-  "Identity",
-  "Exchange",
-  "Community",
-  "Guild",
-  "Marketing Tool",
-  "Public Good",
-  "Education",
-  "Chain",
-];
+// const CATEGORY_LIST = [
+//   "DAO",
+//   "Media",
+//   "Investment",
+//   "Ordinals",
+//   "Service",
+//   "Grant",
+//   "Social",
+//   "DAO Tool",
+//   "Defi",
+//   "CeFi",
+//   "TradeFi",
+//   "BlockFi",
+//   "Lending",
+//   "Yield Aggregator",
+//   "Stablecoin",
+//   "NFT",
+//   "Metaverse",
+//   "Art",
+//   "Music",
+//   "NFT Marketplace",
+//   "Utilities",
+//   "Analytics",
+//   "Payment",
+//   "Oracle",
+//   "Games",
+//   "Infrastructure",
+//   "Wallet",
+//   "Indexer",
+//   "Storage",
+//   "Identity",
+//   "Exchange",
+//   "Community",
+//   "Guild",
+//   "Marketing Tool",
+//   "Public Good",
+//   "Education",
+//   "Chain",
+// ];
 
 const CHAIN_LIST_MAP = {
   "Multi Chain": "multi-chain",
@@ -70,16 +70,17 @@ const CHAIN_LIST_MAP = {
   OKC: "okc",
   Mantle: "mantle",
 };
-let categoriesWithId = CATEGORY_LIST.map((name, id) => {
-  return { id, name };
-});
+
 const API = process.env.API;
 {
   /* 
 opensea_link: { type: String },
 magiceden_link: { type: String }, */
 }
-function DaoForm() {
+let CATEGORY_LIST = [];
+function DaoForm({ categoriesList }) {
+  CATEGORY_LIST = categoriesList.map((ele) => ele.category);
+
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
   const [state, setState] = useState({
     dao_name: "",
@@ -692,3 +693,17 @@ const ChainSelectCon = ({ state, setState }) => {
 };
 
 export default DaoForm;
+
+export async function getServerSideProps(ctx) {
+  let res = await Promise.all([
+    axios.get(`${process.env.P_API}/listings/categories`),
+    axios.get(`${process.env.P_API}/listings/chains`),
+  ]);
+
+  return {
+    props: {
+      categoriesList: res[0].data.data.result,
+      chainList: res[1].data.data.result,
+    },
+  };
+}

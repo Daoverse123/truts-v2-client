@@ -128,10 +128,79 @@ export default function Home({ daoList_ssr }) {
         <Leaderboard />
       </main>
       <RecentReviewsSection />
+      <main className={styles.main}>
+        <Faq />
+      </main>
       <Footer />
     </div>
   );
 }
+
+const Faq_qn = ({ data }) => {
+  const [open, setopen] = useState(false);
+
+  return (
+    <div className={styles.faq_qn}>
+      <span
+        onClick={() => {
+          setopen((state) => {
+            return !state;
+          });
+        }}
+        className={styles.qn}
+      >
+        <h1>{data.qn}</h1>
+        {!open ? (
+          <img className={styles.plus} src="/faq/plus.svg" alt="" />
+        ) : (
+          <img className={styles.plus} src="/faq/minus.svg" alt="" />
+        )}
+      </span>
+      {open && <p className={styles.ans}>{data.ans}</p>}
+    </div>
+  );
+};
+
+let faqs = [
+  {
+    qn: "What is Truts?",
+    ans: "Truts is a comprehensive discovery platform for web3 projects across various categories, chains, and ecosystems. It allows users to explore and learn more about web3 projects through community reviews, social details, missions, and much more.",
+  },
+  {
+    qn: "What are Missions?",
+    ans: "Missions are tasks provided by Truts Network projects that encourage users to engage with their products. By participating in and completing more missions, users can earn additional XPs.",
+  },
+  {
+    qn: "What are XPs?",
+    ans: "XPs, or Experience Points, are rewards given to community members for completing missions, making referrals, and engaging with Truts. Accumulating XPs makes users eligible for various rewards offered by Truts.",
+  },
+  {
+    qn: "What rewards can be earned through XPs?",
+    ans: "Holding XPs makes users eligible for a range of benefits, including access to whitelists, airdrops, discounts, early access, merchandise drops, and other incentives provided by Truts Network Partners.",
+  },
+  {
+    qn: "Wen token ?",
+    ans: "Just get more XPs for now my fren, you no more need an onchain token to become rich.",
+  },
+];
+
+const Faq = () => {
+  return (
+    <div className={styles.faq_sec}>
+      <img className={styles.tl} src="/faq/blur_tr.png" alt="" />
+      <img className={styles.br} src="/faq/blur_br.png" alt="" />
+      <span className={styles.faq_title}>
+        <h1>Frequently Asked Questions</h1>
+        <p>Have questions? We are here to help</p>
+      </span>
+      <div className={styles.con}>
+        {faqs.map((ele, idx) => {
+          return <Faq_qn data={ele} key={idx + "faq"} />;
+        })}
+      </div>
+    </div>
+  );
+};
 
 //SSR DATA HOME PAGE
 export async function getServerSideProps(ctx) {
