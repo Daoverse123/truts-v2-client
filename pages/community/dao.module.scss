@@ -184,7 +184,7 @@ $PHONE_N: 426;
 
 .navSec {
     display: flex;
-    flex-wrap: wrap;
+
     //justify-content: center;
     row-gap: 10px;
     list-style: none;
@@ -207,24 +207,12 @@ $PHONE_N: 426;
         font-weight: 500;
     }
 
-    @media (max-width: $LAPTOP) {
-        width: 972px;
-        justify-content: center;
-    }
-    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
-        width: laptop_to_tablet_fluid(972);
-    }
-    @media (max-width: $LAPTOP) {
-        width: 704px;
-    }
-    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
-        width: tablet_to_phone_fluid(675);
-    }
-    @media (max-width: $PHONE) {
-        font-size: phone_fluid(16);
-        column-gap: phone_fluid(40);
-        width: 100%;
-        justify-content: center;
+    @media (max-width: 1200px) {
+        width: 90%;
+        overflow-x: auto;
+        li {
+            font-size: 16px;
+        }
     }
 }
 
