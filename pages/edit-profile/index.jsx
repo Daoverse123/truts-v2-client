@@ -461,7 +461,8 @@ const Profile = ({
   }, [initUserData]);
 
   const [ud_list, setud_list] = useState([]);
-  useEffect(() => {
+
+  let ud_fetch = useQuery(["ud-query", initUserData], async (query) => {
     if ("wallets" in initUserData) {
       let wallet = initUserData.wallets.find((ele) => ele.chain == "EVM");
       axios.get(`/api/fetchud?address=${wallet.address}`).then((res) => {
@@ -473,10 +474,11 @@ const Profile = ({
               return [...ud];
             });
           }
+          return { status: true };
         }
       });
     }
-  }, [initUserData?.wallets]);
+  });
 
   return (
     <div className={styles.formContent}>
@@ -584,7 +586,9 @@ const Profile = ({
           }}
           className={styles.input}
         />
-
+        {!ud_fetch.isSuccess && (
+          <p style={{ color: "blue" }}>Fetching Domains Please wait ...</p>
+        )}
         {ud_list.length > 0 && (
           <>
             <label className={styles.toggle} key={updatedUserData.ud_toggle}>
