@@ -20,6 +20,8 @@ import {
   useQueryClient,
 } from "react-query";
 
+import Toggle from "react-toggle";
+
 let Placeholder = "/profile-old.png";
 let twitter_auth_aur = authorizeTwitterURI();
 
@@ -88,7 +90,11 @@ function signUpGoogle() {
 
 function Index() {
   const [initUserData, setinitUserData] = useState({});
-  const [updatedUserData, setupdatedUserData] = useState({ bio: "" });
+  const [updatedUserData, setupdatedUserData] = useState({
+    bio: "",
+    ud_domain: "",
+    ud_toggle: false,
+  });
 
   console.log(initUserData);
   console.log(updatedUserData);
@@ -124,6 +130,7 @@ function Index() {
           bio: user_data.bio,
           interests: user_data.tags.map((ele) => ele._id),
           interestsOptions: intrests,
+          name: user_data.name,
         });
         setLoaderVisible(false);
       });
@@ -145,9 +152,17 @@ function Index() {
         }
       );
     }
+    let name = updatedUserData.name;
+    if (updatedUserData.ud_toggle) {
+      name = updatedUserData.ud_domain;
+    }
     let resp = await axios.patch(
       `${P_API}/user/update`,
-      { ...updatedUserData, tags: JSON.stringify(updatedUserData.interests) },
+      {
+        ...updatedUserData,
+        name,
+        tags: JSON.stringify(updatedUserData.interests),
+      },
       {
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -216,6 +231,8 @@ function Index() {
       }
     }
   }, []);
+
+  console.log(updatedUserData);
 
   return (
     <>
@@ -443,6 +460,24 @@ const Profile = ({
     } catch (error) {}
   }, [initUserData]);
 
+  const [ud_list, setud_list] = useState([]);
+  useEffect(() => {
+    if ("wallets" in initUserData) {
+      let wallet = initUserData.wallets.find((ele) => ele.chain == "EVM");
+      axios.get(`/api/fetchud?address=${wallet.address}`).then((res) => {
+        if (res.status == 200) {
+          let domain = res.data.domain;
+          if (domain) {
+            setud_list((ud) => {
+              ud = [domain];
+              return [...ud];
+            });
+          }
+        }
+      });
+    }
+  }, [initUserData?.wallets]);
+
   return (
     <div className={styles.formContent}>
       <div className={styles.mainTitle}>
@@ -527,6 +562,73 @@ const Profile = ({
                 : `${username} is unavailable`}
             </p>
           )}
+      </div>
+      <div className={styles.section}>
+        <div className={styles.secTitle}>
+          <h2>Display Name</h2>
+          <XpCoinComp
+            value={
+              (username && usernameValid) ||
+              ("username" in initUserData && initUserData.username)
+            }
+          />
+        </div>
+        <input
+          disabled={updatedUserData.ud_toggle}
+          value={updatedUserData.name}
+          onChange={(e) => {
+            setupdatedUserData((ud) => {
+              ud.name = e.target.value;
+              return { ...ud };
+            });
+          }}
+          className={styles.input}
+        />
+
+        {ud_list.length > 0 && (
+          <>
+            <label className={styles.toggle} key={updatedUserData.ud_toggle}>
+              <Toggle
+                onChange={() => {
+                  setupdatedUserData((ud) => {
+                    ud.ud_toggle = !ud.ud_toggle;
+                    return { ...ud };
+                  });
+                }}
+                defaultChecked={updatedUserData.ud_toggle}
+                icons={false}
+                className={styles.tog}
+              />
+              <span>Use your Unstoppable Domain</span>
+            </label>
+            {updatedUserData.ud_toggle && (
+              <select
+                onChange={(e) => {
+                  setupdatedUserData((ud) => {
+                    ud.ud_domain = e.target.value;
+                    return { ...ud };
+                  });
+                }}
+                placeholder="Select Your Ud Domain"
+                value={updatedUserData.ud_domain}
+                className={styles.input}
+                name="cars"
+                id="cars"
+              >
+                <option selected disabled value="">
+                  Select from the below list
+                </option>
+                {ud_list.map((ele) => {
+                  return (
+                    <option key={ele} value={ele}>
+                      {ele}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+          </>
+        )}
       </div>
       <div className={styles.section}>
         <div className={styles.secTitle}>

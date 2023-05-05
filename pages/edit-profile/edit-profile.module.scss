@@ -333,6 +333,17 @@ $mobile: 650px;
             }
         }
 
+        .toggle {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            .tog {
+                transform: scale(0.8);
+            }
+        }
+
         .subText {
             margin-top: -5px;
             font-weight: 400;
