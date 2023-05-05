@@ -5,6 +5,7 @@ import NextNProgress from "nextjs-progressbar";
 import Script from 'next/script';
 import { publicProvider } from 'wagmi/providers/public'
 import 'react-tooltip/dist/react-tooltip.css'
+import "react-toggle/style.css"
 import {
   WagmiConfig,
   createClient,
