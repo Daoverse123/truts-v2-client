@@ -166,13 +166,13 @@ const MissionCoupon = ({ xp, data }) => {
 
         <div className={styles.xpCoupon}>
           {/* <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" /> */}
-          <h1>{10 + "% OFF"}</h1>
+          <h1>{20 + "% OFF"}</h1>
           {/* <img className={styles.xpText} src="/xp-text.png" alt="" /> */}
         </div>
         <div className={styles.text}>
           <h4 className={styles.desc}>
             Congratulations on completing the mission! 🎉 You&apos;ve unlocked a
-            10% discount code to claim your very own Unstoppable Domain. Step
+            20% discount code to claim your very own Unstoppable Domain. Step
             into the unstoppable world of web3 and make your mark with a unique
             domain name. Claim your domain now and start your web3 journey! ✨
           </h4>
