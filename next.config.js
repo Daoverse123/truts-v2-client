@@ -24,7 +24,8 @@ const nextConfig = {
     UMBRIA_POLYGON_ERC20: '0x2e4b0Fb46a46C90CB410FE676f24E466753B469f',
     MAHADAO_POLYGON_ERC20: '0xedd6ca8a4202d4a36611e2fff109648c4863ae19',
     TWITTER_CLIENT_ID: process.env.TWITTER_CLIENT_ID,
-    TWITTER_REDIRECT_URI: process.env.TWITTER_REDIRECT_URI
+    TWITTER_REDIRECT_URI: process.env.TWITTER_REDIRECT_URI,
+    M_ID: process.env.M_ID
   },
   async redirects() {
     return [

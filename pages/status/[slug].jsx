@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./status.module.scss";
 import Link from "next/link";
 import Head from "next/head";
@@ -9,8 +9,46 @@ import left_arrow from "../../assets/left-arrow.png";
 import Button from "../../components/Button";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-function Index({ type, target, xp }) {
+function Index({ type: preType, target, xp, m_id }) {
+  const [type, settype] = useState(preType);
+
+  let couponQuery = useQuery(
+    ["coupon", m_id],
+    async () => {
+      if (m_id != process.env.M_ID) {
+        return true;
+      }
+      let data = await axios.get(
+        `${process.env.P_API}/mission/${m_id}/special-claim`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      if (data.status == 201) {
+        settype("coupon");
+      }
+      return data.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  if (!couponQuery.isSuccess) {
+    return (
+      <div className={styles.loaderCon}>
+        <span className={styles.loader}></span>
+        <p>Loading Please Wait</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={styles.statusPage}>
@@ -44,6 +82,7 @@ function Index({ type, target, xp }) {
             </Link> */}
           </div>{" "}
           {type == "mission" && <Mission xp={xp} />}
+          {type == "coupon" && <MissionCoupon data={couponQuery} xp={xp} />}
           {type == "not-member" && (
             <ErrorState
               message={
@@ -84,7 +123,7 @@ function Index({ type, target, xp }) {
 }
 
 export async function getServerSideProps(ctx) {
-  let { slug: type, xp } = ctx.query;
+  let { slug: type, xp, m_id } = ctx.query;
   console.log(ctx);
   let target = ctx.req.cookies["target"];
   return {
@@ -92,11 +131,95 @@ export async function getServerSideProps(ctx) {
       type,
       xp: xp || "",
       target: target || "",
+      m_id: m_id || "",
     },
   };
 }
 
 //Thank you for submitting the application to list your Community. Now sit back and relax. If we need more information, we will reach out to you. Otherwise, you are all set and you will see your DAO listed in a day or two :)
+
+const MissionCoupon = ({ xp, data }) => {
+  useEffect(() => {
+    const confettiSettings = {
+      target: "my-canvas",
+      start_from_edge: true,
+      rotate: true,
+      max: 250,
+    };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    setTimeout(() => {
+      confetti.render();
+    }, 1000);
+
+    return () => confetti.clear();
+  }, []);
+
+  let code = data.data.data.coupon.code;
+  return (
+    <div className={styles.missionSuccess}>
+      <canvas id="my-canvas"></canvas>
+      <div className={styles.content}>
+        <div className={styles.topText}>
+          <h3>Congratulations!🎉</h3>
+          <p className={styles.subText}>You earned</p>
+        </div>
+
+        <div className={styles.xpCoupon}>
+          {/* <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" /> */}
+          <h1>{10 + "% OFF"}</h1>
+          {/* <img className={styles.xpText} src="/xp-text.png" alt="" /> */}
+        </div>
+        <div className={styles.text}>
+          <h4 className={styles.desc}>
+            Congratulations on completing the mission! 🎉 You&apos;ve unlocked a
+            10% discount code to claim your very own Unstoppable Domain. Step
+            into the unstoppable world of web3 and make your mark with a unique
+            domain name. Claim your domain now and start your web3 journey! ✨
+          </h4>
+
+          <div className={styles.coupon}>
+            {code}
+            <img
+              onClick={() => {
+                navigator.clipboard.writeText(code);
+                toast.success("Coupon Copied !", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }}
+              src="/copy_blue.svg"
+              alt=""
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              openNewTab("https://unstoppabledomains.com/");
+              toast.success("Coupon Copied !", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }}
+          >
+            Get Unstoppable Domain
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Mission = ({ xp }) => {
   useEffect(() => {

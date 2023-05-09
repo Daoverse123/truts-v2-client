@@ -94,10 +94,10 @@ function Index({ mission }) {
           if (location.href.includes("daoplanet") && chain == "NEAR") {
             location.href = "https://shard.dog/DAODenverIsNEAR";
           } else {
-            location.href = `/status/mission?xp=${mission.listingXP}`;
+            location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
           }
         } catch (error) {
-          location.href = `/status/mission?xp=${mission.listingXP}`;
+          location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
         }
       }
     } catch (error) {}
