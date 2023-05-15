@@ -884,7 +884,7 @@ const Quiz = ({ mission }) => {
           <h3 className={styles.title}>{question.prompt}</h3>
           <div className={styles.qList}>
             {question.options.map((ele, idx) => {
-              return <Option data={ele} no={idx + 1} />;
+              return <Option key={idx + "option"} data={ele} no={idx + 1} />;
             })}
           </div>
           <div className={styles.qNav}>
