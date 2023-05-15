@@ -11,6 +11,8 @@ import countBasedLength from "../../utils/countBasedLength";
 import Head from "next/head";
 import { useQuery } from "react-query";
 import WalletConnect from "../../components/WalletConnect_mission_overlay";
+import { id } from "ethers/lib/utils";
+import { create } from "zustand";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -45,6 +47,7 @@ function Index({ mission }) {
 
   const [status, setstatus] = useState(null);
   const [completed, setcompleted] = useState(null);
+
   let fetchTaskStatus = async () => {
     try {
       let res = await axios.get(`${P_API}/mission/${mission._id}/my-status`, {
@@ -62,6 +65,22 @@ function Index({ mission }) {
   useEffect(() => {
     fetchTaskStatus();
   }, []);
+
+  const [claimReady, setclaimReady] = useState(false);
+  console.log(claimReady);
+  useEffect(() => {
+    if (status && mission.type == "TASKS") {
+      console.log(status);
+      let flag = true;
+      Object.values(status.attemptedMission.tasks).forEach((ele) => {
+        console.log(ele);
+        if (ele == "INCOMPLETE") {
+          flag = false;
+        }
+      });
+      setclaimReady(flag);
+    }
+  }, [status]);
 
   console.log(completed);
 
@@ -102,21 +121,6 @@ function Index({ mission }) {
       }
     } catch (error) {}
   };
-
-  const [claimReady, setclaimReady] = useState(false);
-  console.log(claimReady);
-  useEffect(() => {
-    if (status) {
-      let flag = true;
-      Object.values(status.attemptedMission.tasks).forEach((ele) => {
-        console.log(ele);
-        if (ele == "INCOMPLETE") {
-          flag = false;
-        }
-      });
-      setclaimReady(flag);
-    }
-  }, [status]);
 
   const [backBtn, setbackBtn] = useState("");
   useEffect(() => {
@@ -229,79 +233,92 @@ function Index({ mission }) {
             </span>
           </div>
         </div>
-
-        {!status && (
+        {/* Not Logged in */}
+        {mission.type == "TASKS" && (
           <>
-            <h3 className={styles.subtitle}>Tasks to Perform</h3>
+            <p>as</p>
+            {!status && (
+              <>
+                <h3 className={styles.subtitle}>Tasks to Perform</h3>
 
-            <div className={styles.signUp}>
-              <p>Sign in or Sign up to access the Missions.</p>
-              <button
-                onClick={() => {
-                  location.href = "/?signup=true";
-                }}
-              >
-                Login/Sign Up
-              </button>
-            </div>
+                <div className={styles.signUp}>
+                  <p>Sign in or Sign up to access the Missions.</p>
+                  <button
+                    onClick={() => {
+                      location.href = "/?signup=true";
+                    }}
+                  >
+                    Login/Sign Up
+                  </button>
+                </div>
 
-            <div className={styles.tasksCon}>
-              {mission.tasks
-                .sort((a, b) => a.stepNum - b.stepNum)
-                .map((tsk, idx) => {
-                  return (
-                    <ShowTask
-                      key={"tsk" + idx}
-                      no={idx + 1}
-                      data={tsk}
-                      status={getTaskStatus(tsk._id)}
-                      mission_id={mission._id}
-                      refreshMissionStatus={fetchTaskStatus}
-                    />
-                  );
-                })}
-            </div>
-            <button
-              onClick={() => {
-                location.href = "/?signup=true";
-              }}
-              className={styles.mainBtnDisabled}
-            >
-              Login/Sign-up to Complete the Mission
-            </button>
+                <div className={styles.tasksCon}>
+                  {mission.tasks
+                    .sort((a, b) => a.stepNum - b.stepNum)
+                    .map((tsk, idx) => {
+                      return (
+                        <ShowTask
+                          key={"tsk" + idx}
+                          no={idx + 1}
+                          data={tsk}
+                          status={getTaskStatus(tsk._id)}
+                          mission_id={mission._id}
+                          refreshMissionStatus={fetchTaskStatus}
+                        />
+                      );
+                    })}
+                </div>
+                <button
+                  onClick={() => {
+                    location.href = "/?signup=true";
+                  }}
+                  className={styles.mainBtnDisabled}
+                >
+                  Login/Sign-up to Complete the Mission
+                </button>
+              </>
+            )}
+            {/* Logged in */}
+            {status && (
+              <>
+                <h3 className={styles.subtitle}>Tasks to Perform</h3>
+                <div className={styles.tasksCon}>
+                  {mission.tasks
+                    .sort((a, b) => a.stepNum - b.stepNum)
+                    .map((tsk, idx) => {
+                      return (
+                        <Task
+                          key={"tsk" + idx}
+                          no={idx + 1}
+                          data={tsk}
+                          status={getTaskStatus(tsk._id)}
+                          mission_id={mission._id}
+                          refreshMissionStatus={fetchTaskStatus}
+                        />
+                      );
+                    })}
+                </div>
+                {claimReady && !status.attemptedMission.isCompleted ? (
+                  <button
+                    onClick={claimMission}
+                    className={styles.mainBtnClaim}
+                  >
+                    Claim Mission
+                  </button>
+                ) : (
+                  <button className={styles.mainBtnDisabled}>
+                    {status.attemptedMission.isCompleted
+                      ? "Mission Claimed"
+                      : "Claim Mission"}
+                  </button>
+                )}
+              </>
+            )}
           </>
         )}
-
-        {status && (
+        {mission.type == "QUIZ" && (
           <>
-            <h3 className={styles.subtitle}>Tasks to Perform</h3>
-            <div className={styles.tasksCon}>
-              {mission.tasks
-                .sort((a, b) => a.stepNum - b.stepNum)
-                .map((tsk, idx) => {
-                  return (
-                    <Task
-                      key={"tsk" + idx}
-                      no={idx + 1}
-                      data={tsk}
-                      status={getTaskStatus(tsk._id)}
-                      mission_id={mission._id}
-                      refreshMissionStatus={fetchTaskStatus}
-                    />
-                  );
-                })}
-            </div>
-            {claimReady && !status.attemptedMission.isCompleted ? (
-              <button onClick={claimMission} className={styles.mainBtnClaim}>
-                Claim Mission
-              </button>
-            ) : (
-              <button className={styles.mainBtnDisabled}>
-                {status.attemptedMission.isCompleted
-                  ? "Mission Claimed"
-                  : "Claim Mission"}
-              </button>
-            )}
+            <Quiz mission={mission} />
           </>
         )}
       </div>
@@ -547,6 +564,373 @@ function limitText(count, text) {
   if (text.length < count) return text;
   let snippedText = text.substring(0, count);
   return snippedText + "...";
+}
+
+//Quiz state
+const useQuizStore = create((set) => ({
+  quiz: {},
+  initTrue: false,
+  qNo: 0,
+  maxQNo: 0,
+  setQno: (data) =>
+    set((state) => {
+      state.qNo = data;
+      state.maxQNo = data;
+      return { ...state };
+    }),
+  sequenceStatus: [],
+  setSequence: (data) =>
+    set((state) => {
+      state.sequenceStatus = data;
+      return { ...state };
+    }),
+  qMove: (move) => qMove(set, move),
+  registerAnswer: (answer) => registerAnswer(set, answer),
+  initQuiz: (data) =>
+    set((state) => {
+      state.quiz = data;
+      state.initTrue = true;
+      return { ...state };
+    }),
+}));
+
+const qMove = (set, move) => {
+  set((state) => {
+    if (move) {
+      if (state.qNo < Object.keys(state.quiz).length - 1) {
+        if (
+          state.qNo + 1 > state.maxQNo &&
+          state.sequenceStatus[state.qNo] == "UNANSWERED"
+        ) {
+          console.log("Block");
+        } else {
+          state.qNo = state.qNo + 1;
+        }
+      }
+    } else {
+      if (state.qNo >= 1) {
+        state.qNo = state.qNo - 1;
+      }
+    }
+    return { ...state };
+  });
+};
+
+const registerAnswer = (set, answer) => {
+  // answer = {m_id,q_id,answer}
+  return set((state) => {
+    let prev = [];
+    if (state.quiz[answer.q_id].type == "MCQ") {
+      if (
+        state.quiz[answer.q_id].answerByUser &&
+        state.quiz[answer.q_id].answerByUser.includes(answer.answer)
+      ) {
+        state.quiz[answer.q_id].answerByUser = state.quiz[
+          answer.q_id
+        ].answerByUser.filter((elm) => elm != answer.answer);
+        return { ...state };
+      }
+      prev = state.quiz[answer.q_id].answerByUser || [];
+    }
+    state.quiz[answer.q_id].answerByUser = [...prev, answer.answer];
+    state.quiz[answer.q_id].status = "LOADING";
+    return { ...state };
+  });
+};
+
+const Quiz = ({ mission }) => {
+  let quizStore = useQuizStore();
+  let quiz = mission.questions;
+  let question = quiz[quizStore.qNo];
+  let status = useQuery(["quiz-status", mission], async (query) => {
+    let m = query.queryKey[1];
+    let res = await axios.get(`${P_API}/mission/${m._id}/my-status`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
+    return res.data.data;
+  });
+
+  useEffect(() => {
+    // init quiz state
+    if (status.isSuccess) {
+      let questionState = status.data.attemptedMission.questions;
+      initData(questionState);
+    }
+  }, [status.isSuccess]);
+
+  const initData = (questionState) => {
+    let sequenceStatus = [];
+    quiz.forEach((q, idx) => {
+      if (questionState[q._id]) {
+        questionState[q._id].type = q.type;
+        sequenceStatus.push(questionState[q._id].status);
+      }
+    });
+    quizStore.setSequence(sequenceStatus);
+    quizStore.initQuiz(questionState);
+
+    //Set Current question
+    //Check for First unswered question
+    let idx = sequenceStatus.indexOf("UNANSWERED");
+
+    if (idx == 0) {
+      quizStore.setQno(0);
+    } else if (idx == -1) {
+      quizStore.setQno(sequenceStatus.length - 1);
+    } else {
+      setTimeout(() => {
+        quizStore.setQno(idx);
+      }, 0);
+    }
+  };
+
+  const updateData = (questionState) => {
+    let sequenceStatus = [];
+    quiz.forEach((q, idx) => {
+      if (questionState[q._id]) {
+        questionState[q._id].type = q.type;
+        sequenceStatus.push(questionState[q._id].status);
+      }
+    });
+    quizStore.setSequence(sequenceStatus);
+    quizStore.initQuiz(questionState);
+
+    //Set Current question
+    //Check for First unswered question
+    let idx = sequenceStatus.indexOf("UNANSWERED");
+
+    if (idx == 0) {
+      quizStore.setQno(0);
+    } else if (idx == -1) {
+      quizStore.setQno(sequenceStatus.length - 1);
+    } else {
+      setTimeout(() => {
+        quizStore.setQno(idx);
+      }, 1100);
+    }
+  };
+
+  if (!status.isSuccess || !quizStore.initTrue) {
+    return <></>;
+  }
+
+  console.log(quizStore);
+
+  const Option = ({ data, no }) => {
+    let status = quizStore.quiz[question._id];
+
+    if (status.status == "LOADING") {
+      let user_ans = [];
+      if (typeof status.answerByUser == "object") {
+        user_ans = status.answerByUser;
+      } else {
+        user_ans = [status.answerByUser];
+      }
+
+      if (user_ans.includes(no)) {
+        let opt_style = styles.option + " " + styles.loading;
+
+        return (
+          <span
+            onClick={() => {
+              quizStore.registerAnswer({
+                m_id: mission._id,
+                q_id: question._id,
+                answer: no,
+              });
+            }}
+            className={opt_style}
+          >
+            {data.prompt}
+          </span>
+        );
+      }
+
+      return (
+        <span
+          onClick={() => {
+            quizStore.registerAnswer({
+              m_id: mission._id,
+              q_id: question._id,
+              answer: no,
+            });
+          }}
+          className={styles.option}
+        >
+          {data.prompt}
+        </span>
+      );
+    }
+
+    if (status.status == "ANSWERED") {
+      let user_ans = [];
+      let correct_ans = [];
+      if (typeof status.answerByUser == "object") {
+        user_ans = status.answerByUser;
+      } else {
+        user_ans = [status.answerByUser];
+      }
+      //correctAnswer
+      if (typeof status.correctAnswer == "object") {
+        correct_ans = status.correctAnswer;
+      } else {
+        correct_ans = [status.correctAnswer];
+      }
+
+      if (correct_ans.includes(no)) {
+        let opt_style = styles.option + " " + styles.right;
+        return <span className={opt_style}>{data.prompt}</span>;
+      }
+
+      if (user_ans.includes(no)) {
+        let opt_style = styles.option;
+        if (status.isCorrect) {
+          opt_style = styles.option + " " + styles.right;
+        } else {
+          opt_style = styles.option + " " + styles.wrong;
+        }
+        return <span className={opt_style}>{data.prompt}</span>;
+      }
+
+      return <span className={styles.option}>{data.prompt}</span>;
+    }
+
+    if (status.status == "UNANSWERED") {
+      return (
+        <span
+          onClick={() => {
+            quizStore.registerAnswer({
+              m_id: mission._id,
+              q_id: question._id,
+              answer: no,
+            });
+          }}
+          className={styles.option}
+        >
+          {data.prompt}
+        </span>
+      );
+    }
+  };
+
+  const submitAnswer = async () => {
+    let res = await axios.post(
+      `${process.env.P_API}/mission/${mission._id}/question-answer/${question._id}`,
+      {
+        answer: quizStore.quiz[question._id].answerByUser,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+    if (res.status == 200) {
+      updateData(res.data.data.attemptedMission.questions);
+    }
+  };
+
+  const getAnswerCount = () => {
+    let count = 0;
+    Object.values(quizStore.quiz).forEach((ele) => {
+      if (ele.isCorrect) {
+        count = count + 1;
+      }
+    });
+    return count;
+  };
+
+  return (
+    <div className={styles.quiz} key={"question-no " + quizStore.qNo}>
+      <h3 className={styles.subtitle}>Quiz completed</h3>
+      <div className={styles.progress}>
+        <span className={styles.innerProgress}></span>
+      </div>
+
+      <div className={styles.qWrapper}>
+        <div className={styles.qCon}>
+          <h3 className={styles.title}>{question.prompt}</h3>
+          <div className={styles.qList}>
+            {question.options.map((ele, idx) => {
+              return <Option data={ele} no={idx + 1} />;
+            })}
+          </div>
+          <div className={styles.qNav}>
+            <span className={styles.ansCount}>
+              <span className={styles.qArrows}>
+                <button
+                  onClick={() => {
+                    quizStore.qMove(false);
+                  }}
+                >
+                  {"<"}
+                </button>
+                <button
+                  onClick={() => {
+                    quizStore.qMove(true);
+                  }}
+                >
+                  {">"}
+                </button>
+              </span>
+              <p>Correct Answers : </p>
+              <h1>
+                <span
+                  key={"ans-no " + quizStore.qNo}
+                  style={{ color: "green" }}
+                >
+                  {getAnswerCount()}
+                </span>
+                /{quiz.length}
+              </h1>
+            </span>
+            <button
+              disabled={
+                quizStore.quiz[question._id].status == "ANSWERED" ||
+                !quizStore.quiz[question._id].answerByUser ||
+                quizStore.quiz[question._id].answerByUser.length <= 0
+              }
+              onClick={() => {
+                submitAnswer();
+              }}
+              className={styles.submit}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+        <span className={styles.xp}>
+          <p>Rewards</p>
+          <span className={styles.xpCount}>
+            <img src="/missions/coin.svg" alt="" />
+            <h1>{question.listingXP} XP</h1>
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+function compareArrays(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  // Sort the arrays
+  const sortedArr1 = arr1.sort();
+  const sortedArr2 = arr2.sort();
+
+  // Compare the sorted arrays element by element
+  for (let i = 0; i < sortedArr1.length; i++) {
+    if (sortedArr1[i] !== sortedArr2[i]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 export default Index;

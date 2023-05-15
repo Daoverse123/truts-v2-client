@@ -130,6 +130,25 @@
                     background: linear-gradient(90deg, #2b007a 0%, #3065f3 100%);
                 }
             }
+
+            .coupon {
+                display: flex;
+                width: 339px;
+                height: 80px;
+                justify-content: center;
+                align-items: center;
+                border: 3.5px dashed #3065f3;
+                border-radius: 23px;
+                font-weight: 600;
+                font-size: 42px;
+                color: #3065f3;
+                padding: 0 33px;
+                margin-bottom: 20px;
+                img {
+                    margin-left: auto;
+                    cursor: pointer;
+                }
+            }
         }
 
         @media (max-width: 600px) {

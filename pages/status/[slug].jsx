@@ -9,6 +9,7 @@ import left_arrow from "../../assets/left-arrow.png";
 import Button from "../../components/Button";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
+import { toast } from "react-toastify";
 
 function Index({ type, target, xp }) {
   return (
@@ -44,6 +45,7 @@ function Index({ type, target, xp }) {
             </Link> */}
           </div>{" "}
           {type == "mission" && <Mission xp={xp} />}
+          {type == "test" && <MissionCoupon xp={xp} />}
           {type == "not-member" && (
             <ErrorState
               message={
@@ -84,14 +86,16 @@ function Index({ type, target, xp }) {
 }
 
 export async function getServerSideProps(ctx) {
-  let { slug: type, xp } = ctx.query;
+  let { slug: type, xp, m_id } = ctx.query;
   console.log(ctx);
   let target = ctx.req.cookies["target"];
+
   return {
     props: {
       type,
       xp: xp || "",
       target: target || "",
+      m_id: m_id || "",
     },
   };
 }
@@ -139,6 +143,85 @@ const Mission = ({ xp }) => {
             }}
           >
             Explore Missions
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MissionCoupon = ({ xp }) => {
+  useEffect(() => {
+    const confettiSettings = {
+      target: "my-canvas",
+      start_from_edge: true,
+      rotate: true,
+      max: 250,
+    };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    setTimeout(() => {
+      confetti.render();
+    }, 1000);
+
+    return () => confetti.clear();
+  }, []);
+  return (
+    <div className={styles.missionSuccess}>
+      <canvas id="my-canvas"></canvas>
+      <div className={styles.content}>
+        <div className={styles.topText}>
+          <h3>Congratulations!🎉</h3>
+          <p className={styles.subText}>You earned</p>
+        </div>
+
+        <div className={styles.xp}>
+          {/* <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" /> */}
+          <h1>{xp + "% OFF"}</h1>
+          {/* <img className={styles.xpText} src="/xp-text.png" alt="" /> */}
+        </div>
+        <div className={styles.text}>
+          <h4 className={styles.desc}>
+            Thank you for submitting! You have earned 10% OFF coupon for
+            Unstoppable Domains.
+          </h4>
+
+          <div className={styles.coupon}>
+            123456
+            <img
+              onClick={() => {
+                navigator.clipboard.writeText("1234");
+                toast.success("Coupon Copied !", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }}
+              src="/copy_blue.svg"
+              alt=""
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText("1234");
+              toast.success("Coupon Copied !", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }}
+          >
+            Claim Coupon
           </button>
         </div>
       </div>
