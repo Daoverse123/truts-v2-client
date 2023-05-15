@@ -13,7 +13,7 @@ const fetchDomain = async (address) => {
 
 export default async function handler(req, res) {
   let address = req.query.address
-  let domain = await fetchDomain(address);
+  let domain = await fetchDomain(`${address}`.toLowerCase());
   console.log(domain.data.meta)
   if (domain.status == 200) {
     res.status(200).send(domain.data.meta);
