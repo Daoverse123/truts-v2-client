@@ -133,20 +133,21 @@
 
             .coupon {
                 display: flex;
-                width: 339px;
+                width: max-content;
                 height: 80px;
                 justify-content: center;
                 align-items: center;
                 border: 3.5px dashed #3065f3;
                 border-radius: 23px;
                 font-weight: 600;
-                font-size: 42px;
+                font-size: 36px;
                 color: #3065f3;
                 padding: 0 33px;
                 margin-bottom: 20px;
                 img {
                     margin-left: auto;
                     cursor: pointer;
+                    margin-left: 20px;
                 }
             }
         }
@@ -196,5 +197,46 @@
             height: min-content;
             margin: auto 0;
         }
+    }
+
+    .xpCoupon {
+        @extend .xp;
+        h1 {
+            right: 0;
+            @media (max-width: 700px) {
+                font-size: 80px;
+                margin-top: 100px;
+            }
+        }
+    }
+}
+
+.loaderCon {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #cecece;
+    border-bottom-color: #001aff;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
