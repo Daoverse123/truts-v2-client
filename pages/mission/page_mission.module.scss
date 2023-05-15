@@ -35,6 +35,9 @@ $mobile: 800px;
 
         // opacity: 0.13;
     }
+    @media (max-width: $tablet) {
+        width: 95%;
+    }
 }
 
 .missionHead {
@@ -151,6 +154,7 @@ $mobile: 800px;
     margin-left: auto;
     justify-content: center;
     position: relative;
+
     p,
     h1 {
         margin: 0;
@@ -594,6 +598,10 @@ $mobile: 800px;
 }
 
 .quiz {
+    @media (max-width: $tablet) {
+        width: 90%;
+    }
+
     .progress {
         display: flex;
         width: 100%;
@@ -604,12 +612,16 @@ $mobile: 800px;
 
         .innerProgress {
             height: 100%;
-            width: 50%;
+            width: 0%;
             background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+            transition: all 0.5s ease-in-out;
         }
     }
 
     .xp {
+        @media (max-width: $tablet) {
+            display: none;
+        }
         p {
             font-size: 16px;
             color: #8c93a3;
@@ -634,6 +646,10 @@ $mobile: 800px;
         margin-bottom: 250px;
         padding: 40px;
         animation: qAppear 0.5s ease-in-out forwards;
+
+        @media (max-width: $tablet) {
+            padding: 20px;
+        }
     }
 
     .qCon {
@@ -641,10 +657,18 @@ $mobile: 800px;
         width: 75%;
         margin-right: auto;
 
+        @media (max-width: $tablet) {
+            width: 100%;
+        }
+
         flex-direction: column;
         .title {
             font-weight: 500;
             font-size: 20px;
+
+            @media (max-width: $tablet) {
+                font-size: 16px;
+            }
         }
         .qList {
             display: flex;
@@ -658,10 +682,20 @@ $mobile: 800px;
             align-items: center;
             margin-top: 85px;
 
+            @media (max-width: $tablet) {
+                flex-direction: column;
+                margin-top: 40px;
+            }
+
             .submit {
                 width: 177px;
                 height: 45px;
 
+                @media (max-width: $tablet) {
+                    width: 90%;
+                    margin: 0 auto;
+                    margin-top: 15px;
+                }
                 /* Blue gradient */
 
                 background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
@@ -696,6 +730,16 @@ $mobile: 800px;
                     font-size: 20px;
                     margin-left: 5px;
                 }
+
+                @media (max-width: $tablet) {
+                    justify-content: space-between;
+                    p {
+                        font-size: 15px;
+                    }
+                    h1 {
+                        font-size: 15px;
+                    }
+                }
             }
         }
 
@@ -712,19 +756,38 @@ $mobile: 800px;
                 border: 1.33333px solid #cacdd5;
                 border-radius: 5.33333px;
             }
+
+            @media (max-width: $tablet) {
+                button {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
         }
 
         .option {
             display: flex;
             align-items: center;
             background: #eeeff2;
-            padding: 0 33px;
+            padding: 10px 33px;
             /* light grey 700 */
-            height: 52px;
+            min-height: 52px;
+            height: max-content;
             border: 2px solid #a4a9b6;
             border-radius: 16px;
             color: #0f1d40;
             font-weight: 500;
+            cursor: pointer;
+
+            &:hover {
+                border: 2px solid #4677f2;
+                transition: all 0.35s ease-in-out;
+            }
+
+            @media (max-width: $mobile) {
+                font-size: 14px;
+                padding: 0 18px;
+            }
         }
 
         .right {
@@ -760,6 +823,23 @@ $mobile: 800px;
             // animation: qShow 0.5s ease-in-out forwards;
         }
 
+        .correct {
+            display: flex;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-left: 10px;
+            z-index: 100;
+            opacity: 0;
+            animation: appear 0.1s ease-in-out forwards;
+            animation-delay: 0.5s;
+
+            @media (max-width: $mobile) {
+                width: 17px;
+                height: 17px;
+            }
+        }
+
         .loading {
             background: rgba(60, 152, 251, 0.429);
             border: 2px solid #6081f9;
@@ -787,6 +867,15 @@ $mobile: 800px;
     100% {
         transform-origin: left;
         transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
         opacity: 1;
     }
 }

@@ -42,6 +42,32 @@ const fetchCompleted = async (id, setter) => {
   }
 };
 
+let claimMission = async (mission) => {
+  try {
+    let res = await axios.get(`${P_API}/mission/${mission._id}/claim`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
+    if (res.status == 200) {
+      try {
+        let userData = localStorage.getItem("user-server");
+        if (userData) {
+          userData = JSON.parse(userData);
+        }
+        let chain = userData?.wallets?.chain;
+        if (location.href.includes("daoplanet") && chain == "NEAR") {
+          location.href = "https://shard.dog/DAODenverIsNEAR";
+        } else {
+          location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
+        }
+      } catch (error) {
+        location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
+      }
+    }
+  } catch (error) {}
+};
+
 function Index({ mission }) {
   console.log(mission);
 
@@ -96,32 +122,6 @@ function Index({ mission }) {
     return STATUS.DISABLED;
   };
 
-  let claimMission = async () => {
-    try {
-      let res = await axios.get(`${P_API}/mission/${mission._id}/claim`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
-      if (res.status == 200) {
-        try {
-          let userData = localStorage.getItem("user-server");
-          if (userData) {
-            userData = JSON.parse(userData);
-          }
-          let chain = userData?.wallets?.chain;
-          if (location.href.includes("daoplanet") && chain == "NEAR") {
-            location.href = "https://shard.dog/DAODenverIsNEAR";
-          } else {
-            location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
-          }
-        } catch (error) {
-          location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
-        }
-      }
-    } catch (error) {}
-  };
-
   const [backBtn, setbackBtn] = useState("");
   useEffect(() => {
     setbackBtn(localStorage.getItem("mission-callback"));
@@ -133,7 +133,7 @@ function Index({ mission }) {
         <title>{mission.name}</title>
         <meta name="description" content={mission.description} />
         <link rel="icon" href="/favicon.png" />
-
+        <link rel="preload" href="/assets/tick.png" as="image"></link>
         <meta property="og:url" content="https://www.truts.xyz" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Truts" />
@@ -708,7 +708,7 @@ const Quiz = ({ mission }) => {
     } else {
       setTimeout(() => {
         quizStore.setQno(idx);
-      }, 1100);
+      }, 1500);
     }
   };
 
@@ -779,22 +779,27 @@ const Quiz = ({ mission }) => {
         correct_ans = [status.correctAnswer];
       }
 
-      if (correct_ans.includes(no)) {
-        let opt_style = styles.option + " " + styles.right;
-        return <span className={opt_style}>{data.prompt}</span>;
-      }
-
-      if (user_ans.includes(no)) {
+      const getStyle = () => {
+        //User anwer state
         let opt_style = styles.option;
-        if (status.isCorrect) {
-          opt_style = styles.option + " " + styles.right;
-        } else {
-          opt_style = styles.option + " " + styles.wrong;
+        if (user_ans.includes(no)) {
+          if (status.isCorrect) {
+            opt_style = styles.option + " " + styles.right;
+          } else {
+            opt_style = styles.option + " " + styles.wrong;
+          }
         }
-        return <span className={opt_style}>{data.prompt}</span>;
-      }
+        return opt_style;
+      };
 
-      return <span className={styles.option}>{data.prompt}</span>;
+      return (
+        <span className={getStyle()}>
+          {data.prompt}
+          {correct_ans.includes(no) && (
+            <img src="/assets/tick.png" className={styles.correct}></img>
+          )}
+        </span>
+      );
     }
 
     if (status.status == "UNANSWERED") {
@@ -842,11 +847,36 @@ const Quiz = ({ mission }) => {
     return count;
   };
 
+  const isQuizComplete = () => {
+    let ans = 0;
+    Object.values(quizStore.quiz).forEach((ele) => {
+      if (ele.status == "ANSWERED") {
+        ans = ans + 1;
+      }
+    });
+    return Object.values(quizStore.quiz).length == ans;
+  };
+
+  const getCompletedCountPercent = () => {
+    let ans = 0;
+    Object.values(quizStore.quiz).forEach((ele) => {
+      if (ele.status == "ANSWERED") {
+        ans = ans + 1;
+      }
+    });
+    return (ans / quiz.length) * 100;
+  };
+
   return (
     <div className={styles.quiz} key={"question-no " + quizStore.qNo}>
       <h3 className={styles.subtitle}>Quiz completed</h3>
       <div className={styles.progress}>
-        <span className={styles.innerProgress}></span>
+        <span
+          style={{
+            width: `${getCompletedCountPercent()}%`,
+          }}
+          className={styles.innerProgress}
+        ></span>
       </div>
 
       <div className={styles.qWrapper}>
@@ -886,19 +916,30 @@ const Quiz = ({ mission }) => {
                 /{quiz.length}
               </h1>
             </span>
-            <button
-              disabled={
-                quizStore.quiz[question._id].status == "ANSWERED" ||
-                !quizStore.quiz[question._id].answerByUser ||
-                quizStore.quiz[question._id].answerByUser.length <= 0
-              }
-              onClick={() => {
-                submitAnswer();
-              }}
-              className={styles.submit}
-            >
-              Submit
-            </button>
+            {!isQuizComplete() ? (
+              <button
+                disabled={
+                  quizStore.quiz[question._id].status == "ANSWERED" ||
+                  !quizStore.quiz[question._id].answerByUser ||
+                  quizStore.quiz[question._id].answerByUser.length <= 0
+                }
+                onClick={() => {
+                  submitAnswer();
+                }}
+                className={styles.submit}
+              >
+                Submit
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  claimMission(mission);
+                }}
+                className={styles.submit}
+              >
+                Claim Mission
+              </button>
+            )}
           </div>
         </div>
         <span className={styles.xp}>
