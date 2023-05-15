@@ -236,7 +236,6 @@ function Index({ mission }) {
         {/* Not Logged in */}
         {mission.type == "TASKS" && (
           <>
-            <p>as</p>
             {!status && (
               <>
                 <h3 className={styles.subtitle}>Tasks to Perform</h3>
