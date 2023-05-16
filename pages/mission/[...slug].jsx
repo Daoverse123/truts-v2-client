@@ -662,6 +662,7 @@ const Quiz = ({ mission }) => {
   const initData = (questionState) => {
     let sequenceStatus = [];
     quiz.forEach((q, idx) => {
+      console.log(q);
       if (questionState[q._id]) {
         questionState[q._id].type = q.type;
         sequenceStatus.push(questionState[q._id].status);
@@ -931,6 +932,7 @@ const Quiz = ({ mission }) => {
               </button>
             ) : (
               <button
+                disabled={status.data.attemptedMission.isCompleted}
                 onClick={() => {
                   claimMission(mission);
                 }}
