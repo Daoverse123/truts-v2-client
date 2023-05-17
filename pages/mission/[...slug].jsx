@@ -299,7 +299,9 @@ function Index({ mission }) {
                 </div>
                 {claimReady && !status.attemptedMission.isCompleted ? (
                   <button
-                    onClick={claimMission}
+                    onClick={() => {
+                      claimMission(mission);
+                    }}
                     className={styles.mainBtnClaim}
                   >
                     Claim Mission
