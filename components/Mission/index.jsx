@@ -41,7 +41,7 @@ const fetchCompleted = async (id, setter) => {
 export default function Component({ min, data, isCompleted }) {
   let chip = getChipType();
 
-  if (data._id == "645a472eac01844d7b41279d") {
+  if ("trending" in data && data?.trending == true) {
     chip = {
       color: "#3065F3",
       status: true,

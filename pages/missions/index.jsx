@@ -46,13 +46,20 @@ const Missions = ({ data }) => {
   const rearrangeMissions = (list) => {
     let completed = list.filter((ele) => ele.completed);
     let notCompleted = list.filter((ele) => !ele.completed);
-    let new_list = [...notCompleted, ...completed].filter(
-      (ele) => ele._id != "645a472eac01844d7b41279d"
-    );
     let ud = [...notCompleted, ...completed].find(
       (ele) => ele._id == "645a472eac01844d7b41279d"
     );
-    return [ud, ...new_list];
+
+    if (ud.completed) {
+      ud.trending = false;
+      return [...notCompleted, ...completed];
+    } else {
+      ud.trending = true;
+      let new_list = [...notCompleted, ...completed].filter(
+        (ele) => ele._id != "645a472eac01844d7b41279d"
+      );
+      return [ud, ...new_list];
+    }
   };
 
   return (
