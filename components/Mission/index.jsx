@@ -41,6 +41,15 @@ const fetchCompleted = async (id, setter) => {
 export default function Component({ min, data, isCompleted }) {
   let chip = getChipType();
 
+  if (data._id == "645a472eac01844d7b41279d") {
+    chip = {
+      color: "#3065F3",
+      status: true,
+      text: "Trending",
+      iconSrc: "/missions/date.png",
+    };
+  }
+
   const [completed, setcompleted] = useState(null);
 
   useEffect(() => {
@@ -54,14 +63,17 @@ export default function Component({ min, data, isCompleted }) {
   return (
     <div
       style={{
-        borderColor: "color" in chip ? chip.color : "",
+        borderColor: "color" in chip && chip.color ? chip.color : "",
       }}
       className={styles.mission + " " + (min ? styles.missionMin : "")}
     >
       {chip.status && (
-        <div className={styles.timeChip}>
+        <div
+          style={{ backgroundColor: `${chip.color}` }}
+          className={styles.timeChip}
+        >
           <img src={chip.iconSrc} alt="" />
-          <p>3 days left</p>
+          <p>{chip.text}</p>
         </div>
       )}
       <div key={data.name + "profile"} className={styles.profilesCompleted}>
