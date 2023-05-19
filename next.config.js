@@ -39,7 +39,11 @@ const nextConfig = {
         destination: 'https://tally.so/r/3j81En',
         permanent: true,
       },
-
+      {
+        source: '/mission/pizzadao',
+        destination: '/community/pizzadao',
+        permanent: false,
+      },
     ]
   },
 }
