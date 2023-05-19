@@ -20,6 +20,8 @@ import {
   useQueryClient,
 } from "react-query";
 
+import Footer from "../../components/Footer";
+
 import Toggle from "react-toggle";
 
 let Placeholder = "/profile-old.png";
@@ -374,6 +376,9 @@ function Index() {
           )}
           {selectedPage == options[1] && <Socials {...{ initUserData }} />}
         </div>
+      </div>
+      <div style={{ paddingTop: "100px", background: "#F7F7F7" }}>
+        <Footer />
       </div>
     </>
   );
