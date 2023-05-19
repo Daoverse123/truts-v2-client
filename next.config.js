@@ -40,7 +40,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/mission/pizzadao',
+        source: '/mission/btcpizzaday',
         destination: '/community/pizzadao',
         permanent: false,
       },
