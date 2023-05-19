@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import Nav from "../../components/Nav";
 import DAOCard from "../../components/DAOCard";
 import Button from "../../components/Button";
+import Footer from "../../components/Footer";
 
 //assets
 import downArrow from "../../assets/icons/down_arrow.svg";
@@ -358,6 +359,9 @@ function Discover({ chainList, categoriesList, selected_chain }) {
         <div className={styles.mobileFilterNav}>
           <button>Filters</button>
         </div>
+      </div>
+      <div style={{ paddingTop: "100px", background: "#F7F7F7" }}>
+        <Footer />
       </div>
     </>
   );

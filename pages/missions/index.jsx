@@ -6,6 +6,8 @@ import axios from "axios";
 import Head from "next/head";
 import { useQuery } from "react-query";
 
+import Footer from "../../components/Footer";
+
 const SortComp = ({ state, dispatch }) => {
   return (
     <span className={styles.sortComp}>
@@ -124,6 +126,9 @@ const Missions = ({ data }) => {
             );
           })}
         </div>
+      </div>
+      <div style={{ paddingTop: "100px" }}>
+        <Footer />
       </div>
     </>
   );
