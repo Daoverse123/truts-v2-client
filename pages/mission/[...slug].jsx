@@ -13,6 +13,7 @@ import { useQuery } from "react-query";
 import WalletConnect from "../../components/WalletConnect_mission_overlay";
 import { id } from "ethers/lib/utils";
 import { create } from "zustand";
+import { redirect } from "next/dist/server/api-utils";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -551,6 +552,14 @@ export const getServerSideProps = async (ctx) => {
   let mission_id = ctx.query.slug[0];
   if (mission_id == "daoplanet") {
     mission_id = "63fa5f2467a56d9329d84b3a";
+  }
+  if (mission_id == "646889a2b16f108d31b4ab4d") {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/mission/btcpizzaday",
+      },
+    };
   }
 
   let res = await axios.get(`${P_API}/mission/${mission_id}`);
