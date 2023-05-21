@@ -49,7 +49,7 @@ const Missions = ({ data }) => {
     let completed = list.filter((ele) => ele.completed);
     let notCompleted = list.filter((ele) => !ele.completed);
     let ud = [...notCompleted, ...completed].find(
-      (ele) => ele._id == "645a472eac01844d7b41279d"
+      (ele) => ele._id == "646889a2b16f108d31b4ab4d"
     );
 
     if (ud.completed) {
@@ -58,7 +58,7 @@ const Missions = ({ data }) => {
     } else {
       ud.trending = true;
       let new_list = [...notCompleted, ...completed].filter(
-        (ele) => ele._id != "645a472eac01844d7b41279d"
+        (ele) => ele._id != "646889a2b16f108d31b4ab4d"
       );
       return [ud, ...new_list];
     }

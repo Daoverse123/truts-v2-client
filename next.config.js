@@ -40,13 +40,19 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/mission/646889a2b16f108d31b4ab4d',
+        source: '/mission/btcpizzaday',
         destination: '/mission/btcpizzaday',
         permanent: false,
       },
     ]
   },
 }
+
+// {
+//   source: '/mission/646889a2b16f108d31b4ab4d',
+//   destination: '/mission/btcpizzaday',
+//   permanent: false,
+// },
 
 module.exports = nextConfig
 
