@@ -289,11 +289,11 @@ function Hero() {
       setprofileSignupPrompt(true);
       setreferral(ref[1]);
     }
-    if (ref[0] == "signup") {
+    if (ref[0] == "signup" && !localStorage.getItem("token")) {
       setprofileSignupPrompt(true);
     }
 
-    if (localStorage.getItem("token") && localStorage.getItem("user-server")) {
+    if (localStorage.getItem("token")) {
       setisLoggedIn(true);
     }
   }, []);
