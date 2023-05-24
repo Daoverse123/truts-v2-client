@@ -36,23 +36,32 @@ const P_API = process.env.P_API;
 const getMissionStatus = async (data, setmissions) => {
   console.log(data);
   let jwt = localStorage.getItem("token");
-  if (!jwt) {
+  if (!jwt || jwt == "null") {
     setmissions(data);
     return false;
   }
+
   let res = await Promise.all(
     data.missions.map((ele) => {
       return (async () => {
-        let res = await axios.get(`${P_API}/mission/${ele._id}/my-status`, {
-          headers: {
-            Authorization: jwt,
-          },
-        });
-        if (res.status == 200) {
-          return {
-            ...ele,
-            isCompleted: res.data.data.attemptedMission.isCompleted,
-          };
+        try {
+          let res = await axios.get(`${P_API}/mission/${ele._id}/my-status`, {
+            headers: {
+              Authorization: jwt,
+            },
+          });
+          if (res.status == 200) {
+            return {
+              ...ele,
+              isCompleted: res.data.data.attemptedMission.isCompleted,
+            };
+          }
+        } catch (err) {
+          console.log(err);
+          //catch 401 error and log unauth
+          if (err.response.status == 401) {
+            console.log("unauth");
+          }
         }
         return ele;
       })();

@@ -105,16 +105,12 @@ export default function Component({ min, data, isCompleted }) {
       </div>
       <Link href={`/mission/${data._id}`}>
         <span className={styles.topCon + " " + (isCompleted && styles.blur)}>
-          <img
-            src={data.listing?.photo?.logo?.secure_url || "/blue.png"}
-            alt=""
-            className={styles.profileImg}
-          />
+          <img src={"/blue.png"} alt="" className={styles.profileImg} />
           <h2>{limitText(20, data.listing.name)}</h2>
           <h1>{limitText(20, data.name)}</h1>
           <p>{limitText(55, data.description)}</p>
           <div className={styles.tags}>
-            {data.tags.map((tgs, idx) => {
+            {[data.tags].map((tgs, idx) => {
               return (
                 <Tag
                   key={"tgs" + idx}

@@ -7,8 +7,23 @@ import Head from "next/head";
 import { useQuery } from "react-query";
 
 import Footer from "../../components/Footer";
+import { create } from "zustand";
+
+const filterStore = create((set) => ({
+  sortState: "",
+  setSortState: (sort) => set((state) => ({ ...state, sortState: sort })),
+}));
 
 const SortComp = ({ state, dispatch }) => {
+  //Sort types
+  // ALPHA
+  // XP_HIGH
+  // XP_LOW
+
+  let setSortState = filterStore().setSortState;
+  let sort = filterStore().sortState;
+  console.log(sort);
+
   return (
     <span className={styles.sortComp}>
       <span className={styles.divider} />
@@ -17,11 +32,39 @@ const SortComp = ({ state, dispatch }) => {
       </span>
       <span className={styles.typesOption}>
         <p>Alphabetical Order</p>
-        <input type={"checkbox"} />
+        <input
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSortState("ALPHA");
+            }
+          }}
+          checked={sort == "ALPHA"}
+          type={"checkbox"}
+        />
       </span>
       <span className={styles.typesOption}>
-        <p>Participants</p>
-        <input type={"checkbox"} />
+        <p>XP : High to Low</p>
+        <input
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSortState("XP_HIGH");
+            }
+          }}
+          checked={sort == "XP_HIGH"}
+          type={"checkbox"}
+        />
+      </span>
+      <span className={styles.typesOption}>
+        <p>XP : Low to High</p>
+        <input
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSortState("XP_LOW");
+            }
+          }}
+          checked={sort == "XP_LOW"}
+          type={"checkbox"}
+        />
       </span>
       <span className={styles.divider} />
     </span>
@@ -45,24 +88,44 @@ const Missions = ({ data }) => {
     },
   });
 
-  const rearrangeMissions = (list) => {
-    let completed = list.filter((ele) => ele.completed);
-    let notCompleted = list.filter((ele) => !ele.completed);
-    let ud = [...notCompleted, ...completed].find(
-      (ele) => ele._id == "645a472eac01844d7b41279d"
-    );
+  let sort = filterStore().sortState;
 
-    if (ud.completed) {
-      ud.trending = false;
-      return [...notCompleted, ...completed];
-    } else {
-      ud.trending = true;
-      let new_list = [...notCompleted, ...completed].filter(
-        (ele) => ele._id != "645a472eac01844d7b41279d"
-      );
-      return [ud, ...new_list];
+  let getSortParam = (sort) => {
+    if (sort == "XP_HIGH") {
+      return `{ "listingXP": -1 }`;
     }
+    if (sort == "XP_LOW") {
+      return `{ "listingXP": 1 }`;
+    }
+    if (sort == "ALPHA") {
+      return `{ "name": 1 }`;
+    }
+    return "";
   };
+
+  let mission = useQuery({
+    queryKey: ["missions", sort],
+    queryFn: async (key) => {
+      let sortParms = getSortParam(key.queryKey[1]);
+      let res = await axios.get(
+        `${P_API}/mission?page=1&limit=999&sort=${sortParms}`
+      );
+      return res.data.data.result;
+    },
+  });
+
+  let missionData =
+    mission.isFetched && completedMissions.isFetched
+      ? mission.data.map((ele) => {
+          let isCompleted = false;
+          for (let i = 0; i < completedMissions.data.length; i++) {
+            if (completedMissions.data[i]._id == ele._id) {
+              isCompleted = true;
+            }
+          }
+          return { ...ele, isCompleted };
+        })
+      : [];
 
   return (
     <>
@@ -101,25 +164,10 @@ const Missions = ({ data }) => {
         </div>
         <h1 className={styles.titleMain}>Missions</h1>
         <div className={styles.mainContent}>
-          {rearrangeMissions(
-            data.missions.map((ft) => {
-              if (completedMissions.isSuccess) {
-                let elm = completedMissions.data.find((ms) => {
-                  return ms._id == ft._id;
-                });
-
-                if (elm) {
-                  ft.completed = true;
-                  return ft;
-                }
-              }
-
-              return ft;
-            })
-          ).map((ele, idx) => {
+          {missionData.map((ele, idx) => {
             return (
               <Mission
-                isCompleted={ele.completed}
+                isCompleted={ele.isCompleted}
                 data={ele}
                 key={idx + "m" + ele.name}
               />
@@ -133,20 +181,5 @@ const Missions = ({ data }) => {
     </>
   );
 };
-
-const fetchMissions = async () => {
-  let res = await axios.get(`${P_API}/mission`);
-  return res.data.data;
-};
-
-export async function getServerSideProps() {
-  let missions = await fetchMissions();
-
-  return {
-    props: {
-      data: missions,
-    },
-  };
-}
 
 export default Missions;

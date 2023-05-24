@@ -42,16 +42,24 @@ const getMissionStatus = async (data, setmissions) => {
   let res = await Promise.all(
     data.missions.map((ele) => {
       return (async () => {
-        let res = await axios.get(`${P_API}/mission/${ele._id}/my-status`, {
-          headers: {
-            Authorization: jwt,
-          },
-        });
-        if (res.status == 200) {
-          return {
-            ...ele,
-            isCompleted: res.data.data.attemptedMission.isCompleted,
-          };
+        try {
+          let res = await axios.get(`${P_API}/mission/${ele._id}/my-status`, {
+            headers: {
+              Authorization: jwt,
+            },
+          });
+          if (res.status == 200) {
+            return {
+              ...ele,
+              isCompleted: res.data.data.attemptedMission.isCompleted,
+            };
+          }
+        } catch (error) {
+          console.log(err);
+          //catch 401 error and log unauth
+          if (err.response.status == 401) {
+            console.log("unauth");
+          }
         }
         return ele;
       })();
