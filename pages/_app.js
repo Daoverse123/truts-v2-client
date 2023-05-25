@@ -80,17 +80,14 @@ function MyApp({ Component, pageProps }) {
       </Script>
       <Script id='hotjar'>
         {`
- <!-- Hotjar Tracking Code for my site -->
- <script>
-     (function(h,o,t,j,a,r){
-         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-         h._hjSettings={hjid:3400708,hjsv:6};
-         a=o.getElementsByTagName('head')[0];
-         r=o.createElement('script');r.async=1;
-         r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-         a.appendChild(r);
-     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
- </script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3400690,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         `}
       </Script>
       <Script id='chat' type="text/javascript">{`window.$crisp=[];window.CRISP_WEBSITE_ID="309a073d-871d-45e9-bbb8-f6fa6f4d4935";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}</Script>
