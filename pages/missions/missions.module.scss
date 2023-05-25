@@ -16,6 +16,49 @@
         font-weight: 700;
         font-size: 42px;
     }
+
+    @media (max-width: "700px") {
+        width: 100%;
+        margin: 0;
+        padding: 0 20px;
+        position: fixed;
+        z-index: 1000;
+        background: white;
+        height: max-content;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding-bottom: 60px;
+        border-radius: 25px 25px 0 0;
+        border-top: 3px solid rgb(24, 79, 230);
+        .title {
+            display: none;
+        }
+    }
+}
+
+.filterBtn {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    z-index: 2000;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: max-content;
+    width: 142px;
+    height: 36px;
+    color: white;
+    background: #121212;
+    border-radius: 16px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    @media (max-width: 700px) {
+        display: flex;
+    }
 }
 
 .option {
@@ -23,7 +66,7 @@
     width: 100%;
     justify-content: space-between;
     cursor: pointer;
-    padding-right: 10px;
+
     p {
         font-size: 18px;
         font-weight: 500;
@@ -93,14 +136,24 @@
     display: none;
 }
 
+.mobileNav {
+    display: none;
+}
+
 @media (max-width: "700px") {
-    .sideNav {
-        display: none;
-    }
     .missions {
         flex-direction: column;
+        padding-top: 25%;
     }
     .titleMain {
+        display: flex;
+    }
+
+    .desktopNav {
+        display: none !important;
+    }
+
+    .mobileNav {
         display: flex;
     }
 }

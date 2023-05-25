@@ -51,6 +51,7 @@ let claimMission = async (mission) => {
       },
     });
     if (res.status == 200) {
+      let xp = res.data.data.attemptedMission.listingXP;
       try {
         let userData = localStorage.getItem("user-server");
         if (userData) {
@@ -60,10 +61,10 @@ let claimMission = async (mission) => {
         if (location.href.includes("daoplanet") && chain == "NEAR") {
           location.href = "https://shard.dog/DAODenverIsNEAR";
         } else {
-          location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
+          location.href = `/status/mission?xp=${xp}&m_id=${mission._id}`;
         }
       } catch (error) {
-        location.href = `/status/mission?xp=${mission.listingXP}&m_id=${mission._id}`;
+        location.href = `/status/mission?xp=${xp}&m_id=${mission._id}`;
       }
     }
   } catch (error) {}
@@ -140,7 +141,7 @@ function Index({ mission }) {
         <meta property="og:title" content="Truts" />
         <meta property="og:description" content={mission.description} />
         <meta property="og:image" content="/favicon.png" />
-
+        <link rel="preload" as="image" href="/quiz_placeholder.svg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:domain" content="truts.xyz" />
         <meta property="twitter:url" content="https://www.truts.xyz" />
@@ -189,11 +190,13 @@ function Index({ mission }) {
               <div className={styles.bottomNav}>
                 <div className={styles.tags}>
                   {mission.tags.map((tgs, idx) => {
+                    let color = tgs.color.rgba;
+                    color = `rgb(${color[0]},${color[1]},${color[2]})`;
                     return (
                       <Tag
                         key={"tgs" + idx}
-                        src={"/missions/bounty.png"}
-                        color={"rgb(203, 56, 240)"}
+                        src={tgs.logo.secure_url}
+                        color={color}
                         title={tgs.name}
                       />
                     );
@@ -724,7 +727,26 @@ const Quiz = ({ mission }) => {
   };
 
   if (!status.isSuccess || !quizStore.initTrue) {
-    return <></>;
+    return (
+      <>
+        {" "}
+        <div className={styles.signUp}>
+          <p>Sign in or Sign up to access the Missions.</p>
+          <button
+            onClick={() => {
+              location.href = "/?signup=true";
+            }}
+          >
+            Login/Sign Up
+          </button>
+        </div>
+        <img
+          style={{ marginBottom: "100px", width: "100%", maxWidth: "1080px" }}
+          src="/quiz_placeholder.svg"
+          alt=""
+        />
+      </>
+    );
   }
 
   console.log(quizStore);
@@ -880,7 +902,9 @@ const Quiz = ({ mission }) => {
 
   return (
     <div className={styles.quiz} key={"question-no " + quizStore.qNo}>
-      <h3 className={styles.subtitle}>Quiz completed</h3>
+      <h3 className={styles.subtitle}>
+        Quiz completed {getCompletedCountPercent()}%
+      </h3>
       <div className={styles.progress}>
         <span
           style={{
@@ -892,7 +916,27 @@ const Quiz = ({ mission }) => {
 
       <div className={styles.qWrapper}>
         <div className={styles.qCon}>
-          <h3 className={styles.title}>{question.prompt}</h3>
+          <>
+            <h3 className={styles.title}>{question.prompt}</h3>
+            <div className={styles.tags}>
+              {question.type == "SCQ" ? (
+                <Tag
+                  key={"qt"}
+                  color={"rgb(130,71,229)"}
+                  title={"Single Answer Question"}
+                  src={"/single_answer.svg"}
+                />
+              ) : (
+                <Tag
+                  key={"qt"}
+                  color={"rgb(230,0,122)"}
+                  title={"Multi Answer Question"}
+                  src={"/mult_answer.svg"}
+                />
+              )}
+            </div>
+          </>
+
           <div className={styles.qList}>
             {question.options.map((ele, idx) => {
               return <Option key={idx + "option"} data={ele} no={idx + 1} />;
