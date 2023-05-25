@@ -240,7 +240,7 @@ function Discover({ chainList, categoriesList, selected_chain }) {
 
   console.log(queryRes);
 
-  let data = useEffect(() => {
+  useEffect(() => {
     setfiltersVisible(!isMobile);
   }, [isMobile]);
 
@@ -282,7 +282,7 @@ function Discover({ chainList, categoriesList, selected_chain }) {
               <span className={styles.mobileFilterHeadder}>
                 <img
                   onClick={() => {
-                    setfiltersVisible(false);
+                    //setfiltersVisible(false);
                   }}
                   src={close_btn.src}
                   alt=""
@@ -356,7 +356,12 @@ function Discover({ chainList, categoriesList, selected_chain }) {
           </div>
         </div>
 
-        <div className={styles.mobileFilterNav}>
+        <div
+          onClick={() => {
+            setfiltersVisible(true);
+          }}
+          className={styles.mobileFilterNav}
+        >
           <button>Filters</button>
         </div>
       </div>

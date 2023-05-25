@@ -214,8 +214,8 @@ $mobile: 800px;
     column-gap: 16px;
     .tag {
         display: flex;
-        height: min-content;
-        width: min-content;
+        height: fit-content;
+        width: fit-content;
         align-items: center;
         border-radius: 20px;
         padding: 2px 10px;
@@ -665,7 +665,7 @@ $mobile: 800px;
         .title {
             font-weight: 500;
             font-size: 20px;
-
+            margin-bottom: 10px;
             @media (max-width: $tablet) {
                 font-size: 16px;
             }

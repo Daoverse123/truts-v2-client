@@ -5,14 +5,70 @@ import Mission from "../../components/Mission";
 import axios from "axios";
 import Head from "next/head";
 import { useQuery } from "react-query";
-
+import downArrow from "../../assets/icons/down_arrow.svg";
 import Footer from "../../components/Footer";
 import { create } from "zustand";
 
 const filterStore = create((set) => ({
   sortState: "",
+  typeFilter: [],
+  completionFilter: [],
+  setTypeFilter: (type) =>
+    set((state) => ({ ...state, typeFilter: [...type] })),
+  setCompletionFilter: (completion) =>
+    set((state) => ({ ...state, completionFilter: [...completion] })),
   setSortState: (sort) => set((state) => ({ ...state, sortState: sort })),
 }));
+
+let FilterComp = ({ label, options, setter }) => {
+  const [toggleCollapse, settoggleCollapse] = useState(false);
+  const [filter, setfilter] = useState([]);
+
+  useEffect(() => {
+    if (filter == "All") {
+      setter([]);
+    } else {
+      setter(filter);
+    }
+  }, [filter]);
+
+  return (
+    <>
+      <span
+        className={styles.option}
+        onClick={() => {
+          settoggleCollapse(!toggleCollapse);
+        }}
+      >
+        <p>{label}</p>
+        <img src={downArrow.src} alt="" />
+      </span>
+      {toggleCollapse &&
+        options.map((ele) => {
+          return (
+            <span key={"options" + ele} className={styles.typesOption}>
+              <p>{ele}</p>
+              <input
+                key={"opt" + ele}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    if (ele == "All") {
+                      return setfilter(["All"]);
+                    }
+                    setfilter([...filter, ele].filter((e) => e != "All"));
+                  } else {
+                    setfilter(filter.filter((e) => e != ele));
+                  }
+                }}
+                type={"checkbox"}
+                checked={filter.includes(ele)}
+              />
+            </span>
+          );
+        })}
+    </>
+  );
+};
 
 const SortComp = ({ state, dispatch }) => {
   //Sort types
@@ -22,7 +78,9 @@ const SortComp = ({ state, dispatch }) => {
 
   let setSortState = filterStore().setSortState;
   let sort = filterStore().sortState;
-  console.log(sort);
+
+  let setTypesFilter = filterStore().setTypeFilter;
+  let setCompletionFilter = filterStore().setCompletionFilter;
 
   return (
     <span className={styles.sortComp}>
@@ -67,6 +125,17 @@ const SortComp = ({ state, dispatch }) => {
         />
       </span>
       <span className={styles.divider} />
+      <FilterComp
+        label={"Type"}
+        options={["All", "Task", "Quiz"]}
+        setter={setTypesFilter}
+      />
+      <span className={styles.divider} />
+      <FilterComp
+        label={"Completion"}
+        options={["All", "Completed", "Unattempted"]}
+        setter={setCompletionFilter}
+      />
     </span>
   );
 };
@@ -74,9 +143,12 @@ const SortComp = ({ state, dispatch }) => {
 let P_API = process.env.P_API;
 
 const Missions = ({ data }) => {
+  const [toggleFilters, settoggleFilters] = useState(false);
+
   let completedMissions = useQuery({
     queryKey: ["completed-missions"],
     queryFn: async () => {
+      if (!window.localStorage.getItem("token")) return [];
       let option = {
         headers: {
           Authorization: window.localStorage.getItem("token"),
@@ -107,24 +179,79 @@ const Missions = ({ data }) => {
     queryKey: ["missions", sort],
     queryFn: async (key) => {
       let sortParms = getSortParam(key.queryKey[1]);
-      let res = await axios.get(
-        `${P_API}/mission?page=1&limit=999&sort=${sortParms}`
-      );
+      if (sortParms) {
+        let res = await axios.get(
+          `${P_API}/mission?page=1&limit=20&sort=${sortParms}`
+        );
+        return res.data.data.result;
+      }
+      let res = await axios.get(`${P_API}/mission?page=1&limit=20`);
       return res.data.data.result;
     },
   });
 
+  let typeFilter = filterStore().typeFilter;
+  let completionFilter = filterStore().completionFilter;
+  console.log(typeFilter);
+
+  //Filter by type
+  let filterByType = (data) => {
+    let TypeMap = {
+      TASKS: "Task",
+      QUIZ: "Quiz",
+    };
+    //Filter by type
+    let typeFilteredData = data;
+    if (typeFilter.length > 0) {
+      return (typeFilteredData = data.filter((ele) => {
+        return typeFilter.includes(TypeMap[ele.type]);
+      }));
+    } else {
+      return data;
+    }
+  };
+
+  //Filter by completion
+  let filterByCompletion = (data) => {
+    let completionMap = {
+      All: "All",
+      Completed: true,
+      Unattempted: false,
+    };
+    let completionFilteredData = data;
+    if (completionFilter.length > 0) {
+      if (completionFilter.length >= 2) {
+        return data;
+      }
+      return (completionFilteredData = data.filter((ele) => {
+        return ele.isCompleted == completionMap[completionFilter[0]];
+      }));
+    } else {
+      return data;
+    }
+  };
+
+  const getFilteredData = (data) => {
+    return filterByCompletion(filterByType(data));
+  };
+
   let missionData =
     mission.isFetched && completedMissions.isFetched
-      ? mission.data.map((ele) => {
-          let isCompleted = false;
-          for (let i = 0; i < completedMissions.data.length; i++) {
-            if (completedMissions.data[i]._id == ele._id) {
-              isCompleted = true;
+      ? getFilteredData(
+          mission.data.map((ele) => {
+            let isCompleted = false;
+            for (let i = 0; i < completedMissions.data.length; i++) {
+              if (completedMissions.data[i]._id == ele._id) {
+                isCompleted = true;
+              }
             }
-          }
-          return { ...ele, isCompleted };
-        })
+            // Make UnstoppableDAO trending if not completed
+            if (ele._id == "645a472eac01844d7b41279d" && isCompleted == false) {
+              ele.trending = true;
+            }
+            return { ...ele, isCompleted };
+          })
+        )
       : [];
 
   return (
@@ -158,10 +285,17 @@ const Missions = ({ data }) => {
       </Head>
       <Nav isFloating />
       <div className={styles.missions}>
-        <div className={styles.sideNav}>
+        {/* Desktop nav */}
+        <div className={styles.sideNav + " " + styles.desktopNav}>
           <h1 className={styles.title}>Missions</h1>
           <SortComp />
         </div>
+        {toggleFilters && (
+          <div className={styles.sideNav + " " + styles.mobileNav}>
+            <h1 className={styles.title}>Missions</h1>
+            <SortComp />
+          </div>
+        )}
         <h1 className={styles.titleMain}>Missions</h1>
         <div className={styles.mainContent}>
           {missionData.map((ele, idx) => {
@@ -174,6 +308,14 @@ const Missions = ({ data }) => {
             );
           })}
         </div>
+        <button
+          onClick={() => {
+            settoggleFilters(!toggleFilters);
+          }}
+          className={styles.filterBtn}
+        >
+          Filters
+        </button>
       </div>
       <div style={{ paddingTop: "100px" }}>
         <Footer />
@@ -181,5 +323,25 @@ const Missions = ({ data }) => {
     </>
   );
 };
+
+function compareArrays(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  // Sort the arrays
+  const sortedArr1 = arr1.sort();
+  const sortedArr2 = arr2.sort();
+
+  // Compare the sorted arrays element by element
+  for (let i = 0; i < sortedArr1.length; i++) {
+    if (sortedArr1[i] !== sortedArr2[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 export default Missions;
