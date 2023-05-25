@@ -181,11 +181,11 @@ const Missions = ({ data }) => {
       let sortParms = getSortParam(key.queryKey[1]);
       if (sortParms) {
         let res = await axios.get(
-          `${P_API}/mission?page=1&limit=20&sort=${sortParms}`
+          `${P_API}/mission?page=1&limit=200&sort=${sortParms}`
         );
         return res.data.data.result;
       }
-      let res = await axios.get(`${P_API}/mission?page=1&limit=20`);
+      let res = await axios.get(`${P_API}/mission?page=1&limit=200`);
       return res.data.data.result;
     },
   });
