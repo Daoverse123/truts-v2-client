@@ -67,6 +67,11 @@
     justify-content: space-between;
     cursor: pointer;
 
+    .reset {
+        color: rgba(78, 78, 78, 0.252);
+        font-weight: 400;
+    }
+
     p {
         font-size: 18px;
         font-weight: 500;

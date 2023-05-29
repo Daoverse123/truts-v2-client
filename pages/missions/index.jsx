@@ -87,6 +87,21 @@ const SortComp = ({ state, dispatch }) => {
       <span className={styles.divider} />
       <span className={styles.option}>
         <p>Sort by</p>
+        <p
+          onClick={() => {
+            setSortState("");
+          }}
+          style={
+            sort
+              ? {
+                  color: "red",
+                }
+              : {}
+          }
+          className={styles.reset}
+        >
+          Reset
+        </p>
       </span>
       <span className={styles.typesOption}>
         <p>Alphabetical Order</p>
@@ -231,6 +246,26 @@ const Missions = ({ data }) => {
     }
   };
 
+  //divide by Completion
+  let divideByCompletion = (data) => {
+    if (sort) {
+      return data;
+    }
+
+    // remove trending if completed
+    let completed = data
+      .filter((ele) => ele.isCompleted)
+      .map((ele) => {
+        ele.trending = false;
+        return ele;
+      });
+
+    let uncompleted = data.filter((ele) => !ele.isCompleted);
+    let trending = uncompleted.filter((ele) => ele.trending);
+    uncompleted = uncompleted.filter((ele) => !ele.trending);
+    return [...trending, ...uncompleted, ...completed];
+  };
+
   const getFilteredData = (data) => {
     return filterByCompletion(filterByType(data));
   };
@@ -238,19 +273,18 @@ const Missions = ({ data }) => {
   let missionData =
     mission.isFetched && completedMissions.isFetched
       ? getFilteredData(
-          mission.data.map((ele) => {
-            let isCompleted = false;
-            for (let i = 0; i < completedMissions.data.length; i++) {
-              if (completedMissions.data[i]._id == ele._id) {
-                isCompleted = true;
+          divideByCompletion(
+            mission.data.map((ele) => {
+              let isCompleted = false;
+              for (let i = 0; i < completedMissions.data.length; i++) {
+                if (completedMissions.data[i]._id == ele._id) {
+                  isCompleted = true;
+                }
               }
-            }
-            // Make UnstoppableDAO trending if not completed
-            if (ele._id == "645a472eac01844d7b41279d" && isCompleted == false) {
-              ele.trending = true;
-            }
-            return { ...ele, isCompleted };
-          })
+
+              return { ...ele, isCompleted };
+            })
+          )
         )
       : [];
 
