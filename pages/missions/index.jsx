@@ -248,10 +248,6 @@ const Missions = ({ data }) => {
 
   //divide by Completion
   let divideByCompletion = (data) => {
-    if (sort) {
-      return data;
-    }
-
     // remove trending if completed
     let completed = data
       .filter((ele) => ele.isCompleted)
@@ -262,6 +258,9 @@ const Missions = ({ data }) => {
 
     let uncompleted = data.filter((ele) => !ele.isCompleted);
     let trending = uncompleted.filter((ele) => ele.trending);
+    if (sort) {
+      return [...uncompleted, ...completed];
+    }
     uncompleted = uncompleted.filter((ele) => !ele.trending);
     return [...trending, ...uncompleted, ...completed];
   };
