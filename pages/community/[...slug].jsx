@@ -834,11 +834,13 @@ const ReviewComp = ({
 };
 
 function Missions({ missions, id }) {
-  let filteredMissions = missions.result.filter((ele) => {
-    if (ele.listing._id == id) {
-      return true;
-    }
-  });
+  let filteredMissions = missions.result
+    ? missions.result.filter((ele) => {
+        if (ele.listing._id == id) {
+          return true;
+        }
+      })
+    : [];
   return (
     <div className={styles.content}>
       <div className={styles.stack}>
