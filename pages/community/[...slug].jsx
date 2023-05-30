@@ -231,7 +231,9 @@ function Dao({ dao_data, rid, slug }) {
             <Sidebar dao_data={dao_data} />
           </div>
         )}
-        {selected == "Missions" && <Missions key={slug} missions={missions} />}
+        {selected == "Missions" && (
+          <Missions id={dao_data._id} key={slug} missions={missions} />
+        )}
         {selected == "Insights" && (
           <div className={styles.content}>
             <img className={styles.cmgSoon} src="/coming_soon.png" alt="" />
@@ -831,14 +833,18 @@ const ReviewComp = ({
   );
 };
 
-function Missions({ missions }) {
-  console.log(missions);
+function Missions({ missions, id }) {
+  let filteredMissions = missions.result.filter((ele) => {
+    if (ele.listing._id == id) {
+      return true;
+    }
+  });
   return (
     <div className={styles.content}>
       <div className={styles.stack}>
-        {"missions" in missions && missions.missions.length > 0 && (
+        {filteredMissions && filteredMissions.length > 0 && (
           <section className={styles.missions}>
-            {missions.missions.map((ele, idx) => {
+            {filteredMissions.map((ele, idx) => {
               return (
                 <Mission
                   key={"msn" + idx}
@@ -850,7 +856,7 @@ function Missions({ missions }) {
             })}
           </section>
         )}
-        {"missions" in missions && (
+        {filteredMissions.length == 0 && (
           <div className={styles.banner}>
             <div className={styles.content}>
               <h1>
