@@ -119,7 +119,9 @@ function Dao({ dao_data, rid, slug }) {
 
   const fetchMissions = async () => {
     try {
-      let res = await axios.get(`${P_API}/mission?listingID=${dao_data._id}`);
+      let res = await axios.get(
+        `${P_API}/public/listing/${dao_data._id}/missions`
+      );
       await getMissionStatus(res.data.data, setmissions);
     } catch (error) {
       console.log(error);
@@ -834,13 +836,8 @@ const ReviewComp = ({
 };
 
 function Missions({ missions, id }) {
-  let filteredMissions = missions.result
-    ? missions.result.filter((ele) => {
-        if (ele.listing._id == id) {
-          return true;
-        }
-      })
-    : [];
+  let filteredMissions = missions.missions ? missions.missions : [];
+
   return (
     <div className={styles.content}>
       <div className={styles.stack}>
