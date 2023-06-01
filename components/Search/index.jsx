@@ -21,21 +21,20 @@ export default function Search({ className }) {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
     // let res = await axios.get(`${API}/search/${term}`);
-    let query = {
+    let query1 = {
       query: {
         bool: {
-          must: [
-            {
-              wildcard: {
-                dao_name: `*${term}*`,
-              },
+          should: {
+            query_string: {
+              query: term,
+              default_field: "dao_name",
             },
-            {
-              match: {
-                verified_status: true,
-              },
+          },
+          filter: {
+            term: {
+              verified_status: true,
             },
-          ],
+          },
         },
       },
       _source: {
@@ -45,10 +44,79 @@ export default function Search({ className }) {
           "dao_logo",
           "review_count",
           "slug",
+          "chain",
+          "description",
+          "dao_mission",
         ],
       },
     };
-    let res = await axios.post(`https://search.truts.xyz/daos/_search`, query);
+
+    let query2 = {
+      query: {
+        bool: {
+          should: [
+            {
+              query_string: {
+                default_field: "dao_name",
+                query: term,
+                boost: 3,
+                _name: "query_string_dao_name",
+              },
+            },
+            {
+              query_string: {
+                default_field: "chain",
+                query: term,
+                _name: "query_string_chain",
+              },
+            },
+            {
+              query_string: {
+                default_field: "dao_category",
+                query: term,
+                _name: "query_string_dao_category",
+              },
+            },
+            {
+              query_string: {
+                default_field: "description",
+                query: term,
+                _name: "query_string_description",
+              },
+            },
+            {
+              query_string: {
+                default_field: "dao_mission",
+                query: term,
+                _name: "query_string_dao_mission",
+              },
+            },
+          ],
+          filter: {
+            term: {
+              verified_status: true,
+            },
+          },
+        },
+      },
+      _source: {
+        includes: [
+          "dao_name",
+          "dao_category",
+          "dao_logo",
+          "review_count",
+          "slug",
+          "chain",
+          "description",
+          "dao_mission",
+        ],
+      },
+    };
+
+    let res = await axios.post(
+      `https://search.truts.xyz/listing/_search`,
+      query1
+    );
 
     console.log(res);
 
