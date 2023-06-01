@@ -178,7 +178,7 @@ function Index({ mission }) {
           <div className={styles.missionHead}>
             <img
               style={{
-                zIndex: "500",
+                zIndex: "100",
                 cursor: "pointer",
               }}
               onClick={() => {
@@ -193,7 +193,7 @@ function Index({ mission }) {
             <div className={styles.content}>
               <h2
                 style={{
-                  zIndex: "500",
+                  zIndex: "100",
                   cursor: "pointer",
                 }}
                 onClick={() => {

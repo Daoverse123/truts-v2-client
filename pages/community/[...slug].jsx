@@ -844,6 +844,7 @@ function Missions({ missions, id }) {
         {filteredMissions && filteredMissions.length > 0 && (
           <section className={styles.missions}>
             {filteredMissions.map((ele, idx) => {
+              ele.trending = false;
               return (
                 <Mission
                   key={"msn" + idx}
