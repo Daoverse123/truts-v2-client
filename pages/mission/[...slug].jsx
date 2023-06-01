@@ -177,12 +177,36 @@ function Index({ mission }) {
         <div className={styles.bg}>
           <div className={styles.missionHead}>
             <img
+              style={{
+                zIndex: "500",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                openNewTab(
+                  `${location.origin}/community/${mission.listing.slug.trim()}`
+                );
+              }}
               className={styles.profileImg}
               src={mission.listing.dao_logo || "/blue.png"}
               alt=""
             />
             <div className={styles.content}>
-              <h2 className={styles.sub}>{mission.listing.dao_name}</h2>
+              <h2
+                style={{
+                  zIndex: "500",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  openNewTab(
+                    `${
+                      location.origin
+                    }/community/${mission.listing.slug.trim()}`
+                  );
+                }}
+                className={styles.sub}
+              >
+                {mission.listing.dao_name}
+              </h2>
               <h1 className={styles.title}>{limitText(40, mission.name)}</h1>
               <p className={styles.desc}>
                 {limitText(120, mission.description)}

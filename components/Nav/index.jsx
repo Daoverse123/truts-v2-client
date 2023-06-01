@@ -73,7 +73,9 @@ export default function Component({ isFloating, isStrech }) {
       <nav
         key={navKey}
         style={
-          isFloating == true ? { position: "fixed" } : { position: "absolute" }
+          isFloating == true
+            ? { position: "fixed", zIndex: "10000" }
+            : { position: "absolute", zIndex: "10000" }
         }
         className={styles.navWrapper}
       >

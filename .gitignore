@@ -39,3 +39,5 @@ yarn-error.log*
 
 addSampleData.js
 sampleImage.js
+# Sentry Auth Token
+.sentryclirc
