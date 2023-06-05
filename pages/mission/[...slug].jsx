@@ -921,7 +921,7 @@ const Quiz = ({ mission }) => {
         ans = ans + 1;
       }
     });
-    return (ans / quiz.length) * 100;
+    return Math.ceil((ans / quiz.length) * 100);
   };
 
   return (
