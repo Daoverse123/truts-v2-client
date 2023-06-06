@@ -686,7 +686,11 @@ const Quiz = ({ mission }) => {
         Authorization: localStorage.getItem("token"),
       },
     });
-    return res.data.data;
+    if (res.status == 200) {
+      return res.data.data;
+    } else {
+      throw new Error("status undefined");
+    }
   });
 
   useEffect(() => {
