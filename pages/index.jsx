@@ -281,39 +281,11 @@ const getDynamicCategoryDaoList = async (setter) => {
 function Hero() {
   const [profileSignupPrompt, setprofileSignupPrompt] = useState(false);
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
-  const [referral, setreferral] = useState(undefined);
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-  useEffect(() => {
-    let ref = location.search.replaceAll("?", "").split("=");
-    if (ref[0] == "ref") {
-      setprofileSignupPrompt(true);
-      setreferral(ref[1]);
-    }
-    if (ref[0] == "signup" && !localStorage.getItem("token")) {
-      setprofileSignupPrompt(true);
-    }
 
-    if (localStorage.getItem("token")) {
-      setisLoggedIn(true);
-    }
-  }, []);
+  const [isLoggedIn, setisLoggedIn] = useState(false);
 
   return (
     <>
-      {profileSignupPrompt && (
-        <Profile_signup
-          referral={referral}
-          setprofileSignupPrompt={setprofileSignupPrompt}
-          showWalletConnect={() => {
-            setwalletConnectVisible(true);
-          }}
-        />
-      )}
-      <WalletConnectProfile
-        referral={referral}
-        walletConnectVisible={walletConnectVisible}
-        setwalletConnectVisible={setwalletConnectVisible}
-      />
       <img
         className={styles.heroLeft}
         src={`//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/leftGrad.png`}
@@ -336,7 +308,7 @@ function Hero() {
           {!isLoggedIn ? (
             <button
               onClick={() => {
-                setprofileSignupPrompt(true);
+                window.showSignupPrompt && window.showSignupPrompt();
                 // openNewTab('/early-alpha.html');
               }}
               className={styles.black_btn}

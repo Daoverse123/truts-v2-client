@@ -112,11 +112,14 @@ export default function Component({ isFloating, isStrech }) {
               </li>
             ) : (
               // connect wallet
-              <a href={"/?signup=true"}>
-                <li>
-                  <img alt="" src={"/svg/nav-soc.svg"} />
-                </li>
-              </a>
+
+              <li
+                onClick={() => {
+                  window.showSignupPrompt && window.showSignupPrompt();
+                }}
+              >
+                <img alt="" src={"/svg/nav-soc.svg"} />
+              </li>
             )}
           </ul>
 
@@ -178,7 +181,7 @@ const ProfileDropDown = ({ user }) => {
             onClick={() => {
               localStorage.removeItem("token");
               localStorage.removeItem("user-server");
-              location.href = "/?signup=true";
+              window.location.reload();
             }}
             className={styles.power_btn}
           >

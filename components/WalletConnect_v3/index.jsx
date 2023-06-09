@@ -85,7 +85,8 @@ const walletAuth = async (login, walletState, signMessage, saveWallet) => {
       });
       saveWallet();
     } else {
-      window.location.href = document.referrer;
+      //window.location.href = document.referrer;
+      window.location.reload();
     }
   } else {
     return alert("Auth error");

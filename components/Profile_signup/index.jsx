@@ -35,7 +35,8 @@ const ProfileLogin = ({
     if (res.status == 200) {
       let jwt = res.data.data.token;
       localStorage.setItem("token", `Bearer ${jwt}`);
-      location.href = document.referrer;
+      //location.href = document.referrer;
+      location.reload();
     } else {
       alert("SignUp failed Please try Again");
     }
@@ -61,17 +62,18 @@ const ProfileLogin = ({
   return (
     <div
       className={styles.profileLoginPage}
-      onTransitionEnd={() => {
-        setprofileSignupPrompt(false);
-      }}
+      // onTransitionEnd={() => {
+      //   setprofileSignupPrompt(false);
+      // }}
     >
       <div className={styles.loginModel}>
         <img
           alt=""
           onClick={() => {
-            document
-              .querySelector(`.${styles.profileLoginPage}`)
-              .classList.add("close");
+            // document
+            //   .querySelector(`.${styles.profileLoginPage}`)
+            //   .classList.add("close");
+            setprofileSignupPrompt(false);
           }}
           src="/svg/close.svg"
           className={styles.closeIcon}
