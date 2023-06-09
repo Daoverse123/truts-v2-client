@@ -300,7 +300,8 @@ function Index({ mission }) {
                   <p>Sign in or Sign up to access the Missions.</p>
                   <button
                     onClick={() => {
-                      location.href = "/?signup=true";
+                      // location.href = "/?signup=true";
+                      window.showSignupPrompt && window.showSignupPrompt();
                     }}
                   >
                     Login/Sign Up
