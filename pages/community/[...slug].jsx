@@ -673,6 +673,7 @@ const ReviewComp = ({
   };
 
   const intiateTip = () => {
+    return console.log(review);
     let chainMap = {
       Ethereum: "eth",
       Solana: "sol",

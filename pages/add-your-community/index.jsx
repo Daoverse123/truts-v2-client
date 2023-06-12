@@ -312,7 +312,7 @@ function DaoForm({ categoriesList }) {
             </label>
           </span>
 
-          <label htmlFor="">
+          {/* <label htmlFor="">
             <p>Additional Link:</p>
             <input
               value={state.additional_link}
@@ -326,9 +326,7 @@ function DaoForm({ categoriesList }) {
               placeholder="Additional Link"
             />
           </label>
-          {/* 
-                    opensea_link: { type: String },
-                     magiceden_link: { type: String }, */}
+
           <label htmlFor="">
             <p>OpenSea Link: (if applicable)</p>
             <input
@@ -356,7 +354,7 @@ function DaoForm({ categoriesList }) {
               type="text"
               placeholder="https://magiceden.io/marketplace/..."
             />
-          </label>
+          </label> */}
 
           <label htmlFor="">
             <p>Submitter`s Discord ID*</p>

@@ -77,10 +77,7 @@ export default function Component({ isFloating, isStrech }) {
         }
         className={styles.navWrapper}
       >
-        <div
-          style={isStrech ? { maxWidth: "100%" } : { maxWidth: "1440px" }}
-          className={styles.nav}
-        >
+        <div style={{ maxWidth: "1440px" }} className={styles.nav}>
           <Link href={"/"}>
             <img className={styles.logo} src={logo.src} alt="" />
           </Link>
