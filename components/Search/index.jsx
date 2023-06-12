@@ -17,7 +17,8 @@ export default function Search({ className }) {
   const [suggestionVisible, setsuggestionVisible] = useState(false);
   const [focus, setfocus] = useState(false);
 
-  const fetchData = async (term) => {
+  const fetchData = async (term_init) => {
+    let term = term_init.trim().toLowerCase();
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
     // let res = await axios.get(`${API}/search/${term}`);
@@ -113,9 +114,48 @@ export default function Search({ className }) {
       },
     };
 
+    let query3 = {
+      query: {
+        bool: {
+          should: [
+            {
+              prefix: {
+                dao_name: {
+                  value: term,
+                },
+              },
+            },
+            {
+              query_string: {
+                query: term,
+                default_field: "dao_name",
+              },
+            },
+          ],
+          filter: {
+            term: {
+              verified_status: true,
+            },
+          },
+        },
+      },
+      _source: {
+        includes: [
+          "dao_name",
+          "dao_category",
+          "dao_logo",
+          "review_count",
+          "slug",
+          "chain",
+          "description",
+          "dao_mission",
+        ],
+      },
+    };
+
     let res = await axios.post(
       `https://search.truts.xyz/listing/_search`,
-      query1
+      query3
     );
 
     console.log(res);
