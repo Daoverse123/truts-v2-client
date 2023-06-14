@@ -14,6 +14,7 @@ import Nav from "../../components/Nav";
 import WalletConnect from "../../components/WalletConnect";
 import TippingFlow from "../../components/TippingFlow";
 import Mission from "../../components/Mission";
+import ShareScreen from "./ShareScreen";
 
 //local components
 import Sidebar from "../../components/dao_page/Sidebar";
@@ -102,7 +103,7 @@ const fetchReviews = async (id, setter) => {
   }
 };
 
-function Dao({ dao_data, rid, slug }) {
+function Dao({ dao_data, rid, slug, ogImage }) {
   const [selected, setSelected] = useState("Reviews");
   //console.log(dao_data);
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
@@ -155,11 +156,11 @@ function Dao({ dao_data, rid, slug }) {
             content={dao_data.dao_mission || dao_data.description}
           />
 
-          {rid.length > 0 && (
+          {rid.length > 0 && ogImage && (
             <>
               <meta
                 property="og:url"
-                content={`https://www.truts.xyz/dao/${dao_data.slug}`}
+                content={`https://www.truts.xyz/community/${dao_data.slug}`}
               />
               <meta property="og:type" content="website" />
               <meta property="og:title" content={dao_data.dao_name} />
@@ -167,26 +168,20 @@ function Dao({ dao_data, rid, slug }) {
                 property="og:description"
                 content={dao_data.dao_mission || dao_data.description}
               />
-              <meta
-                property="og:image"
-                content={`https://www.truts.xyz/api/fetchcard?rid=${rid}`}
-              />
+              <meta property="og:image" content={ogImage} />
 
               <meta name="twitter:card" content="summary_large_image" />
               <meta property="twitter:domain" content="truts.xyz" />
               <meta
                 property="twitter:url"
-                content={`https://www.truts.xyz/dao/${dao_data.slug}`}
+                content={`https://www.truts.xyz/community/${dao_data.slug}`}
               />
               <meta name="twitter:title" content={dao_data.dao_name} />
               <meta
                 name="twitter:description"
                 content={dao_data.dao_mission || dao_data.description}
               />
-              <meta
-                name="twitter:image"
-                content={`https://www.truts.xyz/api/fetchcard?rid=${rid}`}
-              />
+              <meta name="twitter:image" content={ogImage} />
             </>
           )}
 
@@ -539,17 +534,19 @@ const ReviewsSec = ({
 }) => {
   const [selectedFilter, setselectedFilter] = useState("Newest");
 
-  const [selectedReview, setselected] = useState(null);
+  const [selectedReview, setselected] = useState("");
+
+  console.log(selectedReview);
 
   useEffect(() => {
-    if (rid) {
-      reviews.forEach((element) => {
+    if (rid && reviews.reviews.length) {
+      reviews.reviews.forEach((element) => {
         if (element._id == rid) {
           setselected(element);
         }
       });
     }
-  }, []);
+  }, [reviews.loading, reviews.reviews.length]);
 
   if (reviews.loading) {
     return (
@@ -579,7 +576,7 @@ const ReviewsSec = ({
   }
 
   return (
-    <div className={styles.reviewSec}>
+    <div key={selectedReview + "section"} className={styles.reviewSec}>
       {/* <div className={styles.info}>
                 <h2>What is it?</h2>
                 <p>{dao_data.dao_mission}</p>
@@ -608,7 +605,7 @@ const ReviewsSec = ({
             settippingFlowVisible={settippingFlowVisible}
             setwalletConnectVisible={setwalletConnectVisible}
             review={selectedReview}
-            key={"r" + "selected"}
+            key={rid + selectedReview}
           />
         )}
         {selectedFilter == "Newest"
@@ -624,12 +621,12 @@ const ReviewsSec = ({
                     settippingFlowVisible={settippingFlowVisible}
                     setwalletConnectVisible={setwalletConnectVisible}
                     review={review}
-                    key={"r" + idx}
+                    key={"r" + idx + selectedFilter}
                   />
                 );
               })
               .reverse()
-          : reviews.map((review, idx) => {
+          : reviews.reviews.map((review, idx) => {
               if (review._id == rid) {
                 //filter selected rid
                 return null;
@@ -640,7 +637,7 @@ const ReviewsSec = ({
                   settippingFlowVisible={settippingFlowVisible}
                   setwalletConnectVisible={setwalletConnectVisible}
                   review={review}
-                  key={"r" + idx}
+                  key={"r" + idx + selectedFilter}
                 />
               );
             })}
@@ -662,6 +659,8 @@ const ReviewComp = ({
     vote: review.vote,
     userVote: review.voteState,
   });
+
+  const [shareModalVisible, setshareModalVisible] = useState(false);
 
   let isTextLarge = review.comment.length >= 400;
 
@@ -762,6 +761,23 @@ const ReviewComp = ({
 
   return (
     <>
+      {shareModalVisible && (
+        <ShareScreen
+          slug={review.listing.slug}
+          reviewData={{
+            reviewId: review._id,
+            text: getReviewDesc(),
+            address: userInfo.name,
+            username: userInfo.username || userInfo.name,
+            daoName: review.listing.dao_name,
+            rating: review.rating,
+            profileImg: profile_img,
+          }}
+          closeModal={() => {
+            setshareModalVisible(false);
+          }}
+        />
+      )}
       <div
         className={styles.reviewComp}
         style={selected ? { border: "2px solid #3065f3" } : {}}
@@ -821,10 +837,16 @@ const ReviewComp = ({
             />
             <p>{voteState.vote.down}</p>
           </span>
-          {/* <span className={styles.iconText}  >
-                        <img src={share.src} alt="" />
-                        <p>share</p>
-                    </span> */}
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setshareModalVisible(true);
+            }}
+            className={styles.iconText}
+          >
+            <img src={share.src} alt="" />
+            <p>share</p>
+          </span>
           <span className={styles.iconText} onClick={intiateTip}>
             <img src={tip.src} alt="" />
             {/* <p>$400</p> */}
@@ -897,20 +919,31 @@ function setCookie(name, value) {
 
 //SSR DATA DAO PAGE
 export async function getServerSideProps(ctx) {
-  //console.log(ctx.query);
   let { slug } = ctx.query;
+
   // Fetch data from external API
   if (!slug) return null;
   let res = await fetchData(slug[0]);
-  console.log(res);
   let rid = slug[1] || "";
+  let ogImage = "";
+  try {
+    if (rid) {
+      let review = await axios.get(`${process.env.P_API}/review/${rid}`);
+      if (review.status == 200) {
+        ogImage = review.data.data.review.photo.secure_url;
+      }
+    }
+    console.log({ ogImage });
+  } catch (er) {
+    console.log(er);
+  }
+
   // Pass data to the page via props
 
-  return { props: { dao_data: { ...res }, rid: rid, slug: slug[0] } };
+  return { props: { dao_data: { ...res }, rid: rid, slug: slug[0], ogImage } };
 }
 
 const fetchData = async (slug) => {
-  console.log("slug :", slug);
   try {
     const res = await axios.get(`${P_API}/listing/${slug}`);
     if (res.status == 200) {

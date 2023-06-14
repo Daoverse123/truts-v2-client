@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./og.module.scss";
+import html2canvas from "html2canvas";
 
 import gradstarFilled from "../../assets/icons/star_filled_gradient.svg";
 import gradstarBlank from "../../assets/icons/star_blank_gradient.svg";
@@ -10,6 +11,8 @@ import share from "../../assets/icons/share_icon.svg";
 import tip from "../../assets/icons/tip_icon.svg";
 import { useQuery } from "react-query";
 import axios from "axios";
+
+import domtoimage from "dom-to-image";
 
 function limitText(count, text) {
   if (text.length < count) return text;
@@ -39,20 +42,21 @@ function RecentReview({
   rating,
   profileImg,
 }) {
-  const [gradArray, setgradArray] = useState([]);
+  const captureElementRef = useRef(null);
 
-  useEffect(() => {
-    let newGradArray = [];
-    for (let i = 0; i < 16; i++) {
-      newGradArray.push(newGradient());
-    }
-    setgradArray(newGradArray);
-  }, []);
+  const captureAndConvert = () => {
+    const element = captureElementRef.current;
+
+    html2canvas(element).then((canvas) => {
+      const base64Image = canvas.toDataURL("image/png");
+      console.log(base64Image); // You can use this base64 image as needed
+    });
+  };
 
   return (
     <div className={styles.recentReview}>
       <div className={styles.user}>
-        <img src={profileImg || "/blue.png"} alt="" />
+        <img src={`/api/image-proxy?url=${profileImg}` || "/blue.png"} alt="" />
         <span>
           <h1>{address}</h1>
           <p>@{username}</p>
@@ -74,9 +78,19 @@ function RecentReview({
 
 function Og({ data }) {
   console.log(data);
+  const captureElementRef = useRef(null);
+
+  const captureAndConvert = () => {
+    const element = captureElementRef.current;
+
+    html2canvas(element).then((canvas) => {
+      const base64Image = canvas.toDataURL("image/png");
+      console.log(base64Image); // You can use this base64 image as needed
+    });
+  };
 
   return (
-    <div className={styles.con}>
+    <div ref={captureElementRef} id="page" className={styles.con}>
       <span className={styles.bg}></span>
       <RecentReview
         i={0}
@@ -87,6 +101,14 @@ function Og({ data }) {
         daoName={data.review.listing?.dao_name}
         text={data.review.comment}
       />
+      <button
+        style={{ zIndex: 100 }}
+        onClick={() => {
+          captureAndConvert();
+        }}
+      >
+        Save
+      </button>
     </div>
   );
 }
@@ -110,7 +132,7 @@ function newGradient() {
 //SSR DATA DAO PAGE
 export async function getServerSideProps(ctx) {
   let data = await axios.get(
-    `${process.env.P_API}/review/62a0734640e11200106546e7`
+    `${process.env.P_API}/review/6488412f8739960edc76ab94`
   );
 
   return { props: { data: data.data.data || "" } };
