@@ -19,8 +19,18 @@ function generateTweet(text, url) {
   window.open(tweetURL);
 }
 
-function ShareScreen({ slug, reviewData, closeModal, reviewId }) {
-  let { text, address, username, daoName, rating, profileImg } = reviewData;
+function ShareScreen({
+  slug,
+  reviewData,
+  closeModal,
+  reviewId,
+  text,
+  address,
+  username,
+  daoName,
+  rating,
+  profileImg,
+}) {
   const captureElementRef = useRef(null);
   const [imgPreview, setimgPreview] = useState("");
   const [loading, setloading] = useState(true);

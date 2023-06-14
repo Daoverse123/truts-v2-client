@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-/// <reference types="@emotion/react/types/css-prop" />
+
 
 let LOCALHOST = 'http://localhost:5000'
 // let AWS = 'https://7cjecbsr4a.us-west-2.awsapprunner.com'

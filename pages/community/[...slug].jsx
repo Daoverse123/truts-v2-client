@@ -765,14 +765,12 @@ const ReviewComp = ({
         <ShareScreen
           slug={review.listing.slug}
           reviewId={review?._id}
-          reviewData={{
-            text: getReviewDesc(),
-            address: userInfo.name,
-            username: userInfo.username || userInfo.name,
-            daoName: review.listing.dao_name,
-            rating: review.rating,
-            profileImg: profile_img,
-          }}
+          text={getReviewDesc()}
+          address={userInfo.name}
+          username={userInfo.username || userInfo.name}
+          daoName={review.listing.dao_name}
+          rating={review.rating}
+          profileImg={profile_img}
           closeModal={() => {
             setshareModalVisible(false);
           }}
