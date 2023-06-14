@@ -609,6 +609,7 @@ const ReviewsSec = ({
             review={selectedReview}
             key={rid + selectedReview}
             twitter_link={twitter_link}
+            slug={slug}
           />
         )}
         {selectedFilter == "Newest"
@@ -626,6 +627,7 @@ const ReviewsSec = ({
                     review={review}
                     key={"r" + idx + selectedFilter}
                     twitter_link={twitter_link}
+                    slug={slug}
                   />
                 );
               })
@@ -643,6 +645,7 @@ const ReviewsSec = ({
                   review={review}
                   key={"r" + idx + selectedFilter}
                   twitter_link={twitter_link}
+                  slug={slug}
                 />
               );
             })}
@@ -658,6 +661,7 @@ const ReviewComp = ({
   setreview_details,
   selected,
   twitter_link,
+  slug,
 }) => {
   const [isreadMore, setisreadMore] = useState(false);
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
@@ -769,7 +773,7 @@ const ReviewComp = ({
     <>
       {shareModalVisible && (
         <ShareScreen
-          slug={review.listing.slug}
+          slug={slug}
           reviewId={review?._id}
           text={getReviewDesc()}
           address={userInfo.name}
