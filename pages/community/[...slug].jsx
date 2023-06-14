@@ -764,8 +764,8 @@ const ReviewComp = ({
       {shareModalVisible && (
         <ShareScreen
           slug={review.listing.slug}
+          reviewId={review?._id}
           reviewData={{
-            reviewId: review?._id,
             text: getReviewDesc(),
             address: userInfo.name,
             username: userInfo.username || userInfo.name,
