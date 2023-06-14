@@ -38,10 +38,15 @@ function ShareScreen({
   const captureAndConvert = async () => {
     const element = captureElementRef.current;
     const canvas = await html2canvas(element);
-    const base64Image = canvas.toDataURL("image/png", 0.5, {
-      width: "1200",
-      height: "627",
-    });
+
+    const ctx = canvas.getContext("2d");
+    const scaledCanvas = document.createElement("canvas");
+    scaledCanvas.width = canvas.width / window.devicePixelRatio;
+    scaledCanvas.height = canvas.height / window.devicePixelRatio;
+    const scaledCtx = scaledCanvas.getContext("2d");
+    scaledCtx.drawImage(canvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
+    const base64Image = scaledCanvas.toDataURL("image/png");
     console.log(base64Image); // You can use this base64 image as needed
     setimgPreview(base64Image);
     if (base64Image) {
