@@ -38,7 +38,7 @@ function ShareScreen({
   const captureAndConvert = async () => {
     const element = captureElementRef.current;
     const canvas = await html2canvas(element);
-    const base64Image = canvas.toDataURL("image/png");
+    const base64Image = canvas.toDataURL("image/png", 0.75);
     console.log(base64Image); // You can use this base64 image as needed
     setimgPreview(base64Image);
     if (base64Image) {

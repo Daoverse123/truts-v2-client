@@ -845,10 +845,9 @@ const ReviewComp = ({
             <img src={share.src} alt="" />
             <p>share</p>
           </span>
-          <span className={styles.iconText} onClick={intiateTip}>
+          {/* <span className={styles.iconText} onClick={intiateTip}>
             <img src={tip.src} alt="" />
-            {/* <p>$400</p> */}
-          </span>
+          </span> */}
         </div>
         <span className={styles.divider} />
       </div>
