@@ -144,7 +144,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
       />
       <div className={styles.dao}>
         <Head>
-          <title>{dao_data.dao_name}</title>
+          <title>{`${dao_data.dao_name} | Truts - the best discovery platform for web3`}</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -223,6 +223,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
                 setwalletConnectVisible={setwalletConnectVisible}
                 settippingFlowVisible={settippingFlowVisible}
                 key={slug}
+                twitter_link={dao_data.twitter_link}
               />
             </div>
             <Sidebar dao_data={dao_data} />
@@ -531,6 +532,7 @@ const ReviewsSec = ({
   slug,
   rid,
   dao_id,
+  twitter_link,
 }) => {
   const [selectedFilter, setselectedFilter] = useState("Newest");
 
@@ -606,6 +608,7 @@ const ReviewsSec = ({
             setwalletConnectVisible={setwalletConnectVisible}
             review={selectedReview}
             key={rid + selectedReview}
+            twitter_link={twitter_link}
           />
         )}
         {selectedFilter == "Newest"
@@ -622,6 +625,7 @@ const ReviewsSec = ({
                     setwalletConnectVisible={setwalletConnectVisible}
                     review={review}
                     key={"r" + idx + selectedFilter}
+                    twitter_link={twitter_link}
                   />
                 );
               })
@@ -638,6 +642,7 @@ const ReviewsSec = ({
                   setwalletConnectVisible={setwalletConnectVisible}
                   review={review}
                   key={"r" + idx + selectedFilter}
+                  twitter_link={twitter_link}
                 />
               );
             })}
@@ -652,6 +657,7 @@ const ReviewComp = ({
   settippingFlowVisible,
   setreview_details,
   selected,
+  twitter_link,
 }) => {
   const [isreadMore, setisreadMore] = useState(false);
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
@@ -768,12 +774,13 @@ const ReviewComp = ({
           text={getReviewDesc()}
           address={userInfo.name}
           username={userInfo.username || userInfo.name}
-          daoName={review.listing.dao_name}
+          daoName={review.listing.name}
           rating={review.rating}
           profileImg={profile_img}
           closeModal={() => {
             setshareModalVisible(false);
           }}
+          twitter_link={twitter_link}
         />
       )}
       <div

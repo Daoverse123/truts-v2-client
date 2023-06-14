@@ -30,6 +30,7 @@ function ShareScreen({
   daoName,
   rating,
   profileImg,
+  twitter_link,
 }) {
   const captureElementRef = useRef(null);
   const [imgPreview, setimgPreview] = useState("");
@@ -102,7 +103,12 @@ function ShareScreen({
           <button
             onClick={() => {
               generateTweet(
-                text,
+                `🌐 Check out this review shared about @${
+                  twitter_link.split("/")[twitter_link.split("/").length - 1]
+                } at @trutsxyz, the best discovery platform for web3! 
+Try it for yourself and share your experiences today #TrutsReview
+WAGMI
+`,
                 `${window.location.origin}/community/${slug}/${reviewId}`
               );
             }}
