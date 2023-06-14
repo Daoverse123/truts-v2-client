@@ -87,7 +87,7 @@ function ShareScreen({
             <RecentReview
               username={username}
               daoName={daoName}
-              address={username}
+              address={address}
               text={text}
               rating={rating}
               profileImg={profileImg}
