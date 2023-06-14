@@ -109,6 +109,7 @@ function ShareScreen({
 }
 
 function limitText(count, text) {
+  if (!text) return text;
   if (text.length < count) return text;
   let snippedText = text.substring(0, count);
   return snippedText + "...";
