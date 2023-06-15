@@ -88,48 +88,58 @@ const walletAuth = async (
     };
   }
 
-  let res_nonce = await axios.patch(
-    `${P_API}/user/wallet/change`,
-    { address: walletState.address, chain: chainENUM(walletState.chain) },
-    options
-  );
-  if (res_nonce.status == 200) {
-    // Solana Ethereum
-    let message = res_nonce.data.data.nonce;
-    let public_key = walletState.address;
-    let chain = walletState.chain;
-    let signature;
-
-    signature = await signMessage(message, chain);
-
-    let auth_res = await axios.post(
-      `${P_API}/user/wallet/verify-change`,
-      {
-        public_key,
-        signature,
-        chain: chainENUM(chain),
-      },
+  try {
+    let res_nonce = await axios.patch(
+      `${P_API}/user/wallet/change`,
+      { address: walletState.address, chain: chainENUM(walletState.chain) },
       options
     );
-    //localStorage.setItem("token", `Bearer ${auth_res.data.data.token}`);
-    if (login) {
-      toast.success("Wallet Updated successfully", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      saveWallet();
+    if (res_nonce.status == 200) {
+      // Solana Ethereum
+      let message = res_nonce.data.data.nonce;
+      let public_key = walletState.address;
+      let chain = walletState.chain;
+      let signature;
+
+      signature = await signMessage(message, chain);
+
+      let auth_res = await axios.post(
+        `${P_API}/user/wallet/verify-change`,
+        {
+          public_key,
+          signature,
+          chain: chainENUM(chain),
+        },
+        options
+      );
+      //localStorage.setItem("token", `Bearer ${auth_res.data.data.token}`);
+      if (login) {
+        toast.success("Wallet Updated successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        saveWallet();
+      } else {
+        window.location = "/profile/private";
+      }
+      setupdateCounter((ele) => ele + 1);
     } else {
-      window.location = "/profile/private";
+      return alert("Auth error");
     }
-    setupdateCounter((ele) => ele + 1);
-  } else {
-    return alert("Auth error");
+  } catch (err) {
+    console.log(err);
+    //catch 409
+    if (err.response.status == 409) {
+      alert(
+        "This Wallet is already Connected to another account, Please use another wallet"
+      );
+    }
   }
 };
 
