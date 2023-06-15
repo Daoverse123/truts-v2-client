@@ -94,7 +94,7 @@ export default function Home({ daoList_ssr }) {
 
   return (
     <div className={styles.container}>
-      {/* <Nav isFloating /> */}
+      <Nav isFloating />
       <Head>
         <title>Truts - the best discovery platform for web3</title>
         <meta
@@ -299,7 +299,7 @@ function Hero() {
         }
         alt=""
       />
-      {/* <div className={styles.new_hero}>
+      <div className={styles.new_hero}>
         <span className={styles.new_heroText}>
           <h1 className={styles.new_heroTitle}>
             Start your Web3 Journey with{" "}
@@ -345,8 +345,8 @@ function Hero() {
             <p>Contributors Onboarded</p>
           </div>
         </div>
-      </div> */}
-      <NewHero />
+      </div>
+      {/* <NewHero /> */}
     </>
   );
 }
