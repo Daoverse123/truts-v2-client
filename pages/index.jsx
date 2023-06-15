@@ -13,6 +13,7 @@ import Nav from "../components/Nav";
 import Profile_signup from "./../components/Profile_signup";
 import WalletConnectProfile from "../components/WalletConnect_v3";
 import Leaderboard from "./Home/Leaderboard";
+import NewHero from "./Home/NewHero";
 
 // ASSETS
 import searchIcon from "../assets/icons/search_white.svg";
@@ -93,7 +94,7 @@ export default function Home({ daoList_ssr }) {
 
   return (
     <div className={styles.container}>
-      <Nav isFloating />
+      {/* <Nav isFloating /> */}
       <Head>
         <title>Truts - the best discovery platform for web3</title>
         <meta
@@ -298,7 +299,7 @@ function Hero() {
         }
         alt=""
       />
-      <div className={styles.new_hero}>
+      {/* <div className={styles.new_hero}>
         <span className={styles.new_heroText}>
           <h1 className={styles.new_heroTitle}>
             Start your Web3 Journey with{" "}
@@ -344,7 +345,8 @@ function Hero() {
             <p>Contributors Onboarded</p>
           </div>
         </div>
-      </div>
+      </div> */}
+      <NewHero />
     </>
   );
 }
