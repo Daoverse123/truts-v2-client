@@ -287,7 +287,7 @@ function Hero() {
 
   return (
     <>
-      <img
+      {/* <img
         className={styles.heroLeft}
         src={`//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/leftGrad.png`}
         alt=""
@@ -298,8 +298,8 @@ function Hero() {
           "//wsrv.nl/?url=https://daoverse-bucket.s3.ap-south-1.amazonaws.com/rightGrad.1a237d6b+(Small).png"
         }
         alt=""
-      />
-      <div className={styles.new_hero}>
+      /> */}
+      {/* <div className={styles.new_hero}>
         <span className={styles.new_heroText}>
           <h1 className={styles.new_heroTitle}>
             Start your Web3 Journey with{" "}
@@ -345,8 +345,8 @@ function Hero() {
             <p>Contributors Onboarded</p>
           </div>
         </div>
-      </div>
-      {/* <NewHero /> */}
+      </div> */}
+      <NewHero />
     </>
   );
 }
