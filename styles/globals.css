@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .grad-text {
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .grad {
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+  }
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 html,

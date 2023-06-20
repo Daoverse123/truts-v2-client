@@ -8,7 +8,7 @@ function NewHero() {
           "font-[600] text-[72px] mt-[225px] max-lg:mt-[149px] m-0 mb-[14px] max-lg:text-[32px] max-lg:w-[70%] text-center"
         }
       >
-        Engage <span className={"grad-text"}>Missions</span>
+        Engage with<span className={"grad-text"}>Missions</span>
       </h1>
       <p
         className={
