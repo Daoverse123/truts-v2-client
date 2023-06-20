@@ -4,13 +4,21 @@ function NewHero() {
   return (
     <div className="flex flex-col w-full h-max  bg-hero-bg items-center bg-cover">
       <h1
+        style={{
+          fontFamily: "Comfortaa",
+          fontWeight: "700",
+        }}
         className={
           "font-[600] text-[72px] mt-[225px] max-lg:mt-[149px] m-0 mb-[14px] max-lg:text-[32px] max-lg:w-[70%] text-center"
         }
       >
-        Engage with<span className={"grad-text"}>Missions</span>
+        Engage with <span className={"grad-text"}>Missions</span>
       </h1>
       <p
+        style={{
+          fontFamily: "Comfortaa",
+          fontWeight: "500",
+        }}
         className={
           "font-[500] m-0 text-[24px] w-[800px] text-center max-lg:text-[16px] max-lg:w-[70%] "
         }
@@ -32,7 +40,7 @@ function NewHero() {
       <span className={"mt-[54px] mx-auto flex w-full justify-center"}>
         <img
           className={"w-[90%] object-contain max-sm:hidden"}
-          src="/hero_screen.png"
+          src="/hero.webp"
           alt=""
         />
         <img
