@@ -39,13 +39,23 @@ function NewHero() {
 
       <span className={"mt-[54px] mx-auto flex w-full justify-center"}>
         <img
-          className={"w-[90%] object-contain max-sm:hidden"}
-          src="/hero.webp"
+          style={{
+            background: "linear-gradient(90deg, #5E1ED1 0%, #3065F3 100%)",
+          }}
+          className={
+            "w-[90%] object-contain max-sm:hidden p-2 pb-0 rounded-tl-[50px] rounded-tr-[50px]"
+          }
+          src="/hero.png"
           alt=""
         />
         <img
-          className={"w-[70%] object-contain hidden max-sm:block"}
-          src="/hero_screen_mobile.png"
+          style={{
+            background: "linear-gradient(90deg, #5E1ED1 0%, #3065F3 100%)",
+          }}
+          className={
+            "w-[70%] object-contain hidden max-sm:block p-[6px] pb-0 rounded-tl-[20px] rounded-tr-[20px]"
+          }
+          src="/hero-mobile.png"
           alt=""
         />
       </span>
