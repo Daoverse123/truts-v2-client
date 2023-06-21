@@ -1,4 +1,72 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+@font-face {
+  font-family: "Chillax-Variable";
+  src: url("../public/fonts/Chillax-Variable.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Variable.woff") format("woff"),
+    url("../public/fonts/Chillax-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Extralight";
+  src: url("../public/fonts/Chillax-Extralight.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Extralight.woff") format("woff"),
+    url("../public/fonts/Chillax-Extralight.ttf") format("truetype");
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Light";
+  src: url("../public/fonts/Chillax-Light.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Light.woff") format("woff"),
+    url("../public/fonts/Chillax-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Regular";
+  src: url("../public/fonts/Chillax-Regular.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Regular.woff") format("woff"),
+    url("../public/fonts/Chillax-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Medium";
+  src: url("../public/fonts/Chillax-Medium.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Medium.woff") format("woff"),
+    url("../public/fonts/Chillax-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Semibold";
+  src: url("../public/fonts/Chillax-Semibold.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Semibold.woff") format("woff"),
+    url("../public/fonts/Chillax-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Bold";
+  src: url("../public/fonts/Chillax-Bold.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Bold.woff") format("woff"), url("../public/fonts/Chillax-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 /* @tailwind base; */
@@ -194,4 +262,73 @@ button {
   100% {
     background-color: hsl(200, 20%, 95%);
   }
+}
+
+@font-face {
+  font-family: "Chillax-Variable";
+  src: url("../public/fonts/Chillax-Variable.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Variable.woff") format("woff"),
+    url("../public/fonts/Chillax-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Extralight";
+  src: url("../public/fonts/Chillax-Extralight.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Extralight.woff") format("woff"),
+    url("../public/fonts/Chillax-Extralight.ttf") format("truetype");
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Light";
+  src: url("../public/fonts/Chillax-Light.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Light.woff") format("woff"),
+    url("../public/fonts/Chillax-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Regular";
+  src: url("../public/fonts/Chillax-Regular.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Regular.woff") format("woff"),
+    url("../public/fonts/Chillax-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Medium";
+  src: url("../public/fonts/Chillax-Medium.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Medium.woff") format("woff"),
+    url("../public/fonts/Chillax-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Semibold";
+  src: url("../public/fonts/Chillax-Semibold.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Semibold.woff") format("woff"),
+    url("../public/fonts/Chillax-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Chillax-Bold";
+  src: url("../public/fonts/Chillax-Bold.woff2") format("woff2"),
+    url("../public/fonts/Chillax-Bold.woff") format("woff"), url("../public/fonts/Chillax-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
 }

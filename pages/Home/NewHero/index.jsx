@@ -5,8 +5,8 @@ function NewHero() {
     <div className="flex flex-col w-full h-max  bg-hero-bg items-center bg-cover">
       <h1
         style={{
-          fontFamily: "Comfortaa",
-          fontWeight: "700",
+          fontFamily: "Chillax-Semibold",
+          fontWeight: "600",
         }}
         className={
           "font-[600] text-[72px] mt-[225px] max-lg:mt-[149px] m-0 mb-[14px] max-lg:text-[32px] max-lg:w-[70%] text-center"
@@ -16,7 +16,7 @@ function NewHero() {
       </h1>
       <p
         style={{
-          fontFamily: "Comfortaa",
+          fontFamily: "Chillax-Medium",
           fontWeight: "500",
         }}
         className={
