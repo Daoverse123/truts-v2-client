@@ -32,9 +32,10 @@ function NewHero() {
           openNewTab("/missons");
         }}
         className={
-          "text-[16px] grad border-none px-[32px] py-[16px] rounded-lg text-white mt-[32px]"
+          "text-[16px] grad border-none px-[32px] py-[16px] rounded-lg text-white mt-[32px] flex items-center"
         }
       >
+        <img className={"mr-3 my-auto"} src={"/svg/rocket.svg"} alt="" />
         Explore Missions
       </button>
 
