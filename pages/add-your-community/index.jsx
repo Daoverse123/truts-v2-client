@@ -52,23 +52,23 @@ import closeIcon from "../../assets/icons/close_icon.svg";
 //   "Chain",
 // ];
 
-const CHAIN_LIST_MAP = {
-  "Multi Chain": "multi-chain",
-  Aptos: "aptos",
-  Arbitrum: "arbitrum-one",
-  Avalanche: "avalanche",
-  "Binance Smart Chain": "binance-smart-chain",
-  Cardano: "cardano",
-  Ethereum: "ethereum",
-  Near: "near",
-  Polygon: "polygon-pos",
-  Solana: "solana",
-  Tezos: "tezos",
-  Sui: "sui",
-  Telos: "telos",
-  Bitcoin: "bitcoin",
-  OKC: "okc",
-  Mantle: "mantle",
+const CHAIN_LIST_FIX = {
+  "multi-chain": "Multi Chain",
+  aptos: "Aptos",
+  "arbitrum-one": "Arbitrum",
+  avalanche: "Avalanche",
+  "binance-smart-chain": "Binance Smart Chain",
+  cardano: "Cardano",
+  ethereum: "Ethereum",
+  near: "Near",
+  "polygon-pos": "Polygon",
+  solana: "Solana",
+  tezos: "Tezos",
+  sui: "Sui",
+  telos: "Telos",
+  bitcoin: "Bitcoin",
+  okc: "OKC",
+  mantle: "Mantle",
 };
 
 const API = process.env.API;
@@ -78,42 +78,54 @@ opensea_link: { type: String },
 magiceden_link: { type: String }, */
 }
 let CATEGORY_LIST = [];
-function DaoForm({ categoriesList }) {
+function DaoForm({ categoriesList, chainList }) {
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (!token || token == "null" || token == "undefined") {
+      setTimeout(() => {
+        window.showSignupPrompt && window.showSignupPrompt();
+      }, 1000);
+    }
+  }, []);
+
   CATEGORY_LIST = categoriesList.map((ele) => ele.category);
+  let CHAIN_LIST_MAP = {};
+  chainList.forEach((ele) => {
+    let key = ele.chain;
+    if (key in CHAIN_LIST_FIX) {
+      key = CHAIN_LIST_FIX[key];
+    }
+    key = key[0].toUpperCase() + key.slice(1);
+    CHAIN_LIST_MAP[key] = ele.chain;
+  });
 
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
   const [state, setState] = useState({
-    dao_name: "",
-    dao_category: "",
-    dao_mission: "",
+    name: "",
+    oneliner: "",
     description: "",
+    slug: "",
+    categories: "",
+    chains: "",
+    socials: "",
     discord_link: "",
     twitter_link: "",
     website_link: "",
-    additional_link: "",
     mirror_link: "",
-    submitter_discord_id: "",
-    submitter_public_address: "",
-    chain: "",
-    treasury: "",
-    opensea_link: "",
-    magiceden_link: "",
   });
 
   //console.log(state)
 
   const submitForm = async (e) => {
     e.preventDefault();
-    let ws = JSON.parse(localStorage.getItem("wallet_state"));
-    let address;
 
-    if (state.dao_category.length < 1) {
+    if (state.categories.length < 1) {
       return alert("Please add applicable categories for your Community.");
     }
-    if (state.chain.length < 1) {
+    if (state.chains.length < 1) {
       return alert("Please add Chains relevant to your Community.");
     }
-    if (state.dao_mission.length < 5) {
+    if (state.oneliner.length < 5) {
       return alert(
         "Please add more details in One Line Statement for your Community. Atleast 5 characters required."
       );
@@ -124,21 +136,28 @@ function DaoForm({ categoriesList }) {
       );
     }
 
-    // try {
-    //     address = ws.address;
-    // }
-    // catch (er) {
-    //     console.log(er)
-    //     return setwalletConnectVisible(true);
-    // }
-    // console.log('address :', address)
-
+    console.log("state :>> ", {
+      ...state,
+      chain: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
+    });
     try {
-      let res = await axios.post(`${API}/dao/create-new-dao-v2`, {
-        ...state,
-        chain: state.chain.map((ch) => CHAIN_LIST_MAP[ch]),
-        submitter_public_address: address,
-      });
+      let res = await axios.post(
+        `${API}/dao/create-new-dao-v2`,
+        {
+          ...state,
+          chain: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
+          socials: {
+            TWITTER: state.twitter_link,
+            DISCORD: state.discord_link,
+            WEBSITE: state.website_link,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (res.status == 201) {
         console.log("redirect");
         window.location.href = "./status/community-listed-success";
@@ -182,10 +201,10 @@ function DaoForm({ categoriesList }) {
             <input
               placeholder="Community Name"
               required
-              value={state.dao_name}
+              value={state.name}
               onChange={(e) => {
                 setState((s) => {
-                  s.dao_name = e.target.value;
+                  s.name = e.target.value;
                   return { ...s };
                 });
               }}
@@ -197,10 +216,10 @@ function DaoForm({ categoriesList }) {
             <p>Add a One Line Statement for your Community.*</p>
             <textarea
               required
-              value={state.dao_mission}
+              value={state.oneliner}
               onChange={(e) => {
                 setState((s) => {
-                  s.dao_mission = e.target.value;
+                  s.oneliner = e.target.value;
                   return { ...s };
                 });
               }}
@@ -211,7 +230,11 @@ function DaoForm({ categoriesList }) {
           </label>
 
           <CategotyCon state={state} setState={setState} />
-          <ChainSelectCon state={state} setState={setState} />
+          <ChainSelectCon
+            CHAIN_LIST_MAP={CHAIN_LIST_MAP}
+            state={state}
+            setState={setState}
+          />
 
           <label htmlFor="">
             <p>Add a brief Description for your Community.*</p>
@@ -226,21 +249,6 @@ function DaoForm({ categoriesList }) {
               }}
               placeholder="Even though there is no word limit but please do keep it short and brief :)"
               rows={15}
-              type="text"
-            />
-          </label>
-
-          <label htmlFor="">
-            <p>Add your Treasury address: (if exists)</p>
-            <input
-              value={state.treasury}
-              onChange={(e) => {
-                setState((s) => {
-                  s.treasury = e.target.value;
-                  return { ...s };
-                });
-              }}
-              placeholder="0xceft......etf"
               type="text"
             />
           </label>
@@ -311,66 +319,6 @@ function DaoForm({ categoriesList }) {
               />
             </label>
           </span>
-
-          {/* <label htmlFor="">
-            <p>Additional Link:</p>
-            <input
-              value={state.additional_link}
-              onChange={(e) => {
-                setState((s) => {
-                  s.additional_link = e.target.value;
-                  return { ...s };
-                });
-              }}
-              type="text"
-              placeholder="Additional Link"
-            />
-          </label>
-
-          <label htmlFor="">
-            <p>OpenSea Link: (if applicable)</p>
-            <input
-              value={state.opensea_link}
-              onChange={(e) => {
-                setState((s) => {
-                  s.opensea_link = e.target.value;
-                  return { ...s };
-                });
-              }}
-              type="text"
-              placeholder="https://opensea.io/collection/..."
-            />
-          </label>
-          <label htmlFor="">
-            <p>MagicEden Link: (if applicable)</p>
-            <input
-              value={state.magiceden_link}
-              onChange={(e) => {
-                setState((s) => {
-                  s.magiceden_link = e.target.value;
-                  return { ...s };
-                });
-              }}
-              type="text"
-              placeholder="https://magiceden.io/marketplace/..."
-            />
-          </label> */}
-
-          <label htmlFor="">
-            <p>Submitter`s Discord ID*</p>
-            <input
-              required
-              value={state.submitter_discord_id}
-              onChange={(e) => {
-                setState((s) => {
-                  s.submitter_discord_id = e.target.value;
-                  return { ...s };
-                });
-              }}
-              type="text"
-              placeholder="Example: sampleuser#8493"
-            />
-          </label>
           <Button label={"Submit"} />
         </form>
       </div>
@@ -535,7 +483,7 @@ const CategotyCon = ({ state, setState }) => {
   );
 };
 
-const ChainSelectCon = ({ state, setState }) => {
+const ChainSelectCon = ({ state, setState, CHAIN_LIST_MAP }) => {
   let initialSuggestion = Object.keys(CHAIN_LIST_MAP).map((term) => {
     return { term };
   });
@@ -694,8 +642,8 @@ export default DaoForm;
 
 export async function getServerSideProps(ctx) {
   let res = await Promise.all([
-    axios.get(`${process.env.P_API}/listings/categories`),
-    axios.get(`${process.env.P_API}/listings/chains`),
+    axios.get(`${process.env.P_API}/listing/categories`),
+    axios.get(`${process.env.P_API}/listing/chains`),
   ]);
 
   return {

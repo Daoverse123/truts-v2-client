@@ -70,7 +70,7 @@ const TabletSideBar = ({ dao_data }) => {
             <img src={twitter_white.src} alt="" />
             {numFormatter(dao_data?.twitter_followers)}
           </button>
-          {dao_data.dao_category.includes("Investors") ? (
+          {dao_data.categories.includes("Investors") ? (
             <button
               onClick={() => {
                 openNewTab(`mailto:${dao_data?.email}`);
@@ -120,7 +120,7 @@ const TabletSideBar = ({ dao_data }) => {
         <div className={styles.chain_row}>
           <p>Chain</p>
           <span className={styles.chain_icons}>
-            {dao_data.chain.map((ele) => {
+            {dao_data.chains.map((ele) => {
               return getChainIcon(ele);
             })}
           </span>
@@ -129,29 +129,29 @@ const TabletSideBar = ({ dao_data }) => {
           <span>
             <DialComp
               label={"Community Vibes"}
-              range={Math.ceil(dao_data.review_meta["resonate_vibes_rate"])}
+              range={Math.ceil(dao_data.reviews.meta["resonate_vibes_rate"])}
             />
             <DialComp
               label={"Onboarding Experience"}
-              range={Math.ceil(dao_data.review_meta["onboarding_exp"])}
+              range={Math.ceil(dao_data.reviews.meta["onboarding_exp"])}
             />
             <DialComp
               label={"Organizational Structure"}
-              range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+              range={Math.ceil(dao_data.reviews.meta["great_org_structure"])}
             />
           </span>
           <span>
             <DialComp
               label={"Incentives for Members"}
-              range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+              range={Math.ceil(dao_data.reviews.meta["great_org_structure"])}
             />
             <DialComp
               label={"Having a Voice"}
-              range={Math.ceil(dao_data.review_meta["opinions_matter"])}
+              range={Math.ceil(dao_data.reviews.meta["opinions_matter"])}
             />
             <DialComp
               label={"Recommendation to a friend"}
-              range={Math.ceil(dao_data.review_meta["friend_recommend"])}
+              range={Math.ceil(dao_data.reviews.meta["friend_recommend"])}
             />
           </span>
         </div>

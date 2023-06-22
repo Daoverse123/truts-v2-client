@@ -196,15 +196,15 @@ function Discover({ chainList, categoriesList, selected_chain }) {
 
       let params = {
         limit: 150 * pageMultiplier,
-        sort: `{ "review_count": -1 ,"average_rating" : ${rating_sort} }`,
+        sort: `{ "count": -1 ,"rating" : ${rating_sort} }`,
       };
 
       let filter = {};
       if (categories.length > 0) {
-        filter.dao_category = categories;
+        filter.categories = categories;
       }
       if (chains.length > 0) {
-        filter.chain = chains;
+        filter.chains = chains;
       }
       if (twitter_followers) {
         let range = {};
@@ -213,7 +213,7 @@ function Discover({ chainList, categoriesList, selected_chain }) {
           range.lte = max;
         }
         range.gte = min;
-        filter.twitter_followers = range;
+        filter["meta.twitter_followers"] = range;
       }
       if (discord_members) {
         let range = {};
@@ -222,18 +222,14 @@ function Discover({ chainList, categoriesList, selected_chain }) {
           range.lte = max;
         }
         range.gte = min;
-        filter.discord_members = range;
+        filter["meta.discord_members"] = range;
       }
 
       if (Object.keys(filter).length > 0) {
         params.filter = JSON.stringify(filter);
       }
 
-      console.log(params, chains, categories);
-
-      let res = await axios.get(`${process.env.P_API}/listings`, {
-        params,
-      });
+      let res = await axios.get(`${process.env.P_API}/listing`, { params });
       return res.data.data;
     },
   });
@@ -372,10 +368,11 @@ function Discover({ chainList, categoriesList, selected_chain }) {
   );
 }
 
+//ssr
 export async function getServerSideProps(ctx) {
   let res = await Promise.all([
-    axios.get(`${process.env.P_API}/listings/categories`),
-    axios.get(`${process.env.P_API}/listings/chains`),
+    axios.get(`${process.env.P_API}/listing/categories`),
+    axios.get(`${process.env.P_API}/listing/chains`),
   ]);
 
   let selected_chain = undefined;

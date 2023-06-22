@@ -10,22 +10,28 @@ import globe from "./../../assets/icons/Globe_grey.svg";
 import twitter from "./../../assets/icons/Twitter_grey.svg";
 import discord from "./../../assets/icons/Discord_grey.svg";
 
-export default function DAOCard({ data }) {
-  let name = data.dao_name;
+export default function DAOCard({ data: source_data }) {
+  let socials_map = {};
+  source_data.socials.forEach((ele) => {
+    socials_map[ele.platform] = ele;
+  });
+  source_data.socials_map = socials_map;
+
+  let data = source_data;
+
+  let name = data.name;
   if (name.length > 20) {
-    name = data.dao_name.slice(0, 20) + "...";
+    name = data.name.slice(0, 20) + "...";
   }
 
   // h 114 w 313
   return (
     <Link href={`/community/${data.slug}`}>
       <div className={styles.card}>
-        {data.dao_name.length > 20 && (
-          <ReactTooltip backgroundColor={"#747c90"} />
-        )}
+        {name.length > 20 && <ReactTooltip backgroundColor={"#747c90"} />}
         <div className={styles.cover}>
           <img
-            src={data.dao_cover}
+            src={data.photo.cover.secure_url}
             alt=""
             onError={({ currentTarget }) => {
               currentTarget.src =
@@ -35,8 +41,8 @@ export default function DAOCard({ data }) {
         </div>
         <div className={styles.info}>
           <span className={styles.title}>
-            {data.dao_name.length > 20 ? (
-              <h1 id={"w1" + name} data-tip={data.dao_name}>
+            {data.name.length > 20 ? (
+              <h1 id={"w1" + name} data-tip={data.name}>
                 {name}
               </h1>
             ) : (
@@ -46,7 +52,7 @@ export default function DAOCard({ data }) {
           </span>
           <div className={styles.review_stats}>
             <div className={styles.ratingBox}>
-              <span>{addDecimal(data.average_rating)}</span>
+              <span>{addDecimal(data.rating)}</span>
               <img src={star.src} alt="" />
             </div>
             <span className={styles.review_count}>
@@ -59,7 +65,8 @@ export default function DAOCard({ data }) {
                 src={globe.src}
                 alt=""
                 onClick={(e) => {
-                  data.website_link && openNewTab(data.website_link);
+                  data.socials_map["WEBSITE"]?.link &&
+                    openNewTab(data.socials_map["WEBSITE"].link);
                   e.stopPropagation();
                 }}
               />
@@ -69,18 +76,20 @@ export default function DAOCard({ data }) {
                 src={twitter.src}
                 alt=""
                 onClick={(e) => {
-                  data.twitter_link && openNewTab(data.twitter_link);
+                  data.socials_map["TWITTER"]?.link &&
+                    openNewTab(data.socials_map["TWITTER"].link);
                   e.stopPropagation();
                 }}
               />
               <p
                 onClick={(e) => {
-                  data.twitter_link && openNewTab(data.twitter_link);
+                  data.socials_map["TWITTER"]?.link &&
+                    openNewTab(data.socials_map["TWITTER"].link);
                   e.stopPropagation();
                 }}
               >
-                {data.twitter_followers
-                  ? numFormatter(data.twitter_followers)
+                {data.socials_map["TWITTER"]?.meta
+                  ? numFormatter(data.socials_map["TWITTER"].meta.count)
                   : "n/a"}
               </p>
             </span>
@@ -89,13 +98,15 @@ export default function DAOCard({ data }) {
                 src={discord.src}
                 alt=""
                 onClick={(e) => {
-                  data.discord_link && openNewTab(data.discord_link);
+                  data.socials_map["DISCORD"]?.link &&
+                    openNewTab(data.socials_map["DISCORD"].link);
                   e.stopPropagation();
                 }}
               />
               <p
                 onClick={(e) => {
-                  data.discord_link && openNewTab(data.discord_link);
+                  data.socials_map["DISCORD"]?.link &&
+                    openNewTab(data.socials_map["DISCORD"].link);
                   e.stopPropagation();
                 }}
               >

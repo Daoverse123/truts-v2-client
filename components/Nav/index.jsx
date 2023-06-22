@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import _ from "lodash";
 import styles from "./nav.module.scss";
@@ -62,8 +62,21 @@ export default function Component({ isFloating, isStrech }) {
     }
   };
 
+  let nav = useRef(null);
   useEffect(() => {
     fetchUser();
+    nav &&
+      window.addEventListener("scroll", (e) => {
+        //if scroll position is 0 set nav backgroud to transparent else set it to  #f7f7f7
+        if (window.scrollY == 0) {
+          document.querySelector("#nav").style.background = "transparent";
+          document.querySelector("#nav").style.borderBottom = "none";
+        } else {
+          document.querySelector("#nav").style.background = "#f7f7f7";
+          document.querySelector("#nav").style.borderBottom =
+            "1px solid rgba(135, 135, 135, 0.25)";
+        }
+      });
   }, []);
 
   console.log(user);
@@ -71,6 +84,7 @@ export default function Component({ isFloating, isStrech }) {
   return (
     <>
       <nav
+        id="nav"
         key={navKey}
         style={
           isFloating == true ? { position: "fixed" } : { position: "absolute" }

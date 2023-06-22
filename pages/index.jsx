@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import openNewTab from "../utils/openNewTab";
 import Link from "next/link";
+import { useQuery } from "react-query";
 
 // COMPONENTS
 import Button from "../components/Button";
@@ -44,53 +45,9 @@ import heroImg from "../assets/hero_img.png";
 const API = process.env.API;
 //const CATEGORY_LIST = ['all', 'Service', 'Investment', 'Social', 'Community', 'Education', 'Media', 'Collector', 'Art', 'Sports', 'Event']
 
-const CATEGORY_LIST = [
-  "DAO",
-  "Investors",
-  "Media",
-  "Investment",
-  "Service",
-  "Grant",
-  "Social",
-  "DAO tool",
-  "Defi",
-  "CeFi",
-  "TradeFi",
-  "BlockFi",
-  "Lending",
-  "Yield aggregator",
-  "Stablecoin",
-  "NFT",
-  "Metaverse",
-  "Art",
-  "Music",
-  "NFT marketplace",
-  "Utilities",
-  "Analytics",
-  "Payment",
-  "Oracle",
-  "Games",
-  "Infrastructure",
-  "Wallet",
-  "Indexer",
-  "Storage",
-  "Identity",
-  "Exchange",
-  "Community",
-  "Guild",
-  "Marketing tool",
-  "Public Good",
-  "Education",
-];
-
 // MAIN COMPONENT
-export default function Home({ daoList_ssr }) {
+export default function Home({ daoList_ssr, categoryList }) {
   //data states
-  const [daoList, setdaoList] = useState(daoList_ssr);
-
-  useEffect(() => {
-    getDynamicCategoryDaoList(setdaoList);
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -125,7 +82,7 @@ export default function Home({ daoList_ssr }) {
       <Hero />
       <main className={styles.main}>
         {/* <StatCards /> */}
-        <CommunitiesWall daoList={daoList} />
+        <CommunitiesWall daoList={daoList_ssr} categoryList={categoryList} />
         <Leaderboard />
       </main>
       <RecentReviewsSection />
@@ -206,9 +163,14 @@ const Faq = () => {
 //SSR DATA HOME PAGE
 export async function getServerSideProps(ctx) {
   // Fetch data from external API
-  let res = await Promise.all([getDaolistAPI()]);
+  let res = await Promise.all([
+    getDaolistAPI(),
+    axios.get(`${process.env.P_API}/listing/categories`),
+  ]);
   // Pass data to the page via props
-  return { props: { daoList_ssr: res[0] } };
+  return {
+    props: { daoList_ssr: res[0], categoryList: res[1].data.data.result },
+  };
 }
 
 // API CALLS
@@ -216,36 +178,14 @@ export async function getServerSideProps(ctx) {
 //get list of daos
 const getDaolistAPI = async (setter) => {
   //gets initial 20 doas
-  let url = `${API}/dao/get-dao-list?limit=20&page=1`;
-  let res = await axios.get(url);
-  let dao_data_obj = {};
-  CATEGORY_LIST.forEach((ele) => {
-    dao_data_obj[ele] = [];
-  });
-  dao_data_obj["all"] = res.data.results;
-  return dao_data_obj;
-};
+  let params = {
+    limit: 20,
+    sort: `{ "count": -1 ,"rating" : -1 }`,
+  };
 
-//get Leaderboard
-const getLeaderboard = async (setter) => {
-  let url = `${API}/dao/leaderboard`;
-  let res = await axios.get(url);
-  //console.log(res.data)
-  return res.data;
-};
-
-//get 20 Dynamic category based Daos
-const getDynamicCategoryDaoList = async (setter) => {
-  CATEGORY_LIST.forEach((cat) => {
-    if (cat == "all") return;
-    let url = `${API}/dao/similar?category=${cat}&page=1&limit=20`;
-    axios.get(url).then((res) => {
-      setter((prev) => {
-        prev[cat] = res.data.results;
-        return { ...prev };
-      });
-    });
-  });
+  let url = `${process.env.P_API}/listing`;
+  let res = await axios.get(url, { params });
+  return res.data.data.result;
 };
 
 //HERO COMPONENT
@@ -384,18 +324,8 @@ function StatCards() {
 }
 
 // COMMUNITY WALL
-function CommunitiesWall({ daoList }) {
+function CommunitiesWall({ daoList, categoryList }) {
   const [selectedTab, setselectedTab] = useState("all");
-  const [scrollPosDefault, setscrollPosDefault] = useState(false);
-
-  const categoryTabsOnScroll = (e) => {
-    const scrollPos = document.querySelector("#cat_container").scrollLeft;
-    if (scrollPos > 1) {
-      setscrollPosDefault(true);
-    } else {
-      setscrollPosDefault(false);
-    }
-  };
 
   const scrolltoEnd = () => {
     // document.querySelector('#cat_container').scrollLeft = 99999;
@@ -423,22 +353,37 @@ function CommunitiesWall({ daoList }) {
     // console.log(list);
   };
 
-  let categoryTabs = CATEGORY_LIST.map((ele, idx) => {
-    if (daoList[ele].length <= 0) {
-      return null;
-    }
+  let filteredList = useQuery({
+    queryKey: ["filteredDAOList", selectedTab],
+    queryFn: async (query) => {
+      let selected = query.queryKey[1];
+      if (selected == "all") return daoList;
+
+      let params = {
+        limit: 20,
+        sort: `{ "count": -1 ,"rating" : -1 }`,
+        filter: `{ "categories": ["${selected}"] }`,
+      };
+
+      let url = `${process.env.P_API}/listing`;
+      let res = await axios.get(url, { params });
+      return res.data.data.result;
+    },
+  });
+
+  let categoryTabs = [{ category: "all" }, ...categoryList].map((ele, idx) => {
     return (
       <button
         id={`t${idx}`}
         onClick={() => {
-          setselectedTab(ele);
+          setselectedTab(ele.category);
         }}
         className={
           ele == selectedTab ? styles.categoryTabSelected : styles.categoryTab
         }
         key={"cat" + idx}
       >
-        {ele}
+        {ele.category}
       </button>
     );
   });
@@ -448,19 +393,21 @@ function CommunitiesWall({ daoList }) {
       <h1 className={styles.sec_title}>Our Wall of Communities</h1>
       <div className={styles.categoryTabConWrapper}>
         <button className={styles.scrollStart} onClick={scrolltoStart} />
-        <div
-          id="cat_container"
-          className={styles.categoryTabCon}
-          onScroll={categoryTabsOnScroll}
-        >
+        <div id="cat_container" className={styles.categoryTabCon}>
           {categoryTabs}
         </div>
         <button className={styles.scrollEnd} onClick={scrolltoEnd} />
       </div>
       <div className={styles.cardCon} key={selectedTab}>
-        {daoList[selectedTab].map((ele, idx) => {
-          return <DAOCard key={"card" + idx} data={ele} />;
-        })}
+        {filteredList.isSuccess ? (
+          filteredList.data.map((ele, idx) => {
+            return <DAOCard key={"card" + idx} data={ele} />;
+          })
+        ) : (
+          <span className={styles.loader}>
+            <img src="/white-loader.gif" alt="" />
+          </span>
+        )}
       </div>
       <Link href={"/discover"}>
         <Button label={"See More"} type={"secondary"} />

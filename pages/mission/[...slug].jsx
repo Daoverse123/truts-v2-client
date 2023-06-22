@@ -187,7 +187,7 @@ function Index({ mission }) {
                 );
               }}
               className={styles.profileImg}
-              src={mission.listing.dao_logo || "/blue.png"}
+              src={mission.listing?.photo?.logo.secure_url || "/blue.png"}
               alt=""
             />
             <div className={styles.content}>
@@ -205,7 +205,7 @@ function Index({ mission }) {
                 }}
                 className={styles.sub}
               >
-                {mission.listing.dao_name}
+                {mission.listing.name}
               </h2>
               <h1 className={styles.title}>{limitText(40, mission.name)}</h1>
               <p className={styles.desc}>
