@@ -1,4 +1,5 @@
 import React from "react";
+import openNewTab from "../../../utils/openNewTab";
 
 function NewHero() {
   return (
