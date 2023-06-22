@@ -29,7 +29,7 @@ function NewHero() {
       </p>
       <button
         onClick={() => {
-          openNewTab("/missons");
+          openNewTab("/missions");
         }}
         className={
           "text-[16px] grad border-none px-[32px] py-[16px] rounded-lg text-white mt-[32px] flex items-center"
