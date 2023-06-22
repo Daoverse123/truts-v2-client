@@ -144,7 +144,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
       />
       <div className={styles.dao}>
         <Head>
-          <title>{`${dao_data.dao_name} | Truts - the best discovery platform for web3`}</title>
+          <title>{`${dao_data.name} | Truts - the best discovery platform for web3`}</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -153,7 +153,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
           <link rel="icon" href="/favicon.png" />
           <meta
             name="description"
-            content={dao_data.dao_mission || dao_data.description}
+            content={dao_data.oneliner || dao_data.description}
           />
 
           {rid.length > 0 && ogImage && (
@@ -163,10 +163,10 @@ function Dao({ dao_data, rid, slug, ogImage }) {
                 content={`https://www.truts.xyz/community/${dao_data.slug}`}
               />
               <meta property="og:type" content="website" />
-              <meta property="og:title" content={dao_data.dao_name} />
+              <meta property="og:title" content={dao_data.name} />
               <meta
                 property="og:description"
-                content={dao_data.dao_mission || dao_data.description}
+                content={dao_data.oneliner || dao_data.description}
               />
               <meta property="og:image" content={ogImage} />
 
@@ -176,10 +176,10 @@ function Dao({ dao_data, rid, slug, ogImage }) {
                 property="twitter:url"
                 content={`https://www.truts.xyz/community/${dao_data.slug}`}
               />
-              <meta name="twitter:title" content={dao_data.dao_name} />
+              <meta name="twitter:title" content={dao_data.name} />
               <meta
                 name="twitter:description"
-                content={dao_data.dao_mission || dao_data.description}
+                content={dao_data.oneliner || dao_data.description}
               />
               <meta name="twitter:image" content={ogImage} />
             </>
@@ -223,7 +223,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
                 setwalletConnectVisible={setwalletConnectVisible}
                 settippingFlowVisible={settippingFlowVisible}
                 key={slug}
-                twitter_link={dao_data.twitter_link}
+                twitter_link={dao_data.socials_map["TWITTER"]?.link}
               />
             </div>
             <Sidebar dao_data={dao_data} />
@@ -287,15 +287,15 @@ const NavSec = ({ selected, setSelected }) => {
 
 const InfoSec = ({ dao_data }) => {
   let {
-    dao_name,
-    review_count,
-    dao_category,
-    dao_cover,
-    average_rating,
+    name: dao_name,
+    count: review_count,
+    categories: dao_category,
+    photo: dao_cover,
+    rating: average_rating,
     slug,
   } = dao_data;
 
-  let info = dao_data.dao_mission + "\n" + dao_data.description;
+  let info = dao_data.oneliner + "\n" + dao_data.description;
 
   const [showmore, setshowmore] = useState(false);
 
@@ -336,11 +336,11 @@ const InfoSec = ({ dao_data }) => {
             })}
           </div>
         </span>
-        {dao_data.discord_link.length > 0 && (
+        {dao_data.socials_map["DISCORD"].link.length > 0 && (
           <Button
             label={"Join Community"}
             onClick={() => {
-              openNewTab(dao_data.discord_link);
+              openNewTab(dao_data.socials_map["DISCORD"]);
             }}
           />
         )}
@@ -354,7 +354,7 @@ const InfoSec = ({ dao_data }) => {
           label={"Write a Review"}
         />
       </div>
-      <img alt="" className={styles.cover} src={dao_cover} />
+      <img alt="" className={styles.cover} src={dao_cover.cover.secure_url} />
     </div>
   );
 };
@@ -581,7 +581,7 @@ const ReviewsSec = ({
     <div key={selectedReview + "section"} className={styles.reviewSec}>
       {/* <div className={styles.info}>
                 <h2>What is it?</h2>
-                <p>{dao_data.dao_mission}</p>
+                <p>{dao_data.oneliner}</p>
                 <p>{dao_data.description}</p>
             </div> */}
       <span className={styles.reviewFilter}>
@@ -955,7 +955,14 @@ const fetchData = async (slug) => {
   try {
     const res = await axios.get(`${P_API}/listing/${slug}`);
     if (res.status == 200) {
-      return JSON.parse(JSON.stringify(res.data.data.listing));
+      let data = JSON.parse(JSON.stringify(res.data.data.listing));
+
+      let socials_map = {};
+      data.socials.forEach((ele) => {
+        socials_map[ele.platform] = ele;
+      });
+      data.socials_map = socials_map;
+      return data;
     } else {
       alert("DAO NOT FOUND");
     }

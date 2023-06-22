@@ -75,13 +75,13 @@ const Sidebar = ({ dao_data }) => {
           style={{ gridArea: "b" }}
           className={styles.twitter_soc}
           onClick={() => {
-            openNewTab(dao_data.twitter_link);
+            openNewTab(dao_data.socials_map["TWITTER"].link);
           }}
         >
           <img src={twitter_white.src} alt="" />
-          {numFormatter(dao_data?.twitter_followers)}
+          {numFormatter(dao_data.socials_map["TWITTER"].meta.count)}
         </button>
-        {dao_data.dao_category.includes("Investors") ? (
+        {dao_data.categories.includes("Investors") ? (
           <button
             style={{ gridArea: "c" }}
             className={styles.discord_soc}
@@ -97,16 +97,16 @@ const Sidebar = ({ dao_data }) => {
           <button
             className={styles.discord_soc}
             onClick={() => {
-              openNewTab(dao_data.discord_link);
+              openNewTab(dao_data.socials_map["DISCORD"].link);
             }}
           >
             <img src={discord_white.src} alt="" />
-            {numFormatter(dao_data?.discord_members)}
+            {numFormatter(dao_data.socials_map["DISCORD"].meta.count)}
           </button>
         )}
         <button
           onClick={() => {
-            openNewTab(dao_data.website_link);
+            openNewTab(dao_data.socials_map["WEBSITE"].link);
           }}
           className={styles.web_soc}
           style={{ gridArea: "d" }}
@@ -134,7 +134,7 @@ const Sidebar = ({ dao_data }) => {
       <span className={styles.chain_con}>
         <p>Chain</p>
         <span className={styles.chain_icons}>
-          {dao_data.chain.map((ele) => {
+          {dao_data.chains.map((ele) => {
             return getChainIcon(ele);
           })}
         </span>
@@ -142,27 +142,27 @@ const Sidebar = ({ dao_data }) => {
       <div className={styles.dialSec}>
         <DialComp
           label={"Community Vibes"}
-          range={Math.ceil(dao_data.review_meta["resonate_vibes_rate"])}
+          range={Math.ceil(dao_data.reviews.meta["resonate_vibes_rate"])}
         />
         <DialComp
           label={"Onboarding Experience"}
-          range={Math.ceil(dao_data.review_meta["onboarding_exp"])}
+          range={Math.ceil(dao_data.reviews.meta["onboarding_exp"])}
         />
         <DialComp
           label={"Organizational Structure"}
-          range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+          range={Math.ceil(dao_data.reviews.meta["great_org_structure"])}
         />
         <DialComp
           label={"Incentives for Members"}
-          range={Math.ceil(dao_data.review_meta["great_org_structure"])}
+          range={Math.ceil(dao_data.reviews.meta["great_org_structure"])}
         />
         <DialComp
           label={"Having a Voice"}
-          range={Math.ceil(dao_data.review_meta["opinions_matter"])}
+          range={Math.ceil(dao_data.reviews.meta["opinions_matter"])}
         />
         <DialComp
           label={"Recommendation to a friend"}
-          range={Math.ceil(dao_data.review_meta["friend_recommend"])}
+          range={Math.ceil(dao_data.reviews.meta["friend_recommend"])}
         />
       </div>
     </div>

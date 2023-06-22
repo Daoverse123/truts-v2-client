@@ -20,8 +20,7 @@ $PHONE_N: 425;
     @return #{calc(($units / $TABLET_N) * 100)}vw;
 }
 
-
-.focus{
+.focus {
     outline: 1.25px solid blue;
 }
 
@@ -38,7 +37,7 @@ $PHONE_N: 425;
         height: desktop_to_laptop_fluid(52);
     }
     @media (max-width: $LAPTOP) and (min-width: $TABLET) {
-        width:laptop_to_tablet_fluid(517);
+        width: laptop_to_tablet_fluid(517);
         height: laptop_to_tablet_fluid(52);
     }
     @media (max-width: $TABLET) and (min-width: $PHONE) {

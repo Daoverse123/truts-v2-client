@@ -26,6 +26,18 @@ $PHONE_N: 425;
     @return #{calc(($units / $TABLET_N) * 100)}vw;
 }
 
+.loader {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    img {
+        height: 25%;
+        object-fit: contain;
+    }
+}
+
 // PAGE CON
 .container {
     display: flex;
@@ -474,6 +486,7 @@ $PHONE_N: 425;
     text-transform: capitalize;
     padding-bottom: 4px;
     border-bottom: 3.5px solid #3064f300;
+    min-width: max-content;
     &:hover {
         color: #3065f3;
     }
