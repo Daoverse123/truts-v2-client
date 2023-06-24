@@ -142,7 +142,7 @@ function DaoForm({ categoriesList, chainList }) {
     });
     try {
       let res = await axios.post(
-        `${API}/dao/create-new-dao-v2`,
+        `${process.env.P_API}/listing`,
         {
           ...state,
           chain: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
@@ -154,7 +154,7 @@ function DaoForm({ categoriesList, chainList }) {
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("token")}`,
           },
         }
       );
@@ -340,7 +340,7 @@ const CategotyCon = ({ state, setState }) => {
 
   useEffect(() => {
     setState((s) => {
-      s.dao_category = selectedItems;
+      s.categories = selectedItems;
       return { ...s };
     });
   }, [selectedItems]);
@@ -496,7 +496,7 @@ const ChainSelectCon = ({ state, setState, CHAIN_LIST_MAP }) => {
 
   useEffect(() => {
     setState((s) => {
-      s.chain = selectedItems;
+      s.chains = selectedItems;
       return { ...s };
     });
   }, [selectedItems]);
