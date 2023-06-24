@@ -791,6 +791,8 @@ const StarComp = ({ rating, size }) => {
 };
 
 const Communites_temp = ({ userData }) => {
+  let data = userData.daos;
+
   return (
     <div className={styles.reviewWrapper}>
       <p className={styles.info}>
@@ -799,19 +801,7 @@ const Communites_temp = ({ userData }) => {
       </p>
       <div className={styles.communities_list + " " + styles.appear}>
         {userData.daos.map((ele, idx) => {
-          let data = {
-            dao_name: ele?.name,
-            twitter_link: ele?.twitter.link,
-            twitter_followers: ele?.twitter.count,
-            discord_link: ele?.discord.link,
-            discord_members: ele?.discord.count,
-            average_rating: ele?.ratings.average,
-            review_count: ele?.ratings.count,
-            slug: ele.slug,
-            dao_cover: ele?.image.cover.url,
-            website_link: ele?.website,
-          };
-          return <DAOCard key={"d" + idx} data={data} />;
+          return <DAOCard key={"d" + idx} data={ele} />;
         })}
       </div>
     </div>

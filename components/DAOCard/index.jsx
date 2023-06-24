@@ -154,7 +154,7 @@ const addDecimal = (num) => {
   let str = `${num}`;
   if (str.length > 1) {
     let num = Math.round(num * 10) / 10;
-    if (isNaN(num)) return "0.0";
+
     return `${num}`;
   } else {
     return str + ".0";
