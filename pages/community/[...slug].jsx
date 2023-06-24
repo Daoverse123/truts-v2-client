@@ -288,12 +288,14 @@ const NavSec = ({ selected, setSelected }) => {
 const InfoSec = ({ dao_data }) => {
   let {
     name: dao_name,
-    count: review_count,
     categories: dao_category,
     photo: dao_cover,
-    rating: average_rating,
+    reviews,
     slug,
   } = dao_data;
+
+  let average_rating = reviews.rating;
+  let review_count = reviews.count;
 
   let info = dao_data.oneliner + "\n" + dao_data.description;
 
