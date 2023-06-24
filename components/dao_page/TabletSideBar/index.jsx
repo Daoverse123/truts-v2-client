@@ -62,13 +62,13 @@ const TabletSideBar = ({ dao_data }) => {
         <div className={styles.btn_row}>
           <button
             onClick={() => {
-              openNewTab(dao_data.twitter_link);
+              openNewTab(dao_data.socials_map["TWITTER"]?.link);
             }}
             className={styles.soc_btn}
             style={{ background: "#1DA1F2" }}
           >
             <img src={twitter_white.src} alt="" />
-            {numFormatter(dao_data?.twitter_followers)}
+            {numFormatter(dao_data.socials_map["TWITTER"]?.meta?.count)}
           </button>
           {dao_data.categories.includes("Investors") ? (
             <button
@@ -88,18 +88,18 @@ const TabletSideBar = ({ dao_data }) => {
           ) : (
             <button
               onClick={() => {
-                openNewTab(dao_data.discord_link);
+                openNewTab(dao_data.socials_map["DISCORD"]?.link);
               }}
               className={styles.soc_btn}
               style={{ background: "#4962FE" }}
             >
               <img src={discord_white.src} alt="" />
-              {numFormatter(dao_data?.discord_members)}
+              {numFormatter(dao_data.socials_map["DISCORD"]?.meta?.count)}
             </button>
           )}
           <button
             onClick={() => {
-              openNewTab(dao_data.website_link);
+              openNewTab(dao_data.socials_map["WEBSITE"]?.link);
             }}
             className={styles.soc_btn}
             style={{ background: "#121212" }}

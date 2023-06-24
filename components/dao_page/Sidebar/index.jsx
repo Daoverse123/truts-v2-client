@@ -75,11 +75,11 @@ const Sidebar = ({ dao_data }) => {
           style={{ gridArea: "b" }}
           className={styles.twitter_soc}
           onClick={() => {
-            openNewTab(dao_data.socials_map["TWITTER"].link);
+            openNewTab(dao_data.socials_map["TWITTER"]?.link);
           }}
         >
           <img src={twitter_white.src} alt="" />
-          {numFormatter(dao_data.socials_map["TWITTER"].meta.count)}
+          {numFormatter(dao_data.socials_map["TWITTER"]?.meta?.count)}
         </button>
         {dao_data.categories.includes("Investors") ? (
           <button
@@ -97,16 +97,16 @@ const Sidebar = ({ dao_data }) => {
           <button
             className={styles.discord_soc}
             onClick={() => {
-              openNewTab(dao_data.socials_map["DISCORD"].link);
+              openNewTab(dao_data.socials_map["DISCORD"]?.link);
             }}
           >
             <img src={discord_white.src} alt="" />
-            {numFormatter(dao_data.socials_map["DISCORD"].meta.count)}
+            {numFormatter(dao_data.socials_map["DISCORD"]?.meta?.count)}
           </button>
         )}
         <button
           onClick={() => {
-            openNewTab(dao_data.socials_map["WEBSITE"].link);
+            openNewTab(dao_data.socials_map["WEBSITE"]?.link);
           }}
           className={styles.web_soc}
           style={{ gridArea: "d" }}

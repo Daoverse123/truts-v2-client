@@ -336,11 +336,11 @@ const InfoSec = ({ dao_data }) => {
             })}
           </div>
         </span>
-        {dao_data.socials_map["DISCORD"].link.length > 0 && (
+        {dao_data.socials_map["DISCORD"]?.link?.length > 0 && (
           <Button
             label={"Join Community"}
             onClick={() => {
-              openNewTab(dao_data.socials_map["DISCORD"]);
+              openNewTab(dao_data.socials_map["DISCORD"]?.link);
             }}
           />
         )}

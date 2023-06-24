@@ -52,11 +52,11 @@ export default function DAOCard({ data: source_data }) {
           </span>
           <div className={styles.review_stats}>
             <div className={styles.ratingBox}>
-              <span>{addDecimal(data.rating)}</span>
+              <span>{addDecimal(data.reviews.rating)}</span>
               <img src={star.src} alt="" />
             </div>
             <span className={styles.review_count}>
-              {data.review_count} reviews
+              {data.reviews.count} reviews
             </span>
           </div>
           <div className={styles.social_icons}>
@@ -110,8 +110,8 @@ export default function DAOCard({ data: source_data }) {
                   e.stopPropagation();
                 }}
               >
-                {data.discord_members
-                  ? numFormatter(data.discord_members)
+                {data.socials_map["DISCORD"]?.meta.count
+                  ? numFormatter(data.socials_map["DISCORD"]?.meta.count)
                   : "n/a"}
               </p>
             </span>
@@ -153,7 +153,9 @@ const addDecimal = (num) => {
   if (!num) return "0.0";
   let str = `${num}`;
   if (str.length > 1) {
-    return Math.round(num * 10) / 10;
+    let num = Math.round(num * 10) / 10;
+    if (isNaN(num)) return "0.0";
+    return `${num}`;
   } else {
     return str + ".0";
   }
