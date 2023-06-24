@@ -149,14 +149,13 @@ const openNewTab = (url) => {
   a.click();
 };
 
-const addDecimal = (num) => {
-  if (!num) return "0.0";
-  let str = `${num}`;
-  if (str.length > 1) {
-    let num = Math.round(num * 10) / 10;
-
-    return `${num}`;
-  } else {
-    return str + ".0";
+function addDecimal(value) {
+  if (typeof value !== "number" || isNaN(value)) {
+    return 0.0;
   }
-};
+  let output = `${Number(value.toFixed(1))}`;
+  if (output.length > 1) {
+    return output;
+  }
+  return `${output}.0`;
+}
