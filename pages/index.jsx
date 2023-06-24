@@ -180,7 +180,7 @@ const getDaolistAPI = async (setter) => {
   //gets initial 20 doas
   let params = {
     limit: 20,
-    sort: `{ "count": -1 ,"rating" : -1 }`,
+    sort: `{ "reviews.count": -1 ,"reviews.rating" : -1 }`,
   };
 
   let url = `${process.env.P_API}/listing`;
@@ -361,7 +361,7 @@ function CommunitiesWall({ daoList, categoryList }) {
 
       let params = {
         limit: 20,
-        sort: `{ "count": -1 ,"rating" : -1 }`,
+        sort: `{ "reviews.count": -1 ,"reviews.rating" : -1 }`,
         filter: `{ "categories": ["${selected}"] }`,
       };
 
@@ -379,7 +379,9 @@ function CommunitiesWall({ daoList, categoryList }) {
           setselectedTab(ele.category);
         }}
         className={
-          ele == selectedTab ? styles.categoryTabSelected : styles.categoryTab
+          ele.category == selectedTab
+            ? styles.categoryTabSelected
+            : styles.categoryTab
         }
         key={"cat" + idx}
       >

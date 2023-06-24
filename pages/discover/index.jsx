@@ -196,7 +196,7 @@ function Discover({ chainList, categoriesList, selected_chain }) {
 
       let params = {
         limit: 150 * pageMultiplier,
-        sort: `{ "count": -1 ,"rating" : ${rating_sort} }`,
+        sort: `{ "reviews.count": -1 ,"reviews.rating" : ${rating_sort} }`,
       };
 
       let filter = {};
