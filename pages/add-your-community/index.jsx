@@ -138,14 +138,14 @@ function DaoForm({ categoriesList, chainList }) {
 
     console.log("state :>> ", {
       ...state,
-      chain: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
+      chains: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
     });
     try {
       let res = await axios.post(
         `${process.env.P_API}/listing`,
         {
           ...state,
-          chain: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
+          chains: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
           socials: {
             TWITTER: state.twitter_link,
             DISCORD: state.discord_link,
