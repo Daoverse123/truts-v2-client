@@ -82,7 +82,7 @@ function ShareScreen({
           ✕
         </p>
         <h1>Share Review</h1>
-        <p>Tweet about it</p>
+        {/* <p>Tweet about it</p> */}
         <span style={{ position: "absolute", top: "-9999em", left: "-9999em" }}>
           <div ref={captureElementRef} className={styles.share}>
             <RecentReview

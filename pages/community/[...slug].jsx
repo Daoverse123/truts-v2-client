@@ -215,6 +215,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
             <div className={styles.main}>
               <TabletSideBar dao_data={dao_data} />
               <ReviewsSec
+                dao_data={dao_data}
                 dao_id={dao_data._id}
                 rid={rid}
                 slug={slug}
@@ -535,6 +536,7 @@ const ReviewsSec = ({
   rid,
   dao_id,
   twitter_link,
+  dao_data,
 }) => {
   const [selectedFilter, setselectedFilter] = useState("Newest");
 
@@ -612,6 +614,7 @@ const ReviewsSec = ({
             key={rid + selectedReview}
             twitter_link={twitter_link}
             slug={slug}
+            dao_data={dao_data}
           />
         )}
         {selectedFilter == "Newest"
@@ -630,6 +633,7 @@ const ReviewsSec = ({
                     key={"r" + idx + selectedFilter}
                     twitter_link={twitter_link}
                     slug={slug}
+                    dao_data={dao_data}
                   />
                 );
               })
@@ -648,6 +652,7 @@ const ReviewsSec = ({
                   key={"r" + idx + selectedFilter}
                   twitter_link={twitter_link}
                   slug={slug}
+                  dao_data={dao_data}
                 />
               );
             })}
@@ -664,6 +669,7 @@ const ReviewComp = ({
   selected,
   twitter_link,
   slug,
+  dao_data,
 }) => {
   const [isreadMore, setisreadMore] = useState(false);
   const [rateReviewLoading, setrateReviewLoading] = useState(false);
@@ -780,7 +786,7 @@ const ReviewComp = ({
           text={getReviewDesc()}
           address={userInfo.name}
           username={userInfo.username || userInfo.name}
-          daoName={review.listing.name}
+          daoName={dao_data.name}
           rating={review.rating}
           profileImg={profile_img}
           closeModal={() => {
