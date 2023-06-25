@@ -79,15 +79,6 @@ magiceden_link: { type: String }, */
 }
 let CATEGORY_LIST = [];
 function DaoForm({ categoriesList, chainList }) {
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (!token || token == "null" || token == "undefined") {
-      setTimeout(() => {
-        window.showSignupPrompt && window.showSignupPrompt();
-      }, 1000);
-    }
-  }, []);
-
   CATEGORY_LIST = categoriesList.map((ele) => ele.category);
   let CHAIN_LIST_MAP = {};
   chainList.forEach((ele) => {
@@ -170,6 +161,17 @@ function DaoForm({ categoriesList, chainList }) {
     }
   };
 
+  let disableForm = { pointerEvents: "none", opacity: "0.4" };
+  const [formDisabled, setformDisabled] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setformDisabled(false);
+    } else {
+      setformDisabled(true);
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.daoPage}>
@@ -187,144 +189,167 @@ function DaoForm({ categoriesList, chainList }) {
           setwalletConnectVisible={setwalletConnectVisible}
           walletConnectVisible={walletConnectVisible}
         />
-        <form onSubmit={submitForm} className={styles.daoForm}>
-          <h1 className={styles.title}>
-            Application for Listing your Community on Truts
-          </h1>
-          <p className={styles.subtitle}>
-            Please fill the following details of your Community to apply for
-            your page on Truts.
-          </p>
+        <div>
+          {formDisabled && <SignupPrompt />}
+          <form
+            style={formDisabled ? disableForm : {}}
+            onSubmit={submitForm}
+            className={styles.daoForm}
+          >
+            <h1 className={styles.title}>
+              Application for Listing your Community on Truts
+            </h1>
+            <p className={styles.subtitle}>
+              Please fill the following details of your Community to apply for
+              your page on Truts.
+            </p>
 
-          <label htmlFor="">
-            <p>What`s the Name of your Community?*</p>
-            <input
-              placeholder="Community Name"
-              required
-              value={state.name}
-              onChange={(e) => {
-                setState((s) => {
-                  s.name = e.target.value;
-                  return { ...s };
-                });
-              }}
-              type="text"
-            />
-          </label>
-
-          <label htmlFor="">
-            <p>Add a One Line Statement for your Community.*</p>
-            <textarea
-              required
-              value={state.oneliner}
-              onChange={(e) => {
-                setState((s) => {
-                  s.oneliner = e.target.value;
-                  return { ...s };
-                });
-              }}
-              placeholder="Please keep it within 1 to 2 lines."
-              rows={5}
-              type="text"
-            />
-          </label>
-
-          <CategotyCon state={state} setState={setState} />
-          <ChainSelectCon
-            CHAIN_LIST_MAP={CHAIN_LIST_MAP}
-            state={state}
-            setState={setState}
-          />
-
-          <label htmlFor="">
-            <p>Add a brief Description for your Community.*</p>
-            <textarea
-              required
-              value={state.description}
-              onChange={(e) => {
-                setState((s) => {
-                  s.description = e.target.value;
-                  return { ...s };
-                });
-              }}
-              placeholder="Even though there is no word limit but please do keep it short and brief :)"
-              rows={15}
-              type="text"
-            />
-          </label>
-
-          <span className={styles.linkRow}>
             <label htmlFor="">
-              <p>Discord Link:*</p>
+              <p>What`s the Name of your Community?*</p>
               <input
+                placeholder="Community Name"
                 required
-                value={state.discord_link}
+                value={state.name}
                 onChange={(e) => {
                   setState((s) => {
-                    s.discord_link = e.target.value;
+                    s.name = e.target.value;
                     return { ...s };
                   });
                 }}
-                placeholder="https://discord.com/invite/..."
                 type="text"
               />
             </label>
 
             <label htmlFor="">
-              <p>Twitter Link:*</p>
-              <input
+              <p>Add a One Line Statement for your Community.*</p>
+              <textarea
                 required
-                value={state.twitter_link}
+                value={state.oneliner}
                 onChange={(e) => {
                   setState((s) => {
-                    s.twitter_link = e.target.value;
+                    s.oneliner = e.target.value;
                     return { ...s };
                   });
                 }}
-                placeholder="https://twitter.com/..."
+                placeholder="Please keep it within 1 to 2 lines."
+                rows={5}
                 type="text"
               />
             </label>
-          </span>
 
-          <span className={styles.linkRow}>
+            <CategotyCon state={state} setState={setState} />
+            <ChainSelectCon
+              CHAIN_LIST_MAP={CHAIN_LIST_MAP}
+              state={state}
+              setState={setState}
+            />
+
             <label htmlFor="">
-              <p>Website Link:*</p>
-              <input
+              <p>Add a brief Description for your Community.*</p>
+              <textarea
                 required
-                value={state.website_link}
+                value={state.description}
                 onChange={(e) => {
                   setState((s) => {
-                    s.website_link = e.target.value;
+                    s.description = e.target.value;
                     return { ...s };
                   });
                 }}
-                placeholder="https://samplesite.xyz"
+                placeholder="Even though there is no word limit but please do keep it short and brief :)"
+                rows={15}
                 type="text"
               />
             </label>
 
-            <label htmlFor="">
-              <p>Blog Link:</p>
-              <input
-                value={state.mirror_link}
-                onChange={(e) => {
-                  setState((s) => {
-                    s.mirror_link = e.target.value;
-                    return { ...s };
-                  });
-                }}
-                placeholder="https://samplesite.xyz/blog"
-                type="text"
-              />
-            </label>
-          </span>
-          <Button label={"Submit"} />
-        </form>
+            <span className={styles.linkRow}>
+              <label htmlFor="">
+                <p>Discord Link:*</p>
+                <input
+                  required
+                  value={state.discord_link}
+                  onChange={(e) => {
+                    setState((s) => {
+                      s.discord_link = e.target.value;
+                      return { ...s };
+                    });
+                  }}
+                  placeholder="https://discord.com/invite/..."
+                  type="text"
+                />
+              </label>
+
+              <label htmlFor="">
+                <p>Twitter Link:*</p>
+                <input
+                  required
+                  value={state.twitter_link}
+                  onChange={(e) => {
+                    setState((s) => {
+                      s.twitter_link = e.target.value;
+                      return { ...s };
+                    });
+                  }}
+                  placeholder="https://twitter.com/..."
+                  type="text"
+                />
+              </label>
+            </span>
+
+            <span className={styles.linkRow}>
+              <label htmlFor="">
+                <p>Website Link:*</p>
+                <input
+                  required
+                  value={state.website_link}
+                  onChange={(e) => {
+                    setState((s) => {
+                      s.website_link = e.target.value;
+                      return { ...s };
+                    });
+                  }}
+                  placeholder="https://samplesite.xyz"
+                  type="text"
+                />
+              </label>
+
+              <label htmlFor="">
+                <p>Blog Link:</p>
+                <input
+                  value={state.mirror_link}
+                  onChange={(e) => {
+                    setState((s) => {
+                      s.mirror_link = e.target.value;
+                      return { ...s };
+                    });
+                  }}
+                  placeholder="https://samplesite.xyz/blog"
+                  type="text"
+                />
+              </label>
+            </span>
+            <Button label={"Submit"} />
+          </form>
+        </div>
       </div>
       <Footer />
     </>
   );
+
+  function SignupPrompt() {
+    return (
+      <div className={styles.signUp}>
+        <p>Sign in or sign up to add your community.</p>
+        <button
+          onClick={() => {
+            //location.href = "/?signup=true";
+            window.showSignupPrompt && window.showSignupPrompt();
+          }}
+        >
+          Login/Sign Up
+        </button>
+      </div>
+    );
+  }
 }
 
 const CategotyCon = ({ state, setState }) => {

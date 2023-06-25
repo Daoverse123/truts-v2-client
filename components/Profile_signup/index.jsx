@@ -73,7 +73,7 @@ const ProfileLogin = ({
             // document
             //   .querySelector(`.${styles.profileLoginPage}`)
             //   .classList.add("close");
-            location.reload();
+            //location.reload();
             setprofileSignupPrompt(false);
           }}
           src="/svg/close.svg"
