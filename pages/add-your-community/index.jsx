@@ -165,7 +165,13 @@ function DaoForm({ categoriesList, chainList }) {
   const [formDisabled, setformDisabled] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (
+      localStorage.getItem("token") &&
+      localStorage.getItem("token") != "" &&
+      localStorage.getItem("token") != "null" &&
+      localStorage.getItem("token") != "undefined" &&
+      localStorage.getItem("token") != null
+    ) {
       setformDisabled(false);
     } else {
       setformDisabled(true);
