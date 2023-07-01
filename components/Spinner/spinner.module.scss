@@ -1,0 +1,274 @@
+.spinnerPage {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.421);
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.spinIcon {
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    right: 22px;
+    bottom: 90px;
+    cursor: pointer;
+
+    @media (max-width: 500px) {
+        width: 65px;
+        height: 65px;
+        right: 14px;
+        bottom: 80px;
+    }
+}
+
+.back {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    &:hover {
+        opacity: 0.5;
+    }
+    p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    img {
+        width: 24px;
+        object-fit: contain;
+        margin-right: 10px;
+    }
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .logo {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        overflow: hidden;
+        img {
+            padding: 10px;
+            background: rgb(255, 255, 255);
+        }
+        border-radius: 24px;
+        background: rgb(255, 255, 255);
+        border-radius: 24px;
+        box-shadow: 0 0 15px rgba(128, 128, 128, 0.291);
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 24px;
+    }
+    p {
+        text-align: center;
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}
+
+.spinner {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    flex-direction: column;
+    height: 650px;
+    width: 398px;
+    border-radius: 16px;
+    overflow: hidden;
+
+    position: relative;
+    &::before {
+        content: "";
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: #a9a9de;
+        opacity: 0.1;
+        background-image: linear-gradient(
+                30deg,
+                #6a6a8c 12%,
+                transparent 12.5%,
+                transparent 87%,
+                #6a6a8c 87.5%,
+                #6a6a8c
+            ),
+            linear-gradient(150deg, #6a6a8c 12%, transparent 12.5%, transparent 87%, #6a6a8c 87.5%, #6a6a8c),
+            linear-gradient(30deg, #6a6a8c 12%, transparent 12.5%, transparent 87%, #6a6a8c 87.5%, #6a6a8c),
+            linear-gradient(150deg, #6a6a8c 12%, transparent 12.5%, transparent 87%, #6a6a8c 87.5%, #6a6a8c),
+            linear-gradient(60deg, #6a6a8c77 25%, transparent 25.5%, transparent 75%, #6a6a8c77 75%, #6a6a8c77),
+            linear-gradient(60deg, #6a6a8c77 25%, transparent 25.5%, transparent 75%, #6a6a8c77 75%, #6a6a8c77);
+        background-size: 52px 91px;
+        background-position: 0 0, 0 0, 26px 46px, 26px 46px, 0 0, 26px 46px;
+    }
+}
+
+.bottomNav {
+    display: flex;
+    height: 60px;
+}
+
+.spinButton {
+    border-radius: 16px;
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+    color: white;
+    border: none;
+    width: 161px;
+    min-height: 41px;
+    height: 41px;
+    font-size: 16px;
+    margin-top: 40px;
+    z-index: 100;
+
+    &:disabled {
+        opacity: 0.2;
+        filter: grayscale(1);
+    }
+}
+
+.timer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    p {
+        margin: 5px;
+        font-size: 16px;
+        color: #a9a9de;
+    }
+}
+
+.wheel {
+    display: flex;
+    border-radius: 50%;
+    position: relative;
+}
+
+.inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.flower {
+    width: 100%;
+    height: 100%;
+
+    // We need a relative position
+    // so that children can have  "position:abolute"
+    position: relative;
+
+    transform: rotate(22deg);
+    overflow: hidden;
+
+    .petal {
+        .icon {
+            width: 100%;
+            text-align: center;
+            transform-origin: center center;
+            transform: rotate(90deg) translateX(140%) scale(-1, -1);
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        // Position them all in one point
+        position: absolute;
+        top: 0;
+        left: 45%;
+        display: inline-block;
+        width: 30px;
+        height: 100%;
+    }
+
+    .dot {
+        @extend .petal;
+        .icon {
+            transform: rotate(90deg) translateX(15%);
+            display: flex;
+            width: 15px;
+            height: 15px;
+            border-radius: 100%;
+
+            background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+        }
+    }
+}
+
+.pointer {
+    display: flex;
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background-color: #d6e0fd;
+    z-index: 300;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 75%;
+        height: 75%;
+        border-radius: 100%;
+        padding: 5px;
+        background-color: white;
+        border: 2px solid red;
+        z-index: 100;
+    }
+    .arrow {
+        display: flex;
+        width: 40px;
+        height: 30px;
+        clip-path: polygon(0 0%, 100% 50%, 0 100%, 0 49%);
+        background-color: #ff0000;
+        position: absolute;
+        transform: translateX(70%);
+    }
+}
+
+// success page
+
+.reward {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    h1 {
+        margin: 0;
+        color: #3065f3;
+        font-size: 17.951px;
+    }
+    img {
+        width: 28.049px;
+        height: 28.051px;
+        margin-right: 4px;
+        object-fit: contain;
+    }
+}
+
+.confetti {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}

@@ -22,97 +22,6 @@ export default function Search({ className }) {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
     // let res = await axios.get(`${API}/search/${term}`);
-    let query1 = {
-      query: {
-        bool: {
-          should: {
-            query_string: {
-              query: term,
-              default_field: "dao_name",
-            },
-          },
-          filter: {
-            term: {
-              verified_status: true,
-            },
-          },
-        },
-      },
-      _source: {
-        includes: [
-          "dao_name",
-          "dao_category",
-          "dao_logo",
-          "review_count",
-          "slug",
-          "chain",
-          "description",
-          "dao_mission",
-        ],
-      },
-    };
-
-    let query2 = {
-      query: {
-        bool: {
-          should: [
-            {
-              query_string: {
-                default_field: "dao_name",
-                query: term,
-                boost: 3,
-                _name: "query_string_dao_name",
-              },
-            },
-            {
-              query_string: {
-                default_field: "chain",
-                query: term,
-                _name: "query_string_chain",
-              },
-            },
-            {
-              query_string: {
-                default_field: "dao_category",
-                query: term,
-                _name: "query_string_dao_category",
-              },
-            },
-            {
-              query_string: {
-                default_field: "description",
-                query: term,
-                _name: "query_string_description",
-              },
-            },
-            {
-              query_string: {
-                default_field: "dao_mission",
-                query: term,
-                _name: "query_string_dao_mission",
-              },
-            },
-          ],
-          filter: {
-            term: {
-              verified_status: true,
-            },
-          },
-        },
-      },
-      _source: {
-        includes: [
-          "dao_name",
-          "dao_category",
-          "dao_logo",
-          "review_count",
-          "slug",
-          "chain",
-          "description",
-          "dao_mission",
-        ],
-      },
-    };
 
     let query3 = {
       query: {
@@ -149,6 +58,45 @@ export default function Search({ className }) {
           "chain",
           "description",
           "dao_mission",
+        ],
+      },
+    };
+
+    let query4 = {
+      query: {
+        bool: {
+          should: [
+            {
+              prefix: {
+                name: {
+                  value: term,
+                },
+              },
+            },
+            {
+              query_string: {
+                query: term,
+                default_field: "name",
+              },
+            },
+          ],
+          filter: {
+            term: {
+              visible: true,
+            },
+          },
+        },
+      },
+      _source: {
+        includes: [
+          "name",
+          "categories",
+          "photo",
+          "reviews",
+          "slug",
+          "chains",
+          "description",
+          "oneliner",
         ],
       },
     };

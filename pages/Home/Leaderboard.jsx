@@ -76,7 +76,15 @@ const UserEntry = ({ idx, data }) => {
   );
 };
 
-const CommunityEntry = ({ idx, data }) => {
+const CommunityEntry = ({ idx, data: og_data }) => {
+  let data = og_data;
+
+  let socials_map = {};
+  og_data.socials.forEach((ele) => {
+    socials_map[ele.platform] = ele;
+  });
+  data.socials_map = socials_map;
+
   return (
     <span
       onClick={() => {
@@ -104,26 +112,26 @@ const CommunityEntry = ({ idx, data }) => {
           {idx}
         </span>
         <span className={styles.mobRating}>
-          <div className={styles.commName}>{data.dao_name}</div>
+          <div className={styles.commName}>{data.name}</div>
           <GradStarRating
-            rating={data.average_rating}
+            rating={data.reviews.rating}
             showCount={true}
-            count={data.review_count}
+            count={data.reviews.count}
           />
         </span>
 
         <div className={styles.rating}>
           <GradStarRating
-            rating={data.average_rating}
+            rating={data.reviews.rating}
             showCount={true}
-            count={data.review_count}
+            count={data.reviews.count}
           />
         </div>
         <div className={styles.socials}>
           <img
             style={{ cursor: "pointer" }}
             onClick={(e) => {
-              openNewTab(data.discord_link);
+              openNewTab(data?.socials_map["DISCORD"]?.link);
               e.stopPropagation();
             }}
             src={twitterIcon.src}
@@ -131,8 +139,8 @@ const CommunityEntry = ({ idx, data }) => {
           />
           <img
             style={{ cursor: "pointer" }}
-            onClick={() => {
-              openNewTab(data.twitter_link);
+            onClick={(e) => {
+              openNewTab(data?.socials_map["TWITTER"]?.link);
               e.stopPropagation();
             }}
             src={discordIcon.src}
@@ -140,8 +148,8 @@ const CommunityEntry = ({ idx, data }) => {
           />
           <img
             style={{ cursor: "pointer" }}
-            onClick={() => {
-              openNewTab(data.website_link);
+            onClick={(e) => {
+              openNewTab(data?.socials_map["WEBSITE"]?.link);
               e.stopPropagation();
             }}
             src={webIcon.src}
@@ -159,7 +167,9 @@ const Leaderboard = () => {
   let community = useQuery({
     queryKey: ["community"],
     queryFn: async () => {
-      let res = await axios.get(`${process.env.API}/dao/leaderboard`);
+      let res = await axios.get(
+        `${process.env.P_API}/public/listing/leaderboard`
+      );
       return res.data;
     },
   });
@@ -217,7 +227,7 @@ const Leaderboard = () => {
       )}
       {selectedBtn == "community" && (
         <div className={styles.board}>
-          {community.data.map((ele, idx) => {
+          {community.data.data.leaderboard.map((ele, idx) => {
             return (
               <CommunityEntry key={idx + "ent-comm"} data={ele} idx={idx + 1} />
             );

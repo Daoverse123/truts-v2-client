@@ -23,6 +23,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import AuthWrapper from '../components/AuthWrapper';
+import SpinnerPage from '../components/Spinner';
 
 
 const { chains, provider } = configureChains(
@@ -98,6 +99,7 @@ function MyApp({ Component, pageProps }) {
       <Script id='chat-script' type="text/javascript">{`window.$crisp=[];window.CRISP_WEBSITE_ID="309a073d-871d-45e9-bbb8-f6fa6f4d4935";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}</Script>
       <AuthWrapper >
         <Component {...pageProps} />
+        <SpinnerPage />
       </AuthWrapper>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
