@@ -48,7 +48,7 @@ const DotWheel = ({ wheelData }) => {
                 }}
                 className={styles.dot}
               >
-                <div class={styles.icon}></div>
+                <div className={styles.icon}></div>
               </div>
             );
           })}

@@ -45,6 +45,7 @@ const Wheel = ({ wheelData }) => {
             {wheelData.map((w, i) => {
               return (
                 <div
+                  key={"petal" + i}
                   id={"s" + w.slot}
                   style={{
                     rotate: `${(360 / colors.length) * i}deg`,
