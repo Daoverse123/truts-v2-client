@@ -41,6 +41,7 @@ const DotWheel = ({ wheelData }) => {
           {wheelData.map((color, i) => {
             return (
               <div
+                key={"dot" + i}
                 style={{
                   rotate: `${(360 / colors.length) * i}deg`,
                   color: `red`,
