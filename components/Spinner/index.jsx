@@ -229,6 +229,24 @@ const Timer = ({ nextSpin, spinCount }) => {
 const SpinnerPage = () => {
   const [visible, setvisible] = useState(false);
 
+  useEffect(() => {
+    if (location.hash === "#spinner") {
+      setvisible(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (visible) {
+      location.hash = "#spinner";
+      //disable scroll on body
+      document.body.style.overflow = "hidden";
+    } else {
+      location.hash = "";
+      //enable scroll on body
+      document.body.style.overflow = "auto";
+    }
+  }, [visible]);
+
   if (visible) return <Spinner setvisible={setvisible} />;
 
   return (
