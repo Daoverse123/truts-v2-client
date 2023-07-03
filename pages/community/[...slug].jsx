@@ -961,7 +961,7 @@ export async function getServerSideProps(ctx) {
 
 const fetchData = async (slug) => {
   try {
-    const res = await axios.get(`${P_API}/listing/${slug}`);
+    const res = await axios.get(`${P_API}/listing/by-slug/${slug}`);
     if (res.status == 200) {
       let data = JSON.parse(JSON.stringify(res.data.data.listing));
 
