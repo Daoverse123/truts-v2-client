@@ -102,8 +102,8 @@ export default function Search({ className }) {
     };
 
     let res = await axios.post(
-      `https://search.truts.xyz/listing/_search`,
-      query3
+      `https://search.truts.xyz/listings/_search`,
+      query4
     );
 
     console.log(res);
@@ -181,11 +181,42 @@ export default function Search({ className }) {
 }
 
 const SearchSuggestionEntry = ({ data }) => {
+  //   {
+  //     "name": "A&T Capital",
+  //     "oneliner": "",
+  //     "description": "A&T Capital is an early to growth stage venture fund for emerging disruptive technologies.",
+  //     "slug": "a&t_capital",
+  //     "chains": [],
+  //     "categories": [
+  //         "Investors"
+  //     ],
+  //     "photo": {
+  //         "logo": {
+  //             "secure_url": "https://truts-listings.s3.ap-south-1.amazonaws.com/a&t_capital-logo.webp"
+  //         },
+  //         "cover": {
+  //             "secure_url": "https://truts-listings.s3.ap-south-1.amazonaws.com/a&t_capital-cover.webp"
+  //         }
+  //     },
+  //     "reviews": {
+  //         "meta": {
+  //             "friend_recommend": 0,
+  //             "great_incentives": 0,
+  //             "great_org_structure": 0,
+  //             "onboarding_exp": 0,
+  //             "opinions_matter": 0,
+  //             "resonate_vibes_rate": 0
+  //         },
+  //         "rating": 0,
+  //         "count": 0
+  //     }
+  // }
+
   const getDaoTags = () => {
     let tagsString = "";
-    data.dao_category.forEach((ele, idx) => {
+    data.categories.forEach((ele, idx) => {
       tagsString = tagsString + ele;
-      if (idx < data.dao_category.length - 1) {
+      if (idx < data.categories.length - 1) {
         tagsString = tagsString + ", ";
       }
     });
@@ -196,12 +227,12 @@ const SearchSuggestionEntry = ({ data }) => {
     <Link href={`/dao/${data.slug}`}>
       <div className={styles.searchSuggestionEntry}>
         <div className={styles.daoIcon}>
-          <img src={data.dao_logo} alt="" />
+          <img src={data.photo.logo.secure_url} alt="" />
         </div>
         <div className={styles.daoInfo}>
-          <h1 className={styles.daoName}>{data.dao_name}</h1>
+          <h1 className={styles.daoName}>{data.name}</h1>
           <h3 className={styles.daoTags}>{getDaoTags()}</h3>
-          <p className={styles.reviewCount}>{data.review_count} Reviews</p>
+          <p className={styles.reviewCount}>{data.reviews.count} Reviews</p>
         </div>
       </div>
     </Link>
