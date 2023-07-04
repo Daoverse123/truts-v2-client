@@ -1,56 +1,20 @@
 import React, { useEffect, useState } from "react";
-import styles from "./daoform.module.scss";
+import styles from "./admin.module.scss";
 import axios from "axios";
 import fuzzy from "fuzzy.js";
 import Head from "next/head";
+import { create } from "zustand";
 
 //components
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import Button from "../../components/Button";
 import WalletConnect from "../../components/WalletConnect";
+import UnverifiedList from "./UnverifiedList";
+import Socials from "./Socials";
 
 //assets
 import closeIcon from "../../assets/icons/close_icon.svg";
-// const CATEGORY_LIST = [
-//   "DAO",
-//   "Media",
-//   "Investment",
-//   "Ordinals",
-//   "Service",
-//   "Grant",
-//   "Social",
-//   "DAO Tool",
-//   "Defi",
-//   "CeFi",
-//   "TradeFi",
-//   "BlockFi",
-//   "Lending",
-//   "Yield Aggregator",
-//   "Stablecoin",
-//   "NFT",
-//   "Metaverse",
-//   "Art",
-//   "Music",
-//   "NFT Marketplace",
-//   "Utilities",
-//   "Analytics",
-//   "Payment",
-//   "Oracle",
-//   "Games",
-//   "Infrastructure",
-//   "Wallet",
-//   "Indexer",
-//   "Storage",
-//   "Identity",
-//   "Exchange",
-//   "Community",
-//   "Guild",
-//   "Marketing Tool",
-//   "Public Good",
-//   "Education",
-//   "Chain",
-// ];
 
 const CHAIN_LIST_FIX = {
   "multi-chain": "Multi Chain",
@@ -69,16 +33,49 @@ const CHAIN_LIST_FIX = {
   bitcoin: "Bitcoin",
   okc: "OKC",
   mantle: "Mantle",
+  "optimistic-ethereum": "optimism",
 };
 
 const API = process.env.API;
-{
-  /* 
-opensea_link: { type: String },
-magiceden_link: { type: String }, */
-}
+
 let CATEGORY_LIST = [];
-function DaoForm({ categoriesList, chainList }) {
+
+const isLoggerIn = () => {
+  return (
+    localStorage.getItem("token") &&
+    localStorage.getItem("token") != "" &&
+    localStorage.getItem("token") != "null" &&
+    localStorage.getItem("token") != "undefined" &&
+    localStorage.getItem("token") != null
+  );
+};
+
+const useAdminStore = create((set) => ({
+  selected: "",
+  setSelected: (selected) =>
+    set((s) => {
+      if (selected) {
+        return { ...s, selected };
+      }
+    }),
+  name: "",
+  oneliner: "",
+  description: "",
+  slug: "",
+  categories: null,
+  chains: null,
+  socials: "",
+  discord_link: "",
+  twitter_link: "",
+  website_link: "",
+  mirror_link: "",
+  setState: (sp) =>
+    set((state) => {
+      return { ...state, ...sp };
+    }),
+}));
+
+function DaoForm({ categoriesList, chainList, unverifiedList }) {
   CATEGORY_LIST = categoriesList.map((ele) => ele.category);
   let CHAIN_LIST_MAP = {};
   chainList.forEach((ele) => {
@@ -90,93 +87,78 @@ function DaoForm({ categoriesList, chainList }) {
     CHAIN_LIST_MAP[key] = ele.chain;
   });
 
-  const [walletConnectVisible, setwalletConnectVisible] = useState(false);
-  const [state, setState] = useState({
-    name: "",
-    oneliner: "",
-    description: "",
-    slug: "",
-    categories: "",
-    chains: "",
-    socials: "",
-    discord_link: "",
-    twitter_link: "",
-    website_link: "",
-    mirror_link: "",
-  });
-
-  //console.log(state)
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-
-    if (state.categories.length < 1) {
-      return alert("Please add applicable categories for your Community.");
-    }
-    if (state.chains.length < 1) {
-      return alert("Please add Chains relevant to your Community.");
-    }
-    if (state.oneliner.length < 5) {
-      return alert(
-        "Please add more details in One Line Statement for your Community. Atleast 5 characters required."
-      );
-    }
-    if (state.description.length < 50) {
-      return alert(
-        "Please add more details in Community Description. Atleast 50 characters required."
-      );
-    }
-
-    console.log("state :>> ", {
-      ...state,
-      chains: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
-    });
-    try {
-      let res = await axios.post(
-        `${process.env.P_API}/listing`,
-        {
-          ...state,
-          chains: state.chains.map((ch) => CHAIN_LIST_MAP[ch]),
-          socials: {
-            TWITTER: state.twitter_link,
-            DISCORD: state.discord_link,
-            WEBSITE: state.website_link,
-          },
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (res.status == 201) {
-        console.log("redirect");
-        window.location.href = "./status/community-listed-success";
-      } else {
-        console.log("redirect");
-        window.location.href = "./status/community-listed-failed";
-      }
-    } catch (er) {
-      console.log(er);
-    }
-  };
-
   let disableForm = { pointerEvents: "none", opacity: "0.4" };
   const [formDisabled, setformDisabled] = useState(true);
 
+  let state = useAdminStore((s) => s);
+  let setState = useAdminStore().setState;
+
+  console.log(state);
+
   useEffect(() => {
-    if (
-      localStorage.getItem("token") &&
-      localStorage.getItem("token") != "" &&
-      localStorage.getItem("token") != "null" &&
-      localStorage.getItem("token") != "undefined" &&
-      localStorage.getItem("token") != null
-    ) {
+    if (isLoggerIn()) {
       setformDisabled(false);
     } else {
       setformDisabled(true);
     }
   }, []);
+
+  let idListingMap = {};
+  unverifiedList.forEach((ele) => {
+    idListingMap[ele._id] = ele;
+  });
+
+  useEffect(() => {
+    if (state.selected) {
+      let { name, oneliner, description, slug, categories, chains, socials } =
+        idListingMap[state.selected];
+
+      console.log(idListingMap[state.selected]);
+
+      setState({
+        name,
+        oneliner,
+        description,
+        slug,
+        categories,
+        chains,
+        socials,
+      });
+    }
+  }, [state.selected]);
+
+  if (!state.selected) {
+    return (
+      <div className={styles.daoPage}>
+        <UnverifiedList list={unverifiedList} />
+      </div>
+    );
+  }
+
+  let saveDetails = async () => {
+    let res = await axios.patch(
+      `${process.env.P_API}/listing/${state.selected}`,
+      {
+        name: state.name,
+        oneliner: state.oneliner,
+        description: state.description,
+        slug: state.slug,
+        categories: state.categories,
+        chains: state.chains,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          contentType: "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    if (res.status == 200 || res.status == 201) {
+      alert("Details Saved");
+    } else {
+      alert("Error Occured");
+    }
+  };
 
   return (
     <>
@@ -191,24 +173,46 @@ function DaoForm({ categoriesList, chainList }) {
         </Head>
 
         <Nav isFloating isStrech />
-        <WalletConnect
-          setwalletConnectVisible={setwalletConnectVisible}
-          walletConnectVisible={walletConnectVisible}
-        />
+
         <div>
           {formDisabled && <SignupPrompt />}
           <form
             style={formDisabled ? disableForm : {}}
-            onSubmit={submitForm}
             className={styles.daoForm}
+            onSubmit={(e) => {
+              e.preventDefault();
+              saveDetails();
+            }}
           >
-            <h1 className={styles.title}>
-              Application for Listing your Community on Truts
-            </h1>
+            <h1 className={styles.title}>Selected : {state.name}</h1>
             <p className={styles.subtitle}>
-              Please fill the following details of your Community to apply for
-              your page on Truts.
+              slug : {state.slug} | Id : {state.selected}
             </p>
+            <div className={styles.images}>
+              <span className={styles.imgCon}>
+                <div className={styles.upNav}>
+                  <h1>Cover</h1>
+                  <Button label={"Upload Cover"} />
+                </div>
+
+                <img
+                  className={styles.cover}
+                  src={idListingMap[state.selected].photo.cover.secure_url}
+                  alt=""
+                />
+              </span>
+              <span className={styles.imgCon}>
+                <div className={styles.upNav}>
+                  <h1>Logo</h1>
+                  <Button label={"Upload Logo"} />
+                </div>
+                <img
+                  className={styles.logo}
+                  src={idListingMap[state.selected].photo.logo.secure_url}
+                  alt=""
+                />
+              </span>
+            </div>
 
             <label htmlFor="">
               <p>What`s the Name of your Community?*</p>
@@ -217,10 +221,7 @@ function DaoForm({ categoriesList, chainList }) {
                 required
                 value={state.name}
                 onChange={(e) => {
-                  setState((s) => {
-                    s.name = e.target.value;
-                    return { ...s };
-                  });
+                  setState({ name: e.target.value });
                 }}
                 type="text"
               />
@@ -232,10 +233,7 @@ function DaoForm({ categoriesList, chainList }) {
                 required
                 value={state.oneliner}
                 onChange={(e) => {
-                  setState((s) => {
-                    s.oneliner = e.target.value;
-                    return { ...s };
-                  });
+                  setState({ oneliner: e.target.value });
                 }}
                 placeholder="Please keep it within 1 to 2 lines."
                 rows={5}
@@ -243,12 +241,16 @@ function DaoForm({ categoriesList, chainList }) {
               />
             </label>
 
-            <CategotyCon state={state} setState={setState} />
-            <ChainSelectCon
-              CHAIN_LIST_MAP={CHAIN_LIST_MAP}
-              state={state}
-              setState={setState}
-            />
+            {state.chains && state.categories && (
+              <>
+                <CategotyCon state={state} setState={setState} />
+                <ChainSelectCon
+                  CHAIN_LIST_MAP={CHAIN_LIST_MAP}
+                  state={state}
+                  setState={setState}
+                />
+              </>
+            )}
 
             <label htmlFor="">
               <p>Add a brief Description for your Community.*</p>
@@ -256,10 +258,7 @@ function DaoForm({ categoriesList, chainList }) {
                 required
                 value={state.description}
                 onChange={(e) => {
-                  setState((s) => {
-                    s.description = e.target.value;
-                    return { ...s };
-                  });
+                  setState({ description: e.target.value });
                 }}
                 placeholder="Even though there is no word limit but please do keep it short and brief :)"
                 rows={15}
@@ -267,74 +266,37 @@ function DaoForm({ categoriesList, chainList }) {
               />
             </label>
 
-            <span className={styles.linkRow}>
-              <label htmlFor="">
-                <p>Discord Link:*</p>
-                <input
-                  required
-                  value={state.discord_link}
-                  onChange={(e) => {
-                    setState((s) => {
-                      s.discord_link = e.target.value;
-                      return { ...s };
-                    });
-                  }}
-                  placeholder="https://discord.com/invite/..."
-                  type="text"
-                />
-              </label>
+            {/* listing/649d7993d55e4c860835f0dd/social */}
 
-              <label htmlFor="">
-                <p>Twitter Link:*</p>
-                <input
-                  required
-                  value={state.twitter_link}
-                  onChange={(e) => {
-                    setState((s) => {
-                      s.twitter_link = e.target.value;
-                      return { ...s };
-                    });
-                  }}
-                  placeholder="https://twitter.com/..."
-                  type="text"
-                />
-              </label>
-            </span>
+            {/* <label htmlFor="">
+              <p>Discord Link:*</p>
+              <input
+                required
+                value={state.discord_link}
+                onChange={(e) => {
+                  setState({ discord_link: e.target.value });
+                }}
+                placeholder="https://discord.com/invite/..."
+                type="text"
+              />
+            </label>
 
-            <span className={styles.linkRow}>
-              <label htmlFor="">
-                <p>Website Link:*</p>
-                <input
-                  required
-                  value={state.website_link}
-                  onChange={(e) => {
-                    setState((s) => {
-                      s.website_link = e.target.value;
-                      return { ...s };
-                    });
-                  }}
-                  placeholder="https://samplesite.xyz"
-                  type="text"
-                />
-              </label>
+            <label htmlFor="">
+              <p>Twitter Link:*</p>
+              <input
+                required
+                value={state.twitter_link}
+                onChange={(e) => {
+                  setState({ twitter_link: e.target.value });
+                }}
+                placeholder="https://twitter.com/..."
+                type="text"
+              />
+            </label> */}
 
-              <label htmlFor="">
-                <p>Blog Link:</p>
-                <input
-                  value={state.mirror_link}
-                  onChange={(e) => {
-                    setState((s) => {
-                      s.mirror_link = e.target.value;
-                      return { ...s };
-                    });
-                  }}
-                  placeholder="https://samplesite.xyz/blog"
-                  type="text"
-                />
-              </label>
-            </span>
-            <Button label={"Submit"} />
+            <Button label={"Save Details"} />
           </form>
+          <Socials />
         </div>
       </div>
       <Footer />
@@ -370,11 +332,14 @@ const CategotyCon = ({ state, setState }) => {
   //console.log(suggestionList)
 
   useEffect(() => {
-    setState((s) => {
-      s.categories = selectedItems;
-      return { ...s };
-    });
+    setState({ categories: selectedItems });
   }, [selectedItems]);
+
+  useEffect(() => {
+    if (state.categories) {
+      setselectedItems(state.categories);
+    }
+  }, []);
 
   let GenerateSuggestion = () => {
     setsuggestionList(() => {
@@ -526,11 +491,20 @@ const ChainSelectCon = ({ state, setState, CHAIN_LIST_MAP }) => {
   // console.log(suggestionList)
 
   useEffect(() => {
-    setState((s) => {
-      s.chains = selectedItems;
-      return { ...s };
-    });
+    setState({ chains: selectedItems });
   }, [selectedItems]);
+
+  useEffect(() => {
+    if (state.chains) {
+      let chains = state.chains.map((ele) => {
+        if (ele in CHAIN_LIST_FIX) {
+          return CHAIN_LIST_FIX[ele];
+        }
+        return ele[0].toUpperCase() + ele.slice(1);
+      });
+      setselectedItems(chains);
+    }
+  }, []);
 
   let GenerateSuggestion = () => {
     setsuggestionList(() => {
@@ -669,18 +643,23 @@ const ChainSelectCon = ({ state, setState, CHAIN_LIST_MAP }) => {
   );
 };
 
+export { useAdminStore };
 export default DaoForm;
 
 export async function getServerSideProps(ctx) {
   let res = await Promise.all([
     axios.get(`${process.env.P_API}/listing/categories`),
     axios.get(`${process.env.P_API}/listing/chains`),
+    axios.get(
+      `${process.env.P_API}/listing?filter={"verified":false}&sort={"createdAt":-1}`
+    ),
   ]);
 
   return {
     props: {
       categoriesList: res[0].data.data.result,
       chainList: res[1].data.data.result,
+      unverifiedList: res[2].data.data.result,
     },
   };
 }
