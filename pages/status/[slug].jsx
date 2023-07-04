@@ -261,9 +261,9 @@ const MilanMission = ({ xp, data }) => {
         </div>
         <div className={styles.text}>
           <h4 className={styles.desc}>
-            Congratulations on completing the mission! 🎉 You’ve earned a 50%
-            discount code for Eth Milan tickets and {xp} Truts XP. Take off to
-            Italy and have a blast at the conference ✨
+            Congratulations on completing the mission! 🎉 <br></br> You’ve
+            earned a 50% discount code for Eth Milan tickets and {xp} Truts XP.
+            Take off to Italy and have a blast at the conference ✨
           </h4>
 
           <div className={styles.coupon}>
