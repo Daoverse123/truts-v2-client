@@ -69,6 +69,8 @@ const useAdminStore = create((set) => ({
   twitter_link: "",
   website_link: "",
   mirror_link: "",
+  cover: null,
+  logo: null,
   setState: (sp) =>
     set((state) => {
       return { ...state, ...sp };
@@ -127,29 +129,37 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
     }
   }, [state.selected]);
 
-  if (!state.selected) {
-    return (
-      <div className={styles.daoPage}>
-        <UnverifiedList list={unverifiedList} />
-      </div>
-    );
-  }
-
   let saveDetails = async () => {
+    let data = {
+      name: state.name,
+      oneliner: state.oneliner,
+      description: state.description,
+      slug: state.slug,
+      categories: JSON.stringify(state.categories),
+      chains: JSON.stringify(state.chains),
+    };
+
+    if (state.cover) {
+      data.cover = state.cover;
+    }
+    if (state.logo) {
+      data.logo = state.logo;
+    }
+
+    var formData = new FormData();
+    for (var key in data) {
+      formData.append(key, data[key]);
+    }
+
+    console.log(formData);
+
     let res = await axios.patch(
       `${process.env.P_API}/listing/${state.selected}`,
-      {
-        name: state.name,
-        oneliner: state.oneliner,
-        description: state.description,
-        slug: state.slug,
-        categories: state.categories,
-        chains: state.chains,
-      },
+      formData,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          contentType: "application/x-www-form-urlencoded",
+          contentType: "multipart/form-data",
         },
       }
     );
@@ -159,6 +169,32 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
       alert("Error Occured");
     }
   };
+
+  const approveCommunity = async () => {
+    let res = await axios.post(
+      `${process.env.P_API}/listing/verify}`,
+      {
+        listingID: state.selected,
+      },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (res.status == 200 || res.status == 201) {
+      alert("Community Approved");
+    }
+  };
+
+  if (!state.selected) {
+    return (
+      <div className={styles.daoPage}>
+        <UnverifiedList list={unverifiedList} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -192,10 +228,19 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
               <span className={styles.imgCon}>
                 <div className={styles.upNav}>
                   <h1>Cover</h1>
-                  <Button label={"Upload Cover"} />
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      let img_src = URL.createObjectURL(e.target.files[0]);
+                      document.getElementById("cover").src = img_src;
+                      setState({ cover: e.target.files[0] });
+                    }}
+                  />
                 </div>
 
                 <img
+                  label={"cover"}
+                  id="cover"
                   className={styles.cover}
                   src={idListingMap[state.selected].photo.cover.secure_url}
                   alt=""
@@ -204,9 +249,18 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
               <span className={styles.imgCon}>
                 <div className={styles.upNav}>
                   <h1>Logo</h1>
-                  <Button label={"Upload Logo"} />
+                  <input
+                    label={"logo"}
+                    type="file"
+                    onChange={(e) => {
+                      let img_src = URL.createObjectURL(e.target.files[0]);
+                      document.getElementById("logo").src = img_src;
+                      setState({ logo: e.target.files[0] });
+                    }}
+                  />
                 </div>
                 <img
+                  id={"logo"}
                   className={styles.logo}
                   src={idListingMap[state.selected].photo.logo.secure_url}
                   alt=""
@@ -294,7 +348,18 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
               />
             </label> */}
 
-            <Button label={"Save Details"} />
+            <div className={styles.approve}>
+              <Button label={"Save Details"} />
+              <button
+                onClick={() => {
+                  approveCommunity();
+                }}
+                type="button"
+                className={styles.approveBtn}
+              >
+                Approve Community
+              </button>
+            </div>
           </form>
           <Socials />
         </div>
@@ -337,7 +402,7 @@ const CategotyCon = ({ state, setState }) => {
 
   useEffect(() => {
     if (state.categories) {
-      setselectedItems(state.categories);
+      setselectedItems([...state.categories]);
     }
   }, []);
 

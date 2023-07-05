@@ -294,16 +294,18 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
   const fetchData = async (term) => {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
-    let res = await axios.get(`${API}/search/${term}`);
-    res.data.length > 0 && setSuggestiondata([...res.data]);
+    let res = await axios.get(`${process.env.P_API}/search/${term}`);
+
+    let data = res.data.data.result.hits.hits.map((ele) => {
+      return ele._source;
+    });
+    res.status == 200 && setSuggestiondata(data);
   };
 
   let fetchSearchTerm = useCallback(
     _.debounce((term) => fetchData(term), 100),
     []
   );
-
-  console.log(searchSuggestiondata);
 
   return (
     <div className={styles.tabletSearch}>
@@ -339,9 +341,9 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
 const SearchSuggestionEntry = ({ data }) => {
   const getDaoTags = () => {
     let tagsString = "";
-    data.dao_category.forEach((ele, idx) => {
+    data.categories.forEach((ele, idx) => {
       tagsString = tagsString + ele;
-      if (idx < data.dao_category.length - 1) {
+      if (idx < data.categories.length - 1) {
         tagsString = tagsString + ", ";
       }
     });
@@ -349,15 +351,15 @@ const SearchSuggestionEntry = ({ data }) => {
   };
 
   return (
-    <Link href={`/community/${data.slug}`}>
+    <Link href={`/dao/${data.slug}`}>
       <div className={styles.searchSuggestionEntry}>
         <div className={styles.daoIcon}>
-          <img src={data.dao_logo} alt="" />
+          <img src={data.photo.logo.secure_url} alt="" />
         </div>
         <div className={styles.daoInfo}>
-          <h1 className={styles.daoName}>{data.dao_name}</h1>
+          <h1 className={styles.daoName}>{data.name}</h1>
           <h3 className={styles.daoTags}>{getDaoTags()}</h3>
-          <p className={styles.reviewCount}>{data.review_count} Reviews</p>
+          <p className={styles.reviewCount}>{data.reviews.count} Reviews</p>
         </div>
       </div>
     </Link>

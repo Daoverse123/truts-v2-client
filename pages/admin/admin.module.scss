@@ -13,6 +13,18 @@
     align-items: center;
 }
 
+.approve {
+    display: flex;
+    column-gap: 25px;
+    .approveBtn {
+        border: 1.5px solid rgba(123, 97, 255, 1);
+        color: rgb(83, 55, 226);
+        background-color: transparent;
+        border-radius: 16px;
+        padding: 0 16px;
+    }
+}
+
 .images {
     display: flex;
     flex-direction: column;
