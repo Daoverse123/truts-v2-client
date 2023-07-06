@@ -43,7 +43,7 @@ function Succes() {
           </div>
         </div>
         <p className={styles.copy}>
-          Congratulations, you've earned 200 XP for completing the mission!
+          Congratulations, you`ve earned 200 XP for completing the mission!
         </p>
         <Level />
         <h2 className={styles.ltext}>Continue with more missions</h2>
