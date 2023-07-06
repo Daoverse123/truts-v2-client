@@ -193,7 +193,7 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
 
   const [isAdmin, setisAdmin] = useState(false);
 
-  useEffect(async () => {
+  const checkAdmin = async () => {
     let user = await axios.get(`${process.env.P_API}/user`, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
@@ -203,6 +203,10 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
     if (user.status == 200 && user.data.data.user.isSuperAdmin) {
       setisAdmin(true);
     }
+  };
+
+  useEffect(() => {
+    checkAdmin();
   }, []);
 
   if (!isAdmin) {
