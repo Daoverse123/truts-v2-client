@@ -736,9 +736,7 @@ export async function getServerSideProps(ctx) {
   let res = await Promise.all([
     axios.get(`${process.env.P_API}/listing/categories`),
     axios.get(`${process.env.P_API}/listing/chains`),
-    axios.get(
-      `${process.env.P_API}/listing?filter={"verified":false}&sort={"createdAt":-1}`
-    ),
+    axios.get(`${process.env.P_API}/listing/verify`),
   ]);
 
   return {
