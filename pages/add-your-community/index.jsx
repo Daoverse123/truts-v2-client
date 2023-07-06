@@ -69,6 +69,7 @@ const CHAIN_LIST_FIX = {
   bitcoin: "Bitcoin",
   okc: "OKC",
   mantle: "Mantle",
+  "optimistic-ethereum": "optimism",
 };
 
 const API = process.env.API;
