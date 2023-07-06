@@ -175,7 +175,7 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
 
   const approveCommunity = async () => {
     let res = await axios.post(
-      `${process.env.P_API}/listing/verify}`,
+      `${process.env.P_API}/listing/verify`,
       {
         listingID: state.selected,
       },
