@@ -383,7 +383,6 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
           </div>
         )}
         <Nav isFloating isStrech />
-        <UnverifiedList list={unverifiedList} />
       </div>
       <Footer />
     </>
