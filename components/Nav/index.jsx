@@ -294,9 +294,11 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
   const fetchData = async (term) => {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
+
     let res = await axios.get(
       `${process.env.P_API}/search/${term.toLowerCase()}`
     );
+
 
     let data = res.data.data.result.hits.hits.map((ele) => {
       return ele._source;
