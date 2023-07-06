@@ -158,7 +158,7 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
       formData,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `${localStorage.getItem("token")}`,
           contentType: "multipart/form-data",
         },
       }
@@ -188,7 +188,25 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
     }
   };
 
+  const [isAdmin, setisAdmin] = useState(false);
+
+  useEffect(async () => {
+    let user = await axios.get(`${process.env.P_API}/user`, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+
+    if (user.status == 200 && user.data.data.user.isSuperAdmin) {
+      setisAdmin(true);
+    }
+  }, []);
+
   if (!state.selected) {
+    if (!isAdmin) {
+      return <p>You are not an admin</p>;
+    }
+
     return (
       <div className={styles.daoPage}>
         <UnverifiedList list={unverifiedList} />

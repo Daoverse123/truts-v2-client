@@ -66,7 +66,12 @@ function Socials() {
       socials.map((ele) => {
         return axios.patch(
           `${process.env.P_API}/listing/${selected}/social`,
-          ele
+          ele,
+          {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          }
         );
       })
     );
