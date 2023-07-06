@@ -102,6 +102,9 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
       setformDisabled(false);
     } else {
       setformDisabled(true);
+      setTimeout(() => {
+        window.showSignupPrompt();
+      }, 1000);
     }
   }, []);
 
@@ -202,16 +205,8 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
     }
   }, []);
 
-  if (!state.selected) {
-    if (!isAdmin) {
-      return <p>You are not an admin</p>;
-    }
-
-    return (
-      <div className={styles.daoPage}>
-        <UnverifiedList list={unverifiedList} />
-      </div>
-    );
+  if (!isAdmin) {
+    return <p>You are not an admin</p>;
   }
 
   return (
@@ -225,122 +220,123 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
           />
           <link rel="icon" href="/favicon.png" />
         </Head>
-
         <Nav isFloating isStrech />
+        {!state.selected ? (
+          <UnverifiedList list={unverifiedList} />
+        ) : (
+          <div>
+            {formDisabled && <SignupPrompt />}
+            <form
+              style={formDisabled ? disableForm : {}}
+              className={styles.daoForm}
+              onSubmit={(e) => {
+                e.preventDefault();
+                saveDetails();
+              }}
+            >
+              <h1 className={styles.title}>Selected : {state.name}</h1>
+              <p className={styles.subtitle}>
+                slug : {state.slug} | Id : {state.selected}
+              </p>
+              <div className={styles.images}>
+                <span className={styles.imgCon}>
+                  <div className={styles.upNav}>
+                    <h1>Cover</h1>
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        let img_src = URL.createObjectURL(e.target.files[0]);
+                        document.getElementById("cover").src = img_src;
+                        setState({ cover: e.target.files[0] });
+                      }}
+                    />
+                  </div>
 
-        <div>
-          {formDisabled && <SignupPrompt />}
-          <form
-            style={formDisabled ? disableForm : {}}
-            className={styles.daoForm}
-            onSubmit={(e) => {
-              e.preventDefault();
-              saveDetails();
-            }}
-          >
-            <h1 className={styles.title}>Selected : {state.name}</h1>
-            <p className={styles.subtitle}>
-              slug : {state.slug} | Id : {state.selected}
-            </p>
-            <div className={styles.images}>
-              <span className={styles.imgCon}>
-                <div className={styles.upNav}>
-                  <h1>Cover</h1>
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      let img_src = URL.createObjectURL(e.target.files[0]);
-                      document.getElementById("cover").src = img_src;
-                      setState({ cover: e.target.files[0] });
-                    }}
+                  <img
+                    label={"cover"}
+                    id="cover"
+                    className={styles.cover}
+                    src={idListingMap[state.selected].photo.cover.secure_url}
+                    alt=""
                   />
-                </div>
-
-                <img
-                  label={"cover"}
-                  id="cover"
-                  className={styles.cover}
-                  src={idListingMap[state.selected].photo.cover.secure_url}
-                  alt=""
-                />
-              </span>
-              <span className={styles.imgCon}>
-                <div className={styles.upNav}>
-                  <h1>Logo</h1>
-                  <input
-                    label={"logo"}
-                    type="file"
-                    onChange={(e) => {
-                      let img_src = URL.createObjectURL(e.target.files[0]);
-                      document.getElementById("logo").src = img_src;
-                      setState({ logo: e.target.files[0] });
-                    }}
+                </span>
+                <span className={styles.imgCon}>
+                  <div className={styles.upNav}>
+                    <h1>Logo</h1>
+                    <input
+                      label={"logo"}
+                      type="file"
+                      onChange={(e) => {
+                        let img_src = URL.createObjectURL(e.target.files[0]);
+                        document.getElementById("logo").src = img_src;
+                        setState({ logo: e.target.files[0] });
+                      }}
+                    />
+                  </div>
+                  <img
+                    id={"logo"}
+                    className={styles.logo}
+                    src={idListingMap[state.selected].photo.logo.secure_url}
+                    alt=""
                   />
-                </div>
-                <img
-                  id={"logo"}
-                  className={styles.logo}
-                  src={idListingMap[state.selected].photo.logo.secure_url}
-                  alt=""
+                </span>
+              </div>
+
+              <label htmlFor="">
+                <p>What`s the Name of your Community?*</p>
+                <input
+                  placeholder="Community Name"
+                  required
+                  value={state.name}
+                  onChange={(e) => {
+                    setState({ name: e.target.value });
+                  }}
+                  type="text"
                 />
-              </span>
-            </div>
+              </label>
 
-            <label htmlFor="">
-              <p>What`s the Name of your Community?*</p>
-              <input
-                placeholder="Community Name"
-                required
-                value={state.name}
-                onChange={(e) => {
-                  setState({ name: e.target.value });
-                }}
-                type="text"
-              />
-            </label>
-
-            <label htmlFor="">
-              <p>Add a One Line Statement for your Community.*</p>
-              <textarea
-                required
-                value={state.oneliner}
-                onChange={(e) => {
-                  setState({ oneliner: e.target.value });
-                }}
-                placeholder="Please keep it within 1 to 2 lines."
-                rows={5}
-                type="text"
-              />
-            </label>
-
-            {state.chains && state.categories && (
-              <>
-                <CategotyCon state={state} setState={setState} />
-                <ChainSelectCon
-                  CHAIN_LIST_MAP={CHAIN_LIST_MAP}
-                  state={state}
-                  setState={setState}
+              <label htmlFor="">
+                <p>Add a One Line Statement for your Community.*</p>
+                <textarea
+                  required
+                  value={state.oneliner}
+                  onChange={(e) => {
+                    setState({ oneliner: e.target.value });
+                  }}
+                  placeholder="Please keep it within 1 to 2 lines."
+                  rows={5}
+                  type="text"
                 />
-              </>
-            )}
+              </label>
 
-            <label htmlFor="">
-              <p>Add a brief Description for your Community.*</p>
-              <textarea
-                required
-                value={state.description}
-                onChange={(e) => {
-                  setState({ description: e.target.value });
-                }}
-                placeholder="Even though there is no word limit but please do keep it short and brief :)"
-                rows={15}
-                type="text"
-              />
-            </label>
+              {state.chains && state.categories && (
+                <>
+                  <CategotyCon state={state} setState={setState} />
+                  <ChainSelectCon
+                    CHAIN_LIST_MAP={CHAIN_LIST_MAP}
+                    state={state}
+                    setState={setState}
+                  />
+                </>
+              )}
 
-            {/* listing/649d7993d55e4c860835f0dd/social */}
+              <label htmlFor="">
+                <p>Add a brief Description for your Community.*</p>
+                <textarea
+                  required
+                  value={state.description}
+                  onChange={(e) => {
+                    setState({ description: e.target.value });
+                  }}
+                  placeholder="Even though there is no word limit but please do keep it short and brief :)"
+                  rows={15}
+                  type="text"
+                />
+              </label>
 
-            {/* <label htmlFor="">
+              {/* listing/649d7993d55e4c860835f0dd/social */}
+
+              {/* <label htmlFor="">
               <p>Discord Link:*</p>
               <input
                 required
@@ -366,21 +362,24 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
               />
             </label> */}
 
-            <div className={styles.approve}>
-              <Button label={"Save Details"} />
-              <button
-                onClick={() => {
-                  approveCommunity();
-                }}
-                type="button"
-                className={styles.approveBtn}
-              >
-                Approve Community
-              </button>
-            </div>
-          </form>
-          <Socials />
-        </div>
+              <div className={styles.approve}>
+                <Button label={"Save Details"} />
+                <button
+                  onClick={() => {
+                    approveCommunity();
+                  }}
+                  type="button"
+                  className={styles.approveBtn}
+                >
+                  Approve Community
+                </button>
+              </div>
+            </form>
+            <Socials />
+          </div>
+        )}
+        <Nav isFloating isStrech />
+        <UnverifiedList list={unverifiedList} />
       </div>
       <Footer />
     </>
