@@ -3,6 +3,9 @@ import { useAdminStore } from "./index";
 
 const UnverifiedList = ({ list }) => {
   let setSelected = useAdminStore((s) => s.setSelected);
+
+  if (!list) return <>list</>;
+
   return (
     <div className={styles.unverifiedList}>
       <h1>Unverified Communities</h1>
