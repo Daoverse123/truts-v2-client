@@ -139,7 +139,7 @@ function DaoForm({ categoriesList, chainList, unverifiedList }) {
       description: state.description,
       slug: state.slug,
       categories: JSON.stringify(state.categories),
-      chains: JSON.stringify(state.chains),
+      chains: JSON.stringify(state.chains.map((ele) => CHAIN_LIST_MAP[ele])),
     };
 
     if (state.cover) {
