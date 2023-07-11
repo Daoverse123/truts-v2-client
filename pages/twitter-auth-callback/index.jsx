@@ -25,8 +25,14 @@ const sendCode = async (code) => {
       }
 
       window.location = "/edit-profile?page=social#twitter-success";
+    } else if (res.status == 409) {
+      alert(
+        "This Twitter accout is already connected to a truts account please try again with another Twitter account, or contact support"
+      );
+      window.location = "/edit-profile";
     } else {
       alert("auth failed Please try again");
+      window.location = "/edit-profile";
     }
   } catch (error) {
     alert("auth failed Please try again");
