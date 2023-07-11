@@ -81,6 +81,14 @@ export default function Component({ isFloating, isStrech }) {
 
   console.log(user);
 
+  useEffect(() => {
+    if (TabletNavOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [TabletNavOpen]);
+
   return (
     <>
       <nav
@@ -271,7 +279,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
               onClick={() => {
                 location.href = "/?signup=true";
               }}
-              label={"Sign up/Login"}
+              label={"Login/Sign up"}
             />
           )}
         </div>
@@ -298,7 +306,6 @@ const TabletSearch = ({ TabletSearchOpen, setTabletSearchOpen }) => {
     let res = await axios.get(
       `${process.env.P_API}/search/${term.toLowerCase()}`
     );
-
 
     let data = res.data.data.result.hits.hits.map((ele) => {
       return ele._source;

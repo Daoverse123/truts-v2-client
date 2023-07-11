@@ -474,6 +474,10 @@ $PHONE_N: 425;
         background: transparent; /* Optional: just make scrollbar invisible */
     }
     scroll-behavior: smooth;
+
+    @media (max-width: $TABLET) {
+        gap: 20px;
+    }
 }
 
 .categoryTab {
@@ -487,6 +491,7 @@ $PHONE_N: 425;
     padding-bottom: 4px;
     border-bottom: 3.5px solid #3064f300;
     min-width: max-content;
+
     &:hover {
         color: #3065f3;
     }
@@ -496,8 +501,8 @@ $PHONE_N: 425;
     @media (max-width: $LAPTOP) {
         font-size: 20px;
     }
-    @media (max-width: $LAPTOP) and (min-width: $TABLET) {
-        font-size: laptop_to_tablet_fluid(20);
+    @media (max-width: $TABLET) {
+        font-size: 16px;
     }
 }
 
