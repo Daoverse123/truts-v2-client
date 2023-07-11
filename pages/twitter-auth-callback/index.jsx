@@ -25,16 +25,19 @@ const sendCode = async (code) => {
       }
 
       window.location = "/edit-profile?page=social#twitter-success";
-    } else if (res.status == 409) {
-      alert(
-        "This Twitter accout is already connected to a truts account please try again with another Twitter account, or contact support"
-      );
-      window.location = "/edit-profile?page=social";
     } else {
       alert("auth failed Please try again");
       window.location = "/edit-profile?page=social";
     }
   } catch (error) {
+    //catch 409 error
+    if (error.response.status == 409) {
+      alert(
+        "This Twitter accout is already connected to a truts account please try again with another Twitter account, or contact support"
+      );
+      return (window.location = "/edit-profile?page=social");
+    }
+
     alert("auth failed Please try again");
     window.location = "/edit-profile?page=social";
   }
