@@ -30,11 +30,11 @@ const sendCode = async (code) => {
       window.location = "/edit-profile";
     } else {
       alert("auth failed Please try again");
-      window.location = "/edit-profile";
+      window.location = "/edit-profile?page=social";
     }
   } catch (error) {
     alert("auth failed Please try again");
-    window.location = "/edit-profile";
+    window.location = "/edit-profile?page=social";
   }
 };
 
