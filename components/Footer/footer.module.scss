@@ -64,7 +64,7 @@ $TABLET_N: 425;
         margin: laptop_to_tablet_fluid(50) 0 laptop_to_tablet_fluid(50) 0;
     }
     @media (max-width: $TABLET) {
-        column-gap: 50px;
+        column-gap: 30px;
         flex-wrap: wrap;
         width: 300px;
         text-align: center;
@@ -150,12 +150,12 @@ $TABLET_N: 425;
         font-weight: 500;
         font-size: 16px;
 
-        &:focus{
+        &:focus {
             outline: none;
         }
     }
 
-    img{
+    img {
         margin: auto 0;
         opacity: 0.35;
         height: 25px;

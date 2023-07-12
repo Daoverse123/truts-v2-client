@@ -399,8 +399,8 @@ $PHONE_N: 450;
     }
 
     @media (max-width: $PHONE) {
-        font-size: phone_fluid(24);
-        column-gap: phone_fluid(40);
+        font-size: phone_fluid(18);
+        column-gap: phone_fluid(24);
         width: 90vw;
         overflow-x: scroll;
         li {

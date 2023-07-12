@@ -63,20 +63,24 @@ export default function Component({ isFloating, isStrech }) {
   };
 
   let nav = useRef(null);
+
+  const checkScroll = () => {
+    if (window.scrollY == 0) {
+      document.querySelector("#nav").style.background = "transparent";
+      document.querySelector("#nav").style.borderBottom = "none";
+    } else {
+      document.querySelector("#nav").style.background = "#f7f7f7";
+      document.querySelector("#nav").style.borderBottom =
+        "1px solid rgba(135, 135, 135, 0.25)";
+    }
+  };
+
   useEffect(() => {
     fetchUser();
-    nav &&
-      window.addEventListener("scroll", (e) => {
-        //if scroll position is 0 set nav backgroud to transparent else set it to  #f7f7f7
-        if (window.scrollY == 0) {
-          document.querySelector("#nav").style.background = "transparent";
-          document.querySelector("#nav").style.borderBottom = "none";
-        } else {
-          document.querySelector("#nav").style.background = "#f7f7f7";
-          document.querySelector("#nav").style.borderBottom =
-            "1px solid rgba(135, 135, 135, 0.25)";
-        }
-      });
+    checkScroll();
+    window.addEventListener("scroll", (e) => {
+      checkScroll();
+    });
   }, []);
 
   console.log(user);
@@ -259,7 +263,7 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
           <Link href={"/discover"}>
             <li>Discover Communities</li>
           </Link>
-          <Link href={"https://truts.xyz/missions"}>
+          <Link href={"/missions"}>
             <li>Missions</li>
           </Link>
         </ul>

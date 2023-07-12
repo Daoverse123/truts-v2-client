@@ -278,7 +278,7 @@ function Discover({ chainList, categoriesList, selected_chain }) {
               <span className={styles.mobileFilterHeadder}>
                 <img
                   onClick={() => {
-                    //setfiltersVisible(false);
+                    setfiltersVisible(false);
                   }}
                   src={close_btn.src}
                   alt=""

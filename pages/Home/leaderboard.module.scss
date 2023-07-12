@@ -204,6 +204,7 @@ $PHONE: 425px;
     font-weight: 700;
     font-size: 48px;
     text-align: center;
+
     @media (max-width: $TABLET) {
         font-size: 25px;
     }
@@ -211,6 +212,8 @@ $PHONE: 425px;
         font-size: 20px;
         text-align: center;
         width: fit-content;
+        margin: 0 auto;
+        margin-bottom: 20px;
     }
 }
 

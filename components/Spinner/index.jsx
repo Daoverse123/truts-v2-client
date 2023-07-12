@@ -252,7 +252,7 @@ const SpinnerPage = () => {
   return (
     <img
       className={styles.spinIcon}
-      src="/spin.svg"
+      src="/spinner.png"
       onClick={() => setvisible(true)}
     />
   );

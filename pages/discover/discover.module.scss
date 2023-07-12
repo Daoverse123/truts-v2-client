@@ -15,7 +15,7 @@
 
 .title {
     font-weight: 700;
-    font-size: 48px;
+    //font-size: 48px;
     margin: 0 auto;
     margin-bottom: 32px;
     text-align: center;
@@ -180,11 +180,17 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: max-content;
+    min-height: max-content;
     max-height: 50vh;
     overflow-y: auto;
     margin-bottom: 12px;
     padding-right: 10px;
+
+    @media (max-width: 425px) {
+        max-height: max-content;
+        overflow-y: initial;
+    }
+
     .reset {
         width: 100%;
         text-align: right;

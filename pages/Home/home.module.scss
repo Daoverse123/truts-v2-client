@@ -79,6 +79,7 @@ $PHONE_N: 425;
 .sec_title {
     font-weight: 700;
     font-size: 48px;
+
     @media (max-width: $TABLET) {
         font-size: 25px;
     }
@@ -86,6 +87,8 @@ $PHONE_N: 425;
         font-size: 20px;
         text-align: center;
         width: fit-content;
+        margin-bottom: 20px;
+        margin-top: 20px;
     }
 }
 
