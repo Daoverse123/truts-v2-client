@@ -134,7 +134,7 @@ function Index({ mission }) {
       <Head>
         <title>{mission.name}</title>
         <meta name="description" content={mission.description} />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
         <link rel="preload" href="/assets/tick.png" as="image"></link>
         <meta property="og:url" content="https://www.truts.xyz" />
         <meta property="og:type" content="website" />

@@ -58,7 +58,7 @@ export default function Home({ daoList_ssr, categoryList }) {
           name="description"
           content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
         />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.ico" />
 
         <meta property="og:url" content="https://www.truts.xyz" />
         <meta property="og:type" content="website" />

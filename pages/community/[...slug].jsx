@@ -150,7 +150,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
             content="initial-scale=1.0, width=device-width"
           />
           <link rel="preload" as="image" href="/verified.png"></link>
-          <link rel="icon" href="/favicon.png" />
+          <link rel="icon" href="/favicon.ico" />
           <meta
             name="description"
             content={dao_data.oneliner || dao_data.description}
