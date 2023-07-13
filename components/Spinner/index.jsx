@@ -132,8 +132,9 @@ function Spinner({ setvisible }) {
 
               <h1>Spin the Wheel</h1>
               <p>
-                Check in everyday to stand a chance to win XPs and Rewards
-                Daily.
+                {
+                  "Check in everyday to stand a chance to\n win XPs and Rewards Daily."
+                }
               </p>
             </div>
             <div
