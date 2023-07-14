@@ -227,12 +227,17 @@ const SearchSuggestionEntry = ({ data }) => {
     <Link href={`/dao/${data.slug}`}>
       <div className={styles.searchSuggestionEntry}>
         <div className={styles.daoIcon}>
-          <img src={data.photo.logo.secure_url} alt="" />
+          <img
+            src={data["photo.logo.secure_url"] ?? data.photo.logo.secure_url}
+            alt=""
+          />
         </div>
         <div className={styles.daoInfo}>
           <h1 className={styles.daoName}>{data.name}</h1>
           <h3 className={styles.daoTags}>{getDaoTags()}</h3>
-          <p className={styles.reviewCount}>{data.reviews.count} Reviews</p>
+          <p className={styles.reviewCount}>
+            {data["reviews.count"] ?? data.reviews.count} Reviews
+          </p>
         </div>
       </div>
     </Link>
