@@ -6,8 +6,6 @@ import React, { useState, useEffect } from "react";
 import numFormatter from "../../../utils/numFormatter";
 import openNewTab from "../../../utils/openNewTab";
 
-import chainIconMap from "../../../components/chainIconMap.json";
-
 //assets
 import discord_white from "../../../assets/icons/twitter_white.svg";
 import twitter_white from "../../../assets/icons/discord_white.svg";
@@ -18,7 +16,8 @@ import matic_chain_icon from "../../../assets/icons/matic_chain_icon.svg";
 import binance_smart_chain from "../../../assets/icons/bsc_chain_icon.svg";
 import globe_white from "../../../assets/icons/web_white.svg";
 
-const TabletSideBar = ({ dao_data }) => {
+const TabletSideBar = ({ dao_data, chainMap }) => {
+  let chainIconMap = chainMap;
   let key_label_map = {
     "Community Vibes": "resonate_vibes_rate",
     "Onboarding Experience": "onboarding_exp",

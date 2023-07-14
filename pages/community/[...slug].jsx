@@ -103,7 +103,7 @@ const fetchReviews = async (id, setter) => {
   }
 };
 
-function Dao({ dao_data, rid, slug, ogImage }) {
+function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
   const [selected, setSelected] = useState("Reviews");
   //console.log(dao_data);
   const [walletConnectVisible, setwalletConnectVisible] = useState(false);
@@ -213,7 +213,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
         {selected == "Reviews" && (
           <div className={styles.content}>
             <div className={styles.main}>
-              <TabletSideBar dao_data={dao_data} />
+              <TabletSideBar chainMap={chainMap} dao_data={dao_data} />
               <ReviewsSec
                 dao_data={dao_data}
                 dao_id={dao_data._id}
@@ -227,7 +227,7 @@ function Dao({ dao_data, rid, slug, ogImage }) {
                 twitter_link={dao_data.socials_map["TWITTER"]?.link}
               />
             </div>
-            <Sidebar dao_data={dao_data} />
+            <Sidebar chainMap={chainMap} dao_data={dao_data} />
           </div>
         )}
         {selected == "Missions" && (
@@ -940,6 +940,8 @@ export async function getServerSideProps(ctx) {
   // Fetch data from external API
   if (!slug) return null;
   let res = await fetchData(slug[0]);
+  let chainMap = await axios.get(`${process.env.P_API}/listing/chains/mapping`);
+  chainMap = chainMap.data.data.chainMapping;
   let rid = slug[1] || "";
   let ogImage = "";
   try {
@@ -956,7 +958,15 @@ export async function getServerSideProps(ctx) {
 
   // Pass data to the page via props
 
-  return { props: { dao_data: { ...res }, rid: rid, slug: slug[0], ogImage } };
+  return {
+    props: {
+      dao_data: { ...res },
+      rid: rid,
+      slug: slug[0],
+      ogImage,
+      chainMap: chainMap,
+    },
+  };
 }
 
 const fetchData = async (slug) => {

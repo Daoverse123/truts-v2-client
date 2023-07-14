@@ -14,27 +14,25 @@ import near_chain_icon from "../../../assets/icons/near_chain_icon.svg";
 import matic_chain_icon from "../../../assets/icons/matic_chain_icon.svg";
 import web_white from "../../../assets/icons/web_white.svg";
 
-import chainIconMap from "../../../components/chainIconMap.json";
+const Sidebar = ({ dao_data, chainMap }) => {
+  let chainIconMap = chainMap;
 
-let getChainIcon = (chain) => {
-  return (
-    <Link href={`/discover?chain=${chain}`}>
-      <span
-        style={{
-          backgroundColor: `${chainIconMap[chain].color}`,
-          cursor: "pointer",
-        }}
-        className={styles.chain_tag}
-      >
-        <img src={chainIconMap[chain].icon} alt="" />
-        {chainIconMap[chain].ticker}
-      </span>
-    </Link>
-  );
-};
-
-const Sidebar = ({ dao_data }) => {
-  console.log(dao_data);
+  let getChainIcon = (chain) => {
+    return (
+      <Link href={`/discover?chain=${chain}`}>
+        <span
+          style={{
+            backgroundColor: `${chainIconMap[chain].color}`,
+            cursor: "pointer",
+          }}
+          className={styles.chain_tag}
+        >
+          <img src={chainIconMap[chain].icon} alt="" />
+          {chainIconMap[chain].ticker}
+        </span>
+      </Link>
+    );
+  };
 
   let key_label_map = {
     "Community Vibes": "resonate_vibes_rate",
