@@ -13,16 +13,16 @@
 
 .spinIcon {
     position: fixed;
-    width: 80px;
-    height: 80px;
-    right: 22px;
+    width: 75px;
+    height: 75px;
+    right: 18px;
     bottom: 90px;
     cursor: pointer;
     z-index: 1000;
     @media (max-width: 500px) {
         width: 65px;
         height: 65px;
-        right: 14px;
+        right: 10px;
         bottom: 80px;
     }
 }
