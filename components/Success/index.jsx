@@ -82,7 +82,7 @@ const Level = ({ xp, level }) => {
   useEffect(() => {
     setTimeout(() => {
       setviewXp(parseInt(level.totalTrutsXP));
-    }, 5000);
+    }, 1000);
   }, []);
 
   return (
