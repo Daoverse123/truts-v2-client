@@ -13,6 +13,8 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import Success from "../../components/Success";
+
 function Index({ type: preType, target, xp, m_id }) {
   const [type, settype] = useState(preType);
 
@@ -92,8 +94,9 @@ function Index({ type: preType, target, xp, m_id }) {
           </div>
           {type == "milan" && <MilanMission xp={xp} />}
           {type == "token2049" && <Token2049 xp={xp} />}
-          {type == "mission" && <Mission xp={xp} />}
+
           {type == "coupon" && <MissionCoupon data={couponQuery} xp={xp} />}
+          {type == "mission" && <Success xp={xp} />}
           {type == "not-member" && (
             <ErrorState
               message={

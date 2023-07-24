@@ -1,81 +1,297 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./success.module.scss";
 import { useQuery } from "react-query";
 import Mission from "../Mission";
 import axios from "axios";
 import Button from "../Button";
-import ConfettiGenerator from "confetti-js";
+import Particles from "react-particles";
+import { loadFull } from "tsparticles";
 
-function Succes() {
-  let missions = useQuery({
+function Succes({ xp }) {
+  let data = useQuery({
     queryKey: ["missions"],
     queryFn: async () => {
-      let res = await axios.get(`${process.env.P_API}/mission?page=1&limit=3`);
-      return res.data.data.result;
+      let missions = axios.get(`${process.env.P_API}/mission?page=1&limit=3`);
+      let xp = await axios.get(`${process.env.P_API}/user/truts-xp`, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+
+      let res = await Promise.all([missions, xp]);
+
+      return {
+        missions: res[0].data.data.result,
+        xp: res[1].data.data,
+      };
     },
   });
 
-  useEffect(() => {
-    const confettiSettings = {
-      target: "my-canvas",
-      start_from_edge: true,
-      rotate: true,
-      max: 350,
-      size: 0.8,
-    };
-    const confetti = new ConfettiGenerator(confettiSettings);
-    setTimeout(() => {
-      confetti.render();
-    }, 1000);
+  if (data.isLoading || !data.isSuccess) return <div>Loading...</div>;
 
-    return () => confetti.clear();
-  }, []);
+  let user = JSON.parse(localStorage.getItem("user-server"));
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <canvas id="my-canvas"></canvas>
+        <ParticlesCon />
         <div className={styles.profile}>
           <img src="/blue.png" alt="" />
           <div>
-            <p>John Swaroop</p>
-            <p className={styles.gradient}>| @john</p>
+            <p>{user.name}</p>
+            <p className={styles.gradient}>| @{user.username}</p>
           </div>
         </div>
         <p className={styles.copy}>
-          Congratulations, you`ve earned 200 XP for completing the mission!
+          Congratulations, you`ve earned {xp} XP for completing the mission!
         </p>
-        <Level />
+        <Level xp={xp} level={data.data.xp} />
         <h2 className={styles.ltext}>Continue with more missions</h2>
         <div className={styles.missionCon}>
-          {missions.isSuccess &&
-            missions.data.map((ms) => {
+          {data.isSuccess &&
+            data.data.missions.map((ms) => {
               return <Mission key={ms._id} data={ms} />;
             })}
         </div>
-        <span className={styles.nav}>
-          <Button label="Explore Missions" />
+        <span
+          className={styles.nav}
+          style={{
+            zIndex: 100,
+          }}
+        >
+          <Button
+            onClick={() => {
+              location.href = "/missions";
+            }}
+            label="Explore Missions"
+          />
         </span>
       </div>
     </div>
   );
 }
 
-const Level = () => {
+const Level = ({ xp, level }) => {
+  const [viewXp, setviewXp] = useState(
+    parseInt(level.totalTrutsXP) - parseInt(xp)
+  );
+
+  let barTotal =
+    parseInt(level.totalTrutsXP) + parseInt(level.level.xpForNextLevel);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setviewXp(parseInt(level.totalTrutsXP));
+    }, 5000);
+  }, []);
+
   return (
     <div className={styles.progress}>
-      <h1>Level 15</h1>
+      <h1>Level {level.level.currentLevel}</h1>
       <div className={styles.bar}>
         <div className={styles.progressOutter}>
-          <div className={styles.progressInner}></div>
+          <div
+            style={{
+              width: `${(viewXp / barTotal) * 100}%`,
+            }}
+            className={styles.progressInner}
+          ></div>
         </div>
         <div className={styles.xp}>
-          <p>1000/1500</p>
-          <p className={styles.gradientText}>+200 XPs</p>
+          <p>
+            {`${viewXp}`}/{`${barTotal}`}
+          </p>
+          <p className={styles.gradientText}>+{xp} XPs</p>
         </div>
       </div>
     </div>
   );
+};
+
+const ParticlesCon = () => {
+  const particlesInit = useCallback(async (engine) => {
+    console.log(engine);
+    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container) => {
+    await container;
+  }, []);
+
+  return (
+    <Particles
+      id="tsparticles"
+      init={particlesInit}
+      loaded={particlesLoaded}
+      options={options}
+    />
+  );
+};
+
+let options = {
+  fullScreen: {
+    enable: false,
+  },
+  emitters: [
+    {
+      position: {
+        x: 0,
+        y: 0,
+      },
+      rate: {
+        quantity: 50,
+        delay: 0.3,
+      },
+      particles: {
+        move: {
+          direction: "top",
+          outModes: {
+            top: "none",
+            left: "none",
+            default: "destroy",
+          },
+        },
+      },
+    },
+    {
+      position: {
+        x: 0,
+        y: 30,
+      },
+      rate: {
+        quantity: 100,
+        delay: 3,
+      },
+      particles: {
+        move: {
+          direction: "top-right",
+          outModes: {
+            top: "none",
+            left: "none",
+            default: "destroy",
+          },
+        },
+      },
+    },
+    {
+      position: {
+        x: 100,
+        y: 30,
+      },
+      rate: {
+        quantity: 100,
+        delay: 3,
+      },
+      particles: {
+        move: {
+          direction: "top-left",
+          outModes: {
+            top: "none",
+            right: "none",
+            default: "destroy",
+          },
+        },
+      },
+    },
+  ],
+  particles: {
+    color: {
+      value: ["#ffffff", "#FF0000", "#FFA500", "#FFFF00", "#008000", "#0000FF"],
+    },
+    move: {
+      decay: 0.05,
+      direction: "top",
+      enable: true,
+      gravity: {
+        enable: true,
+      },
+      outModes: {
+        top: "none",
+        default: "destroy",
+      },
+      speed: {
+        min: 10,
+        max: 50,
+      },
+    },
+    number: {
+      value: 0,
+    },
+    opacity: {
+      value: 1,
+    },
+    rotate: {
+      value: {
+        min: 0,
+        max: 360,
+      },
+      direction: "random",
+      animation: {
+        enable: true,
+        speed: 30,
+      },
+    },
+    tilt: {
+      direction: "random",
+      enable: true,
+      value: {
+        min: 0,
+        max: 360,
+      },
+      animation: {
+        enable: true,
+        speed: 30,
+      },
+    },
+    size: {
+      value: {
+        min: 1,
+        max: 3,
+      },
+      animation: {
+        enable: true,
+        startValue: "min",
+        count: 1,
+        speed: 16,
+        sync: true,
+      },
+    },
+    roll: {
+      darken: {
+        enable: true,
+        value: 25,
+      },
+      enable: true,
+      speed: {
+        min: 5,
+        max: 15,
+      },
+    },
+    wobble: {
+      distance: 30,
+      enable: true,
+      speed: {
+        min: -7,
+        max: 7,
+      },
+    },
+    shape: {
+      type: ["circle", "square", "triangle", "polygon"],
+      options: {
+        polygon: [
+          {
+            sides: 5,
+          },
+          {
+            sides: 6,
+          },
+        ],
+      },
+    },
+  },
 };
 
 export default Succes;
