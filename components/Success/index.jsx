@@ -27,7 +27,7 @@ function Succes({ xp }) {
     },
   });
 
-  if (data.isLoading || !data.isSuccess) return <div>Loading...</div>;
+  if (data.isLoading || !data.isSuccess) return <div></div>;
 
   let user = JSON.parse(localStorage.getItem("user-server"));
 
@@ -36,7 +36,7 @@ function Succes({ xp }) {
       <div className={styles.container}>
         <ParticlesCon />
         <div className={styles.profile}>
-          <img src="/blue.png" alt="" />
+          <img src={`${user.photo.secure_url}`} alt="" />
           <div>
             <p>{user.name}</p>
             <p className={styles.gradient}>| @{user.username}</p>
@@ -142,7 +142,7 @@ let options = {
         y: 0,
       },
       rate: {
-        quantity: 50,
+        quantity: 15,
         delay: 0.3,
       },
       particles: {
