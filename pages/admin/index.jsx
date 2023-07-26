@@ -738,11 +738,24 @@ export async function getServerSideProps(ctx) {
     axios.get(`${process.env.P_API}/listing/verify`),
   ]);
 
+  let slug = ctx.query.slug;
+  let unverifiedList = res[2].data.data.result;
+  try {
+    if (slug) {
+      let add = await axios.get(`${process.env.P_API}/listing/by-slug/${slug}`);
+      if (add.status == 200 && add.data.data.listing) {
+        unverifiedList = [add.data.data.listing, ...unverifiedList];
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
   return {
     props: {
       categoriesList: res[0].data.data.result,
       chainList: res[1].data.data.result,
-      unverifiedList: res[2].data.data.result,
+      unverifiedList,
     },
   };
 }
