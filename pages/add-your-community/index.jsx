@@ -1,4 +1,19 @@
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.default),
+  { ssr: false }
+);
+const EditerMarkdown = dynamic(
+  () =>
+    import("@uiw/react-md-editor").then((mod) => {
+      return mod.default.Markdown;
+    }),
+  { ssr: false }
+);
+
 import styles from "./daoform.module.scss";
 import axios from "axios";
 import fuzzy from "fuzzy.js";
@@ -12,6 +27,8 @@ import WalletConnect from "../../components/WalletConnect";
 
 //assets
 import closeIcon from "../../assets/icons/close_icon.svg";
+import { set } from "lodash";
+
 // const CATEGORY_LIST = [
 //   "DAO",
 //   "Media",
@@ -179,6 +196,8 @@ function DaoForm({ categoriesList, chainList }) {
     }
   }, []);
 
+  const [value, setDesc] = useState("**Hello world!!!**");
+
   return (
     <>
       <div className={styles.daoPage}>
@@ -198,6 +217,7 @@ function DaoForm({ categoriesList, chainList }) {
         />
         <div>
           {formDisabled && <SignupPrompt />}
+
           <form
             style={formDisabled ? disableForm : {}}
             onSubmit={submitForm}
@@ -251,6 +271,24 @@ function DaoForm({ categoriesList, chainList }) {
               setState={setState}
             />
 
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: "25px",
+              }}
+              data-color-mode="light"
+              htmlFor=""
+            >
+              <p>Add a brief Description for your Community.*</p>
+              <MDEditor
+                height={400}
+                value={value}
+                onChange={setDesc}
+                style={{ whiteSpace: "pre-wrap" }}
+              />
+            </span>
+            {/* 
             <label htmlFor="">
               <p>Add a brief Description for your Community.*</p>
               <textarea
@@ -266,7 +304,7 @@ function DaoForm({ categoriesList, chainList }) {
                 rows={15}
                 type="text"
               />
-            </label>
+            </label> */}
 
             <span className={styles.linkRow}>
               <label htmlFor="">
@@ -670,8 +708,6 @@ const ChainSelectCon = ({ state, setState, CHAIN_LIST_MAP }) => {
   );
 };
 
-export default DaoForm;
-
 export async function getServerSideProps(ctx) {
   let res = await Promise.all([
     axios.get(`${process.env.P_API}/listing/categories`),
@@ -685,3 +721,5 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
+
+export default DaoForm;

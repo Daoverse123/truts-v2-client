@@ -4,6 +4,8 @@ import Footer from "../../components/Footer";
 import Head from "next/head";
 import axios from "axios";
 import Link from "next/link";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 
 //utils
 import openNewTab from "../../utils/openNewTab";
@@ -30,6 +32,7 @@ import share from "../../assets/icons/share_icon.svg";
 import tip from "../../assets/icons/tip_icon.svg";
 import loader from "../../assets/mini-loader.gif";
 import { useQuery } from "react-query";
+import dynamic from "next/dynamic";
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -210,6 +213,7 @@ function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
         <Nav isFloating />
         <InfoSec dao_data={dao_data} />
         <NavSec selected={selected} setSelected={setSelected} />
+
         {selected == "Reviews" && (
           <div className={styles.content}>
             <div className={styles.main}>
@@ -226,6 +230,17 @@ function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
                 key={slug}
                 twitter_link={dao_data.socials_map["TWITTER"]?.link}
               />
+            </div>
+            <Sidebar chainMap={chainMap} dao_data={dao_data} />
+          </div>
+        )}
+        {selected == "Overview" && (
+          <div className={styles.content}>
+            <div className={styles.main}>
+              <TabletSideBar chainMap={chainMap} dao_data={dao_data} />
+              <div className={styles.overview}>
+                <Overview overview={dao_data.description} />
+              </div>
             </div>
             <Sidebar chainMap={chainMap} dao_data={dao_data} />
           </div>
@@ -263,6 +278,7 @@ const NavSec = ({ selected, setSelected }) => {
   return (
     <ul className={styles.navSec}>
       {[
+        "Overview",
         "Reviews",
         "Missions",
         "Insights",
@@ -283,6 +299,28 @@ const NavSec = ({ selected, setSelected }) => {
         );
       })}
     </ul>
+  );
+};
+// import { MarkdownPreviewProps } from "@uiw/react-markdown-preview";
+const EditerMarkdown = dynamic(
+  () =>
+    import("@uiw/react-md-editor").then((mod) => {
+      return mod.default.Markdown;
+    }),
+  { ssr: false }
+);
+
+const Overview = ({ overview }) => {
+  return (
+    <div data-color-mode="light" key={"overview"} className={styles.reviewSec}>
+      <div
+        style={{
+          padding: "10px 20px",
+        }}
+      >
+        <EditerMarkdown source={overview} />
+      </div>
+    </div>
   );
 };
 
@@ -940,7 +978,9 @@ export async function getServerSideProps(ctx) {
   // Fetch data from external API
   if (!slug) return null;
   let res = await fetchData(slug[0]);
-  let chainMap = await axios.get(`${process.env.P_API}/listing/chains/mapping`);
+  let chainMap = await axios.get(
+    `${process.env.MAP_API}/listing/chains/mapping`
+  );
   chainMap = chainMap.data.data.chainMapping;
   let rid = slug[1] || "";
   let ogImage = "";

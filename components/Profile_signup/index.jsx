@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 
 //changes
 
+axios.defaults.withCredentials = true;
+
 const ProfileLogin = ({
   showWalletConnect,
   setprofileSignupPrompt,

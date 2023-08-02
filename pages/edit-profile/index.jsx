@@ -19,7 +19,7 @@ import {
   refetchQueries,
   useQueryClient,
 } from "react-query";
-
+axios.defaults.withCredentials = true;
 import Footer from "../../components/Footer";
 
 import Toggle from "react-toggle";

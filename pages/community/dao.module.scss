@@ -29,6 +29,13 @@ $PHONE_N: 426;
     @return #{calc(($units / $PHONE_N) * 100)}vw;
 }
 
+.overview {
+    background-color: white;
+    padding: 20px 15px;
+    border-radius: 16px;
+    margin-top: 10px;
+}
+
 .dao {
     display: flex;
     flex-direction: column;

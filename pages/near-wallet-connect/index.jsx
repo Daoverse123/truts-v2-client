@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import * as nearAPI from "near-api-js";
 let P_API = process.env.P_API;
 import { toast } from "react-toastify";
-
+axios.defaults.withCredentials = true;
 const { connect, keyStores, WalletConnection, Signer } = nearAPI;
 
 const connect_near = async (login) => {

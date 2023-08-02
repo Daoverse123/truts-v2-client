@@ -18,7 +18,7 @@ import other_wallet from "../../assets/icons/other-wallet.png";
 import phantom_icon from "../../assets/icons/phantom.png";
 import near_icon from "../../assets/icons/near_chain_icon.png";
 import axios from "axios";
-
+axios.defaults.withCredentials = true;
 import { toast } from "react-toastify";
 
 // { wallet state
