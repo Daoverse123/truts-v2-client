@@ -17,102 +17,116 @@ export default function Search({ className }) {
   const [suggestionVisible, setsuggestionVisible] = useState(false);
   const [focus, setfocus] = useState(false);
 
-  const fetchData = async (term_init) => {
-    let term = term_init.trim().toLowerCase();
+  // const fetchData = async (term_init) => {
+  //   let term = term_init.trim().toLowerCase();
+  //   if (!(term.length > 0)) return;
+  //   console.log("search --> ", term);
+  //   // let res = await axios.get(`${API}/search/${term}`);
+
+  //   let query3 = {
+  //     query: {
+  //       bool: {
+  //         should: [
+  //           {
+  //             prefix: {
+  //               dao_name: {
+  //                 value: term,
+  //               },
+  //             },
+  //           },
+  //           {
+  //             query_string: {
+  //               query: term,
+  //               default_field: "dao_name",
+  //             },
+  //           },
+  //         ],
+  //         filter: {
+  //           term: {
+  //             verified_status: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //     _source: {
+  //       includes: [
+  //         "dao_name",
+  //         "dao_category",
+  //         "dao_logo",
+  //         "review_count",
+  //         "slug",
+  //         "chain",
+  //         "description",
+  //         "dao_mission",
+  //       ],
+  //     },
+  //   };
+
+  //   let query4 = {
+  //     query: {
+  //       bool: {
+  //         should: [
+  //           {
+  //             prefix: {
+  //               name: {
+  //                 value: term,
+  //               },
+  //             },
+  //           },
+  //           {
+  //             query_string: {
+  //               query: term,
+  //               default_field: "name",
+  //             },
+  //           },
+  //         ],
+  //         filter: {
+  //           term: {
+  //             visible: true,
+  //           },
+  //         },
+  //       },
+  //     },
+  //     _source: {
+  //       includes: [
+  //         "name",
+  //         "categories",
+  //         "photo",
+  //         "reviews",
+  //         "slug",
+  //         "chains",
+  //         "description",
+  //         "oneliner",
+  //       ],
+  //     },
+  //   };
+
+  //   let res = await axios.post(
+  //     `https://search.truts.xyz/listings/_search`,
+  //     query4
+  //   );
+
+  //   console.log(res);
+
+  //   let data = res.data.hits.hits.map((ele) => {
+  //     return ele._source;
+  //   });
+
+  //   data.length > 0 && setSuggestiondata([...data]);
+  // };
+
+  const fetchData = async (term) => {
     if (!(term.length > 0)) return;
     console.log("search --> ", term);
-    // let res = await axios.get(`${API}/search/${term}`);
 
-    let query3 = {
-      query: {
-        bool: {
-          should: [
-            {
-              prefix: {
-                dao_name: {
-                  value: term,
-                },
-              },
-            },
-            {
-              query_string: {
-                query: term,
-                default_field: "dao_name",
-              },
-            },
-          ],
-          filter: {
-            term: {
-              verified_status: true,
-            },
-          },
-        },
-      },
-      _source: {
-        includes: [
-          "dao_name",
-          "dao_category",
-          "dao_logo",
-          "review_count",
-          "slug",
-          "chain",
-          "description",
-          "dao_mission",
-        ],
-      },
-    };
-
-    let query4 = {
-      query: {
-        bool: {
-          should: [
-            {
-              prefix: {
-                name: {
-                  value: term,
-                },
-              },
-            },
-            {
-              query_string: {
-                query: term,
-                default_field: "name",
-              },
-            },
-          ],
-          filter: {
-            term: {
-              visible: true,
-            },
-          },
-        },
-      },
-      _source: {
-        includes: [
-          "name",
-          "categories",
-          "photo",
-          "reviews",
-          "slug",
-          "chains",
-          "description",
-          "oneliner",
-        ],
-      },
-    };
-
-    let res = await axios.post(
-      `https://search.truts.xyz/listings/_search`,
-      query4
+    let res = await axios.get(
+      `${process.env.P_API}/search/${term.toLowerCase()}`
     );
 
-    console.log(res);
-
-    let data = res.data.hits.hits.map((ele) => {
+    let data = res.data.data.result.hits.hits.map((ele) => {
       return ele._source;
     });
-
-    data.length > 0 && setSuggestiondata([...data]);
+    res.status == 200 && setSuggestiondata(data);
   };
 
   let fetchSearchTerm = useCallback(
