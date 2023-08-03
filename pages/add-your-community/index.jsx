@@ -283,8 +283,13 @@ function DaoForm({ categoriesList, chainList }) {
               <p>Add a brief Description for your Community.*</p>
               <MDEditor
                 height={400}
-                value={value}
-                onChange={setDesc}
+                value={state.description}
+                onChange={(e) => {
+                  setState((s) => {
+                    s.description = e;
+                    return { ...s };
+                  });
+                }}
                 style={{ whiteSpace: "pre-wrap" }}
               />
             </span>
