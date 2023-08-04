@@ -26,7 +26,8 @@ $PHONE_N: 425;
 
 .search {
     display: flex;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.028);
     position: relative;
     z-index: 100;
     border-radius: 16px;

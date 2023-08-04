@@ -280,7 +280,9 @@ function DaoForm({ categoriesList, chainList }) {
               data-color-mode="light"
               htmlFor=""
             >
-              <p>Add a brief Description for your Community.*</p>
+              <p>
+                Add a brief Description for your Community.* (Markdown enabled)
+              </p>
               <MDEditor
                 height={400}
                 value={state.description}
