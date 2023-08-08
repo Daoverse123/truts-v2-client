@@ -336,7 +336,7 @@ const InfoSec = ({ dao_data }) => {
   let average_rating = reviews.rating;
   let review_count = reviews.count;
 
-  let info = dao_data.oneliner + "\n" + dao_data.description;
+  let info = dao_data.oneliner;
 
   const [showmore, setshowmore] = useState(false);
 
