@@ -652,6 +652,11 @@ $mobile: 800px;
         }
     }
 
+    .qWrapperSlide {
+        @extend .qWrapper;
+        max-width: 1080px;
+    }
+
     .qCon {
         display: flex;
         width: 75%;

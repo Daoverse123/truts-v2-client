@@ -83,6 +83,7 @@ export default function Home({ daoList_ssr, categoryList }) {
       <main className={styles.main}>
         {/* <StatCards /> */}
         <CommunitiesWall daoList={daoList_ssr} categoryList={categoryList} />
+        <RewardSection />
         <Leaderboard />
       </main>
       <RecentReviewsSection />
@@ -93,6 +94,26 @@ export default function Home({ daoList_ssr, categoryList }) {
     </div>
   );
 }
+
+const RewardSection = () => {
+  return (
+    <div className={styles.rewardSection}>
+      <span className={styles.text}>
+        <h1>Rewards. Rewards. Rewards</h1>
+        <h3>What do you get?</h3>
+        <p>
+          Truts XPs will be your token to claim so many different rewards from
+          so many different partners, from NFTs to airdrops, don't miss any out!
+        </p>
+        <button>Explore Rewards</button>
+      </span>
+      <span className={styles.image}>
+        <img className={styles.circle} src="/rewardHero.svg" alt="" />
+        <img className={styles.center} src="/rewardIconCenter.svg" alt="" />
+      </span>
+    </div>
+  );
+};
 
 const Faq_qn = ({ data }) => {
   const [open, setopen] = useState(false);
