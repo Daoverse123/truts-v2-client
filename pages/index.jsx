@@ -103,7 +103,7 @@ const RewardSection = () => {
         <h3>What do you get?</h3>
         <p>
           Truts XPs will be your token to claim so many different rewards from
-          so many different partners, from NFTs to airdrops, don't miss any out!
+          so many different partners, from NFTs to airdrops, don`t miss any out!
         </p>
         <button>Explore Rewards</button>
       </span>
