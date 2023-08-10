@@ -11,9 +11,18 @@ import countBasedLength from "../../utils/countBasedLength";
 import Head from "next/head";
 import { useQuery } from "react-query";
 import WalletConnect from "../../components/WalletConnect_mission_overlay";
-import { id } from "ethers/lib/utils";
 import { create } from "zustand";
-import { redirect } from "next/dist/server/api-utils";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+
+const EditerMarkdown = dynamic(
+  () =>
+    import("@uiw/react-md-editor").then((mod) => {
+      return mod.default.Markdown;
+    }),
+  { ssr: false }
+);
 
 const API = process.env.API;
 const P_API = process.env.P_API;
@@ -663,13 +672,16 @@ const registerAnswer = (set, answer) => {
         state.quiz[answer.q_id].answerByUser &&
         state.quiz[answer.q_id].answerByUser.includes(answer.answer)
       ) {
+        //deselect the option
         state.quiz[answer.q_id].answerByUser = state.quiz[
           answer.q_id
         ].answerByUser.filter((elm) => elm != answer.answer);
         return { ...state };
       }
+      //if mcq get previous answer else get empty array
       prev = state.quiz[answer.q_id].answerByUser || [];
     }
+    // add answer to existing answers
     state.quiz[answer.q_id].answerByUser = [...prev, answer.answer];
     state.quiz[answer.q_id].status = "LOADING";
     return { ...state };
@@ -701,6 +713,16 @@ const Quiz = ({ mission }) => {
       initData(questionState);
     }
   }, [status.isSuccess]);
+
+  useEffect(() => {
+    if (question.type == "SLIDE") {
+      quizStore.registerAnswer({
+        m_id: mission._id,
+        q_id: question._id,
+        answer: -1,
+      });
+    }
+  }, [question.type]);
 
   const initData = (questionState) => {
     let sequenceStatus = [];
@@ -929,6 +951,8 @@ const Quiz = ({ mission }) => {
     return Math.ceil((ans / quiz.length) * 100);
   };
 
+  let markdown = question.prompt;
+
   return (
     <div className={styles.quiz} key={"question-no " + quizStore.qNo}>
       <h3 className={styles.subtitle}>
@@ -942,99 +966,167 @@ const Quiz = ({ mission }) => {
           className={styles.innerProgress}
         ></span>
       </div>
-
-      <div className={styles.qWrapper}>
-        <div className={styles.qCon}>
-          <>
-            <h3 className={styles.title}>{question.prompt}</h3>
-            <div className={styles.tags}>
-              {question.type == "SCQ" ? (
-                <Tag
-                  key={"qt"}
-                  color={"rgb(130,71,229)"}
-                  title={"Single Answer Question"}
-                  src={"/single_answer.svg"}
-                />
+      {question.type == "SLIDE" ? (
+        <div className={styles.qWrapperSlide}>
+          <div className={styles.qCon}>
+            <div
+              className={styles.markdown}
+              data-color-mode="light"
+              key={"overview"}
+            >
+              {Boolean(EditerMarkdown) && <EditerMarkdown source={markdown} />}
+            </div>
+            <div className={styles.qNav}>
+              <span className={styles.ansCount}>
+                <span className={styles.qArrows}>
+                  <button
+                    onClick={() => {
+                      quizStore.qMove(false);
+                    }}
+                  >
+                    {"<"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      quizStore.qMove(true);
+                    }}
+                  >
+                    {">"}
+                  </button>
+                </span>
+                <p>Correct Answers : </p>
+                <h1>
+                  <span
+                    key={"ans-no " + quizStore.qNo}
+                    style={{ color: "green" }}
+                  >
+                    {getAnswerCount()}
+                  </span>
+                  /{quiz.length}
+                </h1>
+              </span>
+              {!isQuizComplete() ? (
+                <button
+                  disabled={
+                    quizStore.quiz[question._id].status == "ANSWERED" ||
+                    !quizStore.quiz[question._id].answerByUser ||
+                    quizStore.quiz[question._id].answerByUser.length <= 0
+                  }
+                  onClick={() => {
+                    submitAnswer();
+                  }}
+                  className={styles.submit}
+                >
+                  Continue
+                </button>
               ) : (
-                <Tag
-                  key={"qt"}
-                  color={"rgb(230,0,122)"}
-                  title={"Multi Answer Question"}
-                  src={"/mult_answer.svg"}
-                />
+                <button
+                  disabled={status.data.attemptedMission.isCompleted}
+                  onClick={() => {
+                    claimMission(mission);
+                  }}
+                  className={styles.submit}
+                >
+                  Claim Mission
+                </button>
               )}
             </div>
-          </>
-
-          <div className={styles.qList}>
-            {question.options.map((ele, idx) => {
-              return <Option key={idx + "option"} data={ele} no={idx + 1} />;
-            })}
-          </div>
-          <div className={styles.qNav}>
-            <span className={styles.ansCount}>
-              <span className={styles.qArrows}>
-                <button
-                  onClick={() => {
-                    quizStore.qMove(false);
-                  }}
-                >
-                  {"<"}
-                </button>
-                <button
-                  onClick={() => {
-                    quizStore.qMove(true);
-                  }}
-                >
-                  {">"}
-                </button>
-              </span>
-              <p>Correct Answers : </p>
-              <h1>
-                <span
-                  key={"ans-no " + quizStore.qNo}
-                  style={{ color: "green" }}
-                >
-                  {getAnswerCount()}
-                </span>
-                /{quiz.length}
-              </h1>
-            </span>
-            {!isQuizComplete() ? (
-              <button
-                disabled={
-                  quizStore.quiz[question._id].status == "ANSWERED" ||
-                  !quizStore.quiz[question._id].answerByUser ||
-                  quizStore.quiz[question._id].answerByUser.length <= 0
-                }
-                onClick={() => {
-                  submitAnswer();
-                }}
-                className={styles.submit}
-              >
-                Submit
-              </button>
-            ) : (
-              <button
-                disabled={status.data.attemptedMission.isCompleted}
-                onClick={() => {
-                  claimMission(mission);
-                }}
-                className={styles.submit}
-              >
-                Claim Mission
-              </button>
-            )}
           </div>
         </div>
-        <span className={styles.xp}>
-          <p>Rewards</p>
-          <span className={styles.xpCount}>
-            <img src="/missions/coin.svg" alt="" />
-            <h1>{question.listingXP} XP</h1>
+      ) : (
+        <div className={styles.qWrapper}>
+          <div className={styles.qCon}>
+            <>
+              <h3 className={styles.title}>{question.prompt}</h3>
+              <div className={styles.tags}>
+                {question.type == "SCQ" ? (
+                  <Tag
+                    key={"qt"}
+                    color={"rgb(130,71,229)"}
+                    title={"Single Answer Question"}
+                    src={"/single_answer.svg"}
+                  />
+                ) : (
+                  <Tag
+                    key={"qt"}
+                    color={"rgb(230,0,122)"}
+                    title={"Multi Answer Question"}
+                    src={"/mult_answer.svg"}
+                  />
+                )}
+              </div>
+            </>
+
+            <div className={styles.qList}>
+              {question.options.map((ele, idx) => {
+                return <Option key={idx + "option"} data={ele} no={idx + 1} />;
+              })}
+            </div>
+            <div className={styles.qNav}>
+              <span className={styles.ansCount}>
+                <span className={styles.qArrows}>
+                  <button
+                    onClick={() => {
+                      quizStore.qMove(false);
+                    }}
+                  >
+                    {"<"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      quizStore.qMove(true);
+                    }}
+                  >
+                    {">"}
+                  </button>
+                </span>
+                <p>Correct Answers : </p>
+                <h1>
+                  <span
+                    key={"ans-no " + quizStore.qNo}
+                    style={{ color: "green" }}
+                  >
+                    {getAnswerCount()}
+                  </span>
+                  /{quiz.length}
+                </h1>
+              </span>
+              {!isQuizComplete() ? (
+                <button
+                  disabled={
+                    quizStore.quiz[question._id].status == "ANSWERED" ||
+                    !quizStore.quiz[question._id].answerByUser ||
+                    quizStore.quiz[question._id].answerByUser.length <= 0
+                  }
+                  onClick={() => {
+                    submitAnswer();
+                  }}
+                  className={styles.submit}
+                >
+                  Submit
+                </button>
+              ) : (
+                <button
+                  disabled={status.data.attemptedMission.isCompleted}
+                  onClick={() => {
+                    claimMission(mission);
+                  }}
+                  className={styles.submit}
+                >
+                  Claim Mission
+                </button>
+              )}
+            </div>
+          </div>
+          <span className={styles.xp}>
+            <p>Rewards</p>
+            <span className={styles.xpCount}>
+              <img src="/missions/coin.svg" alt="" />
+              <h1>{question.listingXP} XP</h1>
+            </span>
           </span>
-        </span>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
