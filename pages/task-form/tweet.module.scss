@@ -1,0 +1,22 @@
+.pattern {
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image: radial-gradient(#444cf7 0.8500000000000001px, transparent 0.8500000000000001px),
+        radial-gradient(#444cf7 0.8500000000000001px, #e5e5f7 0.8500000000000001px);
+    background-size: 34px 34px;
+    background-position:
+        0 0,
+        17px 17px;
+}
+
+.grad {
+    background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+
+    &:hover {
+        background: linear-gradient(90deg, #4910ae 0%, #1248d9 100%);
+    }
+
+    &:focus {
+        outline: thick double #1248d9;
+    }
+}
