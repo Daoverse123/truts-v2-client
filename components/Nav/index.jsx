@@ -4,6 +4,7 @@ import _ from "lodash";
 import styles from "./nav.module.scss";
 import Link from "next/link";
 import { useDisconnect } from "wagmi";
+import signout from "../../utils/signout";
 
 //assets
 import logo from "../../assets/icons/logo.svg";
@@ -58,6 +59,7 @@ export default function Component({ isFloating, isStrech }) {
         console.log(error);
         localStorage.removeItem("token");
         localStorage.removeItem("user-server");
+        await signout();
       }
     }
   };
@@ -201,9 +203,10 @@ const ProfileDropDown = ({ user }) => {
         <ul className={styles.list}>
           {/* <li>My Profile</li> */}
           <li
-            onClick={() => {
+            onClick={async () => {
               localStorage.removeItem("token");
               localStorage.removeItem("user-server");
+              await signout();
               window.location.reload();
             }}
             className={styles.power_btn}
@@ -271,9 +274,10 @@ const TabletNav = ({ TabletNavOpen, setTabletNavOpen, user }) => {
           {user ? (
             <Button
               type={"secondary"}
-              onClick={() => {
+              onClick={async () => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user-server");
+                await signout();
                 location.href = "/?signup=true";
               }}
               label={"Log Out"}
