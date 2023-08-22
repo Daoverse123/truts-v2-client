@@ -29,7 +29,7 @@ function Success({ reward, setvisible }) {
       <div className={styles.confetti}>
         <ParticlesCon />
       </div>
-      <div className={styles.title}>
+      <div className={styles.successtitle}>
         <span className={styles.logo}>
           <img src="/favicon.png" alt="" />
         </span>

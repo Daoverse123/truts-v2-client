@@ -102,7 +102,9 @@ function Spinner({ setvisible }) {
     }
   }, [reward]);
 
-  if (WheelApi.isLoading || !WheelApi.isSuccess) return <div>Loading...</div>;
+  if (WheelApi.isLoading || !WheelApi.isSuccess) {
+    return <div>Loading...</div>;
+  }
 
   let canSpin =
     SpinAbility.isLoading || !SpinAbility.isSuccess
@@ -129,14 +131,17 @@ function Spinner({ setvisible }) {
               <span className={styles.logo}>
                 <img src="/favicon.png" alt="" />
               </span>
-
-              <h1>Spin the Wheel</h1>
-              <p>
-                {
-                  "Check in everyday to stand a chance to\n win XPs and Rewards Daily."
-                }
-              </p>
+              <span>
+                <h1>Spin the Wheel</h1>
+                <p>
+                  {
+                    "Check in everyday to stand a chance to\n win XPs and Rewards Daily."
+                  }
+                </p>
+              </span>
             </div>
+            {/* progress */}
+            <StreakProgress spinCount={spinCount} />
             <div
               style={{
                 display: "flex",
@@ -196,6 +201,93 @@ function Spinner({ setvisible }) {
     </div>
   );
 }
+
+const StreakProgress = ({ spinCount }) => {
+  //current streak
+  const [showInfo, setshowInfo] = useState(false);
+  let currentStreak = useQuery({
+    queryKey: ["current-streak", spinCount],
+    queryFn: async () => {
+      let token = localStorage.getItem("token");
+      if (!token) return new Error("No Token");
+      let res = await axios.get(`${process.env.P_API}/wheel/my-streak`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      if (res.status === 200) {
+        return res.data.data;
+      } else {
+        //throw error
+        new Error("Wheel Error", res.status);
+      }
+    },
+  });
+
+  if (currentStreak.isLoading || !currentStreak.isSuccess) {
+    return <div>Loading...</div>;
+  }
+  let streakCount = currentStreak.data.record.count;
+  let streakMapping = currentStreak.data.mapping;
+  let targetDays = Object.keys(streakMapping).find((ele) => {
+    return parseInt(ele) >= streakCount;
+  });
+
+  return (
+    <div className={styles.streak}>
+      <span className={styles.progressText}>
+        <p>
+          🔥
+          <span className={styles.grad}>{streakCount}</span>/{targetDays} Days
+          Streak ({streakMapping[targetDays].reward.name})
+        </p>
+        <div
+          onMouseEnter={() => {
+            setshowInfo(true);
+          }}
+          onMouseLeave={() => {
+            setshowInfo(false);
+          }}
+          className={styles.infoPane}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="1em"
+            viewBox="0 0 512 512"
+            className={styles.infoImage}
+          >
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+          </svg>
+          {showInfo && (
+            <div className={styles.infoText}>
+              <h1>Streak Rewards</h1>
+              <h2>
+                Earn XPs for at every stage. See the checkpoints below to
+                understand more. These XPs will be added to your account.
+              </h2>
+              {Object.keys(streakMapping).map((ele) => {
+                return (
+                  <p>
+                    {ele} days - {streakMapping[ele].reward.name}
+                  </p>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </span>
+
+      <div className={styles.progressBar}>
+        <span
+          style={{
+            width: `${(parseInt(streakCount) / targetDays) * 100}%`,
+          }}
+          className={styles.progressInner}
+        ></span>
+      </div>
+    </div>
+  );
+};
 
 const Timer = ({ nextSpin, spinCount }) => {
   let date = new Date(nextSpin);
