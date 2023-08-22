@@ -102,9 +102,9 @@ const ProfileLogin = ({
               account to signup/log in
             </p>
             <span
-              onClick={() => {
-                alert("Coming Soon");
-              }}
+              // onClick={() => {
+              //   alert("Coming Soon");
+              // }}
               style={{ marginTop: "10px" }}
               id={"google-login"}
             ></span>
