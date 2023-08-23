@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./profile_signup.module.scss";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 //changes
 
@@ -38,6 +39,16 @@ const ProfileLogin = ({
       let jwt = res.data.data.token;
       localStorage.setItem("token", `Bearer ${jwt}`);
       //location.href = document.referrer;
+      toast.success("Login successful", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       location.reload();
     } else {
       alert("SignUp failed Please try Again");

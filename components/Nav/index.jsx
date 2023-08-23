@@ -5,6 +5,7 @@ import styles from "./nav.module.scss";
 import Link from "next/link";
 import { useDisconnect } from "wagmi";
 import signout from "../../utils/signout";
+import { toast } from "react-toastify";
 
 //assets
 import logo from "../../assets/icons/logo.svg";

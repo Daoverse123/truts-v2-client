@@ -282,6 +282,16 @@ const Eth_wallets = ({ setwalletState, closePopUp }) => {
         setwalletState(state_obj);
         localStorage.setItem("wallet_state", JSON.stringify(state_obj));
         //window.updateNav();
+        toast.success("Login successful", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         closePopUp();
       }
     } catch (error) {
