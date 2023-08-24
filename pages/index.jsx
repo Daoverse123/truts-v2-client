@@ -94,7 +94,7 @@ export default function Home({ daoList_ssr, categoryList }) {
     </div>
   );
 }
-
+//cg
 const RewardSection = () => {
   return (
     <div className={styles.rewardSection}>
