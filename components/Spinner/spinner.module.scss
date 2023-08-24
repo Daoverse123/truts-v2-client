@@ -315,6 +315,15 @@
     }
 }
 
+.streakReward {
+    @extend .reward;
+    h1 {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgb(0, 0, 0);
+    }
+}
+
 .confetti {
     display: flex;
     position: absolute;
