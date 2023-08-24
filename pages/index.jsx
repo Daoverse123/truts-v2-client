@@ -99,11 +99,11 @@ const RewardSection = () => {
   return (
     <div className={styles.rewardSection}>
       <span className={styles.text}>
-        <h1>Rewards, Reputation, Legacy.</h1>
-        <h3>What's in it for you?</h3>
+        <h1>Rewards. Rewards. Rewards</h1>
+        <h3>What do you get?</h3>
         <p>
-          Use your Truts Xp to claim various rewards from early access to
-          products to airdrops. Don't miss anything.
+          Truts XPs will be your token to claim so many different rewards from
+          so many different partners, from NFTs to airdrops, don`t miss any out!
         </p>
         <button>Explore Rewards</button>
       </span>
