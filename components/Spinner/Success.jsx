@@ -4,7 +4,9 @@ import styles from "./spinner.module.scss";
 import { useCallback } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
-
+import { useQuery } from "react-query";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 function Success({ reward, setvisible }) {
   console.log(reward);
   let description = reward.meta.description;
@@ -14,6 +16,18 @@ function Success({ reward, setvisible }) {
   let text = reward.meta.text;
 
   let title = reward.meta.title;
+
+  let streak = useQuery({
+    queryKey: ["streak"],
+    queryFn: async () => {
+      let res = await axios(`${process.env.P_API}/wheel/streak-updation`, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      return res.data.data;
+    },
+  });
 
   return (
     <div className={styles.spinner}>
@@ -41,6 +55,14 @@ function Success({ reward, setvisible }) {
         <img src={icon_url || "/xpCoin.png"} alt="" />
         <h1>{text}</h1>
       </div>
+      {streak.isSuccess && (
+        <div className={styles.streakReward}>
+          <h1>
+            🔥 {streak.data.record.count} {"Streak"}{" "}
+            {"reward" in streak.data ? `+ ${streak.data.reward.name}` : ""}
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
