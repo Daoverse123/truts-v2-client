@@ -265,9 +265,9 @@ const StreakProgress = ({ spinCount }) => {
                 Earn XPs for at every stage. See the checkpoints below to
                 understand more. These XPs will be added to your account.
               </h2>
-              {Object.keys(streakMapping).map((ele) => {
+              {Object.keys(streakMapping).map((ele, idx) => {
                 return (
-                  <p>
+                  <p key={idx + "map"}>
                     {ele} days - {streakMapping[ele].reward.name}
                   </p>
                 );
