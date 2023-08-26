@@ -209,24 +209,46 @@ const StreakProgress = ({ spinCount }) => {
     queryKey: ["current-streak", spinCount],
     queryFn: async () => {
       let token = localStorage.getItem("token");
-      if (!token) return new Error("No Token");
+      if (!token) {
+        return new Promise.reject("Token error");
+      }
       let res = await axios.get(`${process.env.P_API}/wheel/my-streak`, {
         headers: {
           Authorization: `${token}`,
         },
       });
+      console.log(res);
       if (res.status === 200) {
         return res.data.data;
       } else {
         //throw error
-        new Error("Wheel Error", res.status);
+        return new Promise.reject("Wheel error", er);
       }
     },
   });
 
-  if (currentStreak.isLoading || !currentStreak.isSuccess) {
-    return <div>Loading...</div>;
+  if (currentStreak.isError) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "50px",
+        }}
+      ></div>
+    );
   }
+
+  if (currentStreak.isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "50px",
+        }}
+      ></div>
+    );
+  }
+  console.log(currentStreak);
   let streakCount = currentStreak.data.record.count;
   let streakMapping = currentStreak.data.mapping;
   let targetDays = Object.keys(streakMapping).find((ele) => {
