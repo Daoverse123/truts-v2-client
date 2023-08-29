@@ -3,6 +3,7 @@ import styles from "./profile.module.scss";
 import chainIconMap from "../../components/chainIconMap.json";
 import addLoader from "../../utils/addLoader";
 import Head from "next/head";
+import { useQuery } from "react-query";
 
 //components
 import Nav from "../../components/Nav";
@@ -351,6 +352,25 @@ function Profile({ slug }) {
     return "ethereum";
   };
 
+  let admin = useQuery({
+    queryKey: ["admin-dashboard"],
+    queryFn: async () => {
+      let token = localStorage.getItem("token");
+      if (!token) return new Error("No Token");
+      let res = await axios.get(`${process.env.P_API}/admin`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      if (res.status === 200) {
+        return res.data.data.spin;
+      } else {
+        //throw error
+        new Error("Wheel Error", res.status);
+      }
+    },
+  });
+
   return (
     <>
       <Head>
@@ -390,13 +410,27 @@ function Profile({ slug }) {
 
       <Nav isStrech={true} isFloating />
       {/* <ProfileLogin /> */}
+
       <div className={styles.profilePage}>
+        {admin.isSuccess && (
+          <span className={styles.adminBanner}>
+            Your request for admin dashboard has been approved.
+            <button
+              onClick={async () => {
+                window.location.href = "https://admin.truts.xyz";
+              }}
+            >
+              Visit Dashboard
+            </button>
+          </span>
+        )}
         <div className={styles.profileHeader + addLoader(!("_id" in userData))}>
           <img
             className={styles.profileImg}
             src={userData.photo?.secure_url || "/profile-old.png"}
             alt=""
           />
+
           <div className={styles.data}>
             {"xp" in userData && (
               <span className={styles.xpLevel}>

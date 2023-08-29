@@ -3,9 +3,8 @@ import axios from "axios";
 import _ from "lodash";
 import styles from "./nav.module.scss";
 import Link from "next/link";
-import { useDisconnect } from "wagmi";
 import signout from "../../utils/signout";
-import { toast } from "react-toastify";
+import { useQuery } from "react-query";
 
 //assets
 import logo from "../../assets/icons/logo.svg";
@@ -19,7 +18,6 @@ import search_icon from "../../assets/icons/search_grad.svg";
 //components
 import Search from "../Search";
 import Button from "../Button";
-import WalletConnect from "../WalletConnect";
 
 // CONSTANTS
 const API = process.env.API;
@@ -96,6 +94,25 @@ export default function Component({ isFloating, isStrech }) {
     }
   }, [TabletNavOpen]);
 
+  let admin = useQuery({
+    queryKey: ["admin-dashboard"],
+    queryFn: async () => {
+      let token = localStorage.getItem("token");
+      if (!token) return new Error("No Token");
+      let res = await axios.get(`${process.env.P_API}/admin`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      if (res.status === 200) {
+        return res.data.data.spin;
+      } else {
+        //throw error
+        new Error("Wheel Error", res.status);
+      }
+    },
+  });
+
   return (
     <>
       <nav
@@ -134,7 +151,7 @@ export default function Component({ isFloating, isStrech }) {
                   src={user.photo?.secure_url || pixel_icon.src}
                 />
 
-                <ProfileDropDown user={user} />
+                <ProfileDropDown user={user} admin={admin} />
               </li>
             ) : (
               // connect wallet
@@ -184,7 +201,7 @@ export default function Component({ isFloating, isStrech }) {
   );
 }
 
-const ProfileDropDown = ({ user }) => {
+const ProfileDropDown = ({ user, admin }) => {
   return (
     <span className={styles.profileDropDown}>
       <div className={styles.dd_menu}>
@@ -203,6 +220,16 @@ const ProfileDropDown = ({ user }) => {
         </Link>
         <ul className={styles.list}>
           {/* <li>My Profile</li> */}
+          {admin.isSuccess && (
+            <li
+              onClick={async () => {
+                window.location.href = "https://admin.truts.xyz";
+              }}
+              className={styles.admin_btn}
+            >
+              <img src={"/starts.svg"} alt="" /> Admin Dashboard
+            </li>
+          )}
           <li
             onClick={async () => {
               localStorage.removeItem("token");

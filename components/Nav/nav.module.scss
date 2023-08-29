@@ -229,6 +229,13 @@ $PHONE_N: 425;
                         background: rgba(255, 50, 54, 0.2);
                     }
                 }
+                .admin_btn {
+                    @extend .power_btn;
+                    &:hover {
+                        transition: all 0.35s ease-in-out;
+                        background: rgba(255, 200, 0, 0.2);
+                    }
+                }
             }
         }
     }
