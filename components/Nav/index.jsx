@@ -105,7 +105,7 @@ export default function Component({ isFloating, isStrech }) {
         },
       });
       if (res.status === 200) {
-        return res.data.data.spin;
+        return res.data.data.count > 0;
       } else {
         //throw error
         new Error("Wheel Error", res.status);
@@ -202,6 +202,7 @@ export default function Component({ isFloating, isStrech }) {
 }
 
 const ProfileDropDown = ({ user, admin }) => {
+  console.log(admin.data);
   return (
     <span className={styles.profileDropDown}>
       <div className={styles.dd_menu}>
@@ -220,7 +221,7 @@ const ProfileDropDown = ({ user, admin }) => {
         </Link>
         <ul className={styles.list}>
           {/* <li>My Profile</li> */}
-          {admin.isSuccess && (
+          {admin.isSuccess && admin.data && (
             <li
               onClick={async () => {
                 window.location.href = "https://admin.truts.xyz";

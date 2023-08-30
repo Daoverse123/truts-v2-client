@@ -363,7 +363,7 @@ function Profile({ slug }) {
         },
       });
       if (res.status === 200) {
-        return res.data.data.spin;
+        return res.data.data.count > 0;
       } else {
         //throw error
         new Error("Wheel Error", res.status);
@@ -412,7 +412,7 @@ function Profile({ slug }) {
       {/* <ProfileLogin /> */}
 
       <div className={styles.profilePage}>
-        {admin.isSuccess && (
+        {admin.isSuccess && admin.data && (
           <span className={styles.adminBanner}>
             Your request for admin dashboard has been approved.
             <button
