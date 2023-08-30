@@ -412,7 +412,7 @@ function Profile({ slug }) {
       {/* <ProfileLogin /> */}
 
       <div className={styles.profilePage}>
-        {admin.isSuccess && admin.data && (
+        {admin.isSuccess && admin.data ? (
           <span className={styles.adminBanner}>
             Your request for admin dashboard has been approved.
             <button
@@ -423,6 +423,8 @@ function Profile({ slug }) {
               Visit Dashboard
             </button>
           </span>
+        ) : (
+          <span className={styles.blankBanner}></span>
         )}
         <div className={styles.profileHeader + addLoader(!("_id" in userData))}>
           <img

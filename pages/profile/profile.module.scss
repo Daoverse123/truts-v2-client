@@ -73,6 +73,42 @@ $PHONE_N: 450;
     }
 }
 
+.blankBanner {
+    margin-top: 40px;
+    display: flex;
+    width: 1080px;
+    border-radius: 16px;
+    margin-bottom: 28px;
+    height: 62px;
+    padding: 12px 24px;
+    //justify-content: center;
+    align-items: center;
+
+    @media (max-width: $LAPTOP) and (min-width: $PHONE) {
+        width: laptop_to_tablet_fluid(1030);
+        margin-top: laptop_to_tablet_fluid(40);
+    }
+    @media (max-width: $PHONE) {
+        width: 95%;
+        margin: 0 16px;
+        display: none;
+    }
+
+    button {
+        margin-left: auto;
+        border-radius: 16px;
+        background: linear-gradient(90deg, #5e1ed1 0%, #3065f3 100%);
+        border: none;
+        width: max-content;
+        height: 100%;
+        padding: 0 40px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 .profileHeader {
     display: flex;
     flex-direction: column;
