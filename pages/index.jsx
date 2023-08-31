@@ -82,8 +82,8 @@ export default function Home({ daoList_ssr, categoryList }) {
       <Hero />
       <main className={styles.main}>
         {/* <StatCards /> */}
-        <CommunitiesWall daoList={daoList_ssr} categoryList={categoryList} />
         <RewardSection />
+        <CommunitiesWall daoList={daoList_ssr} categoryList={categoryList} />
         <Leaderboard />
       </main>
       <RecentReviewsSection />
