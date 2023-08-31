@@ -99,13 +99,24 @@ const RewardSection = () => {
   return (
     <div className={styles.rewardSection}>
       <span className={styles.text}>
-        <h1>Rewards. Rewards. Rewards</h1>
+        <h1>Rewards, Reputation, Legacy.</h1>
         <h3>What do you get?</h3>
         <p>
-          Truts XPs will be your token to claim so many different rewards from
-          so many different partners, from NFTs to airdrops, don`t miss any out!
+          What’s in it for you? Use your Truts Xp to claim various rewards from
+          early access to products to airdrops. Don’t miss anything.
         </p>
-        <button>Explore Rewards</button>
+        <button
+          onClick={() => {
+            let url =
+              "https://arrow-ring-f82.notion.site/Rewards-9f11df16bf5b4953b89feff1ab37528a";
+            window.open(
+              url,
+              "_blank" // <- This is what makes it open in a new window.
+            );
+          }}
+        >
+          Explore Rewards
+        </button>
       </span>
       <span className={styles.image}>
         <img className={styles.circle} src="/rewardHero.svg" alt="" />
