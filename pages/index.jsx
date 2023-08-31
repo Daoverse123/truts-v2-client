@@ -94,7 +94,7 @@ export default function Home({ daoList_ssr, categoryList }) {
     </div>
   );
 }
-//cg
+//copy change
 const RewardSection = () => {
   return (
     <div className={styles.rewardSection}>
@@ -102,7 +102,7 @@ const RewardSection = () => {
         <h1>Rewards, Reputation, Legacy.</h1>
         <h3>What do you get?</h3>
         <p>
-          What’s in it for you? Use your Truts Xp to claim various rewards from
+          What’s in it for you? Use your Truts XP to claim various rewards from
           early access to products to airdrops. Don’t miss anything.
         </p>
         <button
