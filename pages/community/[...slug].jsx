@@ -241,6 +241,17 @@ function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
               <div className={styles.overview}>
                 <Overview overview={dao_data.description} />
               </div>
+              <div className={styles.claimSec}>
+                Are you a Community owner? Click the button below to claim
+                ownership.
+                <button
+                  onClick={() => {
+                    openNewTab("https://tally.so/r/m6jAqN");
+                  }}
+                >
+                  Claim Ownership
+                </button>
+              </div>
             </div>
             <Sidebar chainMap={chainMap} dao_data={dao_data} />
           </div>
@@ -312,15 +323,21 @@ const EditerMarkdown = dynamic(
 
 const Overview = ({ overview }) => {
   return (
-    <div data-color-mode="light" key={"overview"} className={styles.reviewSec}>
+    <>
       <div
-        style={{
-          padding: "10px 20px",
-        }}
+        data-color-mode="light"
+        key={"overview"}
+        className={styles.reviewSec}
       >
-        <EditerMarkdown source={overview} />
+        <div
+          style={{
+            padding: "10px 20px",
+          }}
+        >
+          <EditerMarkdown source={overview} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
