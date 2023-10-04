@@ -238,9 +238,6 @@ function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
           <div className={styles.content}>
             <div className={styles.main}>
               <TabletSideBar chainMap={chainMap} dao_data={dao_data} />
-              <div className={styles.overview}>
-                <Overview overview={dao_data.description} />
-              </div>
               <div className={styles.claimSec}>
                 Are you a Community owner? Click the button below to claim
                 ownership.
@@ -251,6 +248,9 @@ function Dao({ dao_data, rid, slug, ogImage, chainMap }) {
                 >
                   Claim Ownership
                 </button>
+              </div>
+              <div className={styles.overview}>
+                <Overview overview={dao_data.description} />
               </div>
             </div>
             <Sidebar chainMap={chainMap} dao_data={dao_data} />
