@@ -53,7 +53,7 @@ export default function Home({ daoList_ssr, categoryList }) {
     <div className={styles.container}>
       <Nav isFloating />
       <Head>
-        <title>Truts - the best discovery platform for web3</title>
+        <title>Truts || Discovering Web3 Communities</title>
         <meta
           name="description"
           content="Discover web3 communities that vibes with you from a list of thousands of communities across different categories (service, investment, media, social) and know all about them"
