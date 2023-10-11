@@ -48,6 +48,14 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/mantle',
+        destination: 'https://mantle.truts.xyz'
+      },
+    ]
+  },
 }
 
 // {
