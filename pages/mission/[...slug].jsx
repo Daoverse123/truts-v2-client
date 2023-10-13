@@ -665,7 +665,9 @@ const qMove = (set, move) => {
 
 const registerAnswer = (set, answer) => {
   // answer = {m_id,q_id,answer}
+
   return set((state) => {
+    console.log(state);
     let prev = [];
     if (state.quiz[answer.q_id].type == "MCQ") {
       if (
@@ -715,14 +717,14 @@ const Quiz = ({ mission }) => {
   }, [status.isSuccess]);
 
   useEffect(() => {
-    if (question.type == "SLIDE") {
+    if (question.type == "SLIDE" && status.isSuccess) {
       quizStore.registerAnswer({
         m_id: mission._id,
         q_id: question._id,
-        answer: -1,
+        answer: 0,
       });
     }
-  }, [question.type]);
+  }, [question.type, status.isSuccess]);
 
   const initData = (questionState) => {
     let sequenceStatus = [];
