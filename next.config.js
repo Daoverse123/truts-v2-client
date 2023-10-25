@@ -52,7 +52,7 @@ const nextConfig = {
     return [
       {
         source: '/ecosystem',
-        destination: `${process.env.ECO_URL}`,
+        destination: `${process.env.ECO_URL}/ecosystem`,
       },
       {
         source: '/ecosystem/:path',
