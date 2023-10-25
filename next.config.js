@@ -48,8 +48,16 @@ const nextConfig = {
       },
     ]
   },
-
+  async rewrites() {
+    return [
+      {
+        source: '/ecosystem/:path',
+        destination: `${process.env.ECO_URL}/ecosystem/:path`,
+      }]
+  }
 }
+
+
 
 // {
 //   source: '/mission/646889a2b16f108d31b4ab4d',

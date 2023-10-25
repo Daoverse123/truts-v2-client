@@ -717,7 +717,7 @@ const Quiz = ({ mission }) => {
   }, [status.isSuccess]);
 
   useEffect(() => {
-    if (question.type == "SLIDE" && status.isSuccess) {
+    if (question?.type == "SLIDE" && status.isSuccess) {
       quizStore.registerAnswer({
         m_id: mission._id,
         q_id: question._id,
