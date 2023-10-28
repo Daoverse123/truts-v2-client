@@ -48,17 +48,7 @@ const nextConfig = {
       },
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/ecosystem',
-        destination: `${process.env.ECO_URL}/ecosystem`,
-      },
-      {
-        source: '/ecosystem/:path',
-        destination: `${process.env.ECO_URL}/ecosystem/:path`,
-      }]
-  }
+
 }
 
 
