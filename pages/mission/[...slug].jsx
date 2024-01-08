@@ -724,7 +724,7 @@ const Quiz = ({ mission }) => {
         answer: 0,
       });
     }
-  }, [question.type, status.isSuccess]);
+  }, [question.type, status.isSuccess, question._id]);
 
   const initData = (questionState) => {
     let sequenceStatus = [];
@@ -1009,6 +1009,11 @@ const Quiz = ({ mission }) => {
               </span>
               {!isQuizComplete() ? (
                 <button
+                  disabled={
+                    quizStore.quiz[question._id].status == "ANSWERED" ||
+                    !quizStore.quiz[question._id].answerByUser ||
+                    quizStore.quiz[question._id].answerByUser.length <= 0
+                  }
                   onClick={() => {
                     submitAnswer();
                   }}
