@@ -1009,11 +1009,6 @@ const Quiz = ({ mission }) => {
               </span>
               {!isQuizComplete() ? (
                 <button
-                  disabled={
-                    quizStore.quiz[question._id].status == "ANSWERED" ||
-                    !quizStore.quiz[question._id].answerByUser ||
-                    quizStore.quiz[question._id].answerByUser.length <= 0
-                  }
                   onClick={() => {
                     submitAnswer();
                   }}
