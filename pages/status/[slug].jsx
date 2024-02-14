@@ -52,6 +52,9 @@ function Index({ type: preType, target, xp, m_id }) {
     if (m_id == "653c1bc45e95d0fb495c21db") {
       settype("ibw");
     }
+    if (m_id == "65cc9260d4d75109886e7069") {
+      settype("teamz");
+    }
   }, []);
 
   if (!couponQuery.isSuccess) {
@@ -95,6 +98,7 @@ function Index({ type: preType, target, xp, m_id }) {
               </span>
             </Link> */}
           </div>
+          {type == "teamz" && <Teamz xp={xp} />}
           {type == "milan" && <MilanMission xp={xp} />}
           {type == "token2049" && <Token2049 xp={xp} />}
           {type == "ibw" && <Ibw xp={xp} />}
@@ -304,6 +308,91 @@ const MilanMission = ({ xp, data }) => {
               openNewTab(
                 "https://www.eventbrite.it/e/biglietti-ethmilan-619763779147?discount=TRUTS"
               );
+              // toast.success("Coupon Copied !", {
+              //   position: "top-right",
+              //   autoClose: 5000,
+              //   hideProgressBar: false,
+              //   closeOnClick: true,
+              //   pauseOnHover: true,
+              //   draggable: true,
+              //   progress: undefined,
+              //   theme: "light",
+              // });
+            }}
+          >
+            Redeem Now
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Teamz = ({ xp, data }) => {
+  useEffect(() => {
+    const confettiSettings = {
+      target: "my-canvas",
+      start_from_edge: true,
+      rotate: true,
+      max: 250,
+    };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    setTimeout(() => {
+      confetti.render();
+    }, 1000);
+
+    return () => confetti.clear();
+  }, []);
+
+  let code = "Truts2024";
+  let link = "https://events.truts.xyz/event/65ade35084375ce9a77ef2bb";
+  let discount = "20";
+  return (
+    <div className={styles.missionSuccess}>
+      <canvas id="my-canvas"></canvas>
+      <div className={styles.content}>
+        <div className={styles.topText}>
+          <h3>Congratulations!🎉</h3>
+          <p className={styles.subText}>You earned</p>
+        </div>
+
+        <div className={styles.xpCoupon}>
+          {/* <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" /> */}
+          <h1>{discount + "% OFF"}</h1>
+          {/* <img className={styles.xpText} src="/xp-text.png" alt="" /> */}
+        </div>
+        <div className={styles.text}>
+          <h4 className={styles.desc}>
+            Congratulations on completing the mission! 🎉 <br></br> You’ve
+            earned a {discount}% discount code for TEAMZ Web3 / AI Summit 2024
+            tickets and {xp} Truts XP. Take off to Tokyo and have a blast at the
+            conference ✨
+          </h4>
+
+          <div className={styles.coupon}>
+            {code}
+            <img
+              onClick={() => {
+                navigator.clipboard.writeText(link);
+                toast.success("Coupon Copied !", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+              }}
+              src="/copy_blue.svg"
+              alt=""
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              openNewTab(link);
               // toast.success("Coupon Copied !", {
               //   position: "top-right",
               //   autoClose: 5000,
