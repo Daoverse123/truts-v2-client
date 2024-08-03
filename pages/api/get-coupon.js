@@ -1,7 +1,7 @@
 import axios from "axios";
 
 async function createCoupon() {
-    let code = `${Math.ceil(Math.random() * 1000)}`;
+    let code = `${Math.ceil(Math.random() * 1000000)}`;
 
     const data = {
         promotionCodeData: {
