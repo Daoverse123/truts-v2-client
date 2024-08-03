@@ -58,6 +58,9 @@ function Index({ type: preType, target, xp, m_id }) {
     if (m_id == "65df6796765b1f1ab5ff5ca9") {
       settype("tkdubai");
     }
+    if (m_id == "66ab8754765b1f1ab5085441") {
+      settype("abc");
+    }
   }, []);
 
   if (!couponQuery.isSuccess) {
@@ -136,6 +139,14 @@ function Index({ type: preType, target, xp, m_id }) {
             <ErrorStateListDAO
               message={
                 "Sorry, something went wrong. Can you please try again :)"
+              }
+              slug={target}
+            />
+          )}
+          {type == "abc" && (
+            <Abc
+              message={
+                "Thank you for submitting the application to list your Community. Now sit back and relax. If we need more information, we will reach out to you. Otherwise, you are all set and you will see your DAO listed in a day or two :) "
               }
               slug={target}
             />
@@ -477,6 +488,106 @@ const Tkdubai = ({ xp, data }) => {
               alt=""
             />
           </div>
+
+          <button
+            onClick={() => {
+              openNewTab(link);
+              // toast.success("Coupon Copied !", {
+              //   position: "top-right",
+              //   autoClose: 5000,
+              //   hideProgressBar: false,
+              //   closeOnClick: true,
+              //   pauseOnHover: true,
+              //   draggable: true,
+              //   progress: undefined,
+              //   theme: "light",
+              // });
+            }}
+          >
+            Redeem Now
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Abc = ({ xp, data }) => {
+  useEffect(() => {
+    const confettiSettings = {
+      target: "my-canvas",
+      start_from_edge: true,
+      rotate: true,
+      max: 250,
+    };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    setTimeout(() => {
+      confetti.render();
+    }, 1000);
+
+    return () => confetti.clear();
+  }, []);
+
+  let coupon = useQuery({
+    queryKey: ["coupon"],
+    queryFn: async () => {
+      let code = localStorage.getItem("abc_code");
+      if (code && code.length > 1) {
+        console.log(code);
+        return JSON.parse(code);
+      } else {
+        let res = await axios.get("/api/get-coupon");
+        localStorage.setItem("abc_code", JSON.stringify(res.data));
+        return res.data;
+      }
+    },
+  });
+
+  return (
+    <div className={styles.missionSuccess}>
+      <canvas id="my-canvas"></canvas>
+      <div className={styles.content}>
+        <div className={styles.topText}>
+          <h3>Congratulations!🎉</h3>
+          <p className={styles.subText}>You earned</p>
+        </div>
+
+        <div className={styles.xpCoupon}>
+          {/* <img className={styles.goldStack} src="/gold-coin-stack.png" alt="" /> */}
+          <h1>{50 + "% OFF"}</h1>
+          {/* <img className={styles.xpText} src="/xp-text.png" alt="" /> */}
+        </div>
+        <div className={styles.text}>
+          <h4 className={styles.desc}>
+            Congratulations on completing the mission! 🎉 <br></br> You’ve
+            earned a 50% discount code for ABC Conclave tickets and {xp} Truts
+            XP. Take off to Dubai and have a blast at the conference ✨
+          </h4>
+
+          {coupon.isSuccess ? (
+            <div className={styles.coupon}>
+              {coupon.data.code}
+              <img
+                onClick={() => {
+                  navigator.clipboard.writeText(coupon.data.code);
+                  toast.success("Coupon Copied !", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
+                }}
+                src="/copy_blue.svg"
+                alt=""
+              />
+            </div>
+          ) : (
+            <></>
+          )}
 
           <button
             onClick={() => {
