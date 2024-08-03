@@ -7,7 +7,7 @@ async function createCoupon() {
         promotionCodeData: {
             data: [
                 {
-                    code,
+                    code: `TRUTS${code}`,
                 },
             ],
         },

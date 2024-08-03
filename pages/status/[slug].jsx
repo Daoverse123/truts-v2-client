@@ -602,7 +602,9 @@ const Abc = ({ xp, data }) => {
 
           <button
             onClick={() => {
-              openNewTab(link);
+              openNewTab(
+                "https://buy.copperx.io/payment/checkout-session/b05a3774-32d3-464a-b148-6e61ec09c4f8"
+              );
               // toast.success("Coupon Copied !", {
               //   position: "top-right",
               //   autoClose: 5000,
