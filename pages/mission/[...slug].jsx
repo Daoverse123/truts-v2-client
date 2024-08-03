@@ -519,6 +519,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
           <button
             className={styles.startBtn}
             onClick={() => {
+              localStorage.setItem(`${mission_id}_${no}`, "true");
               startTask();
             }}
           >
@@ -537,6 +538,7 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
           <button
             className={styles.startBtn}
             onClick={() => {
+              localStorage.setItem(`${mission_id}_${no}`, "true");
               startTask();
             }}
           >
@@ -544,7 +546,12 @@ function Task({ status, no, data, mission_id, refreshMissionStatus }) {
           </button>
           <button
             onClick={() => {
-              verifyTask();
+              let status = localStorage.getItem(`${mission_id}_${no}`);
+              if (status && status == "true") {
+                verifyTask();
+              } else {
+                toast.error("Please complete the task before verifying");
+              }
             }}
           >
             Verify
