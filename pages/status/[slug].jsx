@@ -560,8 +560,19 @@ const Abc = ({ xp, data }) => {
         <div className={styles.text}>
           <h4 className={styles.desc}>
             Congratulations on completing the mission! 🎉 <br></br> You’ve
-            earned a 50% discount code for ABC Conclave tickets and {xp} Truts
-            XP. Take off to Dubai and have a blast at the conference ✨
+            earned a 50% discount code for ABC Conclave tickets
+          </h4>
+
+          <h4
+            style={{
+              marginTop: "0px",
+              color: "blue",
+              fontSize: "16px",
+            }}
+            className={styles.desc}
+          >
+            Please save the coupon code below for future use. It is a one-time
+            use code and will not be shared again.
           </h4>
 
           {coupon.isSuccess ? (
